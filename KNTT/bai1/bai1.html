@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 1: Làm Quen Với Vật Lí - Tổ Vật Lý</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        main: '#660000',
+                        bgpage: '#f4f7f9',
+                        qbg: '#edf2f7',
+                        qborder: '#1a202c',
+                        ansbg: '#dcfce7'
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body { background-color: #f4f7f9; }
+        .section-title {
+            border-bottom: 4px solid #1a202c;
+            display: inline-block;
+            padding-bottom: 4px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800 font-sans p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto space-y-6">
+
+        <div class="bg-main text-white rounded-[12px] shadow-md p-4 text-center">
+            <h2 class="text-xl font-semibold uppercase mb-2">CHƯƠNG 1: MỞ ĐẦU</h2><hr class="border-t border-gray-100 my-4">
+            <h1 class="text-3xl font-bold uppercase">BÀI 1: LÀM QUEN VỚI VẬT LÍ</h1>
+        </div>
+
+        <div class="bg-white border border-black rounded-[12px] shadow-md p-4 italic text-center text-lg">
+            "Thuật ngữ 'vật lí' có nguồn gốc từ tiếng Hy Lạp 'physiko' có nghĩa là 'kiến thức về tự nhiên'."
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h3 class="text-xl font-bold uppercase section-title text-main">I. Đối tượng nghiên cứu của Vật lí và mục tiêu của môn Vật lí</h3>
+            
+            <p class="mb-4">Vật lí là môn "khoa học tự nhiên" có đối tượng nghiên cứu tập trung vào các dạng vận động của vật chất (chất, trường), năng lượng.</p>
+            <p class="mb-4">Các lĩnh vực nghiên cứu của Vật lí rất đa dạng, từ Cơ học, Điện học, Điện từ học, Quang học, Âm học, Nhiệt học, Nhiệt động lực học đến Vật lí nguyên tử và hạt nhân, Vật lí lượng tử, Thuyết tương đối với công thức nổi tiếng \(E=m.c^{2}\).</p>
+
+            <div class="bg-qbg border-l-4 border-qborder p-4 mb-4 rounded-r-[8px]">
+                <p class="font-bold mb-2">❓ Câu hỏi thảo luận:</p>
+                <ol class="list-decimal ml-5 mb-3">
+                    <li>Hãy kể tên các lĩnh vực vật lí mà em đã được học ở cấp Trung học cơ sở.</li>
+                    <li>Em thích nhất lĩnh vực nào của Vật lí? Tại sao?</li>
+                </ol>
+                <button onclick="toggleAnswer('ans_i_1')" class="bg-main text-white px-4 py-1 rounded hover:opacity-90 transition">Xem lời giải</button>
+                <div id="ans_i_1" class="hidden bg-ansbg p-3 mt-3 rounded text-green-900 border border-green-300">
+                    <strong>Gợi ý:</strong><br>
+                    1. Ở THCS, học sinh đã làm quen với các lĩnh vực: Cơ học (chuyển động, lực), Nhiệt học (sự nở vì nhiệt, sự chuyển thể), Điện học (mạch điện cơ bản), Quang học (gương phẳng, thấu kính).<br>
+                    2. Học sinh tự trả lời theo sở thích cá nhân (Ví dụ: Thích Quang học vì có thể giải thích hiện tượng cầu vồng, sự tạo ảnh qua gương...).
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h3 class="text-xl font-bold uppercase section-title text-main">II. Quá trình phát triển của Vật lí</h3>
+            
+            <p class="mb-4">Dưới đây là sơ đồ trình bày các giai đoạn chính trong quá trình phát triển của Vật lí. Mỗi giai đoạn có một tính chất, đặc điểm riêng.</p>
+            <ul class="list-disc ml-6 mb-4 space-y-2">
+                <li><strong>Tiền Vật lí (350 TCN - TK XVI):</strong> Các nhà triết học tìm hiểu thế giới tự nhiên dựa trên quan sát và suy luận chủ quan (Đại diện: Aristotle).</li>
+                <li><strong>Vật lí cổ điển (TK XVII - cuối TK XIX):</strong> Các nhà vật lí dùng phương pháp thực nghiệm để tìm hiểu thế giới tự nhiên (Đại diện: Galilei, Newton, Joule, Faraday).</li>
+                <li><strong>Vật lí hiện đại (Cuối TK XIX - nay):</strong> Tập trung vào các mô hình lí thuyết tìm hiểu thế giới vi mô và sử dụng thí nghiệm kiểm chứng (Đại diện: Planck, Einstein).</li>
+            </ul>
+
+            <div class="w-full h-100 bg-gray-200 border-2 border-dashed border-gray-400 flex items-center justify-center rounded-[8px] mb-4 text-gray-500">
+		 <img src="h1.png" class="max-h-full max-w-full object-contain"></img>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h3 class="text-xl font-bold uppercase section-title text-main">III. Vai trò của Vật lí đối với Khoa học, Kĩ thuật và Công nghệ</h3>
+            
+            <h4 class="font-bold text-lg mb-2 mt-4">a) Vật lí là cơ sở của Khoa học Tự nhiên</h4>
+            <p class="mb-4">Các khái niệm, định luật của Vật lí được sử dụng để giải thích cơ chế của các hiện tượng tự nhiên trong sinh học, hoá học, vũ trụ... Xuất hiện nhiều môn liên ngành: Hoá lí, Sinh học lượng tử...</p>
+
+            <div class="bg-qbg border-l-4 border-qborder p-4 mb-4 rounded-r-[8px]">
+                <p class="font-bold mb-2">❓ Câu hỏi vận dụng:</p>
+                <ol class="list-decimal ml-5 mb-3">
+                    <li>Cơ chế của các phản ứng hoá học được giải thích dựa trên kiến thức thuộc lĩnh vực nào của Vật lí?</li>
+                    <li>Kiến thức về từ trường Trái Đất được dùng để giải thích đặc điểm nào của loài chim di trú?</li>
+                    <li>Sự tương tác giữa các thiên thể được giải thích dựa vào định luật vật lí nào của Newton?</li>
+                </ol>
+                <button onclick="toggleAnswer('ans_iii_1')" class="bg-main text-white px-4 py-1 rounded hover:opacity-90 transition">Xem lời giải</button>
+                <div id="ans_iii_1" class="hidden bg-ansbg p-3 mt-3 rounded text-green-900 border border-green-300">
+                    <strong>Trả lời:</strong><br>
+                    1. Vật lí nguyên tử, Vật lí lượng tử (cấu trúc vỏ electron).<br>
+                    2. Khả năng định hướng đường bay của các loài chim di trú (chúng có những tế bào cảm nhận từ trường).<br>
+                    3. Định luật Vạn vật hấp dẫn.
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg mb-2 mt-4">b) Vật lí là cơ sở của công nghệ</h4>
+            <p class="mb-2">- <strong>Cách mạng CN lần 1:</strong> Máy hơi nước (James Watt) dựa trên Nhiệt học.</p>
+            <div class="bg-qbg border-l-4 border-qborder p-4 mb-4 rounded-r-[8px]">
+                <ol class="list-decimal ml-5 mb-3">
+                    <li>Hãy nêu tên một số thiết bị có ứng dụng các kiến thức về nhiệt.</li>
+                    <li>Việc sử dụng máy hơi nước và động cơ nhiệt có những hạn chế nào?</li>
+                </ol>
+                <button onclick="toggleAnswer('ans_iii_2')" class="bg-main text-white px-4 py-1 rounded hover:opacity-90 transition">Xem lời giải</button>
+                <div id="ans_iii_2" class="hidden bg-ansbg p-3 mt-3 rounded text-green-900 border border-green-300">
+                    <strong>Trả lời:</strong><br>
+                    1. Bàn là, nồi cơm điện, động cơ đốt trong (xe máy, ô tô).<br>
+                    2. Hạn chế: Hiệu suất thấp, xả nhiều khí thải gây ô nhiễm môi trường, tiêu thụ nhiều nhiên liệu hóa thạch.
+                </div>
+            </div>
+
+            <p class="mb-2">- <strong>Cách mạng CN lần 2:</strong> Điện năng (hiện tượng cảm ứng điện từ của Faraday).</p>
+            <div class="bg-qbg border-l-4 border-qborder p-4 mb-4 rounded-r-[8px]">
+                <p class="mb-3">❓ Theo em, sử dụng động cơ điện có những ưu điểm vượt trội nào so với sử dụng máy hơi nước?</p>
+                <button onclick="toggleAnswer('ans_iii_3')" class="bg-main text-white px-4 py-1 rounded hover:opacity-90 transition">Xem lời giải</button>
+                <div id="ans_iii_3" class="hidden bg-ansbg p-3 mt-3 rounded text-green-900 border border-green-300">
+                    <strong>Trả lời:</strong> Hiệu suất cao hơn rất nhiều, thiết kế nhỏ gọn, dễ truyền tải năng lượng đi xa, sạch sẽ và ít gây ô nhiễm môi trường trực tiếp tại nơi sử dụng.
+                </div>
+            </div>
+
+            <p class="mb-2">- <strong>Cách mạng CN lần 3 & 4:</strong> Tự động hoá, vi mạch, trí tuệ nhân tạo, vật liệu nano (dựa trên Vật lí hiện đại, bán dẫn).</p>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r-[8px]">
+                <p class="font-bold mb-2">👋 Hoạt động Thảo luận:</p>
+                <p class="mb-3">Hãy sưu tầm tài liệu trên internet và trình bày, thảo luận về chủ đề "Thế nào là thành phố thông minh?"</p>
+                <button onclick="toggleAnswer('ans_iii_4')" class="bg-main text-white px-4 py-1 rounded hover:opacity-90 transition">Xem hướng giải quyết</button>
+                <div id="ans_iii_4" class="hidden bg-ansbg p-3 mt-3 rounded text-green-900 border border-green-300">
+                    <strong>Hướng dẫn:</strong> Học sinh cần tập trung vào các yếu tố: Mạng lưới IoT (Internet vạn vật), hệ thống giao thông điều khiển bằng AI, quản lí điện năng thông minh (lưới điện thông minh), ứng dụng năng lượng tái tạo nhờ thành tựu Vật lí bán dẫn.
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg mb-2 mt-4">c) Ảnh hưởng hai mặt của ứng dụng Vật lí</h4>
+            <p class="mb-4">Bên cạnh lợi ích, nếu không sử dụng đúng phương pháp có thể gây ô nhiễm môi trường, huỷ hoại hệ sinh thái (vũ khí hạt nhân, khí thải...).</p>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h3 class="text-xl font-bold uppercase section-title text-main">IV. Phương pháp nghiên cứu Vật lí</h3>
+            
+            <h4 class="font-bold text-lg mb-2">1. Phương pháp thực nghiệm</h4>
+            <p class="mb-4">Câu chuyện về sự rơi: Aristotle suy luận vật nặng rơi nhanh hơn vật nhẹ. Gần 20 thế kỉ sau, Galilei đã thả hai quả cầu có khối lượng khác nhau tại tháp nghiêng Pisa, chứng minh thực nghiệm rằng sự rơi nhanh chậm không phụ thuộc vật nặng nhẹ. Galilei được coi là "cha đẻ" của phương pháp thực nghiệm.</p>
+            
+            <div class="w-full h-100 bg-gray-200 border-2 border-dashed border-gray-400 flex items-center justify-center rounded-[8px] mb-4 text-gray-500">
+                <img src="h2.png" class="max-h-full max-w-full object-contain"></img>
+            </div>
+
+            <h4 class="font-bold text-lg mb-2 mt-4">2. Phương pháp mô hình</h4>
+            <p class="mb-2">Dùng mô hình để nghiên cứu vật thật. Có 3 loại phổ biến:</p>
+            <ul class="list-disc ml-6 mb-4">
+                <li><strong>Mô hình vật chất:</strong> Quả địa cầu, hệ Mặt trời thu nhỏ...</li>
+                <li><strong>Mô hình lí thuyết:</strong> Chất điểm, tia sáng...</li>
+                <li><strong>Mô hình toán học:</strong> Các công thức \(s = v.t\), vectơ lực...</li>
+            </ul>
+
+            <div class="bg-qbg border-l-4 border-qborder p-4 mb-4 rounded-r-[8px]">
+                <p class="font-bold mb-2">❓ Trả lời câu hỏi:</p>
+                <ol class="list-decimal ml-5 mb-3">
+                    <li>Kể tên một số mô hình vật chất trong phòng thí nghiệm.</li>
+                    <li>Nêu tên một mô hình lí thuyết mà em đã học.</li>
+                    <li>Các đồ thị \(s-t\), \(v-t\) dùng để mô tả loại chuyển động nào?</li>
+                </ol>
+                <button onclick="toggleAnswer('ans_iv_1')" class="bg-main text-white px-4 py-1 rounded hover:opacity-90 transition">Xem lời giải</button>
+                <div id="ans_iv_1" class="hidden bg-ansbg p-3 mt-3 rounded text-green-900 border border-green-300">
+                    <strong>Trả lời:</strong><br>
+                    1. Mô hình bộ xương người, mô hình phân tử ADN, sa bàn địa lí.<br>
+                    2. Tia sáng (biểu diễn bằng đường thẳng có mũi tên).<br>
+                    3. Đồ thị \(s-t\) là đường thẳng đi qua gốc toạ độ và \(v-t\) là đường thẳng song song trục thời gian mô tả "Chuyển động thẳng đều".
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-yellow-100 border-2 border-yellow-400 rounded-[12px] p-5 shadow-md">
+                <h4 class="font-bold text-lg text-yellow-800 mb-2">📌 EM ĐÃ HỌC</h4>
+                <ul class="list-disc ml-5 text-yellow-900">
+                    <li>Đối tượng nghiên cứu chủ yếu của Vật lí là các dạng của vật chất, năng lượng.</li>
+                    <li>Phương pháp nghiên cứu thường sử dụng: thực nghiệm và mô hình.</li>
+                    <li>Vật lí được coi là cơ sở của KHTN và công nghệ.</li>
+                </ul>
+            </div>
+            
+            <div class="bg-purple-100 border-2 border-purple-400 rounded-[12px] p-5 shadow-md">
+                <h4 class="font-bold text-lg text-purple-800 mb-2">🚀 EM CÓ THỂ</h4>
+                <p class="text-purple-900">Dự đoán về sự phụ thuộc tốc độ bay hơi của nước vào nhiệt độ nước và gió thổi trên mặt nước, rồi lập phương án thí nghiệm để kiểm tra dự đoán (Vận dụng phương pháp thực nghiệm).</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6 border-t-4 border-main">
+            <h3 class="text-xl font-bold uppercase mb-4 text-main">📝 BÀI TẬP TRẮC NGHIỆM CỦNG CỐ</h3>
+            
+            <form id="quizForm" class="space-y-6">
+                <div>
+                    <p class="font-bold">Câu 1: Đối tượng nghiên cứu của Vật lí chủ yếu tập trung vào:</p>
+                    <div class="ml-4 mt-2 space-y-1">
+                        <label class="block"><input type="radio" name="q1" value="A" class="mr-2">A. Các chất và sự biến đổi các chất.</label>
+                        <label class="block"><input type="radio" name="q1" value="B" class="mr-2">B. Các dạng vận động của vật chất và năng lượng.</label>
+                        <label class="block"><input type="radio" name="q1" value="C" class="mr-2">C. Các quy luật di truyền của sinh vật.</label>
+                        <label class="block"><input type="radio" name="q1" value="D" class="mr-2">D. Cấu tạo của Trái Đất và vũ trụ.</label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-bold">Câu 2: Nhà bác học nào được coi là "cha đẻ" của phương pháp thực nghiệm?</p>
+                    <div class="ml-4 mt-2 space-y-1">
+                        <label class="block"><input type="radio" name="q2" value="A" class="mr-2">A. Aristotle</label>
+                        <label class="block"><input type="radio" name="q2" value="B" class="mr-2">B. Newton</label>
+                        <label class="block"><input type="radio" name="q2" value="C" class="mr-2">C. Galilei</label>
+                        <label class="block"><input type="radio" name="q2" value="D" class="mr-2">D. Einstein</label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-bold">Câu 3: Việc coi ô tô đang chạy trên đường dài là một "chất điểm" thuộc loại mô hình nghiên cứu nào?</p>
+                    <div class="ml-4 mt-2 space-y-1">
+                        <label class="block"><input type="radio" name="q3" value="A" class="mr-2">A. Mô hình vật chất</label>
+                        <label class="block"><input type="radio" name="q3" value="B" class="mr-2">B. Mô hình toán học</label>
+                        <label class="block"><input type="radio" name="q3" value="C" class="mr-2">C. Mô hình lí thuyết</label>
+                        <label class="block"><input type="radio" name="q3" value="D" class="mr-2">D. Cả 3 mô hình trên</label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-bold">Câu 4: Phát minh máy hơi nước của James Watt đánh dấu bước khởi đầu cho cuộc cách mạng công nghiệp lần thứ mấy?</p>
+                    <div class="ml-4 mt-2 space-y-1">
+                        <label class="block"><input type="radio" name="q4" value="A" class="mr-2">A. Lần thứ nhất</label>
+                        <label class="block"><input type="radio" name="q4" value="B" class="mr-2">B. Lần thứ hai</label>
+                        <label class="block"><input type="radio" name="q4" value="C" class="mr-2">C. Lần thứ ba</label>
+                        <label class="block"><input type="radio" name="q4" value="D" class="mr-2">D. Lần thứ tư</label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-bold">Câu 5: Công thức \(s = v.t\) dùng để nghiên cứu chuyển động là một ví dụ về:</p>
+                    <div class="ml-4 mt-2 space-y-1">
+                        <label class="block"><input type="radio" name="q5" value="A" class="mr-2">A. Mô hình thực nghiệm</label>
+                        <label class="block"><input type="radio" name="q5" value="B" class="mr-2">B. Mô hình toán học</label>
+                        <label class="block"><input type="radio" name="q5" value="C" class="mr-2">C. Mô hình thu nhỏ</label>
+                        <label class="block"><input type="radio" name="q5" value="D" class="mr-2">D. Mô hình vật chất</label>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-gray-200">
+                    <button type="button" onclick="checkQuiz()" class="bg-[#1a202c] text-white px-6 py-2 rounded-[8px] font-bold hover:bg-black transition">NỘP BÀI</button>
+                    <span id="quizResult" class="ml-4 font-bold text-lg"></span>
+                </div>
+            </form>
+            
+            <div id="quizAnswers" class="hidden mt-4 p-4 bg-gray-100 rounded border border-gray-300">
+                <p class="font-bold text-main">Đáp án chi tiết:</p>
+                <p>Câu 1: <strong>B</strong> (Theo mục I SGK)</p>
+                <p>Câu 2: <strong>C</strong> (Galilei làm thí nghiệm tại tháp nghiêng Pisa)</p>
+                <p>Câu 3: <strong>C</strong> (Chất điểm là một khái niệm trừu tượng lí thuyết)</p>
+                <p>Câu 4: <strong>A</strong> (Thay thế sức lực cơ bắp bằng máy móc)</p>
+                <p>Câu 5: <strong>B</strong> (Sử dụng biểu thức toán học để mô tả vật lí)</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6 border-t-4 border-main">
+            <h3 class="text-xl font-bold uppercase mb-4 text-main">⚙️ BÀI TẬP VẬN DỤNG TÍNH TOÁN / TƯ DUY</h3>
+            
+            <div class="space-y-4">
+                <div class="border rounded p-4">
+                    <p class="font-bold">Bài 1: Bước kiểm tra mô hình</p>
+                    <p>Một học sinh đo thời gian rơi của một viên bi sắt từ độ cao \(h = 2\text{m}\) và thu được \(t = 0.64\text{s}\). Biết công thức mô hình toán học của sự rơi tự do là \(h = \frac{1}{2}g.t^2\). Hãy vận dụng mô hình này để tính gia tốc rơi tự do \(g\) tại nơi làm thí nghiệm và nhận xét.</p>
+                    <button onclick="toggleAnswer('vd1')" class="mt-2 bg-main text-white px-3 py-1 rounded text-sm">Xem lời giải</button>
+                    <div id="vd1" class="hidden bg-ansbg p-3 mt-2 rounded border border-green-300">
+                        Từ mô hình toán học: \(h = \frac{1}{2}g.t^2 \Rightarrow g = \frac{2h}{t^2}\)<br>
+                        Thay số: \(g = \frac{2 \times 2}{(0.64)^2} \approx 9.76 \text{ m/s}^2\).<br>
+                        <strong>Nhận xét:</strong> Kết quả này rất gần với giá trị chuẩn (\(g \approx 9.8 \text{ m/s}^2\)), cho thấy mô hình toán học phản ánh đúng thực tế thực nghiệm.
+                    </div>
+                </div>
+
+                <div class="border rounded p-4">
+                    <p class="font-bold">Bài 2: Phương pháp thực nghiệm</p>
+                    <p>Để kiểm tra dự đoán "Chu kì dao động của con lắc đơn phụ thuộc vào chiều dài dây treo", em hãy thiết kế các bước cơ bản của phương pháp thực nghiệm theo đúng quy trình 5 bước.</p>
+                    <button onclick="toggleAnswer('vd2')" class="mt-2 bg-main text-white px-3 py-1 rounded text-sm">Xem lời giải</button>
+                    <div id="vd2" class="hidden bg-ansbg p-3 mt-2 rounded border border-green-300">
+                        1. <strong>Xác định vấn đề:</strong> Chu kì có phụ thuộc chiều dài dây treo không?<br>
+                        2. <strong>Quan sát, thu thập thông tin:</strong> Nhìn thấy các con lắc dài thường dao động chậm hơn.<br>
+                        3. <strong>Đưa ra dự đoán:</strong> Chiều dài dây treo càng dài thì chu kì dao động càng lớn.<br>
+                        4. <strong>Thí nghiệm kiểm tra:</strong> Treo 2 con lắc có cùng khối lượng vật nặng nhưng chiều dài \(l_1 = 50\text{cm}\) và \(l_2 = 100\text{cm}\). Kích thích cho dao động và dùng đồng hồ bấm giây đo thời gian thực hiện 10 dao động toàn phần.<br>
+                        5. <strong>Kết luận:</strong> So sánh kết quả thời gian, rút ra kết luận xác nhận hoặc bác bỏ dự đoán.
+                    </div>
+                </div>
+
+                <div class="border rounded p-4">
+                    <p class="font-bold">Bài 3: Nhận thức về ứng dụng Vật lí</p>
+                    <p>Một nhà máy thuỷ điện (như Hình 1.2 SGK) tạo ra điện năng từ thế năng của nước dựa trên cảm ứng điện từ. Hãy tính năng lượng điện sinh ra (tính bằng Joule) nếu hệ thống có công suất \(P = 500 \text{ MW}\) hoạt động liên tục trong \(1 \text{ giờ}\). Đồng thời nêu 1 tác động tiêu cực về môi trường khi xây dựng đập thuỷ điện.</p>
+                    <button onclick="toggleAnswer('vd3')" class="mt-2 bg-main text-white px-3 py-1 rounded text-sm">Xem lời giải</button>
+                    <div id="vd3" class="hidden bg-ansbg p-3 mt-2 rounded border border-green-300">
+                        - <strong>Tính năng lượng:</strong><br>
+                        Ta có: \(P = 500 \text{ MW} = 500 \times 10^6 \text{ W}\) ; \(t = 1 \text{ h} = 3600 \text{ s}\).<br>
+                        Năng lượng sinh ra: \(A = P.t = 500 \times 10^6 \times 3600 = 1.8 \times 10^{12} \text{ J}\).<br>
+                        - <strong>Tác động tiêu cực:</strong> Xây dựng đập thuỷ điện cần ngăn dòng chảy, có thể gây ngập lụt diện tích rừng lớn phía thượng nguồn, phá vỡ hệ sinh thái và ảnh hưởng trực tiếp đến đường di cư của các loài thuỷ sản.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-gray-400 text-sm py-4">
+            &copy; 2026 Tài liệu E-Learning Tổ Vật lí.
+        </div>
+
+    </div>
+
+    <script>
+        // Toggle hiện/ẩn lời giải
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Chấm điểm Trắc nghiệm
+        function checkQuiz() {
+            const answers = {
+                q1: 'B',
+                q2: 'C',
+                q3: 'C',
+                q4: 'A',
+                q5: 'B'
+            };
+            
+            let score = 0;
+            let total = 5;
+            const form = document.getElementById('quizForm');
+            
+            for (let i = 1; i <= total; i++) {
+                const selected = form.querySelector(`input[name="q${i}"]:checked`);
+                if (selected && selected.value === answers[`q${i}`]) {
+                    score++;
+                }
+            }
+            
+            const resultEl = document.getElementById('quizResult');
+            const detailAns = document.getElementById('quizAnswers');
+            
+            detailAns.classList.remove('hidden'); // Show chi tiết
+
+            if (score === total) {
+                resultEl.textContent = `Tuyệt vời! Bạn làm đúng ${score}/${total} câu.`;
+                resultEl.className = "ml-4 font-bold text-lg text-green-600";
+            } else {
+                resultEl.textContent = `Bạn làm đúng ${score}/${total} câu. Hãy xem lại đáp án chi tiết nhé!`;
+                resultEl.className = "ml-4 font-bold text-lg text-red-600";
+            }
+        }
+    </script>
+</body>
+</html>

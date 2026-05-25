@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 2: Các quy tắc an toàn trong phòng thực hành Vật lí</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax for Mathematical Formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Tailwind Configuration to match requested styles -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'main-red': '#660000',
+                        'bg-body': '#f4f7f9',
+                        'q-bg': '#edf2f7',
+                        'ans-bg': '#d1fae5', /* Light green */
+                        'tbl-border': '#cbd5e0',
+                        'tbl-header': '#e2e8f0'
+                    },
+                    fontFamily: {
+                        'sans': ['"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '12px': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f4f7f9;
+        }
+        /* Style for MathJax inline to look good */
+        .math {
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body class="text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto space-y-6">
+
+        <!-- HEADER BLOCK -->
+        <div class="bg-main-red text-white rounded-12px shadow-md flex flex-col overflow-hidden">
+            <div class="py-3 text-center text-lg font-semibold tracking-wide">
+                CHƯƠNG 1: MỞ ĐẦU
+            </div>
+            <div class="h-[1px] bg-white/40 w-full"></div>
+            <div class="py-5 text-center text-2xl md:text-3xl font-bold uppercase px-4">
+                Bài 2: Các quy tắc an toàn trong phòng thực hành Vật lí
+            </div>
+        </div>
+
+        <!-- INTRO BOX -->
+        <div class="border border-gray-800 bg-white p-5 rounded-12px shadow-sm italic text-gray-700 text-lg">
+            Khi làm thí nghiệm cần đảm bảo người làm thí nghiệm không gặp nguy hiểm, đồ dùng, thiết bị không bị hư hỏng, cháy nổ. Làm thế nào để đảm bảo an toàn trong khi tiến hành thí nghiệm?
+        </div>
+
+        <!-- SECTION I -->
+        <div class="bg-white p-6 rounded-12px shadow-md">
+            <h2 class="text-2xl font-bold uppercase text-gray-900 border-b-4 border-slate-800 pb-2 mb-6">I. An toàn khi sử dụng thiết bị thí nghiệm</h2>
+            
+            <!-- Mục 1 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-main-red mb-3">1. Sử dụng các thiết bị điện</h3>
+                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4 text-justify">
+                    <p>Trong số các thí nghiệm vật lí phổ thông thì các thiết bị sử dụng điện có nguy cơ mất an toàn cao nhất. Cần quan sát kĩ các kí hiệu và nhãn thông số trên thiết bị để sử dụng đúng chức năng, đúng yêu cầu kĩ thuật.</p>
+                </div>
+                
+                <div class="text-center my-4">
+                    <img src="h1.png" alt="Hình 2.1. Hai loại thiết bị cung cấp nguồn điện" class="mx-auto rounded border border-gray-300 max-w-full h-auto">
+                    <p class="italic text-sm mt-2">Hình 2.1. Hai loại thiết bị cung cấp nguồn điện</p>
+                </div>
+
+                <!-- Hoạt động / Câu hỏi -->
+                <div class="bg-q-bg border-l-4 border-blue-800 p-4 rounded-r-lg mb-6 shadow-sm">
+                    <p class="font-semibold text-blue-900 flex items-center gap-2 mb-2">
+                        <span>❓</span> Quan sát thiết bị và thảo luận trả lời các câu hỏi:
+                    </p>
+                    <ol class="list-decimal ml-6 space-y-1 mb-3">
+                        <li>Chức năng của hai thiết bị là gì? Giống và khác nhau như thế nào?</li>
+                        <li>Bộ chuyển đổi điện áp (Hình 2.1b) sử dụng hiệu điện thế vào bao nhiêu?</li>
+                        <li>Các hiệu điện thế đầu ra như thế nào?</li>
+                        <li>Những nguy cơ nào có thể gây mất an toàn hoặc hỏng các thiết bị khi sử dụng thiết bị chuyển đổi điện áp này?</li>
+                    </ol>
+                    <button onclick="toggleAnswer('ans-i-1')" class="bg-main-red text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors shadow">
+                        Xem lời giải
+                    </button>
+                    <div id="ans-i-1" class="hidden mt-4 p-4 bg-ans-bg rounded-lg border border-green-300 text-green-900">
+                        <ul class="list-disc ml-5 space-y-2">
+                            <li><strong>Câu 1:</strong> Cả hai đều có chức năng cung cấp nguồn điện. Khác nhau: Hình (a) là máy biến áp xoay chiều, đổi điện áp AC. Hình (b) chuyển đổi điện AC sang DC và có thể điều chỉnh nhiều mức điện áp đầu ra.</li>
+                            <li><strong>Câu 2:</strong> Bộ chuyển đổi (b) sử dụng hiệu điện thế vào (INPUT) là \( 220 - 240 \text{V AC} \).</li>
+                            <li><strong>Câu 3:</strong> Các hiệu điện thế đầu ra (OUTPUT) có thể điều chỉnh ở các mức: \( 3\text{V}, 6\text{V}, 9\text{V}, 12\text{V}, 18\text{V}, 24\text{V} \) (cả AC và DC).</li>
+                            <li><strong>Câu 4:</strong> Nguy cơ: Chọn sai mức điện áp đầu ra (quá cao) làm hỏng thiết bị thí nghiệm; cắm nhầm chốt cắm AC/DC; chạm tay vào các chốt kim loại khi đang có điện gây giật.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bảng kí hiệu -->
+                <p class="font-bold mb-2">Bảng 2.1. Một số kí hiệu trên các thiết bị thí nghiệm</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border border-tbl-border text-center mb-6 shadow-sm rounded-lg overflow-hidden">
+                        <thead>
+                            <tr class="bg-tbl-header text-gray-700">
+                                <th class="border border-tbl-border p-3">Kí hiệu</th>
+                                <th class="border border-tbl-border p-3">Mô tả</th>
+                                <th class="border border-tbl-border p-3">Kí hiệu</th>
+                                <th class="border border-tbl-border p-3">Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white">
+                                <td class="border border-tbl-border p-2 font-bold text-red-600">DC hoặc dấu -</td>
+                                <td class="border border-tbl-border p-2">Dòng điện một chiều</td>
+                                <td class="border border-tbl-border p-2 font-bold text-red-600">"+" hoặc màu đỏ</td>
+                                <td class="border border-tbl-border p-2">Cực dương</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-tbl-border p-2 font-bold text-blue-600">AC hoặc dấu ~</td>
+                                <td class="border border-tbl-border p-2">Dòng điện xoay chiều</td>
+                                <td class="border border-tbl-border p-2 font-bold text-blue-600">"-" hoặc màu xanh</td>
+                                <td class="border border-tbl-border p-2">Cực âm</td>
+                            </tr>
+                            <tr class="bg-white">
+                                <td class="border border-tbl-border p-2 font-bold">Input</td>
+                                <td class="border border-tbl-border p-2">Đầu vào</td>
+                                <td class="border border-tbl-border p-2"><center><img src="icon5.gif"></img></center></td>
+                                <td class="border border-tbl-border p-2">Dụng cụ đặt đứng</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-tbl-border p-2 font-bold">Output</td>
+                                <td class="border border-tbl-border p-2">Đầu ra</td>
+                                <td class="border border-tbl-border p-2"><center><img src="icon6.gif"></img></td>
+                                <td class="border border-tbl-border p-2">Tránh ánh nắng trực tiếp</td>
+                            </tr>
+                             <tr class="bg-white">
+                                <td class="border border-tbl-border p-2"><center><img src="icon1.gif"></img></td>
+                                <td class="border border-tbl-border p-2">Bình khí nén áp suất cao</td>
+                                <td class="border border-tbl-border p-2"><center><img src="icon7.gif"></img></td>
+                                <td class="border border-tbl-border p-2">Dụng cụ dễ vỡ</td>
+                            </tr>
+                             <tr class="bg-gray-50">
+                                <td class="border border-tbl-border p-2"><center><img src="icon2.gif"></img></td>
+                                <td class="border border-tbl-border p-2">Cảnh báo tia laser</td>
+                                <td class="border border-tbl-border p-2"><center><img src="icon8.gif"></img></td>
+                                <td class="border border-tbl-border p-2">Không được vứt vào thùng rác</td>
+                            </tr>
+                             <tr class="bg-white">
+                                <td class="border border-tbl-border p-2"><center><img src="icon3.gif"></img></td>
+                                <td class="border border-tbl-border p-2">Nhiệt độ cao</td>
+                                <td class="border border-tbl-border p-2 font-bold text-yellow-600"><center><img src="icon9.gif"></img></td>
+                                <td class="border border-tbl-border p-2">Lưu ý cẩn thận</td>
+                            </tr>
+                             <tr class="bg-gray-50">
+                                <td class="border border-tbl-border p-2"><center><img src="icon4.gif"></img></td>
+                                <td class="border border-tbl-border p-2">Từ trường</td>
+                                <td class="border border-tbl-border p-2"></td>
+                                <td class="border border-tbl-border p-2"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mục 2 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-main-red mb-3">2. Sử dụng các thiết bị nhiệt và thuỷ tinh</h3>
+                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
+                    <p>Các thiết bị đun nóng có thể gây bỏng với người sử dụng, gây nứt, vỡ các bộ phận làm bằng thuỷ tinh.</p>
+                </div>
+                
+                <div class="text-center my-4">
+                    <img src="h2.png" alt="Hình 2.2. Thí nghiệm đo nhiệt độ sôi của nước" class="mx-auto rounded border border-gray-300 max-w-sm h-auto">
+                    <p class="italic text-sm mt-2">Hình 2.2. Thí nghiệm đo nhiệt độ sôi của nước</p>
+                </div>
+
+                <div class="bg-q-bg border-l-4 border-blue-800 p-4 rounded-r-lg mb-6 shadow-sm">
+                    <p class="font-semibold text-blue-900 flex items-center gap-2 mb-2">
+                        <span>❓</span> Câu hỏi:
+                    </p>
+                    <p class="mb-3">Quan sát thiết bị thí nghiệm về nhiệt học ở Hình 2.2 và cho biết: đặc điểm của các dụng cụ thí nghiệm trong khi tiến hành thí nghiệm để đảm bảo an toàn cần chú ý đến điều gì?</p>
+                    <button onclick="toggleAnswer('ans-i-2')" class="bg-main-red text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors shadow">
+                        Xem câu trả lời
+                    </button>
+                    <div id="ans-i-2" class="hidden mt-4 p-4 bg-ans-bg rounded-lg border border-green-300 text-green-900">
+                        <p><strong>Trả lời:</strong> Cần chú ý: Đèn cồn dễ gây cháy, bình thuỷ tinh đun nóng ở nhiệt độ cao dễ nứt vỡ, nước sôi dễ gây bỏng. Cần dùng găng tay chịu nhiệt, để xa các vật liệu dễ cháy, sử dụng kẹp hoặc giá đỡ chắc chắn, không chạm tay trực tiếp vào bình hay nhiệt kế đang nóng.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mục 3 -->
+            <div class="mb-4">
+                <h3 class="text-xl font-bold text-main-red mb-3">3. Sử dụng các thiết bị quang học</h3>
+                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
+                    <p>Các thiết bị quang học rất dễ mốc, xước, nứt, vỡ và dính bụi bẩn, làm ảnh hưởng đến đường truyền tia sáng và sai lệch kết quả thí nghiệm.</p>
+                </div>
+
+                <div class="text-center my-4">
+                    <img src="h3.png" alt="Hình 2.3. Bộ thí nghiệm quang hình" class="mx-auto rounded border border-gray-300 max-w-full h-auto">
+                    <p class="italic text-sm mt-2">Hình 2.3. Bộ thí nghiệm quang hình</p>
+                </div>
+
+                <div class="bg-q-bg border-l-4 border-blue-800 p-4 rounded-r-lg mb-2 shadow-sm">
+                    <p class="font-semibold text-blue-900 flex items-center gap-2 mb-2">
+                        <span>❓</span> Câu hỏi:
+                    </p>
+                    <p class="mb-3">Quan sát thiết bị thí nghiệm quang hình (Hình 2.3) và cho biết: đặc điểm của các dụng cụ thí nghiệm khi sử dụng và bảo quản thiết bị cần chú ý đến điều gì?</p>
+                    <button onclick="toggleAnswer('ans-i-3')" class="bg-main-red text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors shadow">
+                        Xem câu trả lời
+                    </button>
+                    <div id="ans-i-3" class="hidden mt-4 p-4 bg-ans-bg rounded-lg border border-green-300 text-green-900">
+                        <p><strong>Trả lời:</strong> Thấu kính, gương rất dễ xước và mờ. Khi sử dụng không được dùng tay chạm trực tiếp vào bề mặt quang học. Sau khi dùng phải lau bằng giấy mềm chuyên dụng, cất vào hộp bảo quản có túi hút ẩm để chống nấm mốc. Không làm rơi để tránh nứt vỡ.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION II -->
+        <div class="bg-white p-6 rounded-12px shadow-md">
+            <h2 class="text-2xl font-bold uppercase text-gray-900 border-b-4 border-slate-800 pb-2 mb-6">II. Nguy cơ mất an toàn trong sử dụng thiết bị thí nghiệm Vật lí</h2>
+            
+            <!-- Mục 1 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-main-red mb-3">1. Nguy cơ gây nguy hiểm cho người sử dụng</h3>
+                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
+                    <p>Việc thực hiện sai thao tác sử dụng các thiết bị có thể dẫn đến nguy hiểm cho người sử dụng. Vì vậy, khi tiến hành thí nghiệm cần tuân thủ nghiêm ngặt các quy định trong phòng thực hành và hướng dẫn của giáo viên.</p>
+                </div>
+
+                <div class="text-center my-4">
+                    <img src="h4.png" alt="Hình 2.4. Một số thao tác có thể gây mất an toàn" class="mx-auto rounded border border-gray-300 max-w-full h-auto">
+                    <p class="italic text-sm mt-2">Hình 2.4. Một số thao tác có thể gây mất an toàn khi sử dụng thiết bị thí nghiệm</p>
+                </div>
+
+                <div class="bg-q-bg border-l-4 border-blue-800 p-4 rounded-r-lg mb-6 shadow-sm">
+                    <p class="font-semibold text-blue-900 flex items-center gap-2 mb-2">
+                        <span class="text-xl">✍️</span> Hoạt động:
+                    </p>
+                    <p class="mb-3">Em hãy quan sát một số hình ảnh về thao tác sử dụng các thiết bị thí nghiệm trong Hình 2.4 và dự đoán xem có những nguy cơ nào có thể gây nguy hiểm. Kể thêm những thao tác khác có thể gây nguy hiểm.</p>
+                    <button onclick="toggleAnswer('ans-ii-1')" class="bg-main-red text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors shadow">
+                        Xem hướng giải quyết
+                    </button>
+                    <div id="ans-ii-1" class="hidden mt-4 p-4 bg-ans-bg rounded-lg border border-green-300 text-green-900">
+                        <ul class="list-disc ml-5 space-y-1">
+                            <li><strong>(a) & (b):</strong> Cắm/rút phích điện không cầm vào phần nhựa cách điện mà kéo dây hoặc cầm sát chân cắm ➔ Nguy cơ điện giật.</li>
+                            <li><strong>(c):</strong> Dây điện bị sờn rách, hở lõi đồng ➔ Nguy cơ chập cháy, điện giật.</li>
+                            <li><strong>(d):</strong> Chiếu tia laser trực tiếp hoặc phản chiếu vào mắt ➔ Hỏng võng mạc.</li>
+                            <li><strong>(e):</strong> Đun nước trên đèn cồn không cẩn thận ➔ Đổ nước sôi, đổ đèn cồn gây hoả hoạn, bỏng.</li>
+                            <li><strong>Thao tác nguy hiểm khác:</strong> Đổ nước vào acid đặc, dùng tay trần gỡ mảnh vỡ thuỷ tinh, để hoá chất gần ổ cắm điện,...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mục 2 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-main-red mb-3">2. Nguy cơ hỏng thiết bị đo điện</h3>
+                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
+                    <p>Khi sử dụng các thiết bị đo điện cần chọn đúng thang đo, không nhầm lẫn khi thao tác để đảm bảo an toàn cho thiết bị đo.</p>
+                </div>
+
+                <div class="text-center my-4">
+                    <img src="h5.png" alt="Hình 2.5. Ampe kế" class="mx-auto rounded border border-gray-300 max-w-sm h-auto">
+                    <p class="italic text-sm mt-2">Hình 2.5. Ampe kế</p>
+                </div>
+
+                <div class="bg-q-bg border-l-4 border-blue-800 p-4 rounded-r-lg mb-6 shadow-sm">
+                    <p class="font-semibold text-blue-900 flex items-center gap-2 mb-2">
+                        <span>❓</span> Câu hỏi:
+                    </p>
+                    <ol class="list-decimal ml-6 space-y-1 mb-3">
+                        <li>Giới hạn đo của ampe kế ở Hình 2.5 là bao nhiêu?</li>
+                        <li>Nếu sử dụng ampe kế để đo dòng điện vượt quá giới hạn đo thì có thể gây ra nguy cơ gì?</li>
+                    </ol>
+                    <button onclick="toggleAnswer('ans-ii-2a')" class="bg-main-red text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors shadow">
+                        Xem câu trả lời
+                    </button>
+                    <div id="ans-ii-2a" class="hidden mt-4 p-4 bg-ans-bg rounded-lg border border-green-300 text-green-900">
+                        <p><strong>Câu 1:</strong> Tuỳ theo chốt cắm ta chọn. Giới hạn đo có thể là \( 0.6 \text{ A} \) hoặc \( 3 \text{ A} \).</p>
+                        <p><strong>Câu 2:</strong> Nếu đo dòng điện vượt quá giới hạn đo, kim ampe kế sẽ bị lệch mạnh va vào chốt cản làm hỏng kim, cuộn dây bên trong bị quá tải nhiệt gây đứt, cháy hỏng hoàn toàn ampe kế.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-dashed border-gray-400 p-4 rounded-lg mb-4">
+                    <p class="font-semibold mb-2">Khi sử dụng đồng hồ đo điện đa năng, cần lưu ý:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Chọn chức năng và thang đo phù hợp.</li>
+                        <li>Cắm dây đo vào chốt cắm phù hợp với chức năng đo.</li>
+                    </ul>
+                </div>
+
+                <div class="text-center my-4">
+                    <img src="h6.png" alt="Hình 2.6. Đồng hồ đo điện đa năng" class="mx-auto rounded border border-gray-300 max-w-lg h-auto">
+                    <p class="italic text-sm mt-2">Hình 2.6. Đồng hồ đo điện đa năng kim (a) và hiện số (b)</p>
+                </div>
+
+                <div class="bg-q-bg border-l-4 border-blue-800 p-4 rounded-r-lg mb-6 shadow-sm">
+                    <p class="font-semibold text-blue-900 flex items-center gap-2 mb-2">
+                        <span>❓</span> Câu hỏi:
+                    </p>
+                    <p class="mb-3">Điều chỉnh vị trí của kim đo, chọn thang đo và cắm các dây đo trên đồng hồ đa năng (Hình 2.6) để đo hiệu điện thế, cường độ dòng điện và điện trở như thế nào?</p>
+                    <button onclick="toggleAnswer('ans-ii-2b')" class="bg-main-red text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors shadow">
+                        Xem hướng dẫn
+                    </button>
+                    <div id="ans-ii-2b" class="hidden mt-4 p-4 bg-ans-bg rounded-lg border border-green-300 text-green-900">
+                        <ul class="list-disc ml-5 space-y-2">
+                            <li><strong>Cắm dây:</strong> Dây đen luôn cắm chốt COM. Dây đỏ cắm chốt V/Ω/mA khi đo điện áp/điện trở/dòng nhỏ; cắm chốt 10A khi đo dòng điện lớn.</li>
+                            <li><strong>Chọn thang đo:</strong> Xoay núm vặn về khu vực có kí hiệu tương ứng: V~ (AC) hoặc V- (DC) để đo điện áp; A~ hoặc A- để đo dòng điện; kí hiệu Ω để đo điện trở.</li>
+                            <li><strong>Mức thang đo:</strong> Luôn chọn thang đo ở mức cao nhất trước, sau đó giảm dần cho đến khi đọc được giá trị chính xác để tránh hỏng đồng hồ.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mục 3 -->
+            <div class="mb-4">
+                <h3 class="text-xl font-bold text-main-red mb-3">3. Nguy cơ cháy nổ trong phòng thực hành</h3>
+                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
+                    <p>Khi tiến hành thí nghiệm với các thiết bị điện và những hoá chất, chất dễ cháy nổ trong phòng thực hành cần tuân thủ quy tắc an toàn, nhất là những quy tắc an toàn về phòng cháy chữa cháy và an toàn khi sử dụng hoá chất dễ cháy, nổ.</p>
+                </div>
+
+                <div class="border-2 border-red-400 bg-red-50 p-4 rounded-lg mb-6 shadow-sm">
+                    <p class="font-bold text-red-700 uppercase mb-2">Khi có đám cháy cần chú ý:</p>
+                    <ul class="list-disc ml-5 space-y-1 text-red-900">
+                        <li>Ngắt toàn bộ hệ thống điện.</li>
+                        <li>Đưa toàn bộ các hoá chất, các chất dễ cháy ra khu vực an toàn.</li>
+                        <li><strong>KHÔNG</strong> được sử dụng nước dập đám cháy nơi có thiết bị điện, chất lỏng nhẹ hơn nước (dầu, cồn...).</li>
+                        <li><strong>KHÔNG</strong> được sử dụng \( CO_2 \) để dập đám cháy quần áo trên người hoặc cháy kim loại kiềm, các chất cháy tách oxygen...</li>
+                    </ul>
+                </div>
+
+                <div class="text-center my-4">
+                    <img src="h7.png" alt="Hình 2.7. Một số tình huống cháy nổ" class="mx-auto rounded border border-gray-300 max-w-full h-auto">
+                    <p class="italic text-sm mt-2">Hình 2.7. Một số tình huống có thể gây cháy nổ</p>
+                </div>
+
+                <div class="bg-q-bg border-l-4 border-blue-800 p-4 rounded-r-lg shadow-sm">
+                    <p class="font-semibold text-blue-900 flex items-center gap-2 mb-2">
+                        <span class="text-xl">✍️</span> Hoạt động:
+                    </p>
+                    <p class="mb-3">Em hãy quan sát Hình 2.7 và dự đoán có những nguy cơ cháy nổ nào có thể xảy ra.</p>
+                    <button onclick="toggleAnswer('ans-ii-3')" class="bg-main-red text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors shadow">
+                        Xem đáp án
+                    </button>
+                    <div id="ans-ii-3" class="hidden mt-4 p-4 bg-ans-bg rounded-lg border border-green-300 text-green-900">
+                        <ul class="list-disc ml-5 space-y-1">
+                            <li><strong>(a) Để các kẹp điện gần nhau:</strong> Dễ chạm nhau gây đoản mạch, xẹt tia lửa điện gây cháy nổ hoặc hỏng nguồn.</li>
+                            <li><strong>(b) Để chất dễ cháy gần mạch điện:</strong> Tia lửa điện từ mạch (khi đóng ngắt) có thể bắt lửa hơi cồn hoặc vật liệu dễ cháy.</li>
+                            <li><strong>(c) Đun nước nhiệt độ cao không đeo găng:</strong> Rơi vỡ bình chứa nước sôi vào đèn cồn đang cháy lan ra bàn.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION III -->
+        <div class="bg-white p-6 rounded-12px shadow-md">
+            <h2 class="text-2xl font-bold uppercase text-gray-900 border-b-4 border-slate-800 pb-2 mb-6">III. Quy tắc an toàn trong phòng thực hành</h2>
+            
+            <div class="bg-blue-50 border-2 border-blue-200 p-5 rounded-12px mb-6 text-gray-800 shadow-sm leading-relaxed">
+                <ul class="list-disc ml-5 space-y-3 font-medium">
+                    <li>Đọc kĩ hướng dẫn sử dụng thiết bị và quan sát các chỉ dẫn, các kí hiệu.</li>
+                    <li>Kiểm tra cẩn thận thiết bị, phương tiện, dụng cụ trước khi sử dụng.</li>
+                    <li>Chỉ tiến hành thí nghiệm khi được sự cho phép của giáo viên.</li>
+                    <li>Tắt công tắc nguồn thiết bị điện trước khi cắm hoặc tháo.</li>
+                    <li>Chỉ cắm thiết bị điện vào nguồn khi hiệu điện thế phù hợp.</li>
+                    <li>Bố trí dây điện gọn gàng, không bị vướng qua lại.</li>
+                    <li>Không tiếp xúc trực tiếp vật nóng khi không có dụng cụ bảo hộ.</li>
+                    <li>Không để dung dịch dẫn điện, chất dễ cháy gần thiết bị điện.</li>
+                    <li>Giữ khoảng cách an toàn với thí nghiệm nung nóng, bắn ra, tia laser.</li>
+                    <li>Vệ sinh, sắp xếp gọn gàng, đổ rác đúng nơi quy định sau thí nghiệm.</li>
+                </ul>
+            </div>
+
+            <!-- Lưu ý đặc biệt -->
+            <div class="bg-red-100 border-l-8 border-red-600 p-4 rounded-lg mb-6 shadow flex items-start gap-4">
+                <div class="text-3xl">⚠️</div>
+                <div>
+                    <h4 class="font-bold text-red-800 uppercase mb-1">Lưu ý quan trọng</h4>
+                    <p class="font-semibold text-red-900">Khi phát hiện người bị điện giật cần nhanh chóng ngắt nguồn điện hoặc sử dụng vật cách điện để tách người bị nạn ra khỏi nguồn điện.</p>
+                </div>
+            </div>
+
+            <div class="text-center my-4">
+                <img src="h8.png" alt="Hình 2.8. Các biển báo" class="mx-auto rounded border border-gray-300 max-w-full h-auto">
+                <p class="italic text-sm mt-2">Hình 2.8. Các biển báo trong phòng thí nghiệm</p>
+            </div>
+        </div>
+
+        <!-- SPECIAL SECTIONS (Em đã học, Em có thể, Em có biết) -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Em Đã Học -->
+            <div class="bg-green-50 border-2 border-green-400 p-5 rounded-12px shadow-md">
+                <h3 class="flex items-center gap-2 text-xl font-bold text-green-800 uppercase mb-3">
+                    <span>✅</span> Em đã học
+                </h3>
+                <ul class="list-disc ml-5 space-y-2 text-green-900 font-medium">
+                    <li>Để đảm bảo an toàn khi sử dụng thiết bị, cần đọc kĩ hướng dẫn và các kí hiệu trên thiết bị.</li>
+                    <li>Thực hiện nghiêm túc các quy định về an toàn trong phòng thực hành.</li>
+                </ul>
+            </div>
+
+            <!-- Em Có Biết -->
+            <div class="bg-purple-50 border-2 border-purple-400 p-5 rounded-12px shadow-md">
+                <h3 class="flex items-center gap-2 text-xl font-bold text-purple-800 uppercase mb-3">
+                    <span>💡</span> Em có biết?
+                </h3>
+                <ol class="list-decimal ml-5 space-y-2 text-purple-900 font-medium">
+                    <li><strong>Sốc điện (hay điện giật):</strong> Xảy ra khi dòng điện chạy qua người, có thể gây tổn thương hoặc tử vong.</li>
+                    <li>Khi có hoả hoạn cần bình tĩnh, sử dụng biện pháp dập lửa theo hướng dẫn của phòng thực hành.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Em Có Thể -->
+        <div class="bg-blue-50 border-2 border-blue-400 p-6 rounded-12px shadow-md">
+            <h3 class="flex items-center gap-2 text-xl font-bold text-blue-800 uppercase mb-4">
+                <span>🚀</span> Em có thể
+            </h3>
+            <p class="font-semibold text-blue-900 mb-3">Giải thích được vì sao:</p>
+            
+            <!-- Question 1 -->
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-200 mb-3">
+                <p class="font-medium mb-2">1. Khi sử dụng thiết bị đo điện, phải luôn đặt ở thang đo phù hợp.</p>
+                <button onclick="toggleAnswer('ans-co-the-1')" class="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-800 transition text-sm">Xem giải thích</button>
+                <div id="ans-co-the-1" class="hidden mt-3 p-3 bg-blue-100 rounded text-blue-900 text-sm">
+                    Để tránh làm hỏng thiết bị đo (ví dụ: dòng điện quá lớn so với giới hạn đo sẽ làm cháy cuộn dây ampe kế) và để kết quả đo được chính xác nhất.
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-200">
+                <p class="font-medium mb-2">2. Khi sử dụng máy biến áp phải đặt nút điều chỉnh điện áp ở mức thấp nhất rồi tăng dần lên.</p>
+                <button onclick="toggleAnswer('ans-co-the-2')" class="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-800 transition text-sm">Xem giải thích</button>
+                <div id="ans-co-the-2" class="hidden mt-3 p-3 bg-blue-100 rounded text-blue-900 text-sm">
+                    Để tránh cung cấp điện áp quá lớn đột ngột vào mạch làm cháy nổ thiết bị tiêu thụ điện. Tăng dần để tìm mức điện áp phù hợp định mức của thiết bị.
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= EXERCISES SECTION ================= -->
+        <div class="bg-white p-6 rounded-12px shadow-md mt-10 border-t-8 border-main-red">
+            <h2 class="text-2xl font-bold uppercase text-main-red mb-6 text-center">Phần củng cố & Vận dụng</h2>
+            
+            <!-- TRẮC NGHIỆM -->
+            <h3 class="text-xl font-bold bg-gray-200 p-2 rounded mb-4 inline-block shadow">A. Bài tập trắc nghiệm</h3>
+            
+            <form id="quiz-form" class="space-y-6 mb-8">
+                <!-- Q1 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 1: Kí hiệu "DC" trên các thiết bị thí nghiệm có nghĩa là gì?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q1" value="A"> A. Dòng điện một chiều.</label>
+                        <label class="block"><input type="radio" name="q1" value="B"> B. Dòng điện xoay chiều.</label>
+                        <label class="block"><input type="radio" name="q1" value="C"> C. Cực dương.</label>
+                        <label class="block"><input type="radio" name="q1" value="D"> D. Nguồn phát tia laser.</label>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 2: Nếu phát hiện một đám cháy do chập điện, hành động đầu tiên cần làm là gì?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q2" value="A"> A. Hắt nước vào đám cháy ngay lập tức.</label>
+                        <label class="block"><input type="radio" name="q2" value="B"> B. Nhanh chóng ngắt toàn bộ hệ thống điện (cầu dao).</label>
+                        <label class="block"><input type="radio" name="q2" value="C"> C. Dùng bình chữa cháy \( CO_2 \) xịt trực tiếp vào ổ điện.</label>
+                        <label class="block"><input type="radio" name="q2" value="D"> D. Di chuyển các chất dễ cháy vào gần đám cháy.</label>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 3: Khi sử dụng đồng hồ đo điện đa năng để đo dòng điện không rõ giá trị, ta nên chọn thang đo như thế nào?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q3" value="A"> A. Chọn thang đo nhỏ nhất.</label>
+                        <label class="block"><input type="radio" name="q3" value="B"> B. Chọn thang đo trung bình.</label>
+                        <label class="block"><input type="radio" name="q3" value="C"> C. Chọn thang đo lớn nhất rồi giảm dần.</label>
+                        <label class="block"><input type="radio" name="q3" value="D"> D. Chọn bất kì thang đo nào cũng được.</label>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 4: Kí hiệu nào sau đây cảnh báo về "Nhiệt độ cao"?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q4" value="A"> A. Biểu tượng tia chớp.</label>
+                        <label class="block"><input type="radio" name="q4" value="B"> B. Biểu tượng hình đầu lâu xương chéo.</label>
+                        <label class="block"><input type="radio" name="q4" value="C"> C. Biểu tượng tia laser.</label>
+                        <label class="block"><input type="radio" name="q4" value="D"> D. Biểu tượng ngọn lửa hoặc nhiệt kế màu đỏ.</label>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 5: Trong thí nghiệm quang học, tại sao không được dùng tay chạm trực tiếp vào bề mặt thấu kính?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q5" value="A"> A. Vì sẽ để lại dấu vân tay, mồ hôi làm mốc và sai lệch đường truyền ánh sáng.</label>
+                        <label class="block"><input type="radio" name="q5" value="B"> B. Vì thấu kính rất nóng sẽ gây bỏng.</label>
+                        <label class="block"><input type="radio" name="q5" value="C"> C. Vì thấu kính có chứa chất phóng xạ.</label>
+                        <label class="block"><input type="radio" name="q5" value="D"> D. Vì thấu kính dẫn điện có thể gây giật.</label>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" onclick="checkQuiz()" class="bg-slate-800 text-white font-bold px-8 py-3 rounded-lg hover:bg-slate-900 transition shadow-lg text-lg">
+                        NỘP BÀI TRẮC NGHIỆM
+                    </button>
+                </div>
+                
+                <div id="quiz-result" class="text-center font-bold text-xl mt-4 hidden"></div>
+            </form>
+
+            <!-- VẬN DỤNG TÍNH TOÁN -->
+            <h3 class="text-xl font-bold bg-gray-200 p-2 rounded mb-4 inline-block shadow mt-4">B. Bài tập vận dụng tính toán</h3>
+            
+            <div class="space-y-5">
+                <!-- Calc 1 -->
+                <div class="bg-q-bg p-4 rounded border-l-4 border-blue-800">
+                    <p class="font-semibold mb-2">Bài 1: Tính toán giới hạn an toàn</p>
+                    <p class="mb-3">Dòng điện đi qua cơ thể người có cường độ từ \( I = 10 \text{ mA} \) trở lên sẽ gây nguy hiểm. Một người có điện trở cơ thể khi da khô là \( R = 100 \text{ k}\Omega \). Hỏi nếu vô tình chạm vào nguồn điện có hiệu điện thế \( U = 220 \text{ V} \), dòng điện chạy qua cơ thể là bao nhiêu? Có gây nguy hiểm đến tính mạng không?</p>
+                    <button onclick="toggleAnswer('calc-1')" class="bg-main-red text-white px-4 py-1 rounded hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="calc-1" class="hidden mt-3 p-4 bg-ans-bg border border-green-300 rounded font-medium text-gray-800">
+                        <p><strong>Giải:</strong></p>
+                        <p>Đổi: \( R = 100 \text{ k}\Omega = 100,000 \, \Omega \).</p>
+                        <p>Áp dụng định luật Ohm: \( I = \frac{U}{R} = \frac{220}{100,000} = 0.0022 \text{ A} \).</p>
+                        <p>Đổi ra mA: \( 0.0022 \text{ A} = 2.2 \text{ mA} \).</p>
+                        <p><strong>Kết luận:</strong> \( I = 2.2 \text{ mA} < 10 \text{ mA} \). Trong trường hợp da rất khô, mức dòng điện này gây cảm giác tê nhưng chưa đe dọa ngay đến tính mạng. Tuy nhiên, nếu da ướt (điện trở R giảm mạnh xuống còn khoảng \( 1000 \, \Omega \)), cường độ sẽ là \( I = \frac{220}{1000} = 220 \text{ mA} \), chắc chắn gây tử vong.</p>
+                    </div>
+                </div>
+
+                <!-- Calc 2 -->
+                <div class="bg-q-bg p-4 rounded border-l-4 border-blue-800">
+                    <p class="font-semibold mb-2">Bài 2: Hiện tượng đoản mạch</p>
+                    <p class="mb-3">Trong phòng thí nghiệm, một nguồn điện DC có \( U = 12 \text{ V} \) đang được sử dụng. Nếu học sinh vô tình để rơi đoạn dây dẫn kim loại (có điện trở \( R \approx 0.05 \, \Omega \)) vắt qua hai cực của nguồn tạo thành đoạn mạch ngắn. Tính cường độ dòng điện đi qua đoạn dây lúc đó (Bỏ qua điện trở trong của nguồn). Hiện tượng này gọi là gì và hậu quả ra sao?</p>
+                    <button onclick="toggleAnswer('calc-2')" class="bg-main-red text-white px-4 py-1 rounded hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="calc-2" class="hidden mt-3 p-4 bg-ans-bg border border-green-300 rounded font-medium text-gray-800">
+                        <p><strong>Giải:</strong></p>
+                        <p>Dòng điện qua dây: \( I = \frac{U}{R} = \frac{12}{0.05} = 240 \text{ A} \).</p>
+                        <p><strong>Hiện tượng:</strong> Đây là hiện tượng đoản mạch (ngắn mạch).</p>
+                        <p><strong>Hậu quả:</strong> Dòng điện cực lớn (240 A) tỏa ra lượng nhiệt khổng lồ (\( Q = I^2Rt \)) trong tích tắc, làm cháy đỏ dây dẫn, hỏng nguồn điện và có thể gây cháy nổ khu vực xung quanh ngay lập tức.</p>
+                    </div>
+                </div>
+
+                <!-- Calc 3 -->
+                <div class="bg-q-bg p-4 rounded border-l-4 border-blue-800">
+                    <p class="font-semibold mb-2">Bài 3: Lựa chọn thang đo Ampe kế</p>
+                    <p class="mb-3">Một mạch điện có điện trở tương đương \( R_{td} = 50 \, \Omega \), mắc vào nguồn \( U = 12 \text{ V} \). Ta có hai ampe kế: Ampe kế (1) có giới hạn đo \( 200 \text{ mA} \), Ampe kế (2) có giới hạn đo \( 3 \text{ A} \). Hỏi phải chọn ampe kế nào để mắc nối tiếp vào mạch nhằm đo dòng điện an toàn và chính xác nhất?</p>
+                    <button onclick="toggleAnswer('calc-3')" class="bg-main-red text-white px-4 py-1 rounded hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="calc-3" class="hidden mt-3 p-4 bg-ans-bg border border-green-300 rounded font-medium text-gray-800">
+                        <p><strong>Giải:</strong></p>
+                        <p>Tính dòng điện chạy trong mạch theo lý thuyết: \( I = \frac{U}{R_{td}} = \frac{12}{50} = 0.24 \text{ A} = 240 \text{ mA} \).</p>
+                        <p>So sánh với giới hạn đo của dụng cụ:</p>
+                        <ul class="list-disc ml-5">
+                            <li>\( 240 \text{ mA} > 200 \text{ mA} \): Nếu dùng ampe kế (1), kim sẽ vượt vạch, cháy ampe kế.</li>
+                            <li>\( 0.24 \text{ A} < 3 \text{ A} \): Nếu dùng ampe kế (2), dụng cụ hoạt động an toàn.</li>
+                        </ul>
+                        <p><strong>Kết luận:</strong> Phải sử dụng Ampe kế (2) có giới hạn đo \( 3 \text{ A} \) để đảm bảo an toàn.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+    </div>
+
+    <!-- JavaScript block for Interactions -->
+    <script>
+        // Hàm ẩn/hiện lời giải
+        function toggleAnswer(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+                // Gọi mathjax render lại nội dung vừa mở (phòng trường hợp công thức chưa load hiển thị)
+                if (window.MathJax) {
+                    MathJax.typesetPromise([element]);
+                }
+            } else {
+                element.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra bài tập trắc nghiệm
+        function checkQuiz() {
+            const correctAnswers = {
+                q1: 'A',
+                q2: 'B',
+                q3: 'C',
+                q4: 'D',
+                q5: 'A'
+            };
+
+            let score = 0;
+            let total = Object.keys(correctAnswers).length;
+            const form = document.getElementById('quiz-form');
+            const resultDiv = document.getElementById('quiz-result');
+
+            // Lặp qua để check điểm
+            for (let [question, answer] of Object.entries(correctAnswers)) {
+                const selected = form.querySelector(`input[name="${question}"]:checked`);
+                
+                // Đổi màu hiển thị đáp án trực tiếp trên form
+                const allLabels = form.querySelectorAll(`input[name="${question}"]`);
+                allLabels.forEach(input => {
+                    const parentLabel = input.parentElement;
+                    // Reset class
+                    parentLabel.classList.remove('text-green-700', 'font-bold', 'text-red-600', 'line-through');
+                    
+                    if (input.value === answer) {
+                        parentLabel.classList.add('text-green-700', 'font-bold'); // Highlight đáp án đúng
+                    }
+                });
+
+                if (selected) {
+                    if (selected.value === answer) {
+                        score++;
+                    } else {
+                        selected.parentElement.classList.add('text-red-600', 'line-through'); // Gạch ngang nếu chọn sai
+                    }
+                }
+            }
+
+            // Hiển thị kết quả
+            resultDiv.classList.remove('hidden');
+            if (score === total) {
+                resultDiv.innerHTML = `🎉 Tuyệt vời! Bạn đã trả lời đúng ${score}/${total} câu!`;
+                resultDiv.className = "text-center font-bold text-xl mt-6 p-4 bg-green-100 text-green-700 border border-green-400 rounded block";
+            } else {
+                resultDiv.innerHTML = `📝 Bạn đã trả lời đúng ${score}/${total} câu. Hãy xem lại các câu trả lời sai (gạch đỏ) và đáp án đúng (màu xanh).`;
+                resultDiv.className = "text-center font-bold text-lg mt-6 p-4 bg-red-100 text-red-700 border border-red-400 rounded block";
+            }
+        }
+    </script>
+</body>
+</html>

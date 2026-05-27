@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 3: Thực hành tính sai số trong phép đo. Ghi kết quả đo</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+        }
+    </style>
+</head>
+<body class="text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+        
+        <div class="bg-[#660000] text-white rounded-[12px] shadow-md p-6 text-center mb-6">
+            <div class="text-lg font-semibold uppercase tracking-wide">Chương 1: Mở Đầu</div>
+            <hr class="border-white opacity-30 my-3">
+            <div class="text-2xl font-bold uppercase tracking-wider">Bài 3: Thực hành tính sai số trong phép đo. Ghi kết quả đo</div>
+        </div>
+
+        <div class="bg-white border border-black rounded-[12px] p-6 shadow-md mb-6">
+            <p class="italic text-gray-700 text-center text-lg">
+                "Không một phép đo nào có thể cho ta giá trị đúng của đại lượng cần đo, mọi phép đo đều có sai số. Làm thế nào để xác định được các sai số này? Nguyên nhân gây ra các sai số là gì và cách khắc phục như thế nào?"
+            </p>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold uppercase text-[#1a202c] border-b-4 border-[#1a202c] inline-block mb-6 pb-1">I. Phép đo trực tiếp và phép đo gián tiếp</h2>
+            
+            <div class="bg-blue-50 border border-blue-200 p-4 mb-4 rounded-md">
+                <p><strong>Phép đo trực tiếp:</strong> Đo trực tiếp một đại lượng bằng dụng cụ đo, kết quả được đọc trực tiếp trên dụng cụ đo được gọi là phép đo trực tiếp.</p>
+            </div>
+            <div class="bg-blue-50 border border-blue-200 p-4 mb-6 rounded-md">
+                <p><strong>Phép đo gián tiếp:</strong> Đo một đại lượng không trực tiếp mà thông qua công thức liên hệ với các đại lượng có thể đo trực tiếp gọi là phép đo gián tiếp.</p>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-[#1a202c] p-4 rounded-r-md mb-4">
+                <div class="flex items-start">
+                    <span class="text-2xl mr-3">❓</span>
+                    <div class="w-full">
+                        <p class="font-semibold mb-2">Em hãy lập phương án đo tốc độ chuyển động của chiếc xe ô tô đồ chơi chỉ dùng thước; đồng hồ bấm giây và trả lời các câu hỏi sau:</p>
+                        <ul class="list-disc ml-5 mb-4 space-y-1">
+                            <li>a) Để đo tốc độ chuyển động của chiếc xe cần đo những đại lượng nào?</li>
+                            <li>b) Xác định tốc độ chuyển động của xe theo công thức nào?</li>
+                            <li>c) Phép đo nào là phép đo trực tiếp? Tại sao?</li>
+                            <li>d) Phép đo nào là phép đo gián tiếp? Tại sao?</li>
+                        </ul>
+                        <button onclick="toggleAnswer('ans_question_mark')" class="bg-[#660000] text-white px-4 py-2 rounded-md hover:bg-red-800 transition text-sm font-medium">
+                            Xem câu trả lời
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="ans_question_mark" class="hidden bg-green-50 border border-green-200 p-4 rounded-md mb-4 text-gray-800">
+                <p class="font-bold text-green-700 mb-2">Hướng dẫn giải:</p>
+                <ul class="list-disc ml-5 space-y-1">
+                    <li><strong>a)</strong> Cần đo đại lượng: Quãng đường chuyển động \(s\) và thời gian chuyển động \(t\).</li>
+                    <li><strong>b)</strong> Công thức xác định tốc độ: \(v = \frac{s}{t}\).</li>
+                    <li><strong>c)</strong> Phép đo quãng đường \(s\) (bằng thước) và đo thời gian \(t\) (bằng đồng hồ) là phép đo trực tiếp vì kết quả được đọc trực tiếp trên dụng cụ đo.</li>
+                    <li><strong>d)</strong> Phép đo tốc độ \(v\) là phép đo gián tiếp vì nó được xác định thông qua công thức liên hệ với các đại lượng đo trực tiếp là \(s\) và \(t\).</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold uppercase text-[#1a202c] border-b-4 border-[#1a202c] inline-block mb-6 pb-1">II. Sai số phép đo</h2>
+            
+            <h3 class="text-lg font-bold text-[#660000] mb-3">1. Phân loại sai số</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-amber-50 border border-amber-200 p-4 rounded-md">
+                    <h4 class="font-bold text-gray-900 mb-2">a) Sai số hệ thống</h4>
+                    <p class="text-sm leading-relaxed">Khi sử dụng dụng cụ đo để đo các đại lượng vật lí luôn có sự sai lệch do đặc điểm và cấu tạo của dụng cụ gây ra. Sự sai lệch này gọi là sai số dụng cụ hoặc sai số hệ thống.</p>
+                    <p class="text-sm leading-relaxed mt-2 text-gray-600 italic">Sai số hệ thống có nguyên nhân khách quan (do dụng cụ), nguyên nhân chủ quan do người đo (cần loại bỏ).</p>
+                </div>
+                <div class="bg-orange-50 border border-orange-200 p-4 rounded-md">
+                    <h4 class="font-bold text-gray-900 mb-2">b) Sai số ngẫu nhiên</h4>
+                    <p class="text-sm leading-relaxed">Khi lặp lại các phép đo, ta nhận được các giá trị khác nhau, sự sai lệch này không có nguyên nhân rõ ràng nên gọi là sai số ngẫu nhiên, có thể do thao tác đo không chuẩn, điều kiện làm thí nghiệm không ổn định hoặc hạn chế về giác quan,...</p>
+                    <p class="text-sm leading-relaxed mt-2 text-gray-600 font-semibold">Khắc phục: Người ta thường tiến hành thí nghiệm nhiều lần và tính sai số.</p>
+                </div>
+            </div>
+
+            <div class="bg-red-50 border-l-4 border-[#660000] p-4 mb-6 rounded-r-md">
+                <p class="font-bold text-[#660000] uppercase text-sm mb-1">⚠️ Lưu ý quan trọng:</p>
+                <p class="text-sm">Sai số gây bởi dụng cụ sử dụng đo thường lấy bằng một nửa độ chia nhỏ nhất (ĐCNN) trên dụng cụ (ví dụ thước đo chiều dài có độ chia nhỏ nhất là 1 mm thì sai số dụng cụ là 0,5 mm), hoặc được ghi trực tiếp trên dụng cụ do nhà sản xuất xác định.</p>
+            </div>
+
+            <h3 class="text-lg font-bold text-[#660000] mb-3">2. Cách xác định sai số phép đo</h3>
+            <div class="bg-purple-50 border border-purple-200 p-4 rounded-md mb-6 space-y-2 text-sm">
+                <p>• <strong>Giá trị trung bình khi đo n lần:</strong> \(\overline{A} = \frac{A_1 + A_2 + ... + A_n}{n}\)</p>
+                <p>• <strong>Sai số ngẫu nhiên tuyệt đối của từng lần đo:</strong> \(\Delta A_1 = |\overline{A} - A_1|; \Delta A_2 = |\overline{A} - A_2|; ...; \Delta A_n = |\overline{A} - A_n|\)</p>
+                <p>• <strong>Sai số ngẫu nhiên tuyệt đối trung bình của n lần đo:</strong> \(\overline{\Delta A} = \frac{\Delta A_1 + \Delta A_2 + ... + \Delta A_n}{n}\)</p>
+                <p>• <strong>Sai số tuyệt đối của phép đo:</strong> \(\Delta A = \overline{\Delta A} + \Delta A_{dc}\) (với \(\Delta A_{dc}\) là sai số dụng cụ).</p>
+                <p>• <strong>Sai số tỉ đối của phép đo:</strong> \(\delta A = \frac{\Delta A}{\overline{A}} \cdot 100\%\) (biểu thị mức độ chính xác của phép đo).</p>
+            </div>
+
+            <h3 class="text-lg font-bold text-[#660000] mb-3">3. Cách xác định sai số phép đo gián tiếp</h3>
+            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-md mb-6 text-sm space-y-3">
+                <p>• <strong>Quy tắc tổng hoặc hiệu:</strong> Sai số tuyệt đối của một tổng hay hiệu bằng tổng các sai số tuyệt đối của các số hạng. <br>
+                Nếu \(A = B + C\) hoặc \(A = B - C\) thì \(\Delta A = \Delta B + \Delta C\)</p>
+                <p>• <strong>Quy tắc tích hoặc thương:</strong> Sai số tỉ đối của một tích hay thương thì bằng tổng các sai số tỉ đối của các thừa số. <br>
+                Nếu \(A = B \cdot C\) hoặc \(A = \frac{B}{C}\) thì \(\delta A = \delta B + \delta C\)</p>
+                <p class="italic text-gray-600">Từ sai số tỉ đối \(\delta A\), ta dùng công thức \(\Delta A = \delta A \cdot \overline{A}\) để tính ngược lại sai số tuyệt đối.</p>
+            </div>
+
+            <h3 class="text-lg font-bold text-[#660000] mb-3">4. Cách ghi kết quả đo</h3>
+            <div class="bg-teal-50 border border-teal-200 p-4 rounded-md mb-6 text-sm">
+                <p class="mb-2">Kết quả đo đại lượng \(A\) được ghi dưới dạng một khoảng giá trị: 
+                   <strong>\(A = \overline{A} \pm \Delta A\)</strong> hoặc <strong>\((\overline{A} - \Delta A) \le A \le (\overline{A} + \Delta A)\)</strong>
+                </p>
+                <p class="mb-1">• \(\Delta A\) thường viết đến số chữ số có nghĩa tới đơn vị của độ chia nhỏ nhất (ĐCNN).</p>
+                <p class="mb-2">• Giá trị trung bình \(\overline{A}\) được viết đến bậc thập phân tương ứng với \(\Delta A\).</p>
+                <p class="font-semibold text-teal-800">Quy tắc làm tròn số:</p>
+                <p>- Nếu chữ số ở hàng bỏ đi nhỏ hơn 5 thì chữ số bên trái giữ nguyên.</p>
+                <p>- Nếu chữ số hàng bỏ đi lớn hơn hoặc bằng 5 thì chữ số bên trái tăng thêm một đơn vị.</p>
+            </div>
+
+            <div class="bg-rose-100 border border-rose-300 p-4 rounded-md mb-6 relative">
+                <span class="absolute -top-3 left-4 bg-rose-600 text-white text-xs uppercase font-bold px-2 py-0.5 rounded">Em có biết?</span>
+                <p class="text-sm mt-1">Cách xác định sai số tỉ đối của một tích hay một thương khi các đại lượng có lũy thừa:</p>
+                <p class="text-sm font-semibold text-center my-1">Nếu \(A = B \cdot \sqrt{C}\) thì \(\delta A = \delta B + \frac{1}{2}\delta C\)</p>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-[#1a202c] p-4 rounded-r-md mb-4">
+                <div class="flex items-start">
+                    <span class="text-2xl mr-3">🖐</span>
+                    <div class="w-full">
+                        <p class="font-bold mb-2 text-gray-900">Hoạt động thực hành thí nghiệm:</p>
+                        <p class="text-sm mb-4">Dùng một thước có ĐCNN là 1 mm và một đồng hồ đo thời gian có ĐCNN 0,01 s để đo 5 lần thời gian chuyển động của chiếc xe đồ chơi chạy bằng pin từ điểm A (\(v_A=0\)) đến điểm B.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-white p-2 border border-gray-300 text-center rounded">
+                                <img src="h1.png" alt="Hình 3.1. Thí nghiệm đo tốc độ" class="mx-auto max-h-48 object-contain mb-1">
+                                <p class="text-xs italic text-gray-500">Hình 3.1. Thí nghiệm đo tốc độ</p>
+                            </div>
+                            <div class="bg-white p-2 border border-gray-300 text-center rounded">
+                                <img src="h2.png" alt="Hình 3.2. Biểu diễn sai số bằng đồ thị" class="mx-auto max-h-48 object-contain mb-1">
+                                <p class="text-xs italic text-gray-500">Hình 3.2. Biểu diễn sai số bằng đồ thị (Ô bao sai số)</p>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto mb-4">
+                            <table class="w-full border-collapse border border-[#cbd5e0] text-center text-sm bg-white">
+                                <thead>
+                                    <tr class="bg-[#e2e8f0] text-gray-700">
+                                        <th class="border border-[#cbd5e0] p-2">Lần đo (n)</th>
+                                        <th class="border border-[#cbd5e0] p-2">\(s\,(m)\)</th>
+                                        <th class="border border-[#cbd5e0] p-2">\(\Delta s\,(m)\)</th>
+                                        <th class="border border-[#cbd5e0] p-2">\(t\,(s)\)</th>
+                                        <th class="border border-[#cbd5e0] p-2">\(\Delta t\,(s)\)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td class="border border-[#cbd5e0] p-2">1</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td></tr>
+                                    <tr><td class="border border-[#cbd5e0] p-2">2</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td></tr>
+                                    <tr><td class="border border-[#cbd5e0] p-2">3</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td></tr>
+                                    <tr><td class="border border-[#cbd5e0] p-2">4</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td></tr>
+                                    <tr><td class="border border-[#cbd5e0] p-2">5</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td><td class="border border-[#cbd5e0] p-2">...</td></tr>
+                                    <tr class="font-bold bg-gray-50">
+                                        <td class="border border-[#cbd5e0] p-2">Trung bình</td>
+                                        <td class="border border-[#cbd5e0] p-2">\(\overline{s} = ...\)</td>
+                                        <td class="border border-[#cbd5e0] p-2">\(\overline{\Delta s} = ...\)</td>
+                                        <td class="border border-[#cbd5e0] p-2">\(\overline{t} = ...\)</td>
+                                        <td class="border border-[#cbd5e0] p-2">\(\overline{\Delta t} = ...\)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <button onclick="toggleAnswer('ans_hoat_dong')" class="bg-[#660000] text-white px-4 py-2 rounded-md hover:bg-red-800 transition text-sm font-medium">
+                            Xem hướng dẫn giải quyết vấn đề
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="ans_hoat_dong" class="hidden bg-green-50 border border-green-200 p-4 rounded-md mb-4 text-sm">
+                <p class="font-bold text-green-700 mb-2">Lời giải & Hướng dẫn phân tích:</p>
+                <p class="mb-1"><strong>a) Nguyên nhân gây sai khác:</strong> Do phản xạ bấm đồng hồ của người đo giữa các lần không đều nhau; do vị trí đặt mắt đọc thước lệch góc; hoặc do lực cản, ma sát trên đường chạy dao động nhẹ.</p>
+                <p class="mb-1"><strong>b) Sai số dụng cụ:</strong> \(\Delta s_{dc} = 0,5\text{ mm} = 0,0005\text{ m}\) và \(\Delta t_{dc} = 0,005\text{ s}\) (Bằng một nửa ĐCNN).</p>
+                <p class="mb-1"><strong>c) Viết kết quả đo:</strong> \(s = \overline{s} \pm \Delta s\) ; \(t = \overline{t} \pm \Delta t\).</p>
+                <p><strong>d) Tốc độ gián tiếp:</strong> Áp dụng quy tắc thương \(\delta v = \delta s + \delta t = \frac{\Delta s}{\overline{s}} + \frac{\Delta t}{\overline{t}}\), sau đó tính được \(\Delta v = \delta v \cdot \overline{v}\).</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-cyan-50 border border-cyan-200 p-5 rounded-[12px] shadow-sm relative">
+                <span class="absolute -top-3 left-4 bg-cyan-600 text-white text-xs uppercase font-bold px-2 py-0.5 rounded">Em đã học</span>
+                <ul class="list-disc ml-5 mt-2 space-y-1 text-sm">
+                    <li>Phân biệt phép đo trực tiếp và phép đo gián tiếp.</li>
+                    <li>Hiểu rõ bản chất sai số hệ thống (dụng cụ) và sai số ngẫu nhiên.</li>
+                    <li>Nắm vững công thức tính sai số tuyệt đối toàn phần, sai số tỉ đối và quy tắc làm tròn khi viết kết quả đo: \(A = \overline{A} \pm \Delta A\).</li>
+                </ul>
+            </div>
+            <div class="bg-violet-50 border border-violet-200 p-5 rounded-[12px] shadow-sm relative">
+                <span class="absolute -top-3 left-4 bg-violet-600 text-white text-xs uppercase font-bold px-2 py-0.5 rounded">Em có thể</span>
+                <ul class="list-disc ml-5 mt-2 space-y-1 text-sm">
+                    <li>Giải thích lý do cần đo lặp lại nhiều lần để giảm thiểu sai số ngẫu nhiên.</li>
+                    <li>Tính toán thành thạo sai số cho các bài toán tổng, hiệu, tích, thương.</li>
+                    <li>Biểu diễn sai số bằng đồ thị thực nghiệm thông qua khái niệm <strong>"Ô bao sai số"</strong> có kích thước là \(2\Delta x \times 2\Delta y\).</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold uppercase text-[#1a202c] border-b-4 border-[#1a202c] inline-block mb-6 pb-1">Củng cố - 5 bài tập trắc nghiệm</h2>
+            
+            <form id="quizForm" class="space-y-6">
+                <div class="border-b pb-4">
+                    <p class="font-semibold mb-2">Câu 1: Đại lượng nào dưới đây được xác định thông qua phép đo gián tiếp?</p>
+                    <div class="space-y-1 ml-4 text-sm">
+                        <label class="block"><input type="radio" name="q1" value="A" class="mr-2">A. Khối lượng riêng của một khối kim loại.</label>
+                        <label class="block"><input type="radio" name="q1" value="B" class="mr-2">B. Chiều dài của chiếc bàn học.</label>
+                        <label class="block"><input type="radio" name="q1" value="C" class="mr-2">C. Thời gian rơi tự do của viên bi.</label>
+                        <label class="block"><input type="radio" name="q1" value="D" class="mr-2">D. Thể tích nước đọc trực tiếp trên bình chia độ.</label>
+                    </div>
+                </div>
+
+                <div class="border-b pb-4">
+                    <p class="font-semibold mb-2">Câu 2: Nhận định nào sau đây là ĐÚNG về sai số hệ thống?</p>
+                    <div class="space-y-1 ml-4 text-sm">
+                        <label class="block"><input type="radio" name="q2" value="A" class="mr-2">A. Không có nguyên nhân rõ ràng và có thể giảm bằng cách đo nhiều lần.</label>
+                        <label class="block"><input type="radio" name="q2" value="B" class="mr-2">B. Làm cho kết quả đo lệch đồng loạt về một phía so với giá trị thực.</label>
+                        <label class="block"><input type="radio" name="q2" value="C" class="mr-2">C. Xuất hiện do sự hạn chế về giác quan không ổn định của người đo.</label>
+                        <label class="block"><input type="radio" name="q2" value="D" class="mr-2">D. Chỉ bao gồm sai số ngẫu nhiên của các lần đo.</label>
+                    </div>
+                </div>
+
+                <div class="border-b pb-4">
+                    <p class="font-semibold mb-2">Câu 3: Quy ước thông thường lấy sai số dụng cụ đo (\(\Delta A_{dc}\)) bằng:</p>
+                    <div class="space-y-1 ml-4 text-sm">
+                        <label class="block"><input type="radio" name="q3" value="A" class="mr-2">A. Độ chia nhỏ nhất của dụng cụ.</label>
+                        <label class="block"><input type="radio" name="q3" value="B" class="mr-2">B. Gấp đôi độ chia nhỏ nhất.</label>
+                        <label class="block"><input type="radio" name="q3" value="C" class="mr-2">C. Một nửa độ chia nhỏ nhất.</label>
+                        <label class="block"><input type="radio" name="q3" value="D" class="mr-2">D. Không phụ thuộc vào độ chia nhỏ nhất.</label>
+                    </div>
+                </div>
+
+                <div class="border-b pb-4">
+                    <p class="font-semibold mb-2">Câu 4: Một vật chuyển động có biểu thức quãng đường tổng \(s = s_1 + s_2\). Công thức sai số tuyệt đối toàn phần là:</p>
+                    <div class="space-y-1 ml-4 text-sm">
+                        <label class="block"><input type="radio" name="q4" value="A" class="mr-2">A. \(\Delta s = \Delta s_1 + \Delta s_2\)</label>
+                        <label class="block"><input type="radio" name="q4" value="B" class="mr-2">B. \(\Delta s = \Delta s_1 - \Delta s_2\)</label>
+                        <label class="block"><input type="radio" name="q4" value="C" class="mr-2">C. \(\delta s = \delta s_1 + \delta s_2\)</label>
+                        <label class="block"><input type="radio" name="q4" value="D" class="mr-2">D. \(\Delta s = \sqrt{\Delta s_1^2 + \Delta s_2^2}\)</label>
+                    </div>
+                </div>
+
+                <div class="pb-2">
+                    <p class="font-semibold mb-2">Câu 5: Trên đồ thị thực nghiệm tọa độ Oxy, mỗi điểm dữ liệu có sai số được thể hiện thông qua cấu trúc hình học nào?</p>
+                    <div class="space-y-1 ml-4 text-sm">
+                        <label class="block"><input type="radio" name="q5" value="A" class="mr-2">A. Một đường tròn bán kính \(\Delta x\).</label>
+                        <label class="block"><input type="radio" name="q5" value="B" class="mr-2">B. Một ô hình chữ nhật bao sai số có kích thước các cạnh là \(2\Delta x\) và \(2\Delta y\).</label>
+                        <label class="block"><input type="radio" name="q5" value="C" class="mr-2">C. Một điểm duy nhất không có kích thước.</label>
+                        <label class="block"><input type="radio" name="q5" value="D" class="mr-2">D. Khung hình vuông cạnh \(\Delta x + \Delta y\).</label>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="button" onclick="checkQuiz()" class="bg-[#1a202c] text-white font-bold px-6 py-2 rounded-md hover:bg-gray-800 transition">
+                        NỘP BÀI
+                    </button>
+                </div>
+                
+                <div id="quiz-result" class="hidden mt-4 text-lg p-3 rounded-md bg-gray-50 border border-gray-200"></div>
+                
+                <div id="quiz-solutions" class="hidden mt-4 space-y-3 bg-blue-50 p-4 border border-blue-200 rounded-md text-sm">
+                    <p class="font-bold text-blue-800 text-base">Lời giải chi tiết các câu hỏi trắc nghiệm:</p>
+                    <p><strong>Câu 1: A.</strong> Khối lượng riêng được đo gián tiếp qua công thức \(\rho = \frac{m}{V}\), trong khi các đại lượng còn lại đều đọc được trực tiếp từ thước, đồng hồ hoặc bình chia độ.</p>
+                    <p><strong>Câu 2: B.</strong> Sai số hệ thống làm lệch mọi giá trị đo cùng một chiều hướng do đặc tính lỗi cấu tạo dụng cụ, không giảm được bằng cách tăng số lần đo trung bình.</p>
+                    <p><strong>Câu 3: C.</strong> Theo quy ước lý thuyết SGK, sai số dụng cụ thông thường được lấy bằng một nửa độ chia nhỏ nhất (ĐCNN).</p>
+                    <p><strong>Câu 4: A.</strong> Theo quy tắc sai số phép đo gián tiếp, sai số tuyệt đối của một tổng bằng tổng các sai số tuyệt đối của các số hạng cấu thành.</p>
+                    <p><strong>Câu 5: B.</strong> Trên đồ thị biểu diễn sai số, mỗi điểm thực nghiệm nằm ở tâm một ô chữ nhật bao sai số với vùng biên độ dao động là \(\pm\Delta x\) và \(\pm\Delta y\) (tổng chiều dài hai cạnh tương ứng là \(2\Delta x\) và \(2\Delta y\)).</p>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h2 class="text-xl font-bold uppercase text-[#1a202c] border-b-4 border-[#1a202c] inline-block mb-6 pb-1">3 bài tập vận dụng tính toán tự luận</h2>
+
+            <div class="mb-6 border-b pb-4">
+                <p class="font-semibold mb-2">Bài 1 (Dạng tổng/hiệu): Một học sinh đo độ dài hai đoạn thẳng liên tiếp thu được kết quả \(L_1 = 15,3 \pm 0,1\text{ cm}\) và \(L_2 = 12,5 \pm 0,2\text{ cm}\). Hãy tính tổng chiều dài hai đoạn thẳng trên và viết kết quả đo chuẩn.</p>
+                <button onclick="toggleAnswer('calc1')" class="bg-[#660000] text-white px-3 py-1 rounded text-xs hover:bg-red-800 transition font-medium">
+                    Xem lời giải chi tiết
+                </button>
+                <div id="calc1" class="hidden mt-3 bg-green-50 border border-green-200 p-4 rounded-md text-sm">
+                    <p class="font-bold text-green-700 mb-1">Lời giải:</p>
+                    <p>Biểu thức tính tổng chiều dài: \(L = L_1 + L_2\)</p>
+                    <p>• Giá trị trung bình: \(\overline{L} = \overline{L}_1 + \overline{L}_2 = 15,3 + 12,5 = 27,8\text{ cm}\).</p>
+                    <p>• Sai số tuyệt đối tổng áp dụng quy tắc tổng: \(\Delta L = \Delta L_1 + \Delta L_2 = 0,1 + 0,2 = 0,3\text{ cm}\).</p>
+                    <p>• Viết kết quả đo: <strong>\(L = 27,8 \pm 0,3\text{ cm}\)</strong>.</p>
+                </div>
+            </div>
+
+            <div class="mb-6 border-b pb-4">
+                <p class="font-semibold mb-2">Bài 2 (Dạng tích/thương): Thí nghiệm đo chuyển động thẳng đều của một vật cho kết quả quãng đường \(s = 20,0 \pm 0,4\text{ m}\) và khoảng thời gian chạy tương ứng \(t = 4,0 \pm 0,1\text{ s}\). Hãy xác định sai số tỉ đối của phép đo tốc độ và tính sai số tuyệt đối của tốc độ đó.</p>
+                <button onclick="toggleAnswer('calc2')" class="bg-[#660000] text-white px-3 py-1 rounded text-xs hover:bg-red-800 transition font-medium">
+                    Xem lời giải chi tiết
+                </button>
+                <div id="calc2" class="hidden mt-3 bg-green-50 border border-green-200 p-4 rounded-md text-sm">
+                    <p class="font-bold text-green-700 mb-1">Lời giải:</p>
+                    <p>Biểu thức tính tốc độ: \(v = \frac{s}{t}\)</p>
+                    <p>• Giá trị trung bình của tốc độ: \(\overline{v} = \frac{\overline{s}}{\overline{t}} = \frac{20,0}{4,0} = 5,0\text{ m/s}\).</p>
+                    <p>• Sai số tỉ đối của v áp dụng quy tắc thương: <br>
+                       \(\delta v = \delta s + \delta t = \left(\frac{\Delta s}{\overline{s}} + \frac{\Delta t}{\overline{t}}\right) \cdot 100\% = \left(\frac{0,4}{20,0} + \frac{0,1}{4,0}\right) \cdot 100\% = (2\% + 2,5\%) = 4,5\%\).
+                    </p>
+                    <p>• Sai số tuyệt đối của tốc độ v: <br>
+                       \(\Delta v = \delta v \cdot \overline{v} = 4,5\% \cdot 5,0 = 0,225\text{ m/s}\). <br>
+                       Làm tròn đến cùng số chữ số có nghĩa thập phân tương ứng: \(\Delta v \approx 0,2\text{ m/s}\).
+                    </p>
+                    <p>• Kết quả đo tốc độ: <strong>\(v = 5,0 \pm 0,2\text{ m/s}\)</strong>.</p>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <p class="font-semibold mb-2">Bài 3 (Dạng lũy thừa nâng cao): Để xác định diện tích một tấm bìa hình vuông, người ta đo độ dài cạnh và thu được kết quả \(a = 10,0 \pm 0,1\text{ cm}\). Hãy tính sai số tỉ đối và sai số tuyệt đối của diện tích tấm bìa trên.</p>
+                <button onclick="toggleAnswer('calc3')" class="bg-[#660000] text-white px-3 py-1 rounded text-xs hover:bg-red-800 transition font-medium">
+                    Xem lời giải chi tiết
+                </button>
+                <div id="calc3" class="hidden mt-3 bg-green-50 border border-green-200 p-4 rounded-md text-sm">
+                    <p class="font-bold text-green-700 mb-1">Lời giải:</p>
+                    <p>Diện tích tấm bìa hình vuông có biểu thức: \(S = a^2 = a \cdot a\)</p>
+                    <p>• Giá trị trung bình của diện tích: \(\overline{S} = \overline{a}^2 = (10,0)^2 = 100,0\text{ cm}^2\).</p>
+                    <p>• Sai số tỉ đối áp dụng quy tắc tích lũy thừa: <br>
+                       \(\delta S = \delta a + \delta a = 2\delta a = 2 \cdot \left(\frac{\Delta a}{\overline{a}}\right) \cdot 100\% = 2 \cdot \left(\frac{0,1}{10,0}\right) \cdot 100\% = 2 \cdot 1\% = 2\%\).
+                    </p>
+                    <p>• Sai số tuyệt đối của diện tích S: <br>
+                       \(\Delta S = \delta S \cdot \overline{S} = 2\% \cdot 100,0 = 2,0\text{ cm}^2\).
+                    </p>
+                    <p>• Kết quả phép đo diện tích: <strong>\(S = 100,0 \pm 2,0\text{ cm}^2\)</strong>.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Hàm ẩn/hiện lời giải - Sử dụng cơ chế toggle class 'hidden' của Tailwind chuẩn xác
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        // Hàm kiểm tra bài tập trắc nghiệm và thông báo điểm số màu sắc tương ứng
+        function checkQuiz() {
+            const answers = {
+                q1: 'A',
+                q2: 'B',
+                q3: 'C',
+                q4: 'A',
+                q5: 'B'
+            };
+            
+            let score = 0;
+            const total = 5;
+            
+            for (let i = 1; i <= total; i++) {
+                const checkedRadio = document.querySelector(`input[name="q${i}"]:checked`);
+                if (checkedRadio && checkedRadio.value === answers['q' + i]) {
+                    score++;
+                }
+            }
+            
+            const resultDiv = document.getElementById('quiz-result');
+            const solutionsDiv = document.getElementById('quiz-solutions');
+            
+            // Hiển thị khung kết quả và khung lời giải
+            resultDiv.classList.remove('hidden');
+            solutionsDiv.classList.remove('hidden');
+            
+            // Nếu đúng hết hiển thị màu xanh, nếu sai hiển thị màu đỏ
+            if (score === total) {
+                resultDiv.innerHTML = `<span class="text-green-600 font-bold">🎉 Tuyệt vời! Bạn đã trả lời đúng hoàn toàn ${score}/${total} câu hỏi. Điểm số: 10/10.</span>`;
+            } else {
+                resultDiv.innerHTML = `<span class="text-red-600 font-bold">❌ Kết quả: Bạn trả lời đúng ${score}/${total} câu hỏi. Xem lại phần lời giải chi tiết bên dưới nhé!</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

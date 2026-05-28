@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô phỏng Vật lý: Tọa độ, Quãng đường và Độ dời</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50 px-4 py-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-gauge-high text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg sm:text-xl text-white tracking-tight flex items-center gap-2">
+                        Hệ Thống Mô Phỏng Cơ Học Trực Quan
+                    </h1>
+                    <p class="text-xs text-slate-400">Vật lý 10 - Động học chất điểm</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-800 w-full sm:w-auto">
+                <button id="btnTab1" onclick="switchTab(1)" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 bg-indigo-600 text-white shadow-md">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>1. Xác định tọa độ</span>
+                </button>
+                <button id="btnTab2" onclick="switchTab(2)" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200">
+                    <i class="fa-solid fa-route"></i>
+                    <span>2. Quãng đường & Độ dời</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 flex flex-col gap-6">
+        
+        <!-- ================= TAB 1: TOẠ ĐỘ ================= -->
+        <section id="tab1-content" class="grid grid-cols-1 lg:grid-cols-12 gap-6 transition-opacity duration-300">
+            <!-- Panel 1: Đồ thị & Trục tọa độ -->
+            <div class="lg:col-span-8 bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col shadow-2xl relative overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                        <h2 class="font-bold text-slate-200 tracking-wide text-sm uppercase">Khung hiển thị hệ trục tọa độ</h2>
+                    </div>
+                    <span id="coordSystemLabel" class="text-xs px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-mono font-medium">Hệ trục Ox (1D)</span>
+                </div>
+
+                <!-- Canvas container -->
+                <div class="relative bg-slate-900 rounded-xl border border-slate-800 flex-1 min-h-[380px] sm:min-h-[420px] flex items-center justify-center">
+                    <canvas id="coordCanvas" class="absolute inset-0 w-full h-full rounded-xl pointer-events-auto cursor-crosshair"></canvas>
+                    
+                    <!-- HUD Overlays inside Canvas -->
+                    <div class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 pointer-events-none">
+                        <div class="bg-slate-950/95 border border-slate-800 px-3 py-2 rounded-lg flex items-center gap-4 text-xs font-mono shadow-xl">
+                            <div><span class="text-slate-400">Tọa độ x:</span> <span id="hud-x" class="text-indigo-400 font-bold">-.-</span> m</div>
+                            <div class="border-l border-slate-800 h-4"></div>
+                            <div><span class="text-slate-400">Tọa độ y:</span> <span id="hud-y" class="text-emerald-400 font-bold">-.-</span> m</div>
+                            <div class="border-l border-slate-800 h-4"></div>
+                            <div><span class="text-slate-400">Thời gian t:</span> <span id="hud-t" class="text-amber-400 font-bold">0.00</span> s</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Điều khiển & Cấu hình -->
+            <div class="lg:col-span-4 bg-slate-950 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between shadow-2xl">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-100 flex items-center gap-2 mb-1">
+                            <i class="fa-solid fa-sliders text-indigo-500"></i> Bảng điều khiển
+                        </h3>
+                        <p class="text-xs text-slate-400">Thiết lập hệ tọa độ và thuộc tính chuyển động</p>
+                    </div>
+
+                    <!-- Lựa chọn Hệ tọa độ -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">1. Chọn Hệ tọa độ</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="btnOx" onclick="selectSystem('1D')" class="py-2.5 px-3 rounded-xl border text-sm font-medium transition-all flex flex-col items-center gap-1 bg-indigo-500/10 border-indigo-500/40 text-indigo-300 shadow-md shadow-indigo-500/5">
+                                <span class="font-bold text-base">Hệ Ox (1D)</span>
+                                <span class="text-[10px] text-indigo-400/80">Chuyển động thẳng</span>
+                            </button>
+                            <button id="btnOxy" onclick="selectSystem('2D')" class="py-2.5 px-3 rounded-xl border text-sm font-medium transition-all flex flex-col items-center gap-1 bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700">
+                                <span class="font-bold text-base">Hệ Oxy (2D)</span>
+                                <span class="text-[10px] text-slate-500">Chuyển động cong</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Lựa chọn Loại chuyển động -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">2. Chọn Loại Chuyển Động</label>
+                        <select id="motionType" onchange="onMotionTypeChange()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition-all">
+                            <!-- Options updated dynamically via JS -->
+                        </select>
+                    </div>
+
+                    <!-- Các thanh trượt điều khiển tham số -->
+                    <div id="slidersContainer" class="space-y-4 border-t border-slate-800/60 pt-4">
+                        <!-- Dynamic Sliders will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-2 pt-6 border-t border-slate-800/60 mt-6">
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="btnPlayPause" onclick="togglePlay()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-play"></i> <span>Bắt đầu</span>
+                        </button>
+                        <button onclick="resetSimulation()" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-rotate-right"></i> <span>Đặt lại</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Educational Insight Box -->
+                    <div class="bg-indigo-950/20 border border-indigo-500/10 p-3.5 rounded-xl text-xs text-indigo-300 leading-relaxed mt-2">
+                        <strong class="text-indigo-200 flex items-center gap-1.5 mb-1">
+                            <i class="fa-solid fa-circle-info"></i> Kiến thức bổ trợ:
+                        </strong>
+                        <span id="tab1-hint">Để xác định vị trí của một chất điểm trong không gian, ta cần chọn một vật mốc, một hệ trục tọa độ gắn với vật mốc đó, một mốc thời gian và một chiếc đồng hồ.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: QUÃNG ĐƯỜNG & ĐỘ DỜI ================= -->
+        <section id="tab2-content" class="grid grid-cols-1 lg:grid-cols-12 gap-6 hidden transition-opacity duration-300">
+            <!-- Panel 1: Sân di chuyển tương tác (Interactive Canvas) -->
+            <div class="lg:col-span-8 bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col shadow-2xl relative">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <h2 class="font-bold text-slate-200 tracking-wide text-sm uppercase">Khu vực điều khiển trực quan (Bàn phím / Nút ảo)</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 hidden md:inline">Sử dụng phím mũi tên hoặc phím <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs">W</kbd><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs ml-0.5">A</kbd><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs ml-0.5">S</kbd><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs ml-0.5">D</kbd></span>
+                    </div>
+                </div>
+
+                <!-- Simulation Canvas Area -->
+                <div class="relative bg-slate-900 rounded-xl border border-slate-800 flex-1 min-h-[380px] sm:min-h-[420px] flex items-center justify-center">
+                    <canvas id="vectorCanvas" class="absolute inset-0 w-full h-full rounded-xl pointer-events-auto cursor-none"></canvas>
+                    
+                    <!-- HUD for Real-time comparison -->
+                    <div class="absolute top-4 left-4 flex flex-col gap-1.5 pointer-events-none max-w-xs sm:max-w-md">
+                        <div class="bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs px-3 py-1.5 rounded-lg flex items-center gap-2 backdrop-blur shadow-md">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <span><strong>Quãng đường (s):</strong> Quỹ đạo thực tế đã di chuyển</span>
+                        </div>
+                        <div class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs px-3 py-1.5 rounded-lg flex items-center gap-2 backdrop-blur shadow-md">
+                            <i class="fa-solid fa-arrow-right text-indigo-400"></i>
+                            <span><strong>Độ dời (d):</strong> Vectơ từ điểm đầu đến điểm cuối</span>
+                        </div>
+                    </div>
+
+                    <!-- Touch Screen Virtual D-Pad (Responsive Layout) -->
+                    <div class="absolute bottom-4 right-4 flex flex-col items-center gap-1 bg-slate-950/80 p-2 rounded-2xl border border-slate-800/80 backdrop-blur-sm shadow-xl md:hidden">
+                        <button onmousedown="startMoveVirtual('up')" onmouseup="stopMoveVirtual()" ontouchstart="startMoveVirtual('up'); event.preventDefault();" ontouchend="stopMoveVirtual()" class="w-12 h-12 rounded-xl bg-slate-800 active:bg-indigo-600 border border-slate-700 flex items-center justify-center text-slate-200 active:text-white text-lg transition-colors shadow">
+                            <i class="fa-solid fa-chevron-up"></i>
+                        </button>
+                        <div class="flex gap-1">
+                            <button onmousedown="startMoveVirtual('left')" onmouseup="stopMoveVirtual()" ontouchstart="startMoveVirtual('left'); event.preventDefault();" ontouchend="stopMoveVirtual()" class="w-12 h-12 rounded-xl bg-slate-800 active:bg-indigo-600 border border-slate-700 flex items-center justify-center text-slate-200 active:text-white text-lg transition-colors shadow">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <div class="w-12 h-12 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center text-slate-600 text-xs">
+                                MOVE
+                            </div>
+                            <button onmousedown="startMoveVirtual('right')" onmouseup="stopMoveVirtual()" ontouchstart="startMoveVirtual('right'); event.preventDefault();" ontouchend="stopMoveVirtual()" class="w-12 h-12 rounded-xl bg-slate-800 active:bg-indigo-600 border border-slate-700 flex items-center justify-center text-slate-200 active:text-white text-lg transition-colors shadow">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <button onmousedown="startMoveVirtual('down')" onmouseup="stopMoveVirtual()" ontouchstart="startMoveVirtual('down'); event.preventDefault();" ontouchend="stopMoveVirtual()" class="w-12 h-12 rounded-xl bg-slate-800 active:bg-indigo-600 border border-slate-700 flex items-center justify-center text-slate-200 active:text-white text-lg transition-colors shadow">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Chỉ số & Giải thích lý thuyết -->
+            <div class="lg:col-span-4 bg-slate-950 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between shadow-2xl">
+                <div class="space-y-5">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-100 flex items-center gap-2 mb-1">
+                            <i class="fa-solid fa-chart-line text-emerald-500"></i> Bảng phân tích động
+                        </h3>
+                        <p class="text-xs text-slate-400 font-medium">Đối chiếu các giá trị vật lý thời gian thực</p>
+                    </div>
+
+                    <!-- Coordinates display -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-slate-900/80 border border-slate-800/80 p-3 rounded-xl">
+                            <span class="block text-[10px] uppercase font-bold text-slate-500">Điểm xuất phát M₀</span>
+                            <span id="startCoordLabel" class="text-sm font-mono font-bold text-indigo-400">x₀ = 0.0m, y₀ = 0.0m</span>
+                        </div>
+                        <div class="bg-slate-900/80 border border-slate-800/80 p-3 rounded-xl">
+                            <span class="block text-[10px] uppercase font-bold text-slate-500">Vị trí hiện tại M</span>
+                            <span id="currentCoordLabel" class="text-sm font-mono font-bold text-emerald-400">x = 0.0m, y = 0.0m</span>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Box -->
+                    <div class="space-y-3">
+                        <!-- Quãng đường -->
+                        <div class="bg-amber-500/[0.04] border border-amber-500/20 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                            <div class="space-y-0.5">
+                                <span class="text-xs font-semibold text-amber-400 uppercase tracking-wide flex items-center gap-1.5">
+                                    <i class="fa-solid fa-arrow-trend-up"></i> Quãng đường đi được (s)
+                                </span>
+                                <span class="text-2xl font-black text-amber-200 font-mono" id="val-distance">0.00</span> <span class="text-xs text-slate-400 font-bold">m</span>
+                            </div>
+                            <div class="text-right text-slate-400 text-xs">
+                                <div>vô hướng</div>
+                                <div class="text-amber-500/70 font-semibold font-mono">s &ge; 0</div>
+                            </div>
+                        </div>
+
+                        <!-- Độ dời -->
+                        <div class="bg-indigo-500/[0.04] border border-indigo-500/20 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                            <div class="space-y-0.5">
+                                <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wide flex items-center gap-1.5">
+                                    <i class="fa-solid fa-arrow-right"></i> Độ dời thực tế (d)
+                                </span>
+                                <span class="text-2xl font-black text-indigo-200 font-mono" id="val-displacement">0.00</span> <span class="text-xs text-slate-400 font-bold">m</span>
+                            </div>
+                            <div class="text-right text-slate-400 text-xs">
+                                <div>vectơ</div>
+                                <div class="text-indigo-400/80 font-bold font-mono">(&Delta;x, &Delta;y)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thử nghiệm nhanh (Demo Presets) -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Kịch bản thử nghiệm nhanh</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="runPreset('straight')" class="py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-slate-700 transition-all text-left flex flex-col justify-between h-14">
+                                <span class="font-bold text-slate-200">1. Chuyển động khứ hồi</span>
+                                <span class="text-[9px] text-slate-500">Đi thẳng 5m rồi quay về</span>
+                            </button>
+                            <button onclick="runPreset('circle')" class="py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-slate-700 transition-all text-left flex flex-col justify-between h-14">
+                                <span class="font-bold text-slate-200">2. Quỹ đạo khép kín</span>
+                                <span class="text-[9px] text-slate-500">Chạy vòng tròn (d = 0)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Operations and Note -->
+                <div class="space-y-3 pt-4 border-t border-slate-800/60 mt-4">
+                    <button onclick="resetVectorSimulation()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-trash-can"></i> <span>Xóa dữ liệu &amp; Vẽ lại</span>
+                    </button>
+                    
+                    <div class="bg-emerald-950/20 border border-emerald-500/10 p-3 rounded-xl text-xs text-emerald-300 leading-relaxed">
+                        <strong class="text-emerald-200 flex items-center gap-1.5 mb-1">
+                            <i class="fa-solid fa-lightbulb"></i> Bài học rút ra:
+                        </strong>
+                        <p id="tab2-insight">Khi vật chuyển động thẳng, không đổi chiều: <strong>Quãng đường = Độ lớn độ dời</strong>. Khi vật đổi chiều hoặc đi đường cong khép kín: <strong>Quãng đường &gt; Độ lớn độ dời</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer of Page -->
+    <footer class="border-t border-slate-800/80 bg-slate-950/50 py-3 mt-auto text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div>Phát triển cho mục đích giáo dục chuyên sâu học tập tương tác</div>
+            <div class="flex gap-4">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> Trực quan 1D/2D</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Tương tác thực</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Simulation Engine -->
+    <script>
+        // Tab system navigation state
+        let currentActiveTab = 1;
+
+        // Canvas setups
+        const coordCanvas = document.getElementById('coordCanvas');
+        const coordCtx = coordCanvas.getContext('2d');
+        const vectorCanvas = document.getElementById('vectorCanvas');
+        const vectorCtx = vectorCanvas.getContext('2d');
+
+        // Animation Frames IDs
+        let tab1AnimationId = null;
+        let tab2AnimationId = null;
+
+        // Real-world scale representation
+        const scaleFactor = 30; // 30 pixels equals 1 meter
+
+        // ==========================================
+        // TAB 1: DATA AND STATES
+        // ==========================================
+        let t1State = {
+            system: '1D', // '1D' or '2D'
+            motion: 'linear_uniform', // motion subtype
+            isPlaying: false,
+            t: 0, // Time in seconds
+            // Position coords in meters
+            x: 0,
+            y: 0,
+            initialX: -4, // starting x (m)
+            initialY: 0,  // starting y (m)
+            v0: 1.5,      // initial velocity (m/s)
+            accel: 0.2,   // acceleration (m/s^2)
+            angle: 45,    // angle in degrees (for projectile)
+            radius: 3,    // radius in meters (for circular)
+            omega: 1.2    // angular velocity (rad/s)
+        };
+
+        const motionTypesData = {
+            '1D': [
+                { id: 'linear_uniform', name: 'Thẳng đều (v = const)' },
+                { id: 'linear_accel', name: 'Thẳng biến đổi đều (a = const)' }
+            ],
+            '2D': [
+                { id: 'circular_uniform', name: 'Tròn đều (quỹ đạo tròn)' },
+                { id: 'projectile_motion', name: 'Ném xiên (quỹ đạo parabol)' }
+            ]
+        };
+
+        // Initialize Tab 1 Configuration dropdowns
+        function initTab1Dropdown() {
+            const selectEl = document.getElementById('motionType');
+            selectEl.innerHTML = '';
+            
+            const currentOptions = motionTypesData[t1State.system];
+            currentOptions.forEach(opt => {
+                const optEl = document.createElement('option');
+                optEl.value = opt.id;
+                optEl.textContent = opt.name;
+                selectEl.appendChild(optEl);
+            });
+            t1State.motion = currentOptions[0].id;
+            buildSliders();
+            resetSimulation();
+        }
+
+        function selectSystem(systemType) {
+            t1State.system = systemType;
+            
+            // Highlight Buttons
+            const btnOx = document.getElementById('btnOx');
+            const btnOxy = document.getElementById('btnOxy');
+            const label = document.getElementById('coordSystemLabel');
+
+            if (systemType === '1D') {
+                btnOx.className = "py-2.5 px-3 rounded-xl border text-sm font-medium transition-all flex flex-col items-center gap-1 bg-indigo-500/10 border-indigo-500/40 text-indigo-300 shadow-md shadow-indigo-500/5";
+                btnOxy.className = "py-2.5 px-3 rounded-xl border text-sm font-medium transition-all flex flex-col items-center gap-1 bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700";
+                label.textContent = "Hệ trục Ox (1D)";
+                document.getElementById('tab1-hint').textContent = "Trong hệ trục Ox, vị trí của vật mốc là gốc O. Vị trí của vật tại mỗi thời điểm được xác định duy nhất bằng một tọa độ x (dương hoặc âm).";
+            } else {
+                btnOxy.className = "py-2.5 px-3 rounded-xl border text-sm font-medium transition-all flex flex-col items-center gap-1 bg-indigo-500/10 border-indigo-500/40 text-indigo-300 shadow-md shadow-indigo-500/5";
+                btnOx.className = "py-2.5 px-3 rounded-xl border text-sm font-medium transition-all flex flex-col items-center gap-1 bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700";
+                label.textContent = "Hệ trục Oxy (2D)";
+                document.getElementById('tab1-hint').textContent = "Hệ Oxy dùng cho các chuyển động cong hoặc phức tạp trong mặt phẳng. Tọa độ của vật được xác định bởi một cặp giá trị (x, y) thông qua hình chiếu lên hai trục vuông góc.";
+            }
+
+            initTab1Dropdown();
+        }
+
+        function onMotionTypeChange() {
+            t1State.motion = document.getElementById('motionType').value;
+            buildSliders();
+            resetSimulation();
+        }
+
+        // Generate custom parameter sliders on-the-fly
+        function buildSliders() {
+            const container = document.getElementById('slidersContainer');
+            container.innerHTML = '';
+
+            let configs = [];
+
+            if (t1State.motion === 'linear_uniform') {
+                configs = [
+                    { id: 'initialX', label: 'Tọa độ ban đầu (x₀)', min: -5, max: 0, step: 0.5, val: t1State.initialX, unit: 'm' },
+                    { id: 'v0', label: 'Vận tốc (v)', min: -4, max: 4, step: 0.1, val: t1State.v0, unit: 'm/s' }
+                ];
+            } else if (t1State.motion === 'linear_accel') {
+                configs = [
+                    { id: 'initialX', label: 'Tọa độ ban đầu (x₀)', min: -5, max: -2, step: 0.5, val: t1State.initialX, unit: 'm' },
+                    { id: 'v0', label: 'Vận tốc đầu (v₀)', min: 0, max: 3, step: 0.1, val: t1State.v0, unit: 'm/s' },
+                    { id: 'accel', label: 'Gia tốc (a)', min: -1, max: 1, step: 0.05, val: t1State.accel, unit: 'm/s²' }
+                ];
+            } else if (t1State.motion === 'circular_uniform') {
+                configs = [
+                    { id: 'radius', label: 'Bán kính quỹ đạo (R)', min: 1, max: 4, step: 0.2, val: t1State.radius, unit: 'm' },
+                    { id: 'omega', label: 'Tốc độ góc (ω)', min: 0.2, max: 3, step: 0.1, val: t1State.omega, unit: 'rad/s' }
+                ];
+            } else if (t1State.motion === 'projectile_motion') {
+                configs = [
+                    { id: 'initialX', label: 'Vị trí ném (x₀)', min: -6, max: -4, step: 0.5, val: t1State.initialX, unit: 'm' },
+                    { id: 'initialY', label: 'Độ cao ném (y₀)', min: -4, max: -2, step: 0.5, val: t1State.initialY, unit: 'm' },
+                    { id: 'v0', label: 'Vận tốc đầu (v₀)', min: 4, max: 12, step: 0.5, val: t1State.v0, unit: 'm/s' },
+                    { id: 'angle', label: 'Góc ném (α)', min: 0, max: 90, step: 5, val: t1State.angle, unit: 'độ' }
+                ];
+            }
+
+            configs.forEach(cfg => {
+                const block = document.createElement('div');
+                block.className = "space-y-1.5";
+                
+                block.innerHTML = `
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-slate-300">${cfg.label}</span>
+                        <span class="text-indigo-400 font-mono" id="valLabel-${cfg.id}">${cfg.val} ${cfg.unit}</span>
+                    </div>
+                    <input type="range" id="slider-${cfg.id}" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${cfg.val}" 
+                        oninput="updateParam('${cfg.id}', this.value, '${cfg.unit}')"
+                        class="w-full accent-indigo-500 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                `;
+                container.appendChild(block);
+            });
+        }
+
+        function updateParam(paramId, value, unit) {
+            t1State[paramId] = parseFloat(value);
+            document.getElementById(`valLabel-${paramId}`).textContent = `${value} ${unit}`;
+            resetSimulation();
+        }
+
+        function togglePlay() {
+            t1State.isPlaying = !t1State.isPlaying;
+            const btn = document.getElementById('btnPlayPause');
+            if (t1State.isPlaying) {
+                btn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Tạm dừng</span>';
+                btn.className = "bg-amber-600 hover:bg-amber-500 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-amber-600/10 flex items-center justify-center gap-2";
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Tiếp tục</span>';
+                btn.className = "bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center justify-center gap-2";
+            }
+        }
+
+        function resetSimulation() {
+            t1State.isPlaying = false;
+            t1State.t = 0;
+            
+            const btn = document.getElementById('btnPlayPause');
+            btn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Bắt đầu</span>';
+            btn.className = "bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-indigo-600/10 flex items-center justify-center gap-2";
+            
+            calculatePositions();
+            drawTab1();
+        }
+
+        // Mathematical coordinate formulas for each movement type
+        function calculatePositions() {
+            const t = t1State.t;
+            if (t1State.motion === 'linear_uniform') {
+                t1State.x = t1State.initialX + t1State.v0 * t;
+                t1State.y = 0;
+            } else if (t1State.motion === 'linear_accel') {
+                t1State.x = t1State.initialX + t1State.v0 * t + 0.5 * t1State.accel * t * t;
+                t1State.y = 0;
+            } else if (t1State.motion === 'circular_uniform') {
+                t1State.x = t1State.radius * Math.cos(t1State.omega * t);
+                t1State.y = t1State.radius * Math.sin(t1State.omega * t);
+            } else if (t1State.motion === 'projectile_motion') {
+                const g = 9.81; // Gravity m/s^2
+                const alphaRad = (t1State.angle * Math.PI) / 180;
+                
+                // Motion formulas
+                const vx = t1State.v0 * Math.cos(alphaRad);
+                const vy0 = t1State.v0 * Math.sin(alphaRad);
+                
+                t1State.x = t1State.initialX + vx * t;
+                // Simulating downwards gravity starting from an initial elevation
+                const currentY = t1State.initialY + (vy0 * t - 0.5 * g * t * t);
+                
+                // Let object stop when hits the visual ground (e.g. y = -5)
+                if (currentY <= -5.5) {
+                    t1State.isPlaying = false;
+                    t1State.y = -5.5;
+                } else {
+                    t1State.y = currentY;
+                }
+            }
+
+            // Cap positions so object doesn't leave the screen boundary unreasonably
+            if (t1State.x > 8.5) {
+                t1State.x = 8.5;
+                t1State.isPlaying = false;
+            }
+            if (t1State.x < -8.5) {
+                t1State.x = -8.5;
+                t1State.isPlaying = false;
+            }
+
+            // Update UI elements
+            document.getElementById('hud-x').textContent = t1State.x.toFixed(2);
+            document.getElementById('hud-y').textContent = t1State.system === '2D' ? t1State.y.toFixed(2) : '0.00';
+            document.getElementById('hud-t').textContent = t1State.t.toFixed(2);
+        }
+
+        // Draw Canvas Elements for Tab 1
+        function drawTab1() {
+            const width = coordCanvas.width;
+            const height = coordCanvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            coordCtx.clearRect(0, 0, width, height);
+
+            // Draw Background Grid
+            coordCtx.strokeStyle = '#1e293b';
+            coordCtx.lineWidth = 1;
+            
+            // Vertical Grid lines
+            for (let x = centerX % scaleFactor; x < width; x += scaleFactor) {
+                coordCtx.beginPath();
+                coordCtx.moveTo(x, 0);
+                coordCtx.lineTo(x, height);
+                coordCtx.stroke();
+            }
+            // Horizontal Grid lines
+            for (let y = centerY % scaleFactor; y < height; y += scaleFactor) {
+                coordCtx.beginPath();
+                coordCtx.moveTo(0, y);
+                coordCtx.lineTo(width, y);
+                coordCtx.stroke();
+            }
+
+            // Draw Coordinate Axes
+            coordCtx.strokeStyle = '#64748b';
+            coordCtx.lineWidth = 2;
+            coordCtx.fillStyle = '#64748b';
+            coordCtx.font = '10px Courier New';
+
+            // X-Axis (Ox)
+            coordCtx.beginPath();
+            coordCtx.moveTo(10, centerY);
+            coordCtx.lineTo(width - 10, centerY);
+            coordCtx.stroke();
+            // X Arrow
+            coordCtx.beginPath();
+            coordCtx.moveTo(width - 10, centerY);
+            coordCtx.lineTo(width - 18, centerY - 5);
+            coordCtx.lineTo(width - 18, centerY + 5);
+            coordCtx.fill();
+            coordCtx.fillText('x (m)', width - 25, centerY + 18);
+
+            // Origin Label
+            coordCtx.fillStyle = '#cbd5e1';
+            coordCtx.font = 'bold 12px Inter';
+            coordCtx.fillText('O', centerX - 12, centerY + 15);
+
+            // Ticks on X
+            coordCtx.fillStyle = '#94a3b8';
+            coordCtx.font = '10px Inter';
+            coordCtx.textAlign = 'center';
+            for (let i = -7; i <= 7; i++) {
+                if (i === 0) continue;
+                const pos = centerX + i * scaleFactor;
+                coordCtx.beginPath();
+                coordCtx.moveTo(pos, centerY - 4);
+                coordCtx.lineTo(pos, centerY + 4);
+                coordCtx.stroke();
+                coordCtx.fillText(i, pos, centerY + 16);
+            }
+
+            // Draw Y-Axis (Oy) if in 2D mode
+            if (t1State.system === '2D') {
+                coordCtx.strokeStyle = '#64748b';
+                coordCtx.beginPath();
+                coordCtx.moveTo(centerX, height - 10);
+                coordCtx.lineTo(centerX, 10);
+                coordCtx.stroke();
+                // Y Arrow
+                coordCtx.beginPath();
+                coordCtx.moveTo(centerX, 10);
+                coordCtx.lineTo(centerX - 5, 18);
+                coordCtx.lineTo(centerX + 5, 18);
+                coordCtx.fill();
+                coordCtx.fillText('y (m)', centerX + 12, 18);
+
+                // Ticks on Y
+                coordCtx.textAlign = 'right';
+                for (let i = -5; i <= 5; i++) {
+                    if (i === 0) continue;
+                    // Y axis in canvas is inverted: screen y 0 is top
+                    const pos = centerY - i * scaleFactor;
+                    coordCtx.beginPath();
+                    coordCtx.moveTo(centerX - 4, pos);
+                    coordCtx.lineTo(centerX + 4, pos);
+                    coordCtx.stroke();
+                    coordCtx.fillText(i, centerX - 8, pos + 3);
+                }
+            }
+
+            // Draw full trajectory trace for specific shapes to improve comprehension
+            if (t1State.motion === 'circular_uniform') {
+                coordCtx.strokeStyle = 'rgba(99, 102, 241, 0.2)';
+                coordCtx.lineWidth = 1.5;
+                coordCtx.beginPath();
+                coordCtx.arc(centerX, centerY, t1State.radius * scaleFactor, 0, Math.PI * 2);
+                coordCtx.stroke();
+            } else if (t1State.motion === 'projectile_motion' && t1State.t > 0) {
+                // Pre-draw analytical parabolic path
+                coordCtx.strokeStyle = 'rgba(245, 158, 11, 0.15)';
+                coordCtx.lineWidth = 2;
+                coordCtx.beginPath();
+                const alphaRad = (t1State.angle * Math.PI) / 180;
+                const vx = t1State.v0 * Math.cos(alphaRad);
+                const vy0 = t1State.v0 * Math.sin(alphaRad);
+                const g = 9.81;
+
+                let trajStarted = false;
+                for (let simT = 0; simT < 5; simT += 0.05) {
+                    const simX = t1State.initialX + vx * simT;
+                    const simY = t1State.initialY + (vy0 * simT - 0.5 * g * simT * simT);
+                    if (simY < -6 || simX > 8.5) break;
+
+                    const pX = centerX + simX * scaleFactor;
+                    const pY = centerY - simY * scaleFactor;
+                    if (!trajStarted) {
+                        coordCtx.moveTo(pX, pY);
+                        trajStarted = true;
+                    } else {
+                        coordCtx.lineTo(pX, pY);
+                    }
+                }
+                coordCtx.stroke();
+            }
+
+            // Calculate current coordinates in canvas coordinates
+            const ballX = centerX + t1State.x * scaleFactor;
+            // If 1D, object stays on Ox axis
+            const ballY = t1State.system === '2D' ? (centerY - t1State.y * scaleFactor) : centerY;
+
+            // Projection lines to Axes (Visual Coordinates Projection)
+            coordCtx.setLineDash([4, 4]);
+            coordCtx.lineWidth = 1.2;
+
+            // To Ox (always present)
+            coordCtx.strokeStyle = '#818cf8';
+            coordCtx.beginPath();
+            coordCtx.moveTo(ballX, ballY);
+            coordCtx.lineTo(ballX, centerY);
+            coordCtx.stroke();
+
+            // To Oy (only in 2D)
+            if (t1State.system === '2D') {
+                coordCtx.strokeStyle = '#34d399';
+                coordCtx.beginPath();
+                coordCtx.moveTo(ballX, ballY);
+                coordCtx.lineTo(centerX, ballY);
+                coordCtx.stroke();
+            }
+            coordCtx.setLineDash([]); // Reset dashed line style
+
+            // Draw the moving Object (Materialized Point)
+            coordCtx.shadowBlur = 15;
+            coordCtx.shadowColor = '#6366f1';
+            
+            // Draw core particle
+            coordCtx.fillStyle = '#818cf8';
+            coordCtx.beginPath();
+            coordCtx.arc(ballX, ballY, 10, 0, Math.PI * 2);
+            coordCtx.fill();
+            coordCtx.strokeStyle = '#ffffff';
+            coordCtx.lineWidth = 2;
+            coordCtx.stroke();
+            
+            // Draw a tiny directional pointer
+            coordCtx.fillStyle = '#ffffff';
+            coordCtx.beginPath();
+            coordCtx.arc(ballX, ballY, 3, 0, Math.PI * 2);
+            coordCtx.fill();
+
+            // Restore shadow
+            coordCtx.shadowBlur = 0;
+
+            // Draw interactive coordinate tags hovering near the particle
+            coordCtx.fillStyle = '#ffffff';
+            coordCtx.font = '600 11px Inter';
+            coordCtx.textAlign = 'left';
+            let labelText = `M(x = ${t1State.x.toFixed(1)}m)`;
+            if (t1State.system === '2D') {
+                labelText = `M(${t1State.x.toFixed(1)}m, ${t1State.y.toFixed(1)}m)`;
+            }
+            coordCtx.fillText(labelText, ballX + 14, ballY - 14);
+
+            // Labels pointing directly to projected coordinates on axes
+            coordCtx.font = 'bold 10px Inter';
+            coordCtx.fillStyle = '#818cf8';
+            coordCtx.textAlign = 'center';
+            coordCtx.fillText(`x = ${t1State.x.toFixed(1)}m`, ballX, centerY > ballY ? centerY + 28 : centerY - 20);
+
+            if (t1State.system === '2D') {
+                coordCtx.fillStyle = '#34d399';
+                coordCtx.textAlign = 'left';
+                coordCtx.fillText(`y = ${t1State.y.toFixed(1)}m`, centerX + 10, ballY - 4);
+            }
+        }
+
+        // ==========================================
+        // TAB 2: DATA, COORDS AND INTERACTIONS
+        // ==========================================
+        let t2State = {
+            // Virtual scale start from 0
+            startPos: { x: -5, y: 0 },
+            currentPos: { x: -5, y: 0 },
+            path: [], // Array of {x, y}
+            distance: 0,
+            displacement: 0,
+            isMoving: { left: false, right: false, up: false, down: false },
+            isPresetRunning: false,
+            presetQueue: []
+        };
+
+        function resetVectorSimulation() {
+            t2State.startPos = { x: -4, y: 1.5 };
+            t2State.currentPos = { x: -4, y: 1.5 };
+            t2State.path = [{ ...t2State.startPos }];
+            t2State.distance = 0;
+            t2State.displacement = 0;
+            t2State.isPresetRunning = false;
+            t2State.presetQueue = [];
+            
+            updateTab2Stats();
+            drawTab2();
+        }
+
+        function handlePhysicalMovement(dx, dy) {
+            if (t2State.isPresetRunning) return;
+
+            const nextX = t2State.currentPos.x + dx;
+            const nextY = t2State.currentPos.y + dy;
+
+            // Boundaries (in meters: -8 to 8 on x, -6 to 6 on y)
+            if (nextX < -7.5 || nextX > 7.5 || nextY < -5.5 || nextY > 5.5) return;
+
+            // Increment calculated physical distance
+            const movementLen = Math.sqrt(dx*dx + dy*dy);
+            t2State.distance += movementLen;
+
+            t2State.currentPos.x = nextX;
+            t2State.currentPos.y = nextY;
+
+            // Add path log
+            t2State.path.push({ ...t2State.currentPos });
+
+            // Calculate vector displacement
+            const dispX = t2State.currentPos.x - t2State.startPos.x;
+            const dispY = t2State.currentPos.y - t2State.startPos.y;
+            t2State.displacement = Math.sqrt(dispX*dispX + dispY*dispY);
+
+            updateTab2Stats();
+        }
+
+        function updateTab2Stats() {
+            document.getElementById('startCoordLabel').textContent = `x₀ = ${t2State.startPos.x.toFixed(1)}m, y₀ = ${t2State.startPos.y.toFixed(1)}m`;
+            document.getElementById('currentCoordLabel').textContent = `x = ${t2State.currentPos.x.toFixed(1)}m, y = ${t2State.currentPos.y.toFixed(1)}m`;
+            
+            document.getElementById('val-distance').textContent = t2State.distance.toFixed(2);
+            document.getElementById('val-displacement').textContent = t2State.displacement.toFixed(2);
+        }
+
+        // Draw dynamic arrow helper on 2d canvas context
+        function drawArrow(ctx, fromX, fromY, toX, toY, color = '#6366f1', thickness = 3) {
+            const headLength = 12; // Length of head in pixels
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            
+            ctx.strokeStyle = color;
+            ctx.lineWidth = thickness;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+
+            // Draw Arrow Head
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headLength * Math.cos(angle - Math.PI / 6), toY - headLength * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(toX - headLength * Math.cos(angle + Math.PI / 6), toY - headLength * Math.sin(angle + Math.PI / 6));
+            ctx.fill();
+        }
+
+        function drawTab2() {
+            const width = vectorCanvas.width;
+            const height = vectorCanvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            vectorCtx.clearRect(0, 0, width, height);
+
+            // Grid background
+            vectorCtx.strokeStyle = '#1e293b';
+            vectorCtx.lineWidth = 1;
+            for (let x = centerX % scaleFactor; x < width; x += scaleFactor) {
+                vectorCtx.beginPath();
+                vectorCtx.moveTo(x, 0);
+                vectorCtx.lineTo(x, height);
+                vectorCtx.stroke();
+            }
+            for (let y = centerY % scaleFactor; y < height; y += scaleFactor) {
+                vectorCtx.beginPath();
+                vectorCtx.moveTo(0, y);
+                vectorCtx.lineTo(width, y);
+                vectorCtx.stroke();
+            }
+
+            // Reference Axes
+            vectorCtx.strokeStyle = '#334155';
+            vectorCtx.lineWidth = 1.5;
+            vectorCtx.beginPath();
+            vectorCtx.moveTo(15, centerY);
+            vectorCtx.lineTo(width - 15, centerY);
+            vectorCtx.moveTo(centerX, height - 15);
+            vectorCtx.lineTo(centerX, 15);
+            vectorCtx.stroke();
+
+            // Label axes simply
+            vectorCtx.fillStyle = '#475569';
+            vectorCtx.font = '9px Inter';
+            vectorCtx.fillText('x', width - 25, centerY + 14);
+            vectorCtx.fillText('y', centerX + 8, 24);
+
+            // Draw Initial Point M0
+            const startX = centerX + t2State.startPos.x * scaleFactor;
+            const startY = centerY - t2State.startPos.y * scaleFactor;
+
+            vectorCtx.fillStyle = '#4f46e5';
+            vectorCtx.beginPath();
+            vectorCtx.arc(startX, startY, 6, 0, Math.PI*2);
+            vectorCtx.fill();
+            vectorCtx.fillStyle = '#ffffff';
+            vectorCtx.font = 'bold 11px Inter';
+            vectorCtx.fillText('M₀ (Bắt đầu)', startX + 10, startY - 8);
+
+            // Draw actual trajectory path (Quãng đường - Orange dashed line)
+            if (t2State.path.length > 1) {
+                vectorCtx.strokeStyle = '#f59e0b'; // Amber-500
+                vectorCtx.lineWidth = 2.5;
+                vectorCtx.setLineDash([3, 4]);
+                vectorCtx.beginPath();
+                vectorCtx.moveTo(startX, startY);
+                for (let i = 1; i < t2State.path.length; i++) {
+                    const px = centerX + t2State.path[i].x * scaleFactor;
+                    const py = centerY - t2State.path[i].y * scaleFactor;
+                    vectorCtx.lineTo(px, py);
+                }
+                vectorCtx.stroke();
+                vectorCtx.setLineDash([]); // Reset
+            }
+
+            // Draw current Position M
+            const currX = centerX + t2State.currentPos.x * scaleFactor;
+            const currY = centerY - t2State.currentPos.y * scaleFactor;
+
+            // Draw vector displacement (Độ dời - Blue straight arrow)
+            if (t2State.distance > 0.05) {
+                drawArrow(vectorCtx, startX, startY, currX, currY, '#10b981', 3.5); // Emerald green for vector
+            }
+
+            // Render current interactive particle
+            vectorCtx.shadowBlur = 10;
+            vectorCtx.shadowColor = '#10b981';
+            vectorCtx.fillStyle = '#10b981';
+            vectorCtx.beginPath();
+            vectorCtx.arc(currX, currY, 9, 0, Math.PI*2);
+            vectorCtx.fill();
+            vectorCtx.strokeStyle = '#ffffff';
+            vectorCtx.lineWidth = 1.5;
+            vectorCtx.stroke();
+            vectorCtx.shadowBlur = 0; // reset
+
+            vectorCtx.fillStyle = '#ffffff';
+            vectorCtx.font = 'bold 11px Inter';
+            vectorCtx.fillText('M (Hiện tại)', currX + 12, currY + 15);
+        }
+
+        // ==========================================
+        // KEYBOARD EVENT LISTENERS FOR CONTROLS
+        // ==========================================
+        const keysPressed = {};
+        window.addEventListener('keydown', (e) => {
+            if (currentActiveTab !== 2) return;
+            const key = e.key.toLowerCase();
+            if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(key)) {
+                e.preventDefault(); // Stop scrolling browser
+                keysPressed[key] = true;
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const key = e.key.toLowerCase();
+            if (keysPressed[key]) {
+                delete keysPressed[key];
+            }
+        });
+
+        // Virtual Touch controls loop trigger
+        let virtualMoveDirection = null;
+        function startMoveVirtual(dir) {
+            virtualMoveDirection = dir;
+        }
+        function stopMoveVirtual() {
+            virtualMoveDirection = null;
+        }
+
+        // Physics tick loops
+        let lastTime = 0;
+        function mainLoop(timestamp) {
+            if (!lastTime) lastTime = timestamp;
+            const dt = (timestamp - lastTime) / 1000;
+            lastTime = timestamp;
+
+            // TAB 1 SIMULATION TICK
+            if (currentActiveTab === 1 && t1State.isPlaying) {
+                // Accelerate physical simulation time scale slightly
+                t1State.t += dt;
+                calculatePositions();
+                drawTab1();
+            }
+
+            // TAB 2 KEYBOARD/TOUCH TICK
+            if (currentActiveTab === 2) {
+                let dx = 0;
+                let dy = 0;
+                const speed = 3; // meters per second speed of interactive dot
+
+                if (keysPressed['arrowup'] || keysPressed['w'] || virtualMoveDirection === 'up') dy += speed * dt;
+                if (keysPressed['arrowdown'] || keysPressed['s'] || virtualMoveDirection === 'down') dy -= speed * dt;
+                if (keysPressed['arrowleft'] || keysPressed['a'] || virtualMoveDirection === 'left') dx -= speed * dt;
+                if (keysPressed['arrowright'] || keysPressed['d'] || virtualMoveDirection === 'right') dx += speed * dt;
+
+                if (dx !== 0 || dy !== 0) {
+                    handlePhysicalMovement(dx, dy);
+                    drawTab2();
+                }
+            }
+
+            // Run next pre-calculated state queue for presets demo
+            if (currentActiveTab === 2 && t2State.isPresetRunning && t2State.presetQueue.length > 0) {
+                const target = t2State.presetQueue[0];
+                const cur = t2State.currentPos;
+                const distX = target.x - cur.x;
+                const distY = target.y - cur.y;
+                const distTotal = Math.sqrt(distX*distX + distY*distY);
+
+                const stepSize = 4 * dt; // speed scale
+                if (distTotal <= stepSize) {
+                    // close enough, lock and shift to next
+                    handlePhysicalMovement(distX, distY);
+                    t2State.presetQueue.shift();
+                } else {
+                    const stepX = (distX / distTotal) * stepSize;
+                    const stepY = (distY / distTotal) * stepSize;
+                    handlePhysicalMovement(stepX, stepY);
+                }
+                
+                if (t2State.presetQueue.length === 0) {
+                    t2State.isPresetRunning = false;
+                }
+                drawTab2();
+            }
+
+            requestAnimationFrame(mainLoop);
+        }
+
+        // ==========================================
+        // AUTOMATED PRESETS FOR QUICK EXPERIMENT
+        // ==========================================
+        function runPreset(type) {
+            resetVectorSimulation();
+            t2State.isPresetRunning = true;
+            t2State.startPos = { x: -4, y: 0 };
+            t2State.currentPos = { x: -4, y: 0 };
+            t2State.path = [{ ...t2State.startPos }];
+            t2State.distance = 0;
+            t2State.displacement = 0;
+
+            if (type === 'straight') {
+                // Motion straight forward then back to a position
+                const queue = [];
+                // Go straight right up to 4m
+                for (let x = -3.5; x <= 4.0; x += 0.5) {
+                    queue.push({ x: x, y: 0 });
+                }
+                // Go backward to 0m
+                for (let x = 3.5; x >= 0; x -= 0.5) {
+                    queue.push({ x: x, y: 0 });
+                }
+                t2State.presetQueue = queue;
+                document.getElementById('tab2-insight').innerHTML = "Chạy thử: Đi thẳng đến 4m rồi quay lại 0m.<br>👉 <strong>Quãng đường:</strong> s = 8m + 4m = 12m.<br>👉 <strong>Độ dời:</strong> d = |0 - (-4)| = 4m.";
+            } else if (type === 'circle') {
+                // Circle motion starting from O
+                t2State.startPos = { x: 0, y: -2 };
+                t2State.currentPos = { x: 0, y: -2 };
+                t2State.path = [{ ...t2State.startPos }];
+                const queue = [];
+                const radius = 2.5;
+                // Generate a full circle coordinates list
+                for (let angle = -Math.PI / 2; angle <= (3/2) * Math.PI + 0.1; angle += 0.15) {
+                    queue.push({
+                        x: radius * Math.cos(angle),
+                        y: radius * Math.sin(angle)
+                    });
+                }
+                t2State.presetQueue = queue;
+                document.getElementById('tab2-insight').innerHTML = "Chạy thử: Di chuyển tròn đều khép kín.<br>👉 <strong>Quãng đường:</strong> s = Chu vi = 2πR ≈ 15.7m.<br>👉 <strong>Độ dời:</strong> d = 0m (Do điểm đầu trùng với điểm cuối).";
+            }
+            updateTab2Stats();
+        }
+
+        // ==========================================
+        // TAB CONTROLLER
+        // ==========================================
+        function switchTab(tabNum) {
+            currentActiveTab = tabNum;
+            const t1 = document.getElementById('tab1-content');
+            const t2 = document.getElementById('tab2-content');
+            const btn1 = document.getElementById('btnTab1');
+            const btn2 = document.getElementById('btnTab2');
+
+            if (tabNum === 1) {
+                t1.classList.remove('hidden');
+                t2.classList.add('hidden');
+                btn1.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 bg-indigo-600 text-white shadow-md";
+                btn2.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200";
+                setTimeout(resizeCanvases, 50);
+            } else {
+                t1.classList.add('hidden');
+                t2.classList.remove('hidden');
+                btn2.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 bg-indigo-600 text-white shadow-md";
+                btn1.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200";
+                setTimeout(resizeCanvases, 50);
+                resetVectorSimulation();
+            }
+        }
+
+        // Adjust Canvas sizes to container fluid layouts dynamically
+        function resizeCanvases() {
+            // Coordinate Canvas (Tab 1)
+            const d1 = coordCanvas.parentElement;
+            coordCanvas.width = d1.clientWidth;
+            coordCanvas.height = d1.clientHeight;
+            if (currentActiveTab === 1) drawTab1();
+
+            // Vector Canvas (Tab 2)
+            const d2 = vectorCanvas.parentElement;
+            vectorCanvas.width = d2.clientWidth;
+            vectorCanvas.height = d2.clientHeight;
+            if (currentActiveTab === 2) drawTab2();
+        }
+
+        // Window Handlers
+        window.onload = function() {
+            initTab1Dropdown();
+            resizeCanvases();
+            window.addEventListener('resize', resizeCanvases);
+            requestAnimationFrame(mainLoop);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 5: Tốc độ và vận tốc</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        /* Custom scrollbar for tables */
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #e2e8f0;
+            font-weight: bold;
+        }
+        /* Style cho MathJax ẩn đi trước khi load xong tránh nhấp nháy */
+        .mjx-chtml { display: inline-block; }
+    </style>
+    <!-- MathJax -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="p-4 md:p-8 max-w-5xl mx-auto">
+
+    <!-- Header Chương và Bài -->
+    <div class="bg-[#660000] text-white p-6 rounded-[12px] mb-8 shadow-md text-center">
+        <h2 class="text-xl font-semibold border-b border-white/40 pb-2 mb-3">CHƯƠNG II: ĐỘNG HỌC</h2>
+        <h1 class="text-3xl font-bold uppercase tracking-wide">Bài 5: Tốc độ và vận tốc</h1>
+    </div>
+
+    <!-- Lời dẫn -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 mb-8 border border-gray-800">
+        <p class="italic text-lg text-gray-700 text-center">
+            Trong đời sống, tốc độ và vận tốc là hai đại lượng đều dùng để mô tả sự nhanh chậm của chuyển động. Em đã từng sử dụng hai đại lượng này trong những trường hợp cụ thể nào?
+        </p>
+    </div>
+
+    <!-- I. TỐC ĐỘ -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold uppercase border-b-4 border-slate-800 pb-2 mb-6 text-slate-800">I. Tốc độ</h2>
+        
+        <h3 class="text-xl font-bold text-[#660000] mb-4">1. Tốc độ trung bình</h3>
+        <p class="mb-4">Người ta dùng hai cách sau đây để xác định độ nhanh hay chậm của chuyển động:</p>
+        <ul class="list-disc pl-6 mb-4">
+            <li>So sánh quãng đường đi được trong cùng một thời gian.</li>
+            <li>So sánh thời gian để đi cùng một quãng đường.</li>
+        </ul>
+
+        <!-- Bảng 5.1 -->
+        <div class="table-container mb-4">
+            <p class="text-center font-bold mb-2">Bảng 5.1. Kỉ lục chạy ba cự li của một vận động viên người Nam Phi</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cự li chạy (m)</th>
+                        <th>Thời gian chạy (s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>100</td><td>9,98</td></tr>
+                    <tr><td>200</td><td>19,94</td></tr>
+                    <tr><td>400</td><td>43,45</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Hoạt động / Nêu vấn đề -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-md mb-6 shadow-sm">
+            <p class="font-bold mb-2 flex items-center">
+                <span class="mr-2">❓</span> Nêu vấn đề
+            </p>
+            <p class="mb-3">Một vận động viên người Nam Phi đã lập kỉ lục thế giới về chạy ba cự li: 100 m, 200 m và 400 m (Bảng 5.1). Hãy dùng hai cách trên để xác định vận động viên này chạy nhanh nhất ở cự li nào.</p>
+            <button onclick="toggleAnswer('ans1')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="ans1" class="hidden bg-[#dcfce7] p-4 rounded mt-3 border border-green-300">
+                <p><strong>Cách 1:</strong> Tính quãng đường đi được trong 1 giây (tốc độ \(v = \frac{s}{t}\)):</p>
+                <ul class="list-disc pl-5 mb-2">
+                    <li>Cự li 100m: \(v = \frac{100}{9,98} \approx 10,02\) (m/s)</li>
+                    <li>Cự li 200m: \(v = \frac{200}{19,94} \approx 10,03\) (m/s)</li>
+                    <li>Cự li 400m: \(v = \frac{400}{43,45} \approx 9,21\) (m/s)</li>
+                </ul>
+                <p>Vận động viên chạy nhanh nhất ở cự li <strong>200m</strong>.</p>
+            </div>
+        </div>
+
+        <p class="mb-4">Người ta thường dùng quãng đường đi được trong cùng một đơn vị thời gian để xác định độ nhanh, chậm của chuyển động. Đại lượng này gọi là tốc độ trung bình của chuyển động (gọi tắt là tốc độ trung bình), kí hiệu là \( v \).</p>
+
+        <!-- Khung định nghĩa / Công thức -->
+        <div class="bg-[#fef9c3] border border-[#eab308] p-5 rounded-md mb-6 shadow-sm text-center">
+            <h4 class="font-bold text-lg mb-2">Tốc độ trung bình</h4>
+            <p class="mb-2">\( v = \frac{\text{Quãng đường đi được}}{\text{Thời gian}} \)</p>
+            <p class="text-xl font-bold text-red-700">\( v = \frac{s}{t} \)</p>
+            <p class="text-sm mt-2 text-gray-600">(5.1a)</p>
+        </div>
+
+        <!-- Chú ý -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md mb-6 shadow-sm">
+            <p class="font-bold text-red-700 mb-2">Lưu ý:</p>
+            <p class="mb-1">Từ công thức (5.1a) suy ra:</p>
+            <ul class="list-disc pl-6 mb-2">
+                <li>Quãng đường đi được: \( s = v.t \)</li>
+                <li>Thời gian đi: \( t = \frac{s}{v} \)</li>
+            </ul>
+            <p class="mt-2">Nếu gọi quãng đường đi được từ thời điểm ban đầu tới thời điểm \( t_1 \) là \( s_1 \), tới thời điểm \( t_2 \) là \( s_2 \) thì:</p>
+            <ul class="list-disc pl-6 mb-2">
+                <li>Thời gian đi là: \( \Delta t = t_2 - t_1 \)</li>
+                <li>Quãng đường đi được trong thời gian \( \Delta t \) là \( \Delta s = s_2 - s_1 \)</li>
+            </ul>
+            <p class="font-bold mt-2">Tốc độ trung bình của chuyển động là: <span class="text-red-700">\( v = \frac{\Delta s}{\Delta t} \)</span> (5.1b)</p>
+        </div>
+
+        <!-- Bảng 5.2 -->
+        <div class="table-container mb-4">
+            <p class="text-center font-bold mb-2">Bảng 5.2. Thành tích của một nữ vận động viên Việt Nam</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Giải thi đấu</th>
+                        <th>Cự li chạy (m)</th>
+                        <th>Thời gian chạy (s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Điền kinh quốc gia 2016</td><td>100</td><td>11,64</td></tr>
+                    <tr><td>SEA Games 29 (2017)</td><td>100</td><td>11,56</td></tr>
+                    <tr><td>SEA Games 30 (2019)</td><td>100</td><td>11,54</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Câu hỏi mục 1 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-md mb-8 shadow-sm">
+            <p class="font-bold mb-2 flex items-center">
+                <span class="mr-2">❓</span> Câu hỏi
+            </p>
+            <p class="mb-2">1. Tại sao tốc độ này được gọi là tốc độ trung bình?</p>
+            <p class="mb-3">2. Hãy tính tốc độ trung bình ra đơn vị m/s và km/h của nữ vận động viên tại một số giải thi đấu dựa vào Bảng 5.2.</p>
+            
+            <button onclick="toggleAnswer('ans2')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="ans2" class="hidden bg-[#dcfce7] p-4 rounded mt-3 border border-green-300">
+                <p><strong>Câu 1:</strong> Gọi là tốc độ trung bình vì trên thực tế, trong suốt quãng đường, người hoặc vật có thể chuyển động lúc nhanh lúc chậm (không đều). Giá trị tính được đại diện cho mức độ nhanh chậm trung bình trên toàn bộ quãng đường đó.</p>
+                <hr class="my-2 border-green-400">
+                <p><strong>Câu 2:</strong> Áp dụng công thức \( v = \frac{s}{t} \), đổi sang km/h nhân với 3,6:</p>
+                <ul class="list-disc pl-5 mt-2">
+                    <li>ĐK 2016: \( v = \frac{100}{11,64} \approx 8,59 \) m/s \(\approx 30,92\) km/h</li>
+                    <li>SEA Games 29: \( v = \frac{100}{11,56} \approx 8,65 \) m/s \(\approx 31,14\) km/h</li>
+                    <li>SEA Games 30: \( v = \frac{100}{11,54} \approx 8,67 \) m/s \(\approx 31,21\) km/h</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-[#660000] mb-4 mt-6">2. Tốc độ tức thời</h3>
+        <p class="mb-4">Trên xe máy và ô tô, đồng hồ tốc độ (tốc kế) đặt trước mặt người lái xe, chỉ tốc độ mà xe đang chạy vào thời điểm người lái xe đọc số chỉ của tốc kế. Tốc độ này được gọi là <strong>tốc độ tức thời</strong>.</p>
+        
+        <!-- Em có biết -->
+        <div class="bg-purple-50 border border-purple-300 p-4 rounded-md mb-6 shadow-sm">
+            <p class="font-bold text-purple-800 mb-2">💡 Em có biết?</p>
+            <p>Khái niệm tốc độ tức thời liên quan đến phép tính đạo hàm của môn Toán sẽ được học ở lớp 11. Có thể coi tốc độ tức thời là tốc độ trung bình trong một khoảng thời gian rất ngắn.</p>
+        </div>
+
+        <!-- Câu hỏi mục 2 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-md mb-4 shadow-sm">
+            <p class="font-bold mb-2 flex items-center">
+                <span class="mr-2">❓</span> Câu hỏi tình huống
+            </p>
+            <p class="mb-2">Bố bạn A đưa A đi học bằng xe máy vào lúc 7 giờ. Sau 5 phút xe đạt tốc độ 30 km/h. Sau 10 phút nữa, xe tăng tốc độ lên thêm 15 km/h. Đến gần trường, xe giảm dần tốc độ và dừng trước cổng trường lúc 7 giờ 30 phút.</p>
+            <p class="mb-2">a) Tính tốc độ trung bình của xe máy chở A khi đi từ nhà đến trường. Biết quãng đường từ nhà đến trường dài 15 km.</p>
+            <p class="mb-3">b) Tính tốc độ của xe vào lúc 7 giờ 15 phút và 7 giờ 30 phút. Tốc độ này là tốc độ gì?</p>
+            
+            <button onclick="toggleAnswer('ans3')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="ans3" class="hidden bg-[#dcfce7] p-4 rounded mt-3 border border-green-300">
+                <p><strong>a)</strong> Thời gian đi từ nhà đến trường: \( t = \text{7h30} - \text{7h00} = 30 \text{ phút} = 0,5 \text{ giờ} \).</p>
+                <p>Tốc độ trung bình: \( v = \frac{s}{t} = \frac{15}{0,5} = 30 \) km/h.</p>
+                <hr class="my-2 border-green-400">
+                <p><strong>b)</strong> </p>
+                <ul class="list-disc pl-5 mt-2">
+                    <li>Vào lúc 7h15 (sau 15 phút), xe tăng thêm 15km/h so với mức 30km/h: tốc độ là \( 30 + 15 = 45 \) km/h.</li>
+                    <li>Vào lúc 7h30 xe dừng lại: tốc độ là \( 0 \) km/h.</li>
+                </ul>
+                <p class="mt-2">Các tốc độ này là <strong>tốc độ tức thời</strong> tại thời điểm đọc.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- II. VẬN TỐC -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold uppercase border-b-4 border-slate-800 pb-2 mb-6 text-slate-800">II. Vận tốc</h2>
+        
+        <p class="mb-4">Biết tốc độ và thời gian chuyển động nhưng chưa biết hướng chuyển động thì chưa thể xác định được vị trí của vật. Biết tốc độ, thời gian chuyển động và hướng chuyển động của vật thì có thể xác định được vị trí của vật.</p>
+
+        <!-- Hình ảnh 5.1 Placeholder -->
+        <div class="mb-6">
+            <img src="h1.png" alt="Hình 5.1: Sơ đồ di chuyển" class="mx-auto block rounded shadow border border-gray-200 max-w-full" style="max-height: 400px; object-fit: contain;">
+            <p class="text-center italic text-sm mt-2">Hình 5.1</p>
+        </div>
+
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-md mb-6 shadow-sm">
+            <p class="font-bold mb-2 flex items-center">
+                <span class="mr-2">❓</span> Câu hỏi
+            </p>
+            <p class="mb-3">Một người đi xe máy qua ngã tư (Hình 5.1) với tốc độ trung bình 30 km/h theo hướng Bắc. Sau 3 phút người đó đến vị trí nào trên hình?</p>
+            <button onclick="toggleAnswer('ans4')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="ans4" class="hidden bg-[#dcfce7] p-4 rounded mt-3 border border-green-300">
+                <p>Thời gian di chuyển: \( t = 3 \text{ phút} = \frac{3}{60} \text{ h} = 0,05 \text{ h} \).</p>
+                <p>Quãng đường đi được: \( s = v \times t = 30 \times 0,05 = 1,5 \) km.</p>
+                <p>Quan sát tỉ lệ trên Hình 5.1 (mỗi khoảng = 0,5 km), người đó đi theo hướng Bắc được 3 khoảng (1,5 / 0,5 = 3). Vậy người đó sẽ đến <strong>vị trí G</strong> trên hình.</p>
+            </div>
+        </div>
+
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-md mb-8 shadow-sm">
+            <p class="font-bold mb-2 flex items-center">
+                <span class="mr-2">❓</span> Nêu vấn đề
+            </p>
+            <p class="mb-3">Theo em biểu thức nào sau đây xác định giá trị vận tốc? Tại sao?</p>
+            <p class="ml-4 mb-3">a) \( \frac{s}{t} \) &nbsp;&nbsp; b) \( v.t \) &nbsp;&nbsp; c) \( \frac{\vec{d}}{t} \) &nbsp;&nbsp; d) \( \vec{d}.t \)</p>
+            <button onclick="toggleAnswer('ans5')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="ans5" class="hidden bg-[#dcfce7] p-4 rounded mt-3 border border-green-300">
+                <p>Đáp án đúng là <strong>c) \( \frac{\vec{d}}{t} \)</strong>.</p>
+                <p>Bởi vì vận tốc là đại lượng vectơ, được xác định bằng thương số giữa độ dịch chuyển (vectơ) và thời gian dịch chuyển. Biểu thức (a) chỉ xác định tốc độ (đại lượng vô hướng).</p>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-[#660000] mb-4">1. Vận tốc trung bình</h3>
+        <p class="mb-4">Trong Vật lí, người ta dùng thương số của độ dịch chuyển và thời gian dịch chuyển để xác định độ nhanh, chậm của chuyển động theo một hướng xác định. Đại lượng này được gọi là vận tốc trung bình, kí hiệu là \( \vec{v} \).</p>
+
+        <!-- Khung định nghĩa Vận tốc TB -->
+        <div class="bg-[#fef9c3] border border-[#eab308] p-5 rounded-md mb-6 shadow-sm text-center">
+            <p class="text-xl font-bold text-red-700">\( \vec{v} = \frac{\vec{d}}{t} \)</p>
+            <p class="text-sm mt-1 text-gray-600">(5.2a)</p>
+            <p class="mt-4">Tương tự như trường hợp tốc độ, ta có thể viết:</p>
+            <p class="text-xl font-bold text-red-700 mt-2">\( \vec{v} = \frac{\Delta \vec{d}}{\Delta t} \)</p>
+            <p class="text-sm mt-1 text-gray-600">(5.2b)</p>
+            <p class="mt-2 text-sm italic">Trong đó \( \Delta \vec{d} \) là độ dịch chuyển trong thời gian \( \Delta t \).</p>
+        </div>
+
+        <p class="mb-2">Vì độ dịch chuyển là một đại lượng vectơ nên vận tốc cũng là một đại lượng vectơ. Vectơ vận tốc có:</p>
+        <ul class="list-disc pl-6 mb-6">
+            <li>Gốc nằm trên vật chuyển động;</li>
+            <li>Hướng là hướng của độ dịch chuyển;</li>
+            <li>Độ dài tỉ lệ với độ lớn của vận tốc.</li>
+        </ul>
+
+        <!-- Hình ảnh 5.2 -->
+        <div class="mb-6">
+            <img src="h2.png" alt="Hình 5.2: Lộ trình từ nhà đến trường" class="mx-auto block rounded shadow border border-gray-200 max-w-full" style="max-height: 350px; object-fit: contain;">
+            <p class="text-center italic text-sm mt-2">Hình 5.2</p>
+        </div>
+
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-md mb-8 shadow-sm">
+            <p class="font-bold mb-2 flex items-center">
+                <span class="mr-2">❓</span> Vận dụng
+            </p>
+            <p class="mb-3">Bạn A đi học từ nhà đến trường theo lộ trình ABC (Hình 5.2). Biết bạn A đi đoạn đường AB = 400 m hết 6 phút, đoạn đường BC = 300 m hết 4 phút. Xác định tốc độ trung bình và vận tốc trung bình của bạn A khi đi từ nhà đến trường.</p>
+            <button onclick="toggleAnswer('ans6')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="ans6" class="hidden bg-[#dcfce7] p-4 rounded mt-3 border border-green-300">
+                <p>Tổng quãng đường đi được: \( s = AB + BC = 400 + 300 = 700 \) (m).</p>
+                <p>Tổng thời gian: \( t = 6 \text{ phút} + 4 \text{ phút} = 10 \text{ phút} = 600 \) (s).</p>
+                <p><strong>Tốc độ trung bình:</strong> \( v = \frac{s}{t} = \frac{700}{600} \approx 1,17 \) (m/s).</p>
+                <hr class="my-2 border-green-400">
+                <p>Vì ABC là tam giác vuông tại B, <strong>độ lớn độ dịch chuyển</strong> là cạnh huyền AC:</p>
+                <p>\( d = AC = \sqrt{AB^2 + BC^2} = \sqrt{400^2 + 300^2} = 500 \) (m).</p>
+                <p><strong>Vận tốc trung bình:</strong> có độ lớn \( v = \frac{d}{t} = \frac{500}{600} \approx 0,83 \) (m/s). Hướng từ A đến C.</p>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-[#660000] mb-4">2. Vận tốc tức thời</h3>
+        <p class="mb-4">Vận tốc tức thời là vận tốc tại một thời điểm xác định, được kí hiệu là \( \vec{v}_t \).</p>
+        <div class="bg-[#fef9c3] border border-[#eab308] p-4 rounded-md mb-8 shadow-sm text-center font-bold text-lg text-red-700">
+            \( \vec{v}_t = \frac{\Delta \vec{d}}{\Delta t} \) <span class="text-black font-normal text-base ml-2">với \( \Delta t \) rất nhỏ.</span>
+        </div>
+
+        <h3 class="text-xl font-bold text-[#660000] mb-4">3. Tổng hợp vận tốc</h3>
+        
+        <h4 class="font-bold text-lg mb-3">a) Tổng hợp hai vận tốc cùng phương</h4>
+        <div class="bg-gray-50 border border-gray-300 p-4 rounded-md mb-6">
+            <p class="font-bold text-blue-800 mb-2">Bài tập ví dụ:</p>
+            <p class="mb-4">Trên đoàn tàu đang chạy thẳng với vận tốc trung bình 36 km/h so với mặt đường, một hành khách đi về phía đầu tàu với vận tốc 1 m/s so với mặt sàn tàu (Hình 5.3).</p>
+            <p>a) Hành khách này tham gia mấy chuyển động?</p>
+            <p class="mb-4">b) Làm cách nào để xác định được vận tốc của hành khách đối với mặt đường?</p>
+            
+            <div class="mb-4">
+                <img src="h3.png" alt="Hình 5.3: Chuyển động trên tàu" class="mx-auto block rounded border border-gray-200 max-w-full" style="max-height: 250px; object-fit: contain;">
+                <p class="text-center italic text-sm mt-2">Hình 5.3</p>
+            </div>
+
+            <button onclick="toggleAnswer('ans7')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem giải chi tiết</button>
+            <div id="ans7" class="hidden mt-4 pt-4 border-t border-gray-300">
+                <p><strong>Giải:</strong></p>
+                <p>a) Hành khách này tham gia 2 chuyển động: Chuyển động với vận tốc 1 m/s so với sàn tàu và chuyển động do tàu kéo đi (chuyển động kéo theo) với vận tốc bằng vận tốc của tàu so với mặt đường.</p>
+                <p class="mt-2">b) Nếu gọi \( \vec{v}_{1,2} \) là vận tốc của hành khách so với tàu, \( \vec{v}_{2,3} \) là vận tốc của tàu so với mặt đường và \( \vec{v}_{1,3} \) là vận tốc của hành khách so với mặt đường thì:</p>
+                <p class="text-center font-bold my-2 text-red-700">\( \vec{v}_{1,3} = \vec{v}_{1,2} + \vec{v}_{2,3} \)</p>
+                <p>Đổi \( v_{2,3} = 36 \text{ km/h} = 10 \text{ m/s} \).</p>
+                <p>Vì các chuyển động trên đều là chuyển động thẳng theo cùng hướng chạy của đoàn tàu nên:</p>
+                <p class="text-center font-bold my-2">\( v_{1,3} = v_{1,2} + v_{2,3} = 1 + 10 = 11 \text{ m/s}. \)</p>
+                <p>Hướng của vận tốc là hướng đoàn tàu chạy.</p>
+            </div>
+        </div>
+
+        <h4 class="font-bold text-lg mb-3">b) Tổng hợp hai vận tốc vuông góc với nhau</h4>
+        <div class="bg-gray-50 border border-gray-300 p-4 rounded-md mb-6">
+            <p class="font-bold text-blue-800 mb-2">Bài tập ví dụ:</p>
+            <p class="mb-4">Một ca nô chạy trong hồ nước yên lặng có vận tốc tối đa 18 km/h. Nếu ca nô chạy ngang một con sông có dòng chảy theo hướng Bắc - Nam với vận tốc lên tới 5 m/s thì vận tốc tối đa nó có thể đạt được so với bờ sông là bao nhiêu và theo hướng nào?</p>
+            
+            <div class="mb-4">
+                <img src="h4.png" alt="Hình 5.4: Ca nô qua sông" class="mx-auto block rounded border border-gray-200 max-w-full" style="max-height: 250px; object-fit: contain;">
+                <p class="text-center italic text-sm mt-2">Hình 5.4</p>
+            </div>
+
+            <button onclick="toggleAnswer('ans8')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem giải chi tiết</button>
+            <div id="ans8" class="hidden mt-4 pt-4 border-t border-gray-300">
+                <p><strong>Giải:</strong></p>
+                <p>Đổi \( 18 \text{ km/h} = 5 \text{ m/s} \).</p>
+                <p>Gọi vận tốc của ca nô đối với mặt nước là \( \vec{v}_{1,2} \), vận tốc của nước chảy đối với bờ sông là \( \vec{v}_{2,3} \). Vận tốc của ca nô đối với bờ sông là:</p>
+                <p class="text-center font-bold my-2 text-red-700">\( \vec{v}_{1,3} = \vec{v}_{1,2} + \vec{v}_{2,3} \)</p>
+                <p>Vì hai vận tốc vuông góc nhau, suy ra độ lớn:</p>
+                <p class="text-center font-bold my-2">\( v_{1,3} = \sqrt{v_{1,2}^2 + v_{2,3}^2} = \sqrt{5^2 + 5^2} \approx 7,07 \text{ m/s} \)</p>
+                <p>Vì \( AB = BC \) (đều bằng 5 m/s) nên tam giác ABC vuông cân, góc \( \widehat{BAC} = 45^\circ \). Hướng của vận tốc nghiêng 45° theo hướng Đông - Nam (Hình 5.4).</p>
+            </div>
+        </div>
+
+        <!-- Các câu hỏi áp dụng cuối bài -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-md mb-6 shadow-sm">
+            <p class="font-bold mb-3 flex items-center text-lg">
+                <span class="mr-2">📝</span> Bài tập áp dụng
+            </p>
+            <ol class="list-decimal pl-5 mb-4 space-y-3">
+                <li>Hãy xác định vận tốc của hành khách đối với mặt đường nếu người này chuyển động về cuối đoàn tàu (ngược chiều tàu chạy) với vận tốc có cùng độ lớn 1 m/s.</li>
+                <li>Một người bơi trong bể bơi yên lặng có thể đạt tới vận tốc 1 m/s. Nếu người này bơi xuôi dòng sông có dòng chảy với vận tốc 1 m/s thì có thể đạt vận tốc tối đa là bao nhiêu?</li>
+                <li>Một máy bay đang bay theo hướng Bắc với vận tốc 200 m/s thì bị gió từ hướng Tây thổi vào với vận tốc 20 m/s. Xác định vận tốc tổng hợp của máy bay lúc này.</li>
+            </ol>
+            <button onclick="toggleAnswer('ans9')" class="bg-[#660000] text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="ans9" class="hidden bg-[#dcfce7] p-4 rounded mt-3 border border-green-300">
+                <p><strong>1.</strong> Chọn chiều dương là chiều tàu chạy. Vận tốc tàu \( v_{2,3} = 10 \text{ m/s} \). Vận tốc khách đối với tàu \( v_{1,2} = -1 \text{ m/s} \). <br> Vận tốc khách đối với đường: \( v_{1,3} = v_{1,2} + v_{2,3} = -1 + 10 = 9 \text{ m/s} \). Hướng cùng chiều tàu chạy.</p>
+                <hr class="my-2 border-green-400">
+                <p><strong>2.</strong> Bơi xuôi dòng (hai vận tốc cùng phương, cùng chiều):<br> Vận tốc tối đa: \( v_{max} = v_{nguoi} + v_{nuoc} = 1 + 1 = 2 \text{ m/s} \).</p>
+                <hr class="my-2 border-green-400">
+                <p><strong>3.</strong> Vận tốc máy bay và vận tốc gió vuông góc với nhau.<br> \( v_{tong} = \sqrt{v_{mb}^2 + v_{gio}^2} = \sqrt{200^2 + 20^2} = \sqrt{40000 + 400} = \sqrt{40400} \approx 201 \text{ m/s} \). <br> Hướng Đông Bắc.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Tóm tắt & Kỹ năng -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <!-- Em đã học -->
+        <div class="bg-blue-50 border-t-4 border-blue-600 rounded-lg p-5 shadow-md">
+            <h3 class="text-lg font-bold text-blue-800 mb-3 text-center uppercase">Em đã học</h3>
+            <ul class="list-disc pl-5 space-y-2 text-sm">
+                <li>Tốc độ trung bình: \( v = \frac{s}{t} \) hoặc \( v = \frac{\Delta s}{\Delta t} \)</li>
+                <li>Tốc độ tức thời là tốc độ tại một thời điểm xác định.</li>
+                <li>Vận tốc trung bình: \( \vec{v} = \frac{\vec{d}}{t} \) hoặc \( \vec{v} = \frac{\Delta \vec{d}}{\Delta t} \)</li>
+                <li>Vận tốc tức thời: \( \vec{v}_t = \frac{\Delta \vec{d}}{\Delta t} \) với \( \Delta t \) rất nhỏ.</li>
+                <li>Khi vật chuyển động thẳng theo một hướng thì tốc độ và vận tốc có độ lớn bằng nhau: \( v = |\vec{v}| \).</li>
+                <li>Công thức cộng vận tốc: \( \vec{v}_{1,3} = \vec{v}_{1,2} + \vec{v}_{2,3} \)</li>
+            </ul>
+        </div>
+        
+        <!-- Em có thể -->
+        <div class="bg-teal-50 border-t-4 border-teal-600 rounded-lg p-5 shadow-md">
+            <h3 class="text-lg font-bold text-teal-800 mb-3 text-center uppercase">Em có thể</h3>
+            <ul class="list-disc pl-5 space-y-2">
+                <li>Tự xác định được tốc độ chuyển động của mình trong một số trường hợp đơn giản.</li>
+                <li>Sử dụng đúng các thuật ngữ tốc độ và vận tốc trong các tình huống khác nhau.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- BÀI TẬP CỦNG CỐ TRẮC NGHIỆM -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold uppercase border-b-4 border-slate-800 pb-2 mb-6 text-slate-800">Củng cố - Trắc nghiệm</h2>
+        
+        <form id="quizForm" class="space-y-6">
+            <!-- Câu 1 -->
+            <div class="p-4 bg-gray-50 rounded border border-gray-200">
+                <p class="font-bold mb-2">Câu 1: Tốc độ trung bình là đại lượng dùng để:</p>
+                <label class="block mb-1"><input type="radio" name="q1" value="A" class="mr-2"> A. Xác định vị trí của vật trong không gian.</label>
+                <label class="block mb-1"><input type="radio" name="q1" value="B" class="mr-2"> B. Xác định hướng chuyển động của vật.</label>
+                <label class="block mb-1"><input type="radio" name="q1" value="C" class="mr-2"> C. Mô tả mức độ nhanh, chậm của chuyển động.</label>
+                <label class="block mb-1"><input type="radio" name="q1" value="D" class="mr-2"> D. Xác định lực tác dụng lên vật.</label>
+                <p class="hidden text-green-700 mt-2 font-medium" id="sol-q1"><strong>Giải thích:</strong> Tốc độ dùng để đặc trưng cho sự nhanh, chậm của chuyển động. (Đáp án C)</p>
+            </div>
+
+            <!-- Câu 2 -->
+            <div class="p-4 bg-gray-50 rounded border border-gray-200">
+                <p class="font-bold mb-2">Câu 2: Đồng hồ tốc kế trên xe máy hiển thị thông số nào sau đây?</p>
+                <label class="block mb-1"><input type="radio" name="q2" value="A" class="mr-2"> A. Tốc độ trung bình.</label>
+                <label class="block mb-1"><input type="radio" name="q2" value="B" class="mr-2"> B. Tốc độ tức thời.</label>
+                <label class="block mb-1"><input type="radio" name="q2" value="C" class="mr-2"> C. Vận tốc trung bình.</label>
+                <label class="block mb-1"><input type="radio" name="q2" value="D" class="mr-2"> D. Vận tốc tức thời.</label>
+                <p class="hidden text-green-700 mt-2 font-medium" id="sol-q2"><strong>Giải thích:</strong> Tốc kế chỉ giá trị tốc độ tại đúng thời điểm người lái xe quan sát, đó là tốc độ tức thời. (Đáp án B)</p>
+            </div>
+
+            <!-- Câu 3 -->
+            <div class="p-4 bg-gray-50 rounded border border-gray-200">
+                <p class="font-bold mb-2">Câu 3: Công thức nào sau đây biểu diễn đúng vận tốc trung bình?</p>
+                <label class="block mb-1"><input type="radio" name="q3" value="A" class="mr-2"> A. \( v = \frac{s}{t} \)</label>
+                <label class="block mb-1"><input type="radio" name="q3" value="B" class="mr-2"> B. \( \vec{v} = \frac{s}{t} \)</label>
+                <label class="block mb-1"><input type="radio" name="q3" value="C" class="mr-2"> C. \( \vec{v} = \frac{\vec{d}}{t} \)</label>
+                <label class="block mb-1"><input type="radio" name="q3" value="D" class="mr-2"> D. \( v = \frac{\vec{d}}{t} \)</label>
+                <p class="hidden text-green-700 mt-2 font-medium" id="sol-q3"><strong>Giải thích:</strong> Vận tốc trung bình được xác định bằng thương số giữa độ dịch chuyển (vectơ d) và thời gian. (Đáp án C)</p>
+            </div>
+
+            <!-- Câu 4 -->
+            <div class="p-4 bg-gray-50 rounded border border-gray-200">
+                <p class="font-bold mb-2">Câu 4: Hai đại lượng tốc độ và độ lớn của vận tốc bằng nhau khi nào?</p>
+                <label class="block mb-1"><input type="radio" name="q4" value="A" class="mr-2"> A. Khi vật chuyển động tròn.</label>
+                <label class="block mb-1"><input type="radio" name="q4" value="B" class="mr-2"> B. Khi vật chuyển động thẳng, không đổi chiều.</label>
+                <label class="block mb-1"><input type="radio" name="q4" value="C" class="mr-2"> C. Khi vật chuyển động thẳng, đổi chiều liên tục.</label>
+                <label class="block mb-1"><input type="radio" name="q4" value="D" class="mr-2"> D. Khi vật đứng yên.</label>
+                <p class="hidden text-green-700 mt-2 font-medium" id="sol-q4"><strong>Giải thích:</strong> Khi chuyển động thẳng không đổi chiều, độ lớn độ dịch chuyển bằng quãng đường đi được nên độ lớn vận tốc bằng tốc độ. (Đáp án B)</p>
+            </div>
+
+            <!-- Câu 5 -->
+            <div class="p-4 bg-gray-50 rounded border border-gray-200">
+                <p class="font-bold mb-2">Câu 5: Công thức cộng vận tốc \( \vec{v}_{1,3} = \vec{v}_{1,2} + \vec{v}_{2,3} \) khi hai vận tốc thành phần vuông góc với nhau thì độ lớn vận tốc tổng hợp tính theo công thức:</p>
+                <label class="block mb-1"><input type="radio" name="q5" value="A" class="mr-2"> A. \( v_{1,3} = v_{1,2} + v_{2,3} \)</label>
+                <label class="block mb-1"><input type="radio" name="q5" value="B" class="mr-2"> B. \( v_{1,3} = |v_{1,2} - v_{2,3}| \)</label>
+                <label class="block mb-1"><input type="radio" name="q5" value="C" class="mr-2"> C. \( v_{1,3} = \sqrt{v_{1,2}^2 + v_{2,3}^2} \)</label>
+                <label class="block mb-1"><input type="radio" name="q5" value="D" class="mr-2"> D. \( v_{1,3} = \frac{v_{1,2} + v_{2,3}}{2} \)</label>
+                <p class="hidden text-green-700 mt-2 font-medium" id="sol-q5"><strong>Giải thích:</strong> Áp dụng định lí Pytago khi tổng hợp 2 vectơ vuông góc. (Đáp án C)</p>
+            </div>
+
+            <div class="text-center mt-6">
+                <button type="button" onclick="checkQuiz()" class="bg-[#0f172a] text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-700 transition text-lg">NỘP BÀI</button>
+            </div>
+            
+            <div id="quizResult" class="text-center mt-4 text-xl font-bold hidden"></div>
+        </form>
+    </div>
+
+    <!-- BÀI TẬP VẬN DỤNG TÍNH TOÁN -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold uppercase border-b-4 border-slate-800 pb-2 mb-6 text-slate-800">Bài tập vận dụng tự luận</h2>
+
+        <!-- Bài 1 -->
+        <div class="mb-6 border-b border-gray-200 pb-4">
+            <p class="font-bold mb-2 text-blue-900">Bài 1: Một ca nô chạy hết tốc lực trên mặt nước yên lặng có thể đạt 21,5 km/h. Ca nô này chạy xuôi dòng sông trong 1 giờ rồi quay lại thì phải mất 2 giờ nữa mới về tới vị trí ban đầu. Hãy tính vận tốc chảy của dòng sông.</p>
+            <button onclick="toggleAnswer('vd1')" class="bg-[#660000] text-white px-3 py-1 rounded text-sm mt-2 hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="vd1" class="hidden bg-gray-100 p-4 rounded mt-3 border-l-4 border-[#660000]">
+                <p>Gọi \( v_c = 21,5 \) km/h là vận tốc của ca nô so với nước.</p>
+                <p>Gọi \( v_n \) là vận tốc của nước so với bờ.</p>
+                <p>Vận tốc khi xuôi dòng: \( v_{x} = v_c + v_n = 21,5 + v_n \).</p>
+                <p>Vận tốc khi ngược dòng: \( v_{ng} = v_c - v_n = 21,5 - v_n \).</p>
+                <p>Vì quãng đường xuôi và ngược là như nhau nên: \( s_x = s_{ng} \)</p>
+                <p>\( \Rightarrow 1 \times (21,5 + v_n) = 2 \times (21,5 - v_n) \)</p>
+                <p>\( \Rightarrow 21,5 + v_n = 43 - 2v_n \)</p>
+                <p>\( \Rightarrow 3v_n = 21,5 \)</p>
+                <p>\( \Rightarrow v_n \approx 7,17 \) km/h.</p>
+                <p><strong>Kết luận:</strong> Vận tốc chảy của dòng sông là khoảng \( 7,17 \) km/h.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2 -->
+        <div class="mb-6 border-b border-gray-200 pb-4">
+            <p class="font-bold mb-2 text-blue-900">Bài 2: Một người tập thể dục chạy trên một đường thẳng. Người đó chạy nửa đoạn đường đầu với tốc độ 4 m/s và nửa đoạn đường sau với tốc độ 6 m/s. Tính tốc độ trung bình trên cả đoạn đường.</p>
+            <button onclick="toggleAnswer('vd2')" class="bg-[#660000] text-white px-3 py-1 rounded text-sm mt-2 hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="vd2" class="hidden bg-gray-100 p-4 rounded mt-3 border-l-4 border-[#660000]">
+                <p>Gọi tổng quãng đường là \( S \). Độ dài mỗi nửa đoạn đường là \( \frac{S}{2} \).</p>
+                <p>Thời gian chạy nửa đoạn đầu: \( t_1 = \frac{\frac{S}{2}}{v_1} = \frac{S}{2 \times 4} = \frac{S}{8} \).</p>
+                <p>Thời gian chạy nửa đoạn sau: \( t_2 = \frac{\frac{S}{2}}{v_2} = \frac{S}{2 \times 6} = \frac{S}{12} \).</p>
+                <p>Tổng thời gian: \( t = t_1 + t_2 = \frac{S}{8} + \frac{S}{12} = S \times (\frac{3}{24} + \frac{2}{24}) = \frac{5S}{24} \).</p>
+                <p>Tốc độ trung bình: \( v_{tb} = \frac{S}{t} = \frac{S}{\frac{5S}{24}} = \frac{24}{5} = 4,8 \) m/s.</p>
+                <p><strong>Kết luận:</strong> Tốc độ trung bình trên cả đoạn đường là 4,8 m/s.</p>
+            </div>
+        </div>
+
+        <!-- Bài 3 -->
+        <div class="mb-4">
+            <p class="font-bold mb-2 text-blue-900">Bài 3: Một người lái máy bay thể thao đang tập bay ngang. Khi bay từ A đến B thì vận tốc tổng hợp của máy bay là 15 m/s theo hướng 60° Đông - Bắc và vận tốc của gió là 7,5 m/s theo hướng Bắc. Hãy chứng minh rằng khi bay từ A đến B thì người lái phải luôn hướng máy bay về hướng Đông.</p>
+            <button onclick="toggleAnswer('vd3')" class="bg-[#660000] text-white px-3 py-1 rounded text-sm mt-2 hover:bg-red-800 transition">Xem lời giải</button>
+            <div id="vd3" class="hidden bg-gray-100 p-4 rounded mt-3 border-l-4 border-[#660000]">
+                <p>Gọi \( \vec{v}_{13} \) là vận tốc tổng hợp của máy bay, \( v_{13} = 15 \) m/s (hướng tạo với phương Bắc góc 60°, về phía Đông).</p>
+                <p>Gọi \( \vec{v}_{23} \) là vận tốc của gió, \( v_{23} = 7,5 \) m/s (hướng Bắc).</p>
+                <p>Gọi \( \vec{v}_{12} \) là vận tốc của máy bay đối với gió (hướng người lái cần hướng mũi máy bay).</p>
+                <p>Ta có công thức cộng vận tốc: \( \vec{v}_{13} = \vec{v}_{12} + \vec{v}_{23} \Rightarrow \vec{v}_{12} = \vec{v}_{13} - \vec{v}_{23} \).</p>
+                <p>Phân tích \( \vec{v}_{13} \) theo 2 thành phần (Bắc-Nam và Đông-Tây):</p>
+                <ul class="list-disc pl-6 mb-2">
+                    <li>Thành phần hướng Đông: \( v_{13\text{Đ}} = 15 \times \sin(60^\circ) = 15 \times \frac{\sqrt{3}}{2} = 7,5\sqrt{3} \) m/s.</li>
+                    <li>Thành phần hướng Bắc: \( v_{13\text{B}} = 15 \times \cos(60^\circ) = 15 \times \frac{1}{2} = 7,5 \) m/s.</li>
+                </ul>
+                <p>Vận tốc gió hoàn toàn theo hướng Bắc: \( v_{23\text{B}} = 7,5 \) m/s.</p>
+                <p>Suy ra vận tốc máy bay đối với gió (hướng người lái):</p>
+                <p>\( \vec{v}_{12} \) có thành phần hướng Bắc: \( 7,5 - 7,5 = 0 \).</p>
+                <p>\( \vec{v}_{12} \) có thành phần hướng Đông: \( 7,5\sqrt{3} \) m/s.</p>
+                <p>Vì thành phần hướng Bắc bằng 0 và chỉ còn thành phần hướng Đông dương, nên <strong>người lái phải luôn hướng máy bay về hướng Đông</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // Hàm ẩn/hiện lời giải
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                // Gọi mathjax render lại nếu chứa công thức
+                if(window.MathJax) {
+                    MathJax.typesetPromise([el]);
+                }
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Hàm chấm điểm trắc nghiệm
+        function checkQuiz() {
+            const answers = {
+                q1: 'C',
+                q2: 'B',
+                q3: 'C',
+                q4: 'B',
+                q5: 'C'
+            };
+            
+            let score = 0;
+            let total = 5;
+            let answeredAll = true;
+
+            for (let q in answers) {
+                const selected = document.querySelector(`input[name="${q}"]:checked`);
+                const solEl = document.getElementById(`sol-${q}`);
+                
+                // Hiển thị giải thích
+                solEl.classList.remove('hidden');
+
+                if (selected) {
+                    if (selected.value === answers[q]) {
+                        score++;
+                    }
+                } else {
+                    answeredAll = false;
+                }
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.classList.remove('hidden');
+
+            if (!answeredAll) {
+                resultDiv.innerHTML = `Bạn chưa trả lời hết các câu hỏi. Điểm tạm tính: ${score}/${total}`;
+                resultDiv.className = "text-center mt-4 text-xl font-bold text-orange-600 block";
+            } else {
+                if (score === total) {
+                    resultDiv.innerHTML = `Chúc mừng! Bạn đã trả lời đúng ${score}/${total} câu!`;
+                    resultDiv.className = "text-center mt-4 text-xl font-bold text-green-600 block";
+                } else {
+                    resultDiv.innerHTML = `Bạn trả lời đúng ${score}/${total} câu. Hãy xem lại phần giải thích nhé!`;
+                    resultDiv.className = "text-center mt-4 text-xl font-bold text-red-600 block";
+                }
+            }
+            
+            // Re-render mathjax cho phần giải thích hiển thị
+            if(window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+    </script>
+</body>
+</html>

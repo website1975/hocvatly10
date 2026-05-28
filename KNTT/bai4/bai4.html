@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 4: Độ dịch chuyển và quãng đường đi được</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#660000',
+                        bgLight: '#f4f7f9',
+                        qBg: '#edf2f7',
+                        aBg: '#d1fae5', // xanh lá nhạt
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            background-color: #f4f7f9;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 leading-relaxed p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <!-- Header: Chương & Bài -->
+        <div class="bg-brand rounded-[12px] p-6 text-center text-white shadow-md">
+            <h2 class="text-xl font-bold uppercase tracking-wide">Chương II: Động học</h2>
+            <hr class="my-4 border-white/40 border-t-[1px] w-3/4 mx-auto" />
+            <h1 class="text-2xl md:text-3xl font-black uppercase">Bài 4: Độ dịch chuyển và quãng đường đi được</h1>
+        </div>
+
+        <!-- Lời dẫn -->
+        <div class="border border-black bg-white rounded-[12px] p-5 shadow-md italic">
+            Một ô tô đi tới điểm O của một ngã tư đường có 4 hướng: Đông, Tây, Nam, Bắc với tốc độ không đổi \(36 \text{ km/h}\). Nếu ô tô đi tiếp thì sau \(10 \text{ s}\):<br>
+            a) Quãng đường đi tiếp của ô tô là bao nhiêu mét?<br>
+            b) Vị trí của ô tô ở điểm nào trên hình vẽ?
+            <div class="my-4 text-center">
+                <img src="h1.png" alt="Hình mở đầu" class="mx-auto rounded max-w-full h-auto">
+            </div>
+        </div>
+
+        <!-- Mục I -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase border-b-4 border-blue-900 inline-block mb-4 pb-1">I. Vị trí của vật chuyển động tại các thời điểm</h3>
+            
+            <p class="mb-3">Khi vật chuyển động thì vị trí của vật so với vật được chọn làm mốc thay đổi theo thời gian. Bài toán cơ bản của động học là xác định vị trí của vật tại các thời điểm khác nhau.</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 my-4">
+                <p><strong>Xác định vị trí:</strong> Người ta dùng hệ toạ độ vuông góc có gốc là vị trí của vật mốc, trục hoành \(Ox\) và trục tung \(Oy\). Các giá trị trên các trục toạ độ được xác định theo một tỉ lệ xác định.</p>
+            </div>
+
+            <div class="my-4 text-center">
+                <img src="h2.png" alt="Hình 4.1" class="mx-auto rounded max-w-full h-auto">
+                <p class="italic mt-2 text-sm text-gray-600">Hình 4.1. Hệ toạ độ</p>
+            </div>
+
+            <p class="mb-3"><strong>Ví dụ:</strong> Nếu tỉ lệ là \(\frac{1}{1000}\) thì vị trí của điểm A trong Hình 4.1 được xác định trên hệ toạ độ là A \((x=10\text{ m}; y=20\text{ m})\) và của điểm B là B \((x=-10\text{ m}; y=20\text{ m})\).</p>
+
+            <div class="bg-indigo-50 border border-indigo-200 rounded-[12px] p-4 my-4 shadow-sm">
+                <h4 class="font-bold text-indigo-800 mb-2">💡 Em có biết?</h4>
+                <ol class="list-decimal pl-5 space-y-1">
+                    <li><strong>Động học</strong> là phần vật lí nghiên cứu chuyển động của vật mà không đề cập đến tác dụng của lực lên chuyển động.</li>
+                    <li>Khi kích thước của vật rất nhỏ so với độ dài của quãng đường đi được thì vật được coi là <strong>chất điểm</strong>.</li>
+                </ol>
+            </div>
+
+            <p class="mb-3">Trong thực tế, người ta thường chọn hệ toạ độ trùng với <strong>hệ toạ độ địa lí</strong> (Tây - Đông, Bắc - Nam).</p>
+                <div class="my-3"><center><img src="h3.png" alt="Hình 4.3" class="rounded max-w-xs"></center></div>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 my-4">
+                <p><strong>Hệ quy chiếu:</strong> Hệ toạ độ kết hợp với mốc thời gian và đồng hồ đo thời gian được gọi là hệ quy chiếu.</p>
+                <p class="mt-2 text-sm text-red-600 font-semibold">* Lưu ý: Khi vật chuyển động trên đường thẳng thì chỉ cần dùng hệ toạ độ có 1 trục \(Ox\) trùng với quỹ đạo chuyển động.</p>
+            </div>
+
+            <!-- Câu hỏi 1 -->
+            <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded-[8px] mb-4 shadow-sm">
+                <p class="font-bold text-blue-900 mb-2">❓ Câu hỏi 1</p>
+                <p>Hãy dùng bản đồ Việt Nam và hệ toạ độ địa lí, xác định vị trí của thành phố Hải Phòng so với vị trí của Thủ đô Hà Nội.</p>
+                <button onclick="toggleAnswer('ans_q1')" class="bg-brand text-white px-4 py-2 rounded mt-3 hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans_q1" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300">
+	             <p>Chọn gốc toạ độ tại Thủ đô Hà Nội. Thành phố Hải Phòng nằm ở hướng Đông - Nam so với Thủ đô Hà Nội. Khoảng cách đường chim bay ước tính theo tỉ lệ bản đồ (khoảng 100km).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mục II -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase border-b-4 border-blue-900 inline-block mb-4 pb-1">II. Độ dịch chuyển</h3>
+            
+            <p class="mb-3">Biết quãng đường đi được chưa đủ để xác định vị trí của vật, ta cần biết thêm hướng của chuyển động.</p>
+
+            <div class="bg-orange-50 border-l-4 border-orange-500 p-4 my-4">
+                <p><strong>Định nghĩa:</strong> Đại lượng vừa cho biết độ dài vừa cho biết hướng của sự thay đổi vị trí của vật gọi là <strong>độ dịch chuyển</strong>.</p>
+                <p class="mt-2">Độ dịch chuyển là một đại lượng <strong>vectơ</strong>. Được biểu diễn bằng một mũi tên nối vị trí đầu và vị trí cuối của chuyển động, có độ dài tỉ lệ với độ lớn của độ dịch chuyển. Kí hiệu là \(\vec{d}\).</p>
+		<center><img src="h5.png" alt="Hình 4.4" class="rounded max-w-xs"></center>
+            </div>
+
+            <!-- Câu hỏi 2 -->
+            <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded-[8px] mb-4 shadow-sm">
+                <p class="font-bold text-blue-900 mb-2">❓ Câu hỏi 2</p>
+                <p>Xác định vị trí của vật A trên trục \(Ox\) vẽ ở Hình 4.3 tại thời điểm \(11\text{ h}\). Biết vật chuyển động thẳng, mỗi giờ đi được \(40\text{ km}\) và xuất phát lúc \(8\text{ h}\) tại gốc \(O\).</p>
+                <div class="my-3"><center><img src="h6.png" alt="Hình 4.3" class="rounded max-w-xs"></center></div>
+                <button onclick="toggleAnswer('ans_q2')" class="bg-brand text-white px-4 py-2 rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans_q2" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300">
+                    <p>Thời gian di chuyển: \(\Delta t = 11 - 8 = 3\text{ h}\).</p>
+                    <p>Quãng đường đi được: \(s = v \cdot \Delta t = 40 \cdot 3 = 120\text{ km}\).</p>
+                    <p>Vị trí của vật A nằm trên phần dương trục \(Ox\), cách \(O\) một khoảng \(120\text{ km}\) (\(x = 120\text{ km}\)).</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 3 -->
+            <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded-[8px] mb-4 shadow-sm">
+                <p class="font-bold text-blue-900 mb-2">❓ Câu hỏi 3</p>
+                <p>Hãy xác định các độ dịch chuyển mô tả ở Hình 4.5 trong toạ độ địa lí.</p>
+                <div class="my-3"><center><img src="h6.png" alt="Hình 4.5" class="rounded max-w-sm"><center></div>
+                <button onclick="toggleAnswer('ans_q3')" class="bg-brand text-white px-4 py-2 rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans_q3" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300">
+                    <ul class="list-disc pl-5">
+                        <li>\(\vec{d_1}\): Hướng Bắc, độ lớn \(200\text{ m}\) (2 vạch).</li>
+                        <li>\(\vec{d_2}\): Hướng Đông - Bắc (\(45^\circ\)), độ lớn \(200\text{ m}\).</li>
+                        <li>\(\vec{d_3}\): Hướng Đông, độ lớn \(300\text{ m}\) (3 vạch).</li>
+                        <li>\(\vec{d_4}\): Hướng Tây, độ lớn \(100\text{ m}\) (1 vạch).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mục III -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase border-b-4 border-blue-900 inline-block mb-4 pb-1">III. Phân biệt độ dịch chuyển và quãng đường đi được</h3>
+            
+            <p class="mb-3">Hình 4.6 mô tả người đi xe máy (1), người đi bộ (2), người đi ô tô (3) đều khởi hành từ siêu thị A để đi đến bưu điện B qua các con đường khác nhau.</p>
+            <div class="my-4 text-center">
+                <img src="h7.png" alt="Hình 4.6" class="mx-auto rounded max-w-full h-auto">
+            </div>
+
+            <!-- Câu hỏi 4 -->
+            <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded-[8px] mb-4 shadow-sm">
+                <p class="font-bold text-blue-900 mb-2">❓ Hoạt động</p>
+                <ol class="list-decimal pl-5 space-y-2 mb-3">
+                    <li>Hãy so sánh độ lớn của độ dịch chuyển và quãng đường đi được của ba chuyển động ở Hình 4.6.</li>
+                    <li>Theo em, khi nào độ lớn của độ dịch chuyển và quãng đường đi được của một chuyển động bằng nhau?</li>
+                </ol>
+                <button onclick="toggleAnswer('ans_q4')" class="bg-brand text-white px-4 py-2 rounded hover:bg-red-800 transition">Xem hướng giải quyết</button>
+                <div id="ans_q4" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300 space-y-2">
+                    <p><strong>1.</strong> Cả 3 người đều có điểm đầu A và điểm cuối B giống nhau nên có <strong>độ dịch chuyển bằng nhau</strong>. Tuy nhiên, quỹ đạo di chuyển khác nhau nên <strong>quãng đường đi được khác nhau</strong> (\(s_3 > s_1 > s_2\)).</p>
+                    <p><strong>2.</strong> Độ lớn của độ dịch chuyển bằng quãng đường đi được khi vật <strong>chuyển động trên một đường thẳng và không đổi chiều</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 5 -->
+            <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded-[8px] mb-4 shadow-sm">
+                <p class="font-bold text-blue-900 mb-2">❓ Bài tập minh hoạ</p>
+                <p>Bạn A đi xe đạp từ nhà qua trạm xăng, tới siêu thị mua đồ rồi quay về nhà cất đồ, sau đó đi xe đến trường (Hình 4.7).</p>
+                <div class="my-3 text-center"><img src="h8.png" alt="Hình 4.7" class="mx-auto rounded max-w-full h-auto"></div>
+                <p>Chọn hệ toạ độ có gốc là vị trí nhà bạn A, trục \(Ox\) trùng với đường đi. Tính \(s\) và \(d\) trong các trường hợp:</p>
+                <div class="overflow-x-auto mt-3">
+                    <table class="w-full border-collapse border border-[#cbd5e0]">
+                        <thead>
+                            <tr>
+                                <th class="bg-[#e2e8f0] border border-[#cbd5e0] p-2 text-center">Chuyển động</th>
+                                <th class="bg-[#e2e8f0] border border-[#cbd5e0] p-2 text-center">Quãng đường đi được \(s \text{ (m)}\)</th>
+                                <th class="bg-[#e2e8f0] border border-[#cbd5e0] p-2 text-center">Độ dịch chuyển \(d \text{ (m)}\)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-[#cbd5e0] p-2 text-center">Từ trạm xăng đến siêu thị</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">\(s_{xs} = ?\)</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">\(d_{xs} = ?\)</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-[#cbd5e0] p-2 text-center">Cả chuyến đi</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">\(s = ?\)</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">\(d = ?\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button onclick="toggleAnswer('ans_q5')" class="bg-brand text-white px-4 py-2 rounded mt-4 hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans_q5" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300">
+                    <p>Trạm xăng cách nhà \(400\text{ m}\), Siêu thị cách nhà \(800\text{ m}\), Trường cách nhà \(1200\text{ m}\).</p>
+                    <ul class="list-disc pl-5 mt-2">
+                        <li><strong>Từ trạm xăng đến siêu thị:</strong> Vật đi thẳng không đổi chiều. <br>
+                            \(s_{xs} = 800 - 400 = 400\text{ m}\) <br>
+                            \(d_{xs} = x_{cuoi} - x_{dau} = 800 - 400 = 400\text{ m}\). (Hướng dương).
+                        </li>
+                        <li class="mt-2"><strong>Cả chuyến đi:</strong> (Nhà \(\rightarrow\) Siêu thị \(\rightarrow\) Nhà \(\rightarrow\) Trường).<br>
+                            Quãng đường: \(s = 800 \text{ (Nhà->Siêu thị)} + 800 \text{ (Siêu thị->Nhà)} + 1200 \text{ (Nhà->Trường)} = 2800\text{ m}\).<br>
+                            Độ dịch chuyển: Điểm đầu \(x = 0\), điểm cuối \(x = 1200\). Suy ra \(d = 1200 - 0 = 1200\text{ m}\).
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mục IV -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase border-b-4 border-blue-900 inline-block mb-4 pb-1">IV. Tổng hợp độ dịch chuyển</h3>
+            
+            <p class="mb-3">Có thể dùng phép cộng vectơ để tổng hợp độ dịch chuyển của vật.</p>
+            
+            <div class="bg-gray-100 p-4 border border-gray-300 rounded mb-4">
+                <p><strong>Bài tập ví dụ:</strong> Hai người đi xe đạp từ A đến C, người thứ nhất đi từ A đến B, rồi từ B đến C; người thứ hai đi thẳng từ A đến C. Cả hai đều về đích cùng lúc. Tính quãng đường và độ dịch chuyển.</p>
+                <div class="my-3 text-center"><img src="h9.png" alt="Hình 4.8" class="mx-auto rounded max-w-[200px]"></div>
+                
+                <p><strong>Giải:</strong></p>
+                <ul class="list-disc pl-5">
+                    <li>Người thứ nhất:<br>
+                        \(s_1 = AB + BC = 4 + 4 = 8\text{ km}\).<br>
+                        Tam giác vuông ABC: \(d_1 = |\vec{AC}| = \sqrt{AB^2 + BC^2} = \sqrt{4^2 + 4^2} \approx 5,7\text{ km}\) (hướng \(45^\circ\) Đông - Bắc).
+                    </li>
+                    <li class="mt-2">Người thứ hai:<br>
+                        \(s_2 = AC = 5,7\text{ km}\).<br>
+                        \(d_2 = 5,7\text{ km}\) (hướng \(45^\circ\) Đông - Bắc).
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bài tập -->
+            <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded-[8px] mb-4 shadow-sm">
+                <p class="font-bold text-blue-900 mb-2">❓ Luyện tập tổng hợp</p>
+                <ol class="list-decimal pl-5 space-y-3">
+                    <li>Một người lái ô tô đi thẳng \(6\text{ km}\) theo hướng Tây, rẽ trái đi Nam \(4\text{ km}\), rồi quay sang Đông đi \(3\text{ km}\). Xác định quãng đường và độ dịch chuyển.</li>
+                    <li>Một người bơi ngang dòng sông rộng \(50\text{ m}\) (Đông - Tây). Nước chảy (Bắc - Nam) làm người đó trôi xuôi \(50\text{ m}\). Xác định độ dịch chuyển.</li>
+                </ol>
+                <button onclick="toggleAnswer('ans_bt_tonghop')" class="bg-brand text-white px-4 py-2 rounded mt-3 hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans_bt_tonghop" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300 space-y-3">
+                    <p><strong>Bài 1:</strong><br>
+                        - Quãng đường: \(s = 6 + 4 + 3 = 13\text{ km}\).<br>
+                        - Độ dịch chuyển: Vẽ hình trên trục toạ độ. Điểm đầu O(0,0). Điểm Tây (-6, 0), đi Nam (-6, -4), đi Đông đến điểm cuối C(-3, -4).<br>
+                        Độ lớn dịch chuyển: \(d = \sqrt{(-3)^2 + (-4)^2} = \sqrt{9+16} = 5\text{ km}\). Hướng Tây Nam.
+                    </p>
+                    <p><strong>Bài 2:</strong><br>
+                        Người bơi theo phương ngang tạo độ dịch chuyển \(\vec{d_1}\) độ lớn \(50\text{ m}\). Nước đẩy vuông góc tạo độ dịch chuyển \(\vec{d_2}\) độ lớn \(50\text{ m}\).<br>
+                        Độ dịch chuyển tổng hợp: \(d = \sqrt{50^2 + 50^2} = 50\sqrt{2} \approx 70,7\text{ m}\). Hướng lệch \(45^\circ\) so với phương ngang bờ sông.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tổng kết -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-pink-50 border border-pink-200 rounded-[12px] p-5 shadow-sm">
+                <h4 class="font-bold text-pink-800 text-lg mb-2">✅ EM ĐÃ HỌC</h4>
+                <ul class="list-disc pl-5 space-y-1 text-sm">
+                    <li>Độ dịch chuyển là đại lượng vectơ, cho biết độ dài và hướng sự thay đổi vị trí.</li>
+                    <li>Chuyển động thẳng không đổi chiều: Độ lớn độ dịch chuyển = Quãng đường.</li>
+                    <li>Chuyển động có đổi chiều hoặc cong: Độ lớn độ dịch chuyển ≠ Quãng đường.</li>
+                    <li>Tổng hợp các độ dịch chuyển bằng phép cộng vectơ.</li>
+                </ul>
+            </div>
+            
+            <div class="bg-green-50 border border-green-200 rounded-[12px] p-5 shadow-sm">
+                <h4 class="font-bold text-green-800 text-lg mb-2">🚀 EM CÓ THỂ</h4>
+                <p class="text-sm">Xác định được vị trí của một địa điểm trên bản đồ và tính toán được quãng đường, độ dịch chuyển thực tế của các vật chuyển động trong đời sống.</p>
+            </div>
+        </div>
+
+        <!-- BÀI TẬP TRẮC NGHIỆM -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md border-t-8 border-brand">
+            <h3 class="text-xl font-bold uppercase border-b-2 border-brand inline-block mb-4 pb-1 text-brand">V. Bài tập trắc nghiệm củng cố</h3>
+            
+            <form id="quizForm" class="space-y-6">
+                <!-- Câu 1 -->
+                <div>
+                    <p class="font-semibold">Câu 1: Đại lượng nào sau đây là đại lượng vectơ?</p>
+                    <div class="space-y-2 mt-2 ml-4">
+                        <label class="block"><input type="radio" name="q1" value="A" class="mr-2">A. Quãng đường đi được</label>
+                        <label class="block"><input type="radio" name="q1" value="B" class="mr-2">B. Độ dịch chuyển</label>
+                        <label class="block"><input type="radio" name="q1" value="C" class="mr-2">C. Thời gian</label>
+                        <label class="block"><input type="radio" name="q1" value="D" class="mr-2">D. Nhiệt độ</label>
+                    </div>
+                </div>
+
+                <!-- Câu 2 -->
+                <div>
+                    <p class="font-semibold">Câu 2: Độ lớn của độ dịch chuyển và quãng đường đi được bằng nhau khi nào?</p>
+                    <div class="space-y-2 mt-2 ml-4">
+                        <label class="block"><input type="radio" name="q2" value="A" class="mr-2">A. Vật chuyển động cong</label>
+                        <label class="block"><input type="radio" name="q2" value="B" class="mr-2">B. Vật chuyển động thẳng có đổi chiều</label>
+                        <label class="block"><input type="radio" name="q2" value="C" class="mr-2">C. Vật chuyển động thẳng không đổi chiều</label>
+                        <label class="block"><input type="radio" name="q2" value="D" class="mr-2">D. Cả chuyển động thẳng đổi chiều và không đổi chiều</label>
+                    </div>
+                </div>
+
+                <!-- Câu 3 -->
+                <div>
+                    <p class="font-semibold">Câu 3: Một người đi xe đạp một vòng quanh sân vận động hình tròn bán kính \(50\text{ m}\). Độ dịch chuyển của người đó bằng bao nhiêu?</p>
+                    <div class="space-y-2 mt-2 ml-4">
+                        <label class="block"><input type="radio" name="q3" value="A" class="mr-2">A. \(100\pi \text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q3" value="B" class="mr-2">B. \(50\pi \text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q3" value="C" class="mr-2">C. \(0\text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q3" value="D" class="mr-2">D. \(50\text{ m}\)</label>
+                    </div>
+                </div>
+
+                <!-- Câu 4 -->
+                <div>
+                    <p class="font-semibold">Câu 4: Quãng đường đi được của người đi xe đạp ở Câu 3 là bao nhiêu?</p>
+                    <div class="space-y-2 mt-2 ml-4">
+                        <label class="block"><input type="radio" name="q4" value="A" class="mr-2">A. \(0\text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q4" value="B" class="mr-2">B. \(100\pi \text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q4" value="C" class="mr-2">C. \(50\pi \text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q4" value="D" class="mr-2">D. \(100\text{ m}\)</label>
+                    </div>
+                </div>
+
+                <!-- Câu 5 -->
+                <div>
+                    <p class="font-semibold">Câu 5: Một vật đi \(3\text{ m}\) sang Đông, rồi đi tiếp \(4\text{ m}\) sang Bắc. Độ lớn độ dịch chuyển là:</p>
+                    <div class="space-y-2 mt-2 ml-4">
+                        <label class="block"><input type="radio" name="q5" value="A" class="mr-2">A. \(7\text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q5" value="B" class="mr-2">B. \(1\text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q5" value="C" class="mr-2">C. \(12\text{ m}\)</label>
+                        <label class="block"><input type="radio" name="q5" value="D" class="mr-2">D. \(5\text{ m}\)</label>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4 pt-4 border-t border-gray-200">
+                    <button type="button" onclick="checkQuiz()" class="bg-[#1a202c] text-white px-6 py-2 rounded font-bold hover:bg-black transition">NỘP BÀI</button>
+                    <span id="quizResult" class="font-bold text-lg"></span>
+                </div>
+            </form>
+        </div>
+
+        <!-- BÀI TẬP VẬN DỤNG TÍNH TOÁN -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md border-t-8 border-brand">
+            <h3 class="text-xl font-bold uppercase border-b-2 border-brand inline-block mb-4 pb-1 text-brand">VI. Bài tập vận dụng</h3>
+            
+            <div class="space-y-6">
+                <!-- Vận dụng 1 -->
+                <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded shadow-sm">
+                    <p class="font-bold mb-2">Bài 1:</p>
+                    <p>Một học sinh đi từ nhà đến trường cách nhau \(2\text{ km}\), sau đó phát hiện quên sách nên quay về nhà. Hãy tính quãng đường và độ lớn dịch chuyển của học sinh này cho cả quá trình từ nhà đến trường rồi về nhà.</p>
+                    <button onclick="toggleAnswer('vd1')" class="bg-brand text-white px-3 py-1 rounded mt-3 hover:bg-red-800 text-sm">Xem lời giải</button>
+                    <div id="vd1" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300">
+                        <p>- Quãng đường đi được: \(s = 2 \text{ (đi)} + 2 \text{ (về)} = 4\text{ km}\).</p>
+                        <p>- Độ dịch chuyển: Do điểm cuối trùng với điểm xuất phát nên độ lớn dịch chuyển \(d = 0\text{ km}\).</p>
+                    </div>
+                </div>
+
+                <!-- Vận dụng 2 -->
+                <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded shadow-sm">
+                    <p class="font-bold mb-2">Bài 2:</p>
+                    <p>Một kiến đi dọc theo mép một chiếc bàn hình chữ nhật kích thước \(1\text{ m} \times 1.5\text{ m}\). Nó xuất phát từ góc A, đi qua góc B và dừng lại ở góc C (C đối diện A qua đường chéo). Tính quãng đường và độ lớn dịch chuyển của con kiến.</p>
+                    <button onclick="toggleAnswer('vd2')" class="bg-brand text-white px-3 py-1 rounded mt-3 hover:bg-red-800 text-sm">Xem lời giải</button>
+                    <div id="vd2" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300">
+                        <p>- Quãng đường đi được (dọc theo 2 cạnh): \(s = AB + BC = 1 + 1.5 = 2.5\text{ m}\).</p>
+                        <p>- Độ dịch chuyển là độ dài đoạn chéo AC: Áp dụng định lý Pytago \(d = AC = \sqrt{1^2 + 1.5^2} = \sqrt{1 + 2.25} = \sqrt{3.25} \approx 1.8\text{ m}\).</p>
+                    </div>
+                </div>
+
+                <!-- Vận dụng 3 -->
+                <div class="bg-qBg border-l-4 border-blue-800 p-4 rounded shadow-sm">
+                    <p class="font-bold mb-2">Bài 3:</p>
+                    <p>Một máy bay bay thẳng từ thành phố A đến thành phố B cách nhau \(800\text{ km}\) theo hướng Đông. Sau đó máy bay tiếp tục bay thẳng \(600\text{ km}\) theo hướng Nam để đến thành phố C. Tìm quỹ đạo bay (quãng đường) và vectơ dịch chuyển (độ lớn, hướng) của máy bay từ A đến C.</p>
+                    <button onclick="toggleAnswer('vd3')" class="bg-brand text-white px-3 py-1 rounded mt-3 hover:bg-red-800 text-sm">Xem lời giải</button>
+                    <div id="vd3" class="hidden bg-aBg p-4 mt-3 rounded border border-green-300">
+                        <p>- Quãng đường (quỹ đạo bay): \(s = 800 + 600 = 1400\text{ km}\).</p>
+                        <p>- Độ lớn dịch chuyển (cạnh huyền tam giác vuông): \(d = \sqrt{800^2 + 600^2} = 1000\text{ km}\).</p>
+                        <p>- Hướng của vectơ dịch chuyển: Hướng Đông - Nam.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // Toggle Ẩn/Hiện lời giải
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Kiểm tra Quiz Trắc nghiệm
+        function checkQuiz() {
+            // Đáp án đúng
+            const correctAnswers = {
+                q1: 'B',
+                q2: 'C',
+                q3: 'C',
+                q4: 'B',
+                q5: 'D'
+            };
+
+            let score = 0;
+            const total = Object.keys(correctAnswers).length;
+            const form = document.getElementById('quizForm');
+            const resultDisplay = document.getElementById('quizResult');
+
+            for (let q in correctAnswers) {
+                const selected = form.querySelector(`input[name="${q}"]:checked`);
+                if (selected && selected.value === correctAnswers[q]) {
+                    score++;
+                }
+            }
+
+            if (score === total) {
+                resultDisplay.textContent = `Xuất sắc! Bạn làm đúng ${score}/${total} câu.`;
+                resultDisplay.className = "font-bold text-lg text-green-600";
+            } else {
+                resultDisplay.textContent = `Bạn làm đúng ${score}/${total} câu. Hãy xem lại bài nhé!`;
+                resultDisplay.className = "font-bold text-lg text-red-600";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 7: Đồ thị độ dịch chuyển - thời gian</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        /* Custom styles just in case Tailwind needs supplementing */
+        .primary-bg { background-color: #660000; }
+        .primary-text { color: #660000; }
+        .box-shadow { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .rounded-12 { border-radius: 12px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <!-- HEADER -->
+        <div class="primary-bg rounded-12 p-6 text-white text-center box-shadow">
+            <h2 class="text-xl md:text-2xl font-medium tracking-wide">CHƯƠNG II: ĐỘNG HỌC</h2>
+            <hr class="my-4 border-white border-opacity-40">
+            <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wider">Bài 7: Đồ thị độ dịch chuyển - thời gian</h1>
+        </div>
+
+        <!-- INTRO BOX -->
+        <div class="bg-white border border-gray-800 rounded-12 p-5 box-shadow">
+            <p class="italic text-gray-700 text-lg">
+                Hãy nhớ lại kiến thức đã học về đồ thị của chuyển động trong môn Khoa học tự nhiên 7 để phát hiện ra tính chất của các chuyển động thẳng có đồ thị mô tả ở những hình sau.
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                <div class="text-center"><img src="h1.png" alt="Hình a" class="mx-auto w-full max-w-[150px] border border-gray-200 p-2"><p class="mt-2 text-sm font-semibold">a)</p></div>
+                <div class="text-center"><img src="h2.png" alt="Hình b" class="mx-auto w-full max-w-[150px] border border-gray-200 p-2"><p class="mt-2 text-sm font-semibold">b)</p></div>
+                <div class="text-center"><img src="h3.png" alt="Hình c" class="mx-auto w-full max-w-[150px] border border-gray-200 p-2"><p class="mt-2 text-sm font-semibold">c)</p></div>
+                <div class="text-center"><img src="h4.png" alt="Hình d" class="mx-auto w-full max-w-[150px] border border-gray-200 p-2"><p class="mt-2 text-sm font-semibold">d)</p></div>
+            </div>
+        </div>
+
+        <!-- SECTION I -->
+        <div class="bg-white rounded-12 p-6 box-shadow">
+            <h3 class="text-xl md:text-2xl font-bold uppercase border-b-4 border-slate-800 pb-2 mb-5 primary-text">I. CHUYỂN ĐỘNG THẲNG</h3>
+            
+            <p class="mb-3">Chuyển động thẳng là chuyển động thường gặp trong đời sống, có quỹ đạo chuyển động là đường thẳng.</p>
+            
+            <div class="bg-yellow-50 border border-yellow-400 p-4 rounded-lg mb-4">
+                <ul class="list-disc ml-5 space-y-2">
+                    <li>Khi vật chuyển động thẳng theo một chiều không đổi thì độ dịch chuyển và quãng đường đi được có độ lớn như nhau \( d = s \); vận tốc và tốc độ có độ lớn như nhau \( v = \frac{s}{t} \).</li>
+                    <li>Khi vật đang chuyển động thẳng theo chiều dương, nếu đổi chiều chuyển động thì trong khoảng thời gian chuyển động ngược chiều đó quãng đường đi được vẫn có giá trị dương, còn độ dịch chuyển có giá trị âm; tốc độ vẫn có giá trị dương còn vận tốc có giá trị âm \( v < 0 \).</li>
+                </ul>
+                <p class="mt-2 italic text-sm">Dựa vào công thức ta có thể xác định được quãng đường đi được, độ dịch chuyển, tốc độ và vận tốc của chuyển động.</p>
+            </div>
+
+            <!-- Question Box -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-lg my-4">
+                <div class="flex items-start gap-2">
+                    <span class="text-blue-800 font-bold text-xl">?</span>
+                    <div class="flex-1">
+                        <p class="font-semibold text-gray-800 mb-2">Câu hỏi:</p>
+                        <p class="mb-4">Hãy tính quãng đường đi được, độ dịch chuyển, tốc độ, vận tốc của bạn A khi đi từ nhà đến trường và khi đi từ trường đến siêu thị (Hình 7.1). Coi chuyển động của bạn A là chuyển động đều và biết cứ 100 m bạn A đi hết 25 s.</p>
+                        <div class="text-center mb-4">
+                            <img src="h5.png" alt="Hình 7.1" class="mx-auto w-full max-w-lg">
+                            <p class="text-sm italic">Hình 7.1</p>
+                        </div>
+                        <button class="primary-bg text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors" onclick="toggleAnswer('ans-i-1')">Xem lời giải</button>
+                    </div>
+                </div>
+                <div id="ans-i-1" class="hidden bg-green-100 border border-green-300 p-4 mt-4 rounded-lg text-gray-800">
+                    <p class="font-bold mb-2">Lời giải:</p>
+                    <p>Vì cứ 100 m bạn A đi hết 25 s nên tốc độ của bạn A luôn là: \( \frac{100}{25} = 4 \text{ m/s} \).</p>
+                    <ul class="list-disc ml-5 mt-2 space-y-1">
+                        <li><strong>Khi đi từ nhà đến trường:</strong><br>
+                            - Quãng đường: \( s_1 = 1000 \text{ m} \)<br>
+                            - Độ dịch chuyển (cùng chiều dương): \( d_1 = 1000 \text{ m} \)<br>
+                            - Tốc độ: \( 4 \text{ m/s} \)<br>
+                            - Vận tốc: \( v_1 = \frac{1000}{250} = 4 \text{ m/s} \)
+                        </li>
+                        <li class="mt-2"><strong>Khi đi từ trường về siêu thị:</strong><br>
+                            - Quãng đường: \( s_2 = 1000 - 800 = 200 \text{ m} \)<br>
+                            - Độ dịch chuyển (ngược chiều dương): \( d_2 = 800 - 1000 = -200 \text{ m} \)<br>
+                            - Tốc độ: \( 4 \text{ m/s} \)<br>
+                            - Vận tốc: \( v_2 = \frac{-200}{50} = -4 \text{ m/s} \)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION II -->
+        <div class="bg-white rounded-12 p-6 box-shadow">
+            <h3 class="text-xl md:text-2xl font-bold uppercase border-b-4 border-slate-800 pb-2 mb-5 primary-text">II. ĐỒ THỊ ĐỘ DỊCH CHUYỂN - THỜI GIAN TRONG CHUYỂN ĐỘNG THẲNG</h3>
+            
+            <p class="mb-4">Đồ thị độ dịch chuyển - thời gian của một chuyển động không những cho phép mô tả được chuyển động, mà còn có thể cho biết nhiều thông tin khác nữa về chuyển động.</p>
+
+            <h4 class="font-bold text-lg text-gray-800 mb-2">1. Cách vẽ đồ thị độ dịch chuyển - thời gian (\(d-t\)) trong chuyển động thẳng đều</h4>
+            <p class="mb-3">Đồ thị đơn giản nhất là đồ thị độ dịch chuyển - thời gian của chuyển động thẳng đều. Trong chuyển động thẳng đều thì \( d = v.t \) (với \(v\) là một hằng số). Biểu thức này có dạng giống biểu thức của hàm số \( y = ax \) đã học trong môn Toán nên có đường biểu diễn là một đoạn thẳng.</p>
+
+            <!-- Activity Box -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-lg my-4">
+                <div class="flex items-start gap-2">
+                    <span class="text-blue-800 font-bold text-xl">👋</span>
+                    <div class="flex-1">
+                        <p class="font-semibold text-gray-800 mb-2">Hoạt động:</p>
+                        <p class="mb-2">Hãy vẽ đồ thị độ dịch chuyển – thời gian trong chuyển động của bạn A nêu ở trên theo trình tự sau đây:</p>
+                        <p>1. Vẽ bảng ghi số liệu vào vở.</p>
+                        <div class="overflow-x-auto my-3">
+                            <table class="w-full border-collapse border border-[#cbd5e0]">
+                                <thead>
+                                    <tr class="bg-[#e2e8f0]">
+                                        <th class="border border-[#cbd5e0] p-2">Độ dịch chuyển (m)</th>
+                                        <th class="border border-[#cbd5e0] p-2">0</th>
+                                        <th class="border border-[#cbd5e0] p-2">200</th>
+                                        <th class="border border-[#cbd5e0] p-2">400</th>
+                                        <th class="border border-[#cbd5e0] p-2">600</th>
+                                        <th class="border border-[#cbd5e0] p-2">800</th>
+                                        <th class="border border-[#cbd5e0] p-2">1000</th>
+                                        <th class="border border-[#cbd5e0] p-2">800</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-[#cbd5e0] p-2 text-center font-semibold bg-[#e2e8f0]">Thời gian (s)</td>
+                                        <td class="border border-[#cbd5e0] p-2 text-center">0</td>
+                                        <td class="border border-[#cbd5e0] p-2 text-center">50</td>
+                                        <td class="border border-[#cbd5e0] p-2 text-center">100</td>
+                                        <td class="border border-[#cbd5e0] p-2 text-center">150</td>
+                                        <td class="border border-[#cbd5e0] p-2 text-center">200</td>
+                                        <td class="border border-[#cbd5e0] p-2 text-center">250</td>
+                                        <td class="border border-[#cbd5e0] p-2 text-center">300</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>2. Vẽ đồ thị: trên trục tung (trục độ dịch chuyển) 1 cm ứng với 200 m; trên trục hoành (trục thời gian) 1 cm ứng với 50 s.</p>
+                        <button class="primary-bg text-white px-4 py-2 mt-4 rounded font-medium hover:bg-red-800 transition-colors" onclick="toggleAnswer('ans-ii-act')">Xem hướng dẫn giải</button>
+                    </div>
+                </div>
+                <div id="ans-ii-act" class="hidden bg-green-100 border border-green-300 p-4 mt-4 rounded-lg text-gray-800">
+                    <p>Học sinh tiến hành vẽ hệ trục tọa độ \(Od\) và \(Ot\). Đánh dấu các điểm có tọa độ \( (t, d) \) tương ứng từ bảng số liệu: \( (0,0); (50, 200); (100, 400)... (250, 1000); (300, 800) \). Nối các điểm lại sẽ được đồ thị gồm hai đoạn thẳng (đoạn 1 dốc lên, đoạn 2 dốc xuống).</p>
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg text-gray-800 mb-2 mt-6">2. Sử dụng đồ thị độ dịch chuyển - thời gian</h4>
+            
+            <div class="flex flex-col md:flex-row gap-6 mt-4">
+                <div class="flex-1">
+                    <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-lg">
+                        <div class="flex items-start gap-2">
+                            <span class="text-blue-800 font-bold text-xl">?</span>
+                            <div class="flex-1">
+                                <p class="mb-2">Hình 7.2 là đồ thị độ dịch chuyển – thời gian của một người đang bơi trong một bể bơi dài 50 m. Đồ thị này cho biết những gì về chuyển động của người đó?</p>
+                                <ol class="list-decimal ml-5 space-y-1 mb-4">
+                                    <li>Trong 25 giây đầu mỗi giây người đó bơi được bao nhiêu mét? Tính vận tốc của người đó ra m/s.</li>
+                                    <li>Từ giây nào đến giây nào người đó không bơi?</li>
+                                    <li>Từ giây 35 đến giây 60 người đó bơi theo chiều nào?</li>
+                                    <li>Trong 20 giây cuối cùng, mỗi giây người đó bơi được bao nhiêu mét? Tính vận tốc của người đó ra m/s.</li>
+                                    <li>Xác định độ dịch chuyển và vận tốc của người đó khi bơi từ B đến C.</li>
+                                    <li>Xác định độ dịch chuyển và vận tốc của người đó trong cả quá trình bơi.</li>
+                                </ol>
+                                <button class="primary-bg text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors" onclick="toggleAnswer('ans-ii-2')">Xem lời giải chi tiết</button>
+                            </div>
+                        </div>
+                        <div id="ans-ii-2" class="hidden bg-green-100 border border-green-300 p-4 mt-4 rounded-lg text-gray-800">
+                            <ol class="list-decimal ml-5 space-y-2">
+                                <li>Trong 25s đầu, người đó bơi được 50m. Mỗi giây bơi được: \( 50/25 = 2\text{ m} \). Vận tốc: \( v = \frac{50}{25} = 2\text{ m/s} \).</li>
+                                <li>Từ giây 25 đến giây 35 (đồ thị nằm ngang), độ dịch chuyển không đổi \(\rightarrow\) người đó không bơi.</li>
+                                <li>Từ giây 35 đến giây 60, đồ thị đi xuống (độ dịch chuyển giảm dần) \(\rightarrow\) người đó bơi ngược chiều dương.</li>
+                                <li>20 giây cuối (từ giây 40 đến 60), người đó đi từ \( d = 40\text{ m} \) về \( d = 25\text{ m} \), tức bơi được 15m. Mỗi giây bơi được \( 15/20 = 0.75\text{ m} \). Vận tốc: \( v = \frac{25-40}{60-40} = -0.75\text{ m/s} \).</li>
+                                <li>Từ B đến C (giây 35 đến 60): Độ dịch chuyển \( \Delta d = 25 - 50 = -25\text{ m} \). Vận tốc: \( v = \frac{-25}{25} = -1\text{ m/s} \).</li>
+                                <li>Cả quá trình: Độ dịch chuyển tổng cộng \( d = d_{\text{cuối}} - d_{\text{đầu}} = 25 - 0 = 25\text{ m} \). Vận tốc TB: \( v_{tb} = \frac{25}{60} \approx 0.417\text{ m/s} \).</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/3 flex flex-col items-center">
+                    <img src="h6.png" alt="Hình 7.2" class="w-full max-w-sm border p-2 bg-white">
+                    <p class="text-sm italic mt-2">Hình 7.2</p>
+                </div>
+            </div>
+
+            <div class="mt-6 bg-purple-50 border border-purple-300 p-4 rounded-lg">
+                <h4 class="font-bold text-purple-800 mb-2 uppercase">Em có biết?</h4>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm mb-2">1. Đồ thị của các hàm số đã học trong môn Toán:</p>
+                        <p class="text-sm">a) \( y = ax \ (a>0) \)</p>
+                        <p class="text-sm">b) \( y = ax + b \ (a<0; b>0) \)</p>
+			<img src="h8.png" class="max-h-full max-w-full object-contain"></img>
+                    </div>
+                    <div>
+                        <p class="text-sm mb-2">2. Khi vật chuyển động thẳng với vận tốc không đổi \( v > 0 \) thì \( d = v.t \). Có dạng hàm số \( y = ax \).</p>
+                        <p class="text-sm">3. Khi vật đang chuyển động thẳng, theo chiều dương, nếu đổi chiều thì quãng đường dương còn độ dịch chuyển âm.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION III -->
+        <div class="bg-white rounded-12 p-6 box-shadow">
+            <h3 class="text-xl md:text-2xl font-bold uppercase border-b-4 border-slate-800 pb-2 mb-5 primary-text">III. VẬN TỐC VÀ ĐỒ THỊ ĐỘ DỊCH CHUYỂN - THỜI GIAN TRONG CHUYỂN ĐỘNG THẲNG</h3>
+            
+            <p class="mb-3">Từ đồ thị độ dịch chuyển - thời gian có thể dễ dàng tính được giá trị của vận tốc.</p>
+            <p class="mb-3">Trong đồ thị vẽ ở Hình 7.2, hệ số góc (độ dốc) của đường biểu diễn OA là:</p>
+            <div class="bg-gray-100 p-4 text-center rounded-lg my-4 border border-gray-300">
+                $$ v = \frac{\Delta d}{\Delta t} = \frac{50 - 20}{25 - 10} = \frac{30}{15} = 2 \text{ m/s} $$
+            </div>
+            <p class="mb-4">Đây chính là độ lớn vận tốc của người bơi trong 50 m đầu.</p>
+            
+            <div class="bg-blue-50 border-2 border-blue-400 p-4 rounded-lg mb-6 shadow-sm font-semibold text-center text-blue-900">
+                Độ dốc của đồ thị độ dịch chuyển - thời gian trong chuyển động thẳng cho biết độ lớn vận tốc chuyển động.
+            </div>
+
+            <!-- Vận dụng Exercises -->
+            <h4 class="font-bold text-lg border-b-2 border-gray-200 pb-2 mb-4">Vận dụng</h4>
+            
+            <!-- VD 1 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-lg mb-4">
+                <p class="font-bold mb-2">Bài 1:</p>
+                <p class="mb-4">Số liệu về độ dịch chuyển và thời gian của chuyển động thẳng của một xe ô tô đồ chơi chạy bằng pin được ghi trong bảng bên. Dựa vào bảng này để: <br>a) Vẽ đồ thị. <br>b) Mô tả chuyển động. <br>c) Tính vận tốc trong 3 s đầu.</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full border-collapse border border-[#cbd5e0] max-w-lg mx-auto">
+                        <tbody>
+                            <tr>
+                                <td class="border border-[#cbd5e0] p-2 font-semibold bg-[#e2e8f0] text-center">Độ dịch chuyển (m)</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">1</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">3</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">5</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">7</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">7</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">7</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-[#cbd5e0] p-2 font-semibold bg-[#e2e8f0] text-center">Thời gian (s)</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">0</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">1</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">2</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">3</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">4</td>
+                                <td class="border border-[#cbd5e0] p-2 text-center">5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="primary-bg text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors" onclick="toggleAnswer('ans-vd1')">Xem lời giải</button>
+                <div id="ans-vd1" class="hidden bg-green-100 border border-green-300 p-4 mt-4 rounded-lg text-gray-800">
+                    <p><strong>a)</strong> Học sinh tự vẽ đồ thị dựa vào các tọa độ (0;1), (1;3), (2;5), (3;7), (4;7), (5;7).</p>
+                    <p><strong>b) Mô tả:</strong> Từ giây 0 đến giây 3, xe chuyển động thẳng đều theo chiều dương. Từ giây 3 đến giây 5, xe đứng yên tại vị trí có độ dịch chuyển 7m.</p>
+                    <p><strong>c) Vận tốc trong 3s đầu:</strong> \( v = \frac{\Delta d}{\Delta t} = \frac{7 - 1}{3 - 0} = \frac{6}{3} = 2 \text{ m/s} \).</p>
+                </div>
+            </div>
+
+            <!-- VD 2 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-lg">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <p class="font-bold mb-2">Bài 2:</p>
+                        <p class="mb-2">Đồ thị độ dịch chuyển - thời gian trong chuyển động thẳng của một xe ô tô đồ chơi điều khiển từ xa được vẽ ở Hình 7.4.</p>
+                        <ul class="list-[lower-alpha] ml-5 space-y-1 mb-4">
+                            <li>Mô tả chuyển động của xe.</li>
+                            <li>Xác định vị trí của xe so với điểm xuất phát ở giây thứ 2, 4, 8 và 10.</li>
+                            <li>Xác định tốc độ và vận tốc của xe trong 2s đầu, từ 2s-4s và từ 4s-8s.</li>
+                            <li>Xác định quãng đường đi được và độ dịch chuyển sau 10s. Tại sao giá trị không giống nhau?</li>
+                        </ul>
+                        <button class="primary-bg text-white px-4 py-2 rounded font-medium hover:bg-red-800 transition-colors" onclick="toggleAnswer('ans-vd2')">Xem lời giải</button>
+                    </div>
+                    <div class="md:w-1/3 flex flex-col items-center">
+                        <img src="h7.png" alt="Hình 7.4" class="w-full border p-2 bg-white">
+                        <p class="text-sm italic mt-2">Hình 7.4</p>
+                    </div>
+                </div>
+                <div id="ans-vd2" class="hidden bg-green-100 border border-green-300 p-4 mt-4 rounded-lg text-gray-800">
+                    <ul class="space-y-2">
+                        <li><strong>a) Mô tả:</strong><br>- 0-2s: Xe chuyển động thẳng đều theo chiều dương.<br>- 2-4s: Xe đứng yên.<br>- 4-9s: Xe chuyển động thẳng đều ngược chiều dương, đi qua vị trí xuất phát (tại t=8s) rồi đi tiếp sang phần âm.<br>- 9-10s: Xe đứng yên.</li>
+                        <li><strong>b) Vị trí so với xuất phát:</strong><br>- t = 2s: Cách 4m theo chiều dương.<br>- t = 4s: Cách 4m theo chiều dương.<br>- t = 8s: Trở về đúng điểm xuất phát (d=0).<br>- t = 10s: Cách điểm xuất phát 1m theo chiều âm (d=-1m).</li>
+                        <li><strong>c) Tốc độ & Vận tốc:</strong><br>
+                            - 2s đầu (0-2s): \( v = \frac{4-0}{2-0} = 2\text{ m/s} \). Tốc độ = 2 m/s.<br>
+                            - Từ 2-4s: \( v = 0 \). Tốc độ = 0 m/s.<br>
+                            - Từ 4-8s: \( v = \frac{0-4}{8-4} = -1\text{ m/s} \). Tốc độ = \( |v| = 1\text{ m/s} \).
+                        </li>
+                        <li><strong>d) Quãng đường & Độ dịch chuyển sau 10s:</strong><br>
+                            - Quãng đường \( s = s_1 + s_2 + s_3 = 4 + 0 + |-1 - 4| = 4 + 5 = 9\text{ m} \).<br>
+                            - Độ dịch chuyển \( d = -1 - 0 = -1\text{ m} \).<br>
+                            <em>Giải thích:</em> Do xe đổi chiều chuyển động trong quá trình đi nên quãng đường (luôn cộng dồn các đoạn) khác với độ dịch chuyển (chỉ xét vị trí đầu và cuối).
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMMARY BOXES -->
+        <div class="grid md:grid-cols-2 gap-4 mt-6">
+            <div class="bg-green-50 border-2 border-green-500 rounded-12 p-4 box-shadow">
+                <h4 class="font-bold text-green-800 uppercase mb-2">Em đã học</h4>
+                <ul class="list-disc ml-5 text-sm space-y-2">
+                    <li>Dùng đồ thị độ dịch chuyển - thời gian của chuyển động thẳng có thể mô tả được chuyển động: lúc nào đi, lúc nào nghỉ, nhanh hay chậm, đổi chiều...</li>
+                    <li>Vận tốc có giá trị bằng hệ số góc (độ dốc) của đường biểu diễn trong đồ thị \( d-t \).</li>
+                </ul>
+            </div>
+            <div class="bg-orange-50 border-2 border-orange-500 rounded-12 p-4 box-shadow">
+                <h4 class="font-bold text-orange-800 uppercase mb-2">Em có thể</h4>
+                <ul class="list-disc ml-5 text-sm space-y-2">
+                    <li>Vẽ được đồ thị độ dịch chuyển - thời gian của chuyển động thẳng.</li>
+                    <li>Dựa vào đồ thị, xác định được vị trí và vận tốc của vật ở bất kì thời điểm nào.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- EXTRA: QUIZ & EXERCISES -->
+        <div class="bg-white rounded-12 p-6 box-shadow mt-6">
+            <h3 class="text-xl md:text-2xl font-bold uppercase border-b-4 border-slate-800 pb-2 mb-5 primary-text">BÀI TẬP CỦNG CỐ</h3>
+            
+            <h4 class="font-bold text-lg mb-3 bg-gray-200 inline-block px-3 py-1 rounded">A. Trắc nghiệm</h4>
+            <div id="quiz-container" class="space-y-4 mb-6">
+                <!-- Q1 -->
+                <div class="bg-gray-50 p-3 border border-gray-200 rounded">
+                    <p class="font-semibold mb-2">Câu 1: Đồ thị độ dịch chuyển - thời gian của một vật chuyển động thẳng đều là:</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q1" value="A"> A. Đường parabol.</label>
+                        <label class="block"><input type="radio" name="q1" value="B"> B. Đường thẳng song song với trục hoành.</label>
+                        <label class="block"><input type="radio" name="q1" value="C"> C. Đường thẳng xiên góc.</label>
+                        <label class="block"><input type="radio" name="q1" value="D"> D. Đường hypebol.</label>
+                    </div>
+                </div>
+                <!-- Q2 -->
+                <div class="bg-gray-50 p-3 border border-gray-200 rounded">
+                    <p class="font-semibold mb-2">Câu 2: Độ dốc (hệ số góc) của đồ thị độ dịch chuyển - thời gian biểu diễn đại lượng nào?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q2" value="A"> A. Quãng đường.</label>
+                        <label class="block"><input type="radio" name="q2" value="B"> B. Vận tốc.</label>
+                        <label class="block"><input type="radio" name="q2" value="C"> C. Gia tốc.</label>
+                        <label class="block"><input type="radio" name="q2" value="D"> D. Thời gian.</label>
+                    </div>
+                </div>
+                <!-- Q3 -->
+                <div class="bg-gray-50 p-3 border border-gray-200 rounded">
+                    <p class="font-semibold mb-2">Câu 3: Nếu đoạn đồ thị độ dịch chuyển - thời gian nằm ngang (song song trục thời gian) thì vật đang:</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q3" value="A"> A. Chuyển động đều.</label>
+                        <label class="block"><input type="radio" name="q3" value="B"> B. Đứng yên.</label>
+                        <label class="block"><input type="radio" name="q3" value="C"> C. Đổi chiều chuyển động.</label>
+                        <label class="block"><input type="radio" name="q3" value="D"> D. Chuyển động nhanh dần.</label>
+                    </div>
+                </div>
+                <!-- Q4 -->
+                <div class="bg-gray-50 p-3 border border-gray-200 rounded">
+                    <p class="font-semibold mb-2">Câu 4: Khi vật chuyển động thẳng, không đổi chiều thì:</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q4" value="A"> A. Độ dịch chuyển lớn hơn quãng đường.</label>
+                        <label class="block"><input type="radio" name="q4" value="B"> B. Độ dịch chuyển bằng 0.</label>
+                        <label class="block"><input type="radio" name="q4" value="C"> C. Độ lớn độ dịch chuyển bằng quãng đường đi được.</label>
+                        <label class="block"><input type="radio" name="q4" value="D"> D. Quãng đường có thể nhận giá trị âm.</label>
+                    </div>
+                </div>
+                <!-- Q5 -->
+                <div class="bg-gray-50 p-3 border border-gray-200 rounded">
+                    <p class="font-semibold mb-2">Câu 5: Trong đồ thị \(d-t\), khi đường biểu diễn dốc xuống (hướng về trục hoành) thì:</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q5" value="A"> A. Vật chuyển động theo chiều dương.</label>
+                        <label class="block"><input type="radio" name="q5" value="B"> B. Vật chuyển động theo chiều âm.</label>
+                        <label class="block"><input type="radio" name="q5" value="C"> C. Vận tốc của vật tăng dần.</label>
+                        <label class="block"><input type="radio" name="q5" value="D"> D. Vật đang đứng yên.</label>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-4 mt-4">
+                    <button class="bg-slate-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-slate-700 transition-colors" onclick="checkQuiz()">NỘP BÀI</button>
+                    <div id="quiz-result" class="font-bold text-lg"></div>
+                </div>
+                <div id="quiz-answers" class="hidden bg-green-100 p-4 mt-2 rounded border border-green-400 text-sm">
+                    <strong>Đáp án:</strong> 1.C | 2.B | 3.B | 4.C | 5.B
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg mb-3 mt-8 bg-gray-200 inline-block px-3 py-1 rounded">B. Tự luận</h4>
+            
+            <!-- TL 1 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-lg mb-4">
+                <p class="font-bold">Bài 1:</p>
+                <p class="mb-2">Một xe máy đi thẳng đều với vận tốc 40 km/h trong thời gian 2 giờ từ nhà. Hãy tính độ dịch chuyển và vẽ phác họa đồ thị \( d-t \) của chuyển động này.</p>
+                <button class="primary-bg text-white px-3 py-1 text-sm rounded font-medium hover:bg-red-800" onclick="toggleAnswer('ans-tl1')">Xem lời giải</button>
+                <div id="ans-tl1" class="hidden bg-green-100 border border-green-300 p-4 mt-3 rounded text-gray-800">
+                    <p>- Vì xe đi thẳng đều một chiều nên độ dịch chuyển: \( d = v.t = 40 \times 2 = 80 \text{ km} \).</p>
+                    <p>- Vẽ đồ thị: Hệ trục vuông góc, trục tung là d (km), trục hoành là t (h). Nối điểm gốc tọa độ \( (0,0) \) với điểm có tọa độ \( (t=2, d=80) \) ta được đoạn thẳng biểu diễn.</p>
+                </div>
+            </div>
+
+            <!-- TL 2 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-lg mb-4">
+                <p class="font-bold">Bài 2:</p>
+                <p class="mb-2">Một vật chuyển động có đồ thị \(d-t\) gồm 2 giai đoạn: Giai đoạn 1 từ \( (t=0, d=0) \) đến \( (t=2\text{s}, d=10\text{m}) \). Giai đoạn 2 từ \( (t=2\text{s}, d=10\text{m}) \) đến \( (t=5\text{s}, d=10\text{m}) \). Tính vận tốc của vật trong từng giai đoạn.</p>
+                <button class="primary-bg text-white px-3 py-1 text-sm rounded font-medium hover:bg-red-800" onclick="toggleAnswer('ans-tl2')">Xem lời giải</button>
+                <div id="ans-tl2" class="hidden bg-green-100 border border-green-300 p-4 mt-3 rounded text-gray-800">
+                    <p>- <strong>Giai đoạn 1 (0 đến 2s):</strong> \( v_1 = \frac{10 - 0}{2 - 0} = 5 \text{ m/s} \).</p>
+                    <p>- <strong>Giai đoạn 2 (2 đến 5s):</strong> Độ dịch chuyển không đổi (nằm ngang), \( v_2 = \frac{10 - 10}{5 - 2} = 0 \text{ m/s} \) (vật đứng yên).</p>
+                </div>
+            </div>
+
+            <!-- TL 3 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-lg">
+                <p class="font-bold">Bài 3:</p>
+                <p class="mb-2">Một người chạy thẳng từ điểm A đến điểm B cách nhau 50m hết 10s, sau đó lập tức chạy ngược về điểm A hết 15s. Tính vận tốc trung bình và tốc độ trung bình của người đó cho cả quá trình chạy.</p>
+                <button class="primary-bg text-white px-3 py-1 text-sm rounded font-medium hover:bg-red-800" onclick="toggleAnswer('ans-tl3')">Xem lời giải</button>
+                <div id="ans-tl3" class="hidden bg-green-100 border border-green-300 p-4 mt-3 rounded text-gray-800">
+                    <p>- <strong>Quãng đường đi được:</strong> \( s = 50 + 50 = 100 \text{ m} \).</p>
+                    <p>- <strong>Độ dịch chuyển tổng cộng:</strong> Vì điểm cuối trùng điểm đầu nên \( d = 0 \text{ m} \).</p>
+                    <p>- <strong>Tổng thời gian:</strong> \( t = 10 + 15 = 25 \text{ s} \).</p>
+                    <p>- <strong>Tốc độ trung bình:</strong> \( = \frac{s}{t} = \frac{100}{25} = 4 \text{ m/s} \).</p>
+                    <p>- <strong>Vận tốc trung bình:</strong> \( = \frac{d}{t} = \frac{0}{25} = 0 \text{ m/s} \).</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Hàm ẩn hiện lời giải
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra trắc nghiệm
+        function checkQuiz() {
+            const correctAnswers = {
+                q1: 'C',
+                q2: 'B',
+                q3: 'B',
+                q4: 'C',
+                q5: 'B'
+            };
+
+            let score = 0;
+            let total = 5;
+
+            for (let i = 1; i <= total; i++) {
+                const radios = document.getElementsByName('q' + i);
+                let selected = null;
+                for (let r of radios) {
+                    if (r.checked) {
+                        selected = r.value;
+                        break;
+                    }
+                }
+                if (selected === correctAnswers['q' + i]) {
+                    score++;
+                }
+            }
+
+            const resultDiv = document.getElementById('quiz-result');
+            const answersDiv = document.getElementById('quiz-answers');
+            
+            answersDiv.classList.remove('hidden');
+
+            if (score === total) {
+                resultDiv.innerHTML = `<span class="text-blue-600">Tuyệt vời! Bạn đúng ${score}/${total} câu.</span>`;
+            } else {
+                resultDiv.innerHTML = `<span class="text-red-600">Bạn làm đúng ${score}/${total} câu. Hãy cố gắng hơn nhé!</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

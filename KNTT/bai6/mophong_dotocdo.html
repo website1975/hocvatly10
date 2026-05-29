@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô Phỏng Thực Hành Đo Tốc Độ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        .digital-font {
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .digital-glow {
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+        }
+        canvas {
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen p-4 md:p-8 font-sans">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+        <!-- Header -->
+        <div class="bg-blue-600 p-6 text-white text-center">
+            <h1 class="text-2xl md:text-3xl font-bold">Thực Hành: Đo Tốc Độ Của Vật Chuyển Động</h1>
+            <p class="text-blue-100 mt-2">Mô phỏng phòng thí nghiệm Vật lý 10</p>
+        </div>
+
+        <div class="p-6">
+            <!-- Digital Clock -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-slate-900 border-4 border-slate-700 rounded-lg p-4 w-64 text-center shadow-inner">
+                    <div id="timerDisplay" class="digital-font text-5xl text-red-500 digital-glow tracking-widest">0.000</div>
+                    <div class="text-slate-400 text-xs mt-2 uppercase tracking-widest font-semibold">Đồng hồ MC964 (s)</div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                
+                <div class="md:col-span-3">
+                    <label for="modeSelect" class="block text-sm font-semibold text-slate-700 mb-1">Chế độ (MODE):</label>
+                    <select id="modeSelect" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all disabled:opacity-50">
+                        <option value="average">Tốc độ trung bình (A ↔ B)</option>
+                        <option value="instant">Tốc độ tức thời (Cổng A)</option>
+                    </select>
+                </div>
+                
+                <!-- Wrapper để giữ layout khi ẩn/hiện -->
+                <div class="md:col-span-3">
+                    <div id="distGroup">
+                        <label for="distance" class="block text-sm font-semibold text-slate-700 mb-1">Quãng đường EF (m):</label>
+                        <input type="number" id="distance" value="0.5" step="0.1" min="0.2" max="0.8" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none disabled:opacity-50">
+                    </div>
+                    <div id="diamGroup" class="hidden">
+                        <label for="diameter" class="block text-sm font-semibold text-slate-700 mb-1">Đường kính bi (m):</label>
+                        <input type="number" id="diameter" value="0.02" step="0.001" min="0.01" max="0.05" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none disabled:opacity-50">
+                    </div>
+                </div>
+
+                <div class="md:col-span-3">
+                    <label for="angle" class="block text-sm font-semibold text-slate-700 mb-1 flex justify-between">
+                        <span>Góc dốc (°):</span>
+                        <span id="angleValText" class="text-blue-600 font-bold">10°</span>
+                    </label>
+                    <input type="range" id="angle" value="10" step="1" min="1" max="15" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                </div>
+
+                <div class="md:col-span-3 flex gap-2">
+                    <button id="startBtn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        Thả Bi
+                    </button>
+                    <button id="resetBtn" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2 px-3 rounded transition-colors border border-slate-300 shadow-sm disabled:opacity-50">
+                        RESET
+                    </button>
+                </div>
+            </div>
+
+            <!-- Simulation Canvas -->
+            <div class="mb-8 rounded-lg overflow-hidden border border-slate-300 bg-sky-50 shadow-inner">
+                <canvas id="simCanvas" width="800" height="300" class="w-full h-auto block"></canvas>
+            </div>
+
+            <!-- Results Table -->
+            <div>
+                <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center justify-between">
+                    <span>Bảng Kết Quả Đo</span>
+                    <span class="text-sm font-normal text-slate-500 bg-slate-100 px-3 py-1 rounded-full border">Đã đo: <span id="runCountDisplay">0</span> lần</span>
+                </h2>
+                <div class="overflow-x-auto rounded-lg border border-slate-200">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-blue-50 text-blue-800 uppercase text-xs tracking-wider">
+                                <th class="p-3 border-b border-slate-200 text-center font-semibold">Lần đo</th>
+                                <th class="p-3 border-b border-slate-200 font-semibold">Chế độ</th>
+                                <th class="p-3 border-b border-slate-200 font-semibold">Góc dốc</th>
+                                <th class="p-3 border-b border-slate-200 font-semibold">Thông số đo (m)</th>
+                                <th class="p-3 border-b border-slate-200 font-semibold text-right">Thời gian t (s)</th>
+                                <th class="p-3 border-b border-slate-200 font-semibold text-right text-blue-700">Tốc độ v (m/s)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTableBody" class="bg-white divide-y divide-slate-100">
+                            <!-- Rows will be added here -->
+                            <tr id="emptyStateRow">
+                                <td colspan="6" class="p-8 text-center text-slate-400 italic">Chưa có dữ liệu. Hãy cấu hình và nhấn "Thả Bi".</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+        const modeSelect = document.getElementById('modeSelect');
+        const distGroup = document.getElementById('distGroup');
+        const diamGroup = document.getElementById('diamGroup');
+        const distanceInput = document.getElementById('distance');
+        const diameterInput = document.getElementById('diameter');
+        const angleInput = document.getElementById('angle');
+        const angleValText = document.getElementById('angleValText');
+        
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const resultTableBody = document.getElementById('resultTableBody');
+        const runCountDisplay = document.getElementById('runCountDisplay');
+        const emptyStateRow = document.getElementById('emptyStateRow');
+
+        // Physics Constants & Simulation State
+        const pxPerMeter = 800; 
+        const G = 9.8; // m/s^2 (gia tốc trọng trường)
+        const BASE_Y = 260; // Toạ độ Y chuẩn của máng (chân dốc)
+        const PIVOT_X = 750; // Điểm xoay ngang (gần mép phải)
+        const PIVOT_Y = 260; // Điểm xoay dọc
+        
+        let ball = { x: 0, v: 0, d: 0.02, isMoving: false };
+        let gateA = 0.15; // Cổng E cố định ở 0.15m
+        let gateB = 0.65; // Cổng F thay đổi
+        
+        let runCount = 0;
+        let animationId;
+        let startTime = 0;
+        let finalCalculatedTime = 0;
+
+        // --- Hàm Phụ Trợ Vật Lý ---
+        function getAcceleration() {
+            let angleDeg = parseFloat(angleInput.value) || 10;
+            // a = g * sin(alpha)
+            return G * Math.sin(angleDeg * Math.PI / 180);
+        }
+
+        // --- UI Interactions ---
+        modeSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'average') {
+                distGroup.classList.remove('hidden');
+                diamGroup.classList.add('hidden');
+            } else {
+                distGroup.classList.add('hidden');
+                diamGroup.classList.remove('hidden');
+            }
+            resetSimState(); 
+        });
+
+        distanceInput.addEventListener('input', drawScene);
+        diameterInput.addEventListener('input', drawScene);
+        
+        angleInput.addEventListener('input', () => {
+            angleValText.innerText = `${angleInput.value}°`;
+            drawScene();
+        });
+
+        function toggleInputs(disabled) {
+            modeSelect.disabled = disabled;
+            distanceInput.disabled = disabled;
+            diameterInput.disabled = disabled;
+            angleInput.disabled = disabled;
+        }
+
+        // --- Core Simulation Logic ---
+        function formatTime(t) {
+            return Math.max(0, t).toFixed(3);
+        }
+
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.save();
+            
+            // Xử lý góc nghiêng trực quan trên canvas
+            let angleDeg = parseFloat(angleInput.value) || 10;
+            let angleRad = angleDeg * Math.PI / 180;
+            
+            // Dịch chuyển tâm tới điểm Pivot, xoay trục, rồi đưa tâm về lại
+            ctx.translate(PIVOT_X, PIVOT_Y);
+            // CẬP NHẬT ĐÃ SỬA CHỮA: Xoay thuận chiều kim đồng hồ để bên trái (Cổng E) dâng lên cao
+            ctx.rotate(angleRad); 
+            ctx.translate(-PIVOT_X, -PIVOT_Y);
+            
+            // Vẽ máng nghiêng dài ra cả hai phía để khi xoay không bị hụt viền
+            ctx.fillStyle = "#cbd5e1"; // slate-300
+            ctx.fillRect(-200, BASE_Y, 1200, 15);
+            ctx.fillStyle = "#94a3b8"; // slate-400
+            ctx.fillRect(-200, BASE_Y + 15, 1200, 10);
+            
+            // Vẽ Cổng E (Gate A)
+            ctx.fillStyle = "rgba(239, 68, 68, 0.7)"; // Red-500
+            ctx.fillRect(gateA * pxPerMeter - 8, BASE_Y - 60, 16, 60);
+            ctx.fillStyle = "#1e293b";
+            ctx.font = "bold 14px sans-serif";
+            ctx.fillText("Cổng E", gateA * pxPerMeter - 24, BASE_Y - 70);
+
+            // Vẽ Cổng F (Gate B) nếu ở chế độ Trung Bình
+            if (modeSelect.value === 'average') {
+                gateB = gateA + parseFloat(distanceInput.value);
+                ctx.fillStyle = "rgba(59, 130, 246, 0.7)"; // Blue-500
+                ctx.fillRect(gateB * pxPerMeter - 8, BASE_Y - 60, 16, 60);
+                ctx.fillStyle = "#1e293b";
+                ctx.fillText("Cổng F", gateB * pxPerMeter - 24, BASE_Y - 70);
+            }
+
+            // Vẽ Viên bi
+            ball.d = parseFloat(diameterInput.value);
+            let rPx = Math.max((ball.d / 2) * pxPerMeter, 10); // Kích thước hiển thị tối thiểu
+            
+            ctx.beginPath();
+            ctx.arc(ball.x * pxPerMeter, BASE_Y - rPx, rPx, 0, Math.PI * 2);
+            
+            // Đổ bóng cho bi
+            let gradient = ctx.createRadialGradient(
+                ball.x * pxPerMeter - rPx/3, BASE_Y - rPx - rPx/3, rPx/4, 
+                ball.x * pxPerMeter, BASE_Y - rPx, rPx
+            );
+            gradient.addColorStop(0, "#94a3b8");
+            gradient.addColorStop(1, "#334155");
+            
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#0f172a";
+            ctx.stroke();
+
+            ctx.restore(); // Phục hồi hệ toạ độ không xoay
+        }
+
+        function calculatePerfectTime() {
+            // Vận tốc đầu v0 = 0 -> s = 1/2 * a * t^2 -> t = sqrt(2s/a)
+            let mode = modeSelect.value;
+            let acc = getAcceleration();
+            let errorNoise = (Math.random() - 0.5) * 0.006; // Sai số mô phỏng (+/- 0.003s)
+
+            if (mode === 'average') {
+                let tEnterA = Math.sqrt(2 * gateA / acc);
+                let tEnterB = Math.sqrt(2 * gateB / acc);
+                return (tEnterB - tEnterA) + errorNoise;
+            } else {
+                let d = parseFloat(diameterInput.value);
+                let tEnterA = Math.sqrt(2 * gateA / acc);
+                let tExitA = Math.sqrt(2 * (gateA + d) / acc);
+                return (tExitA - tEnterA) + errorNoise;
+            }
+        }
+
+        function update() {
+            if (!ball.isMoving) return;
+            
+            let currentTime = (Date.now() - startTime) / 1000; 
+            let acc = getAcceleration();
+            
+            // Cập nhật vị trí bi: s = 1/2 * a * t^2
+            ball.x = 0.5 * acc * Math.pow(currentTime, 2);
+
+            let mode = modeSelect.value;
+            let tEnterA = Math.sqrt(2 * gateA / acc);
+            
+            // Logic đồng hồ nhảy số
+            if (mode === 'average') {
+                let tEnterB = Math.sqrt(2 * gateB / acc);
+                if (currentTime >= tEnterA && currentTime < tEnterB) {
+                    timerDisplay.innerText = formatTime(currentTime - tEnterA);
+                } else if (currentTime >= tEnterB) {
+                    timerDisplay.innerText = formatTime(finalCalculatedTime);
+                    if (ball.x > gateB + 0.15) { // Để bi lăn lố qua cổng F một chút
+                        finishRun();
+                        return;
+                    }
+                }
+            } else {
+                let d = parseFloat(diameterInput.value);
+                let tExitA = Math.sqrt(2 * (gateA + d) / acc);
+                if (currentTime >= tEnterA && currentTime < tExitA) {
+                    timerDisplay.innerText = formatTime(currentTime - tEnterA);
+                } else if (currentTime >= tExitA) {
+                    timerDisplay.innerText = formatTime(finalCalculatedTime);
+                    if (ball.x > gateA + 0.3) {
+                        finishRun();
+                        return;
+                    }
+                }
+            }
+
+            drawScene();
+            animationId = requestAnimationFrame(update);
+        }
+
+        function startSim() {
+            startBtn.disabled = true;
+            toggleInputs(true);
+            resetSimState(); // Trả bi về vạch xuất phát
+            
+            ball.isMoving = true;
+            startTime = Date.now();
+            finalCalculatedTime = calculatePerfectTime();
+            
+            update();
+        }
+
+        function finishRun() {
+            ball.isMoving = false;
+            startBtn.disabled = false;
+            toggleInputs(false);
+            logResult();
+        }
+
+        // --- Reset Logic ---
+        function resetSimState() {
+            cancelAnimationFrame(animationId);
+            ball.x = 0;
+            ball.v = 0;
+            timerDisplay.innerText = "0.000";
+            drawScene();
+        }
+
+        function fullReset() {
+            startBtn.disabled = false;
+            toggleInputs(false);
+            resetSimState();
+            
+            // Xóa bảng kết quả cũ
+            resultTableBody.innerHTML = '';
+            resultTableBody.appendChild(emptyStateRow);
+            
+            // Reset bộ đếm
+            runCount = 0;
+            runCountDisplay.innerText = runCount;
+        }
+
+        // --- Table Logic ---
+        function logResult() {
+            if (runCount === 0) {
+                // Xóa dòng "Chưa có dữ liệu" ở lần chạy đầu tiên
+                if(emptyStateRow.parentNode) {
+                    emptyStateRow.parentNode.removeChild(emptyStateRow);
+                }
+            }
+
+            runCount++;
+            runCountDisplay.innerText = runCount;
+
+            let mode = modeSelect.value;
+            let paramValue = mode === 'average' ? distanceInput.value : diameterInput.value;
+            let paramLabel = mode === 'average' ? `s = ${paramValue}` : `d = ${paramValue}`;
+            let speed = parseFloat(paramValue) / finalCalculatedTime;
+            let angleValue = angleInput.value;
+
+            let row = document.createElement('tr');
+            row.className = "hover:bg-slate-50 transition-colors";
+            row.innerHTML = `
+                <td class="p-3 border-b border-slate-100 text-center font-medium text-slate-700">${runCount}</td>
+                <td class="p-3 border-b border-slate-100 text-slate-600">${mode === 'average' ? 'Trung bình' : 'Tức thời'}</td>
+                <td class="p-3 border-b border-slate-100 text-slate-800 font-bold bg-slate-50/50">${angleValue}°</td>
+                <td class="p-3 border-b border-slate-100 text-slate-600 font-mono">${paramLabel}</td>
+                <td class="p-3 border-b border-slate-100 text-right text-red-600 font-mono font-medium">${formatTime(finalCalculatedTime)}</td>
+                <td class="p-3 border-b border-slate-100 text-right text-blue-700 font-bold font-mono">${speed.toFixed(3)}</td>
+            `;
+            
+            // Thêm kết quả mới lên đầu bảng
+            resultTableBody.insertBefore(row, resultTableBody.firstChild);
+        }
+
+        // --- Event Listeners ---
+        startBtn.addEventListener('click', startSim);
+        resetBtn.addEventListener('click', fullReset);
+
+        // Khởi tạo hiển thị ban đầu
+        resetSimState();
+    </script>
+</body>
+</html>

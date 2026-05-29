@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chương II - Bài 6: Thực hành Đo tốc độ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --main-color: #660000;
+            --bg-color: #f4f7f9;
+        }
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        .text-main { color: var(--main-color); }
+        .bg-main { background-color: var(--main-color); }
+        .border-main { border-color: var(--main-color); }
+        
+        .section-header {
+            border-bottom: 4px solid #000033; /* Dark blue as required for underline */
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 0.75rem;
+        }
+        
+        th {
+            background-color: #e2e8f0;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+
+        <!-- HEADER -->
+        <div class="bg-main text-white rounded-[12px] shadow-md p-6 text-center mb-6">
+            <h2 class="text-xl font-medium pb-4 border-b border-white border-opacity-40 tracking-wide uppercase">
+                Chương II: Động học
+            </h2>
+            <h1 class="text-2xl md:text-3xl font-bold pt-4 uppercase tracking-wider">
+                Bài 6: Thực hành - Đo tốc độ của vật chuyển động
+            </h1>
+        </div>
+
+        <!-- INTRO BOX -->
+        <div class="border border-black bg-white rounded-[12px] shadow-sm p-5 mb-8 italic text-gray-700 text-center text-lg">
+            "Làm thế nào đo được tốc độ chuyển động của vật bằng dụng cụ thí nghiệm thực hành?"
+        </div>
+
+        <!-- SECTION I -->
+        <div class="card">
+            <h2 class="text-xl font-bold uppercase text-main section-header pb-2 mb-4">I. Cách đo tốc độ trong phòng thí nghiệm</h2>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-md mb-4 shadow-sm">
+                <p>Để đo tốc độ chuyển động của một vật có thể <strong>đo thời gian</strong> và <strong>quãng đường</strong> chuyển động của vật đó.</p>
+                <div class="mt-2 text-center text-lg font-bold">
+                    \( v = \frac{s}{t} \)
+                </div>
+            </div>
+
+            <!-- Hoạt động thảo luận -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md my-4">
+                <p class="font-bold flex items-center gap-2 mb-2">
+                    <span>👥</span> Hãy thảo luận nhóm và trả lời câu hỏi sau:
+                </p>
+                <ul class="list-decimal ml-5 mb-3 space-y-1">
+                    <li>Dùng dụng cụ gì để đo quãng đường và thời gian chuyển động của vật?</li>
+                    <li>Làm thế nào đo được quãng đường đi được của vật trong một khoảng thời gian hoặc ngược lại?</li>
+                    <li>Thiết kế các phương án đo tốc độ và so sánh ưu, nhược điểm của các phương án đó.</li>
+                </ul>
+                <button onclick="toggleAnswer('tl1')" class="bg-main hover:bg-red-800 text-white font-semibold py-1.5 px-4 rounded transition">Xem hướng giải quyết</button>
+                <div id="tl1" class="hidden mt-3 bg-[#d4edda] text-[#155724] p-4 rounded border border-[#c3e6cb]">
+                    <ul class="list-disc ml-5 space-y-2">
+                        <li><strong>Câu 1:</strong> Đo quãng đường dùng thước (thước thẳng, thước cuộn...). Đo thời gian dùng đồng hồ (đồng hồ bấm giây, đồng hồ hiện số + cổng quang điện...).</li>
+                        <li><strong>Câu 2:</strong> Ta có thể cố định quãng đường trước (đánh dấu trên máng/thước) rồi đo thời gian vật đi hết quãng đường đó. Hoặc quy định thời gian trước rồi đo quãng đường vật đi được trong thời gian đó.</li>
+                        <li><strong>Câu 3:</strong> 
+                            <br>- <em>Dùng thước và đồng hồ bấm giây:</em> Dễ làm, rẻ tiền nhưng sai số lớn do phản xạ của người bấm.
+                            <br>- <em>Dùng đồng hồ hiện số và cổng quang điện:</em> Phức tạp hơn, thiết bị đắt tiền nhưng kết quả rất chính xác.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION II -->
+        <div class="card">
+            <h2 class="text-xl font-bold uppercase text-main section-header pb-2 mb-4">II. Giới thiệu dụng cụ đo thời gian</h2>
+            <p class="mb-4">Dụng cụ đo độ dài đã được học ở THCS, phần này giới thiệu các dụng cụ đo thời gian chuyên dụng.</p>
+
+            <h3 class="font-bold text-lg mb-2 text-gray-800">1. Đồng hồ đo thời gian hiện số và cổng quang điện</h3>
+            <p class="mb-2">Đồng hồ đo thời gian hiện số có thể đo thời gian chính xác đến <strong>phần nghìn giây</strong>, được điều khiển bằng cổng quang điện.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                <div class="text-center">
+                    <img src="h1.png" alt="Hình 6.1. Cấu tạo cổng quang điện" class="mx-auto max-h-48 rounded shadow-sm border">
+                    <p class="text-sm mt-2 italic">Hình 6.1. Cấu tạo cổng quang điện</p>
+                </div>
+                <div class="text-center">
+                    <img src="h2.png" alt="Hình 6.2. Đồng hồ đo thời gian hiện số" class="mx-auto max-h-48 rounded shadow-sm border">
+                    <p class="text-sm mt-2 italic">Hình 6.2. Đồng hồ đo thời gian hiện số</p>
+                </div>
+            </div>
+
+            <div class="bg-indigo-50 p-4 border border-indigo-200 rounded my-4">
+                <h4 class="font-bold mb-2">Các chế độ MODE cơ bản:</h4>
+                <ul class="list-disc ml-5 space-y-1">
+                    <li><strong>MODE A / B:</strong> Đo thời gian vật chắn cổng quang điện nối với ổ A hoặc ổ B.</li>
+                    <li><strong>MODE A+B:</strong> Đo tổng hai khoảng thời gian vật chắn cổng quang điện ở A và B.</li>
+                    <li><strong>MODE A ↔ B:</strong> Đo thời gian vật chuyển động từ cổng quang ở ổ A tới cổng quang ở ổ B.</li>
+                    <li><strong>MODE T:</strong> Đo chu kì dao động.</li>
+                </ul>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md my-4">
+                <p class="font-bold flex items-center gap-2 mb-2">
+                    <span class="text-xl">❓</span> Câu hỏi:
+                </p>
+                <p>Sử dụng đồng hồ đo thời gian hiện số và cổng quang điện để đo tốc độ chuyển động có ưu điểm, nhược điểm gì?</p>
+                <button onclick="toggleAnswer('tl2')" class="mt-2 bg-main hover:bg-red-800 text-white font-semibold py-1.5 px-4 rounded transition">Xem câu trả lời</button>
+                <div id="tl2" class="hidden mt-3 bg-[#d4edda] text-[#155724] p-4 rounded border border-[#c3e6cb]">
+                    <p><strong>Ưu điểm:</strong> Độ chính xác rất cao (đến 0.001s), tự động đo nên loại bỏ được sai số chủ quan do phản xạ của con người.</p>
+                    <p><strong>Nhược điểm:</strong> Thiết bị cồng kềnh, cần nguồn điện, chi phí cao, việc lắp đặt và cài đặt cổng quang cần sự tỉ mỉ.</p>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-lg mb-2 mt-6 text-gray-800">2. Thiết bị đo thời gian bằng cần rung (đồng hồ cần rung)</h3>
+            <p>Sử dụng cần rung đều đặn (khoảng 50 lần/giây) đánh dấu chấm trên băng giấy gắn vào xe. Khoảng thời gian giữa 2 chấm liên tiếp là \( 0.02s \).</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                <div class="text-center">
+                    <img src="h3.png" alt="Hình 6.3. Đồng hồ cần rung" class="mx-auto max-h-32 rounded shadow-sm border">
+                    <p class="text-sm mt-2 italic">Hình 6.3. Đồng hồ cần rung</p>
+                </div>
+                <div class="text-center">
+                    <img src="h4.png" alt="Hình 6.4. Thí nghiệm đo tốc độ" class="mx-auto max-h-32 rounded shadow-sm border">
+                    <p class="text-sm mt-2 italic">Hình 6.4. Thí nghiệm</p>
+                </div>
+                <div class="text-center">
+                    <img src="h5.png" alt="Hình 6.5. Băng giấy" class="mx-auto max-h-32 rounded shadow-sm border object-cover">
+                    <p class="text-sm mt-2 italic">Hình 6.5. Dấu chấm trên băng giấy</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION III -->
+        <div class="card">
+            <h2 class="text-xl font-bold uppercase text-main section-header pb-2 mb-4">III. Thực hành đo tốc độ chuyển động</h2>
+            
+            <h3 class="font-bold text-lg mb-2 text-gray-800">1. Dụng cụ thí nghiệm</h3>
+            <div class="text-center my-4">
+                <img src="h6.png" alt="Hình 6.6. Bộ thí nghiệm" class="mx-auto rounded shadow-sm border max-h-64">
+                <p class="text-sm mt-2 italic">Hình 6.6. Bộ thí nghiệm đo tốc độ chuyển động của viên bi thép</p>
+            </div>
+            <ul class="list-disc ml-5 mb-4 grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                <li>(1) Đồng hồ đo thời gian hiện số.</li>
+                <li>(2) Cổng quang điện.</li>
+                <li>(3) Nam châm điện và công tắc kép.</li>
+                <li>(4) Máng nhôm có thước đo góc.</li>
+                <li>(5) Viên bi thép.</li>
+                <li>(6) Giá đỡ 3 chân có vít chỉnh cân bằng.</li>
+                <li>(7) Thước cặp.</li>
+            </ul>
+
+            <h3 class="font-bold text-lg mb-2 mt-6 text-gray-800">2. Thiết kế phương án thí nghiệm</h3>
+            
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md my-4">
+                <p class="font-bold flex items-center gap-2 mb-2">
+                    <span>👥</span> Thảo luận nhóm lập phương án đo:
+                </p>
+                <ul class="list-decimal ml-5 mb-3 space-y-1">
+                    <li>Làm thế nào xác định tốc độ trung bình của viên bi khi đi từ cổng quang điện E đến F?</li>
+                    <li>Làm thế nào xác định tốc độ tức thời của viên bi khi đi qua cổng quang E hoặc F?</li>
+                    <li>Xác định các yếu tố có thể gây sai số và tìm cách giảm sai số.</li>
+                </ul>
+                <button onclick="toggleAnswer('tl3')" class="bg-main hover:bg-red-800 text-white font-semibold py-1.5 px-4 rounded transition">Xem hướng giải quyết</button>
+                <div id="tl3" class="hidden mt-3 bg-[#d4edda] text-[#155724] p-4 rounded border border-[#c3e6cb]">
+                    <ul class="list-disc ml-5 space-y-2">
+                        <li><strong>Tốc độ trung bình:</strong> Dùng thước đo khoảng cách s giữa E và F. Đặt đồng hồ ở chế độ MODE A↔B để đo thời gian t đi từ E đến F. Áp dụng \( v = \frac{s}{t} \).</li>
+                        <li><strong>Tốc độ tức thời:</strong> Dùng thước cặp đo đường kính \( d \) của viên bi. Đặt đồng hồ ở chế độ MODE A (hoặc B) để đo thời gian \( t \) viên bi chắn sáng tại cổng E (hoặc F). Áp dụng \( v_t = \frac{d}{t} \).</li>
+                        <li><strong>Sai số:</strong> Gây ra do đo đạc (thước, thước cặp), độ nghiêng máng không chuẩn, thao tác bấm thả bi chưa đều. Cách giảm: Đo nhiều lần lấy trung bình, đặt cổng quang điện chắc chắn vuông góc với máng.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-lg mb-2 mt-6 text-gray-800">3. Tiến hành thí nghiệm</h3>
+            <p><strong>Thí nghiệm 1: Đo tốc độ trung bình</strong><br>Bố trí thiết bị. Đặt chế độ đồng hồ <strong>MODE A↔B</strong>. Nhả nam châm điện cho bi lăn và ghi lại thời gian t hiển thị (đo 3 lần).</p>
+            <p class="mt-2"><strong>Thí nghiệm 2: Đo tốc độ tức thời</strong><br>Sử dụng thước cặp đo đường kính viên bi. Đặt đồng hồ chế độ <strong>MODE A</strong> (hoặc B). Cho bi lăn và đo thời gian viên bi đi qua che khuất 1 cổng quang (đo 3 lần).</p>
+            
+            <!-- Box Lưu ý -->
+            <div class="bg-rose-50 border-2 border-red-300 p-4 rounded-[12px] my-4 shadow-sm text-gray-800">
+                <p class="font-bold text-red-700 uppercase mb-1">⚠️ Lưu ý:</p>
+                <p>Khi cắm cổng quang điện vào ổ cắm cần xoay đúng khe định vị, cắm thẳng, không rung lắc. Kết thúc thí nghiệm cần tắt nguồn và sắp xếp dụng cụ ngăn nắp.</p>
+            </div>
+
+            <h3 class="font-bold text-lg mb-2 mt-6 text-gray-800">4. Kết quả thí nghiệm</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="5">Bảng 6.1. Đo tốc độ trung bình</th>
+                        </tr>
+                        <tr>
+                            <th rowspan="2">Lần đo</th>
+                            <th colspan="3">Thời gian t (s)</th>
+                            <th rowspan="2">Tốc độ \( v = s/t \)</th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kết quả</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="5">Bảng 6.2. Đo tốc độ tức thời</th>
+                        </tr>
+                        <tr>
+                            <th rowspan="2">Lần đo</th>
+                            <th colspan="3">Thời gian t chắn cổng (s)</th>
+                            <th rowspan="2">Tốc độ \( v_t = d/t \)</th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kết quả</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Xử lý kết quả -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md my-4">
+                <p class="font-bold mb-2">Phần xử lí kết quả thí nghiệm:</p>
+                <ul class="list-decimal ml-5 mb-3 space-y-1">
+                    <li>Tính tốc độ trung bình, tức thời và sai số.</li>
+                    <li>Đề xuất phương án đo tốc độ tức thời tại CẢ HAI vị trí cổng E và cổng F cùng lúc.</li>
+                </ul>
+                <button onclick="toggleAnswer('tl4')" class="bg-main hover:bg-red-800 text-white font-semibold py-1.5 px-4 rounded transition">Xem giải chi tiết</button>
+                <div id="tl4" class="hidden mt-3 bg-[#d4edda] text-[#155724] p-4 rounded border border-[#c3e6cb]">
+                    <p><strong>Gợi ý câu 2 (Đề xuất):</strong> Để đo tốc độ tức thời tại 2 vị trí cùng lúc, ta lắp 2 cổng quang điện tại E và F nối với ổ A và B. Cài đặt đồng hồ ở chế độ <strong>MODE A+B</strong>. Tuy nhiên, cách này chỉ cho ta TỔNG thời gian. Để đo riêng rẽ, ta cần đồng hồ có chế độ hiển thị kép hoặc thực hiện 2 lần thả bi độc lập (đặt MODE A lần 1, MODE B lần 2).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMMARY BOXES -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <!-- Em đã học -->
+            <div class="bg-blue-50 border-2 border-blue-200 p-5 rounded-[12px] shadow-sm">
+                <h3 class="text-blue-800 font-bold uppercase text-lg mb-2">📌 Em đã học</h3>
+                <ul class="list-disc ml-5 space-y-2 text-sm">
+                    <li>Sử dụng đồng hồ hiện số và cổng quang điện để đo thời gian chính xác (phần nghìn giây).</li>
+                    <li>Dùng 2 cổng quang điện đo thời gian vật đi giữa 2 cổng -> Tính tốc độ trung bình.</li>
+                    <li>Đo kích thước vật cản (đường kính viên bi) và thời gian chắn 1 cổng quang điện -> Tính tốc độ tức thời.</li>
+                </ul>
+            </div>
+
+            <!-- Em có thể -->
+            <div class="bg-green-50 border-2 border-green-200 p-5 rounded-[12px] shadow-sm">
+                <h3 class="text-green-800 font-bold uppercase text-lg mb-2">💡 Em có thể</h3>
+                <ul class="list-disc ml-5 space-y-2 text-sm">
+                    <li>Mô tả được các phương án đo tốc độ thông dụng, biết đánh giá ưu nhược điểm.</li>
+                    <li>Sử dụng điện thoại thông minh quay video chuyển động rồi dùng phần mềm phân tích video để xác định tốc độ (Tracker, Vernier Video Analysis...).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Em có biết -->
+        <div class="bg-orange-50 border-2 border-orange-200 p-5 rounded-[12px] shadow-sm mb-8">
+            <h3 class="text-orange-800 font-bold uppercase text-lg mb-2">🔎 Em có biết?</h3>
+            <p class="font-bold mb-1">Sử dụng cảm biến chuyển động:</p>
+            <p class="mb-3 text-sm">Thiết bị truyền sóng siêu âm đập vào vật và nhận sóng phản xạ. Kết nối máy tính sẽ vẽ được đồ thị và tính tốc độ tự động.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="text-center">
+                    <img src="h7.png" alt="Cảm biến chuyển động" class="mx-auto rounded border shadow-sm max-h-32">
+                    <p class="text-xs mt-1">Hình 6.7. Cảm biến chuyển động</p>
+                </div>
+                <div class="text-center">
+                    <img src="h8.png" alt="Máy tính đo" class="mx-auto rounded border shadow-sm max-h-32">
+                    <p class="text-xs mt-1">Hình 6.8. Đo bằng cảm biến</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= EXERCISES SECTION ================= -->
+        
+        <div class="bg-white rounded-[12px] shadow-md p-6 mt-10 border-t-4 border-main">
+            <h2 class="text-2xl font-bold uppercase text-center text-main mb-6">Bài Tập Vận Dụng & Củng Cố</h2>
+
+            <!-- Trắc nghiệm -->
+            <div class="mb-8">
+                <h3 class="text-lg font-bold border-b pb-2 mb-4 bg-gray-100 p-2 rounded">A. Bài tập trắc nghiệm</h3>
+                
+                <form id="quiz-form" class="space-y-6">
+                    <!-- Q1 -->
+                    <div>
+                        <p class="font-semibold mb-2">Câu 1: Để đo tốc độ tức thời của viên bi bằng 1 cổng quang điện, ta cần sử dụng đồng hồ hiện số ở chế độ nào?</p>
+                        <div class="space-y-1 ml-2">
+                            <label class="block"><input type="radio" name="q1" value="A"> A. MODE A↔B</label>
+                            <label class="block"><input type="radio" name="q1" value="B"> B. MODE T</label>
+                            <label class="block"><input type="radio" name="q1" value="C"> C. MODE A (hoặc B)</label>
+                            <label class="block"><input type="radio" name="q1" value="D"> D. MODE A+B</label>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div>
+                        <p class="font-semibold mb-2">Câu 2: Đồng hồ đo thời gian hiện số MC964 có thể đo chính xác thời gian đến bao nhiêu?</p>
+                        <div class="space-y-1 ml-2">
+                            <label class="block"><input type="radio" name="q2" value="A"> A. 0.1 s</label>
+                            <label class="block"><input type="radio" name="q2" value="B"> B. 0.001 s</label>
+                            <label class="block"><input type="radio" name="q2" value="C"> C. 0.01 s</label>
+                            <label class="block"><input type="radio" name="q2" value="D"> D. 0.0001 s</label>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div>
+                        <p class="font-semibold mb-2">Câu 3: Công thức tính tốc độ tức thời của viên bi thép đi qua một cổng quang điện là?</p>
+                        <div class="space-y-1 ml-2">
+                            <label class="block"><input type="radio" name="q3" value="A"> A. \( v = \frac{s}{t} \) (s là quãng đường 2 cổng)</label>
+                            <label class="block"><input type="radio" name="q3" value="B"> B. \( v = d \cdot t \) </label>
+                            <label class="block"><input type="radio" name="q3" value="C"> C. \( v = \frac{d}{t} \) (d là đường kính viên bi)</label>
+                            <label class="block"><input type="radio" name="q3" value="D"> D. \( v = \frac{2d}{t} \)</label>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div>
+                        <p class="font-semibold mb-2">Câu 4: Đồng hồ cần rung có tần số 50Hz, khoảng thời gian giữa 2 chấm liên tiếp in trên băng giấy là bao nhiêu?</p>
+                        <div class="space-y-1 ml-2">
+                            <label class="block"><input type="radio" name="q4" value="A"> A. 0.02 s</label>
+                            <label class="block"><input type="radio" name="q4" value="B"> B. 0.05 s</label>
+                            <label class="block"><input type="radio" name="q4" value="C"> C. 0.2 s</label>
+                            <label class="block"><input type="radio" name="q4" value="D"> D. 0.5 s</label>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div>
+                        <p class="font-semibold mb-2">Câu 5: Nhược điểm lớn nhất của việc dùng thước và đồng hồ bấm giây thủ công để đo tốc độ là gì?</p>
+                        <div class="space-y-1 ml-2">
+                            <label class="block"><input type="radio" name="q5" value="A"> A. Khó kiếm thiết bị</label>
+                            <label class="block"><input type="radio" name="q5" value="B"> B. Sai số lớn do phản xạ của người đo</label>
+                            <label class="block"><input type="radio" name="q5" value="C"> C. Không đo được chuyển động thẳng</label>
+                            <label class="block"><input type="radio" name="q5" value="D"> D. Thiết bị quá cồng kềnh</label>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="checkQuiz()" class="bg-[#000033] hover:bg-blue-900 text-white font-bold py-2 px-6 rounded shadow mt-4">NỘP BÀI</button>
+                    <div id="quiz-result" class="hidden mt-4"></div>
+                </form>
+            </div>
+
+            <!-- Tự luận tính toán -->
+            <div>
+                <h3 class="text-lg font-bold border-b pb-2 mb-4 bg-gray-100 p-2 rounded">B. Bài tập vận dụng tính toán</h3>
+                
+                <div class="space-y-6">
+                    <!-- BT1 -->
+                    <div class="bg-gray-50 border p-4 rounded-lg">
+                        <p class="font-semibold mb-2">Bài 1: Trong thí nghiệm đo tốc độ trung bình, đo được khoảng cách giữa 2 cổng quang điện là \( s = 0.5 \text{ m} \). Thời gian vật đi từ cổng 1 đến cổng 2 hiện trên đồng hồ là \( t = 0.25 \text{ s} \). Tính tốc độ trung bình của vật.</p>
+                        <button onclick="toggleAnswer('bt1')" class="bg-main text-white text-sm px-3 py-1 rounded">Xem giải chi tiết</button>
+                        <div id="bt1" class="hidden mt-3 bg-white p-3 border border-gray-200 rounded">
+                            <p>Tốc độ trung bình được tính theo công thức:</p>
+                            <p class="font-bold my-2 text-center text-lg">\( v = \frac{s}{t} = \frac{0.5}{0.25} = 2 \text{ (m/s)} \)</p>
+                            <p>Vậy tốc độ trung bình của vật là 2 m/s.</p>
+                        </div>
+                    </div>
+
+                    <!-- BT2 -->
+                    <div class="bg-gray-50 border p-4 rounded-lg">
+                        <p class="font-semibold mb-2">Bài 2: Sử dụng một viên bi thép có đường kính \( d = 2.00 \text{ cm} \). Khi cho viên bi đi qua cổng quang điện nối với đồng hồ ở MODE A, thời gian hiển thị là \( t = 0.010 \text{ s} \). Tính tốc độ tức thời của viên bi lúc đi qua cổng quang điện.</p>
+                        <button onclick="toggleAnswer('bt2')" class="bg-main text-white text-sm px-3 py-1 rounded">Xem giải chi tiết</button>
+                        <div id="bt2" class="hidden mt-3 bg-white p-3 border border-gray-200 rounded">
+                            <p>Đổi đơn vị: \( d = 2.00 \text{ cm} = 0.02 \text{ m} \).</p>
+                            <p>Tốc độ tức thời được tính xấp xỉ bằng tốc độ khi vật qua cổng quang điện đoạn đường rất nhỏ (đường kính):</p>
+                            <p class="font-bold my-2 text-center text-lg">\( v_t = \frac{d}{t} = \frac{0.02}{0.010} = 2.0 \text{ (m/s)} \)</p>
+                            <p>Vậy tốc độ tức thời của viên bi là 2 m/s.</p>
+                        </div>
+                    </div>
+
+                    <!-- BT3 -->
+                    <div class="bg-gray-50 border p-4 rounded-lg">
+                        <p class="font-semibold mb-2">Bài 3: Phép đo quãng đường s có sai số tỉ đối là 1.5%, phép đo thời gian t có sai số tỉ đối là 2%. Hãy tính sai số tỉ đối của phép đo tốc độ \( v = s/t \).</p>
+                        <button onclick="toggleAnswer('bt3')" class="bg-main text-white text-sm px-3 py-1 rounded">Xem giải chi tiết</button>
+                        <div id="bt3" class="hidden mt-3 bg-white p-3 border border-gray-200 rounded">
+                            <p>Theo công thức tính sai số của một thương, sai số tỉ đối của vận tốc bằng tổng sai số tỉ đối của quãng đường và thời gian:</p>
+                            <p class="font-bold my-2 text-center text-lg">\( \delta v = \delta s + \delta t \)</p>
+                            <p class="font-bold my-2 text-center text-lg">\( \Rightarrow \frac{\Delta v}{v} = 1.5\% + 2\% = 3.5\% \)</p>
+                            <p>Vậy sai số tỉ đối của phép đo tốc độ là 3.5%.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // Hàm ẩn hiện câu trả lời
+        function toggleAnswer(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+            } else {
+                element.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra bài trắc nghiệm
+        function checkQuiz() {
+            const correctAnswers = {
+                q1: 'C',
+                q2: 'B',
+                q3: 'C',
+                q4: 'A',
+                q5: 'B'
+            };
+            
+            let score = 0;
+            let total = 5;
+
+            for (let question in correctAnswers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedOption && selectedOption.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.classList.remove('hidden');
+            
+            if (score === total) {
+                resultDiv.innerHTML = `✅ Xuất sắc! Bạn đã làm đúng ${score}/${total} câu.`;
+                resultDiv.className = "mt-4 font-bold text-green-600 text-xl border-2 border-green-500 bg-green-50 p-3 rounded";
+            } else {
+                resultDiv.innerHTML = `❌ Bạn đã làm đúng ${score}/${total} câu. Hãy kiểm tra lại lý thuyết bài học và thử lại nhé!`;
+                resultDiv.className = "mt-4 font-bold text-red-600 text-lg border-2 border-red-500 bg-red-50 p-3 rounded";
+            }
+        }
+    </script>
+</body>
+</html>

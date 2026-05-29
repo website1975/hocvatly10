@@ -1,0 +1,50 @@
+"Để đo tốc độ của một vật chuyển động, ta cần đo những đại lượng nào?",Quãng đường chuyển động và thời gian để đi hết quãng đường đó.
+Tên thiết bị đo thời gian hiện số thường dùng trong phòng thí nghiệm vật lý phổ thông là gì?,Đồng hồ đo thời gian hiện số MC964.
+Độ chia nhỏ nhất (ĐCNN) của đồng hồ đo thời gian hiện số MC964 có thể chọn là bao nhiêu?,"$0,001 s$ hoặc $0,01 s$."
+"Trong sử dụng đồng hồ MC964, chế độ (MODE) nào dùng để đo thời gian vật chắn cổng quang điện nối với ổ A?",MODE A.
+Chế độ MODE B trên đồng hồ MC964 có chức năng gì?,Đo thời gian vật chắn cổng quang điện nối với ổ B.
+"Để đo tổng hai khoảng thời gian vật chắn cổng quang điện tại A và tại B, ta chọn MODE nào?",MODE A + B.
+Chế độ MODE $A \leftrightarrow B$ trên đồng hồ đo thời gian hiện số dùng để làm gì?,Đo thời gian vật chuyển động từ cổng quang điện nối với ổ A tới cổng quang điện nối với ổ B.
+"Khi cần đo khoảng thời gian $T$ của từng chu kì dao động, ta chọn chế độ nào trên đồng hồ MC964?",MODE T.
+Nút RESET trên đồng hồ đo thời gian hiện số có tác dụng gì?,"Đặt lại chỉ số của đồng hồ về giá trị $0,000$."
+Cổng quang điện trong thí nghiệm đo tốc độ đóng vai trò như một thiết bị gì?,Công tắc điều khiển mở hoặc đóng đồng hồ đo thời gian.
+Ưu điểm của việc sử dụng đồng hồ đo thời gian hiện số và cổng quang điện là gì?,"Độ chính xác cao, lên đến phần nghìn giây và loại bỏ sai số do phản xạ của con người."
+Đồng hồ cần rung sử dụng một cần rung đều đặn với tần số bao nhiêu lần trong một giây?,$50$ lần.
+Khoảng cách giữa hai dấu chấm liên tiếp trên băng giấy của đồng hồ cần rung tương ứng với khoảng thời gian bao nhiêu?,"$0,02 s$."
+Làm thế nào để xác định quãng đường vật đi được khi dùng đồng hồ cần rung?,Đo khoảng cách giữa các dấu chấm được đánh dấu trên băng giấy gắn vào xe.
+Thiết bị nào được dùng để giữ và thả viên bi thép trong thí nghiệm đo tốc độ?,Nam châm điện và công tắc.
+Dụng cụ dùng để đo đường kính của viên bi thép một cách chính xác là gì?,Thước cặp.
+"Trong thí nghiệm đo tốc độ trung bình, quãng đường $s$ được xác định như thế nào?",Đo khoảng cách giữa hai cổng quang điện $E$ và $F$.
+"Để đo tốc độ trung bình của viên bi từ cổng $E$ đến cổng $F$, đồng hồ MC964 cần đặt ở chế độ nào?",MODE $A \leftrightarrow B$.
+"Để đo tốc độ tức thời của viên bi khi đi qua một cổng quang điện, ta cần đo những đại lượng nào?",Đường kính viên bi và thời gian viên bi chắn cổng quang điện đó.
+Công thức tính tốc độ tức thời của viên bi trong thí nghiệm là gì?,"$v_t = \frac{d}{t}$ (với $d$ là đường kính viên bi, $t$ là thời gian chắn cổng quang)."
+Tại sao tốc độ đo được bằng công thức $v = \frac{d}{t}$ tại một cổng quang lại được coi là tốc độ tức thời?,Vì đường kính $d$ rất nhỏ nên tốc độ trung bình trong khoảng thời gian đó xấp xỉ tốc độ tức thời.
+"Để đo tốc độ tức thời tại cổng $E$, ta nối cổng $E$ with ổ cắm nào và chọn MODE gì?",Nối với ổ A và chọn MODE A.
+Sai số $\Delta s$ trong thí nghiệm đo tốc độ thường được lấy bằng giá trị nào?,Độ chia nhỏ nhất của thước đo.
+Công thức tính tốc độ trung bình từ quãng đường $s$ và thời gian $t$ là gì?,$\bar{v} = \frac{\bar{s}}{\bar{t}}$.
+"Khi cắm giắc cắm của cổng quang điện vào đồng hồ, cần lưu ý điều gì để đảm bảo tiếp xúc tốt?","Cắm thẳng giắc cắm, không rung, lắc chân cắm."
+Cảm biến chuyển động (Motion sensor) hoạt động dựa trên nguyên lý nào?,Phát sóng siêu âm và nhận sóng phản xạ từ vật để xác định vị trí và tốc độ.
+"Khi sử dụng cảm biến chuyển động, thiết bị nào giúp hiển thị đồ thị quãng đường - thời gian của vật?",Máy tính kết nối với cảm biến.
+"Trong phương pháp phân tích video, đại lượng nào giúp xác định thời gian chuyển động giữa các khung hình?",Tỉ lệ khung hình (số khung hình trên giây).
+"Nếu một camera quay với tốc độ $30$ khung hình/giây, thời gian giữa hai khung hình liên tiếp là bao nhiêu?",$\frac{1}{30} s$.
+Một ưu điểm của việc sử dụng điện thoại thông minh để đo tốc độ là gì?,Có thể ghi hình chuyển động thực tế và sử dụng phần mềm phân tích để có kết quả nhanh chóng.
+Đo tốc độ bằng đồng hồ cần rung có nhược điểm gì so với cổng quang điện?,Ma sát giữa cần rung và băng giấy có thể làm ảnh hưởng đến chuyển động của vật.
+Thành phần số (6) trong bộ thí nghiệm đo tốc độ bi thép (Hình 6.6) là gì?,"Giá đỡ có đế ba chân, có vít chỉnh cân bằng và trụ thép."
+Thành phần số (4) trong bộ thí nghiệm đo tốc độ bi thép (Hình 6.6) là gì?,"Máng có giá đỡ bằng hợp kim nhôm, có gắn thước đo góc và dây dọi."
+"Để giảm sai số trong thí nghiệm đo thời gian, người ta thường thực hiện phép đo bao nhiêu lần?",Thực hiện ít nhất $3$ đến $5$ lần để lấy giá trị trung bình.
+"Nếu đo quãng đường bằng thước có ĐCNN là $1 mm$, thì sai số dụng cụ $\Delta s$ là bao nhiêu?","$0,001 m$."
+"Trong Bảng 6.1, giá trị trung bình của thời gian $\bar{t}$ được tính theo công thức nào cho 3 lần đo?",$\bar{t} = \frac{t_1 + t_2 + t_3}{3}$.
+Đại lượng nào sau đây là đại lượng đo trực tiếp trong thí nghiệm xác định tốc độ tức thời bằng cổng quang điện?,Đường kính viên bi $d$ và thời gian chắn cổng quang $t$.
+"Khi sử dụng đồng hồ đo thời gian hiện số, vì sao cần nhấn nút RESET trước mỗi lần đo mới?",Để xóa kết quả của lần đo trước và bắt đầu tính thời gian từ giá trị $0$.
+Tại sao phải đặt máng nhôm nghiêng trong thí nghiệm đo tốc độ viên bi thép?,Để viên bi có thể tự chuyển động dưới tác dụng của trọng lực.
+"Trong MODE A $\leftrightarrow$ B, đồng hồ bắt đầu đếm khi nào?",Khi vật bắt đầu chắn cổng quang điện nối ở ổ A.
+"Trong MODE A $\leftrightarrow$ B, đồng hồ dừng đếm khi nào?",Khi vật bắt đầu chắn cổng quang điện nối ở ổ B.
+Dụng cụ số (3) trong Hình 6.6 dùng để làm gì?,Dùng để giữ viên bi thép tại vị trí xuất phát và thả bi bằng cách ngắt điện.
+Tốc độ đo được bằng đồng hồ cần rung là tốc độ trung bình hay tốc độ tức thời?,Tốc độ trung bình trên mỗi khoảng thời gian giữa hai dấu chấm.
+Vì sao việc sử dụng cảm biến chuyển động lại thuận tiện hơn so với đo bằng thước và đồng hồ bấm giây thủ công?,"Vì nó tự động đo và vẽ đồ thị, giảm thiểu sai số do con người."
+"Trong thí nghiệm Hình 6.6, làm thế nào để thay đổi gia tốc của viên bi?",Thay đổi độ nghiêng của máng nhôm.
+"Khi sử dụng thước cặp để đo đường kính bi, bộ phận nào của thước tiếp xúc với viên bi?",Hai mỏ đo của thước cặp.
+"Nếu viên bi không đi qua chính giữa cổng quang điện, kết quả đo thời gian có bị ảnh hưởng không?","Có, vì quãng đường chắn sáng không còn bằng đường kính viên bi, gây sai số cho tốc độ tức thời."
+Đơn vị thường dùng của tốc độ trong các thí nghiệm này là gì?,$m/s$.
+Giá trị sai số tuyệt đối trung bình của thời gian $\overline{\Delta t}$ được tính như thế nào từ 3 lần đo?,$\overline{\Delta t} = \frac{|\bar{t} - t_1| + |\bar{t} - t_2| + |\bar{t} - t_3|}{3}$.
+Chế độ MODE A+B của đồng hồ MC964 đo tổng thời gian vật chắn cổng A và cổng B; điều này có ý nghĩa gì trong thực hành?,Giúp so sánh thời gian chắn sáng tại hai vị trí khác nhau để khảo sát sự thay đổi tốc độ.

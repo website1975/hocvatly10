@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 9: Chuyển động thẳng biến đổi đều</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax for Math Formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* MathJax Config for inline math */
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']]
+            }
+        };
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <!-- HEADER -->
+        <div class="bg-[#660000] text-white rounded-[12px] p-6 text-center shadow-md">
+            <h2 class="text-xl md:text-2xl font-semibold border-b border-white/30 pb-2 mb-3">CHƯƠNG II: ĐỘNG HỌC</h2>
+            <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wide">Bài 9: Chuyển động thẳng biến đổi đều</h1>
+        </div>
+
+        <!-- LỜI DẪN -->
+        <div class="border border-black bg-white rounded-[12px] p-6 shadow-md italic text-gray-700">
+            <div class="text-center mb-4">
+                <img src="h1.png" alt="Hình ảnh xe và người chạy" class="mx-auto rounded border w-full max-w-lg object-cover">
+                <p class="text-sm text-gray-500 mt-2">Hình minh họa xe và người chuyển động</p>
+            </div>
+            <p class="text-center text-lg">Hình trên mô tả sự thay đổi vị trí và vận tốc của ô tô, người sau những khoảng thời gian bằng nhau. Hai chuyển động này có gì giống nhau, khác nhau?</p>
+        </div>
+
+        <!-- MỤC I -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase text-gray-800 border-b-4 border-[#1e3a8a] inline-block mb-4">I. Gia tốc của chuyển động thẳng biến đổi đều</h3>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded mb-4">
+                <p><strong>Chuyển động thẳng biến đổi đều</strong> là chuyển động thẳng mà vận tốc có độ lớn tăng hoặc giảm đều theo thời gian.</p>
+                <ul class="list-disc ml-6 mt-2">
+                    <li>Chuyển động thẳng có độ lớn vận tốc tăng đều theo thời gian gọi là chuyển động thẳng <strong>nhanh dần đều</strong>.</li>
+                    <li>Chuyển động thẳng có độ lớn vận tốc giảm đều theo thời gian gọi là chuyển động thẳng <strong>chậm dần đều</strong>.</li>
+                </ul>
+            </div>
+
+            <p class="mb-4">Vì chuyển động thẳng biến đổi đều có vận tốc thay đổi đều theo thời gian nên gia tốc của chuyển động này không đổi theo thời gian:</p>
+            
+            <div class="bg-red-50 border border-red-200 text-center p-4 rounded mb-6">
+                <p class="text-lg font-bold">\( a = \frac{\Delta v}{\Delta t} = \text{hằng số} \quad (9.1) \)</p>
+            </div>
+
+            <!-- Câu hỏi (Dấu ?) -->
+            <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded mb-4">
+                <div class="flex items-start gap-2">
+                    <span class="text-2xl text-[#1e3a8a] font-bold">?</span>
+                    <div>
+                        <p class="font-semibold mb-2">1. Tính gia tốc của các chuyển động trong hình vẽ ở đầu bài.</p>
+                        <p class="font-semibold mb-3">2. Các chuyển động trong hình vẽ ở đầu bài có phải là chuyển động thẳng biến đổi đều hay không?</p>
+                        <button onclick="toggleAnswer('ans-i-1')" class="bg-[#660000] text-white px-4 py-2 rounded text-sm hover:bg-red-800 transition">Xem câu trả lời</button>
+                    </div>
+                </div>
+                <div id="ans-i-1" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Trả lời:</strong></p>
+                    <p>1. <br>- Gia tốc ô tô: \( a = \frac{10 - 0}{1} = 10 \text{ km/h.s} \)<br>- Gia tốc người: \( a = \frac{4 - 6}{1} = -2 \text{ m/s}^2 \)</p>
+                    <p>2. Cả 2 chuyển động đều là chuyển động thẳng biến đổi đều (ô tô nhanh dần đều, người chậm dần đều) vì độ lớn gia tốc không đổi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MỤC II -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase text-gray-800 border-b-4 border-[#1e3a8a] inline-block mb-4">II. Vận tốc tức thời của chuyển động thẳng biến đổi đều</h3>
+            
+            <p class="mb-2">Gọi \( v_0 \) là vận tốc tại thời điểm ban đầu \( t_0 \); \( v_t \) là vận tốc tại thời điểm \( t \).</p>
+            <p class="mb-4">Vì \( a = \frac{\Delta v}{\Delta t} = \frac{v_t - v_0}{t - t_0} = \frac{v_t - v_0}{\Delta t} \) nên \( v_t = v_0 + a.\Delta t \).</p>
+
+            <div class="bg-red-50 border border-red-200 p-4 rounded mb-4">
+                <p>Nếu ở thời điểm ban đầu \( t_0 = 0 \) thì:</p>
+                <p class="text-center text-lg font-bold">\( v_t = v_0 + a.t \quad (9.2) \)</p>
+            </div>
+            
+            <div class="bg-red-50 border border-red-200 p-4 rounded">
+                <p>Nếu ở thời điểm ban đầu \( t_0 = 0 \) vật mới bắt đầu chuyển động thì \( v_0 = 0 \) và:</p>
+                <p class="text-center text-lg font-bold">\( v_t = a.t \quad (9.3) \)</p>
+            </div>
+        </div>
+
+        <!-- MỤC III -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase text-gray-800 border-b-4 border-[#1e3a8a] inline-block mb-4">III. Đồ thị vận tốc - thời gian của chuyển động thẳng biến đổi đều</h3>
+            
+            <p class="mb-4">Các công thức (9.2) và (9.3) cho thấy vận tốc tức thời \( v \) trong chuyển động thẳng biến đổi đều là hàm bậc nhất của thời gian \( t \), nên đồ thị vận tốc - thời gian của chuyển động này có các dạng như Hình 9.1.</p>
+            
+            <div class="text-center mb-6">
+                <img src="h2.png" alt="Các dạng đồ thị vận tốc - thời gian" class="mx-auto rounded border w-full max-w-2xl object-cover">
+                <p class="text-sm text-gray-500 mt-2">Hình 9.1. Các dạng đồ thị vận tốc - thời gian trong chuyển động thẳng biến đổi đều</p>
+            </div>
+
+            <!-- Câu hỏi (Dấu ?) -->
+            <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded mb-4">
+                <div class="flex items-start gap-2">
+                    <span class="text-2xl text-[#1e3a8a] font-bold">?</span>
+                    <div class="w-full">
+                        <p class="font-semibold mb-2">1. Từ các đồ thị trong Hình 9.1:</p>
+                        <ul class="list-[lower-alpha] ml-6 mb-2">
+                            <li>Hãy viết công thức về mối liên hệ giữa \( v \) với \( a \) và \( t \) của từng chuyển động.</li>
+                            <li>Chuyển động nào là chuyển động nhanh dần đều, chậm dần đều?</li>
+                        </ul>
+                        
+                        <p class="font-semibold mb-2 mt-4">2. Hình 9.2 là đồ thị vận tốc - thời gian trong chuyển động của một bạn đang đi trong siêu thị. Hãy dựa vào đồ thị để mô tả bằng lời chuyển động của bạn đó.</p>
+                        <div class="text-center mb-3">
+                            <img src="h3.png" alt="Đồ thị chuyển động trong siêu thị Hình 9.2" class="mx-auto rounded border max-w-sm object-cover">
+                        </div>
+
+                        <button onclick="toggleAnswer('ans-iii-1')" class="bg-[#660000] text-white px-4 py-2 rounded text-sm hover:bg-red-800 transition mt-2">Xem câu trả lời</button>
+                    </div>
+                </div>
+                <div id="ans-iii-1" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Trả lời:</strong></p>
+                    <p>1a) Hình a: \(v = at\) ; Hình b: \(v = v_0 + at\) (\(a>0\)); Hình c: \(v = v_0 + at\) (\(a<0\)).</p>
+                    <p>1b) Hình a và b: Nhanh dần đều. Hình c: Chậm dần đều.</p>
+                    <p>2. Mô tả: Từ 0-4s: Đi đều; 4-6s: Đi chậm lại và dừng lại; 6-7s: Đứng yên; 7-8s: Đi nhanh dần theo chiều ngược lại; 8-9s: Đi đều; 9-10s: Đi chậm lại.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MỤC IV -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase text-gray-800 border-b-4 border-[#1e3a8a] inline-block mb-4">IV. Độ dịch chuyển của chuyển động thẳng biến đổi đều</h3>
+            
+            <h4 class="text-lg font-semibold text-[#660000] mb-3">1. Tính độ dịch chuyển bằng đồ thị vận tốc - thời gian (v - t)</h4>
+            <p class="mb-4">Trong khoảng thời gian \( t \), nếu vật chuyển động thẳng đều với vận tốc \( v \), thì đồ thị có dạng như Hình 9.3a và độ dịch chuyển có độ lớn là: \( d = v.t \)</p>
+            <p class="mb-4">Độ lớn này bằng <strong>diện tích</strong> của hình chữ nhật, các cạnh có độ dài là \( v \) và \( t \). Diện tích này gọi là diện tích giới hạn của đồ thị (v-t) đối với trục hoành.</p>
+            
+            <p class="mb-4">Trong thời gian \( t \), nếu vật chuyển động thẳng biến đổi đều với vận tốc ban đầu \( v_0 \), thì công thức tính vận tốc là \( v_t = v_0 + a.t \), đồ thị có dạng Hình 9.3b. Độ dịch chuyển có độ lớn bằng diện tích hình thang vuông.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center mb-6">
+                <div>
+                    <img src="h4.png" alt="Hình 9.3a" class="mx-auto rounded border w-full object-cover">
+                    <p class="text-sm mt-1">a) Đồ thị (v-t) của CĐTĐ</p>
+                </div>
+                <div>
+                    <img src="h5.png" alt="Hình 9.3b" class="mx-auto rounded border w-full object-cover">
+                    <p class="text-sm mt-1">b) Đồ thị (v-t) của CĐT BĐĐ</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi (Dấu ?) -->
+            <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded mb-6">
+                <div class="flex items-start gap-2">
+                    <span class="text-2xl text-[#1e3a8a] font-bold">?</span>
+                    <div>
+                        <p class="font-semibold mb-2">1. Hãy tính độ dịch chuyển của chuyển động có đồ thị (v-t) vẽ ở Hình 9.3b (biết mỗi cạnh vuông đứng = 2m/s, ngang = 1s).</p>
+                        <p class="font-semibold mb-3">2. Chứng tỏ rằng có thể xác định được giá trị của gia tốc dựa trên đồ thị (v-t).</p>
+                        <button onclick="toggleAnswer('ans-iv-1')" class="bg-[#660000] text-white px-4 py-2 rounded text-sm hover:bg-red-800 transition">Xem câu trả lời</button>
+                    </div>
+                </div>
+                <div id="ans-iv-1" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Trả lời:</strong></p>
+                    <p>1. Độ dịch chuyển bằng diện tích hình thang. Áp dụng công thức tính diện tích hình thang \(S = \frac{(a+b)h}{2}\).</p>
+                    <p>2. Gia tốc \(a = \frac{\Delta v}{\Delta t}\). Trên đồ thị v-t, tỉ số này chính là độ dốc (hệ số góc) của đường thẳng. Do đó có thể xác định gia tốc từ đồ thị.</p>
+                </div>
+            </div>
+
+            <h4 class="text-lg font-semibold text-[#660000] mb-3 mt-8">2. Tính độ dịch chuyển bằng công thức</h4>
+            <!-- Câu hỏi (Dấu ?) Chứng minh -->
+            <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded mb-4">
+                <div class="flex items-start gap-2">
+                    <span class="text-2xl text-[#1e3a8a] font-bold">?</span>
+                    <div class="w-full">
+                        <p class="font-semibold mb-2">1. Biết độ dịch chuyển có độ lớn bằng diện tích giới hạn đồ thị, hãy chứng minh:</p>
+                        <div class="bg-red-50 text-center py-2 mb-2 rounded border border-red-200">
+                            <strong>\( d = v_0.t + \frac{1}{2}.a.t^2 \quad (9.4) \)</strong>
+                        </div>
+                        <p class="font-semibold mb-2">2. Từ công thức (9.2) và (9.4) chứng minh rằng:</p>
+                        <div class="bg-red-50 text-center py-2 mb-3 rounded border border-red-200">
+                            <strong>\( v_t^2 - v_0^2 = 2.a.d \quad (9.5) \)</strong>
+                        </div>
+                        <button onclick="toggleAnswer('ans-iv-2')" class="bg-[#660000] text-white px-4 py-2 rounded text-sm hover:bg-red-800 transition">Xem hướng dẫn chứng minh</button>
+                    </div>
+                </div>
+                <div id="ans-iv-2" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Hướng dẫn:</strong></p>
+                    <p>1. Diện tích hình thang = Diện tích hình chữ nhật (\(v_0.t\)) + Diện tích hình tam giác (\(\frac{1}{2}.t.(v_t - v_0)\)). Thay \(v_t - v_0 = a.t\) ta ra công thức (9.4).</p>
+                    <p>2. Rút \(t = \frac{v_t - v_0}{a}\) từ công thức (9.2), thế vào công thức (9.4), khai triển hằng đẳng thức rồi rút gọn sẽ ra (9.5).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOẠT ĐỘNG THỰC HÀNH -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase text-gray-800 border-b-4 border-[#1e3a8a] inline-block mb-4">Thực hành</h3>
+            
+            <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded mb-4">
+                <div class="flex items-start gap-2">
+                    <span class="text-2xl text-[#1e3a8a] font-bold">✍</span>
+                    <div class="w-full">
+                        <p class="font-semibold mb-2">Hãy dùng đồ thị (v-t) vẽ ở Hình 9.4 để:</p>
+                        <div class="text-center mb-3">
+                            <img src="h6.png" alt="Hình 9.4" class="mx-auto rounded border max-w-md object-cover">
+                        </div>
+                        <ul class="list-[lower-alpha] ml-6 mb-3">
+                            <li>Mô tả chuyển động;</li>
+                            <li>Tính độ dịch chuyển trong 4 giây đầu, 2 giây tiếp theo và 3 giây cuối;</li>
+                            <li>Tính gia tốc của chuyển động trong 4 giây đầu;</li>
+                            <li>Tính gia tốc của chuyển động từ giây thứ 4 đến giây thứ 6.</li>
+                        </ul>
+                        <button onclick="toggleAnswer('ans-thuc-hanh')" class="bg-[#660000] text-white px-4 py-2 rounded text-sm hover:bg-red-800 transition">Xem hướng giải quyết</button>
+                    </div>
+                </div>
+                <div id="ans-thuc-hanh" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Giải:</strong></p>
+                    <p>a) 0-4s: Nhanh dần đều theo chiều dương. 4-6s: Chậm dần đều. 6-9s: Đứng yên.</p>
+                    <p>b) Dùng diện tích hình học tính toán (tam giác, hình chữ nhật...).</p>
+                    <p>c) \(a = \frac{\Delta v}{\Delta t} = \frac{v_4 - v_0}{4 - 0}\)</p>
+                    <p>d) Tương tự câu c.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BÀI TẬP VẬN DỤNG CỦA SÁCH GIÁO KHOA -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase text-gray-800 border-b-4 border-[#1e3a8a] inline-block mb-4">Bài tập vận dụng</h3>
+            
+            <!-- Bài 1 -->
+            <div class="mb-6 pb-6 border-b border-gray-200">
+                <p class="font-semibold mb-2">1. Đồ thị vận tốc - thời gian ở Hình 9.5 mô tả chuyển động của một chú chó con đang chạy trong một ngõ thẳng và hẹp.</p>
+                <div class="text-center mb-3">
+                    <img src="h7.png" alt="Hình 9.5" class="mx-auto rounded border max-w-md object-cover">
+                </div>
+                <p>a) Hãy mô tả chuyển động của chú chó.</p>
+                <p class="mb-3">b) Tính quãng đường đi được và độ dịch chuyển của chú chó sau: 2s; 4s; 7s và 10s bằng đồ thị và bằng công thức.</p>
+                <button onclick="toggleAnswer('btvd-1')" class="bg-[#660000] text-white px-4 py-2 rounded text-sm hover:bg-red-800 transition">Xem giải chi tiết</button>
+                <div id="btvd-1" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Giải:</strong></p>
+                    <p>a) Mô tả: Từ 0-2s: Chạy đều; 2-4s: Chạy nhanh dần; 4-7s: Chạy chậm dần đến dừng lại; 7-8s: Đứng yên; 8-9s: Chạy nhanh dần theo chiều ngược lại; 9-10s: Chạy đều theo chiều ngược lại.</p>
+                    <p>b) Tính toán bằng cách tính diện tích các phần dưới đồ thị giới hạn bởi trục hoành đối với từng khoảng thời gian tương ứng. Quãng đường tính bằng độ lớn diện tích, độ dịch chuyển xét dấu của diện tích.</p>
+                </div>
+            </div>
+
+            <!-- Bài 2 -->
+            <div>
+                <p class="font-semibold mb-2">2. Một vận động viên đua xe đạp đường dài vượt qua vạch đích với tốc độ \( 10 \text{ m/s} \). Sau đó vận động viên này đi chậm dần đều thêm 20 m mới dừng lại. Coi chuyển động của vận động viên là thẳng.</p>
+                <p>a) Tính gia tốc của vận động viên trong đoạn đường sau khi qua vạch đích.</p>
+                <p>b) Tính thời gian vận động viên đó cần để dừng lại kể từ khi cán đích.</p>
+                <p class="mb-3">c) Tính vận tốc trung bình của người đó trên quãng đường dừng xe.</p>
+                <button onclick="toggleAnswer('btvd-2')" class="bg-[#660000] text-white px-4 py-2 rounded text-sm hover:bg-red-800 transition">Xem giải chi tiết</button>
+                <div id="btvd-2" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Giải:</strong></p>
+                    <p>Ta có: \( v_0 = 10 \text{ m/s}, v = 0, d = 20 \text{ m} \)</p>
+                    <p>a) Áp dụng \( v^2 - v_0^2 = 2ad \Rightarrow a = \frac{0^2 - 10^2}{2 \times 20} = -2.5 \text{ m/s}^2 \)</p>
+                    <p>b) Áp dụng \( v = v_0 + at \Rightarrow t = \frac{0 - 10}{-2.5} = 4 \text{ s} \)</p>
+                    <p>c) \( v_{tb} = \frac{d}{t} = \frac{20}{4} = 5 \text{ m/s} \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- EM ĐÃ HỌC / EM CÓ THỂ -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-blue-50 border-t-4 border-blue-500 rounded-[12px] p-6 shadow-md">
+                <h4 class="font-bold text-blue-800 uppercase mb-3 flex items-center gap-2">
+                    <span class="text-xl">📚</span> Em đã học
+                </h4>
+                <ul class="list-disc ml-5 space-y-2 text-sm text-gray-700">
+                    <li>Chuyển động thẳng biến đổi đều là chuyển động thẳng có gia tốc không đổi theo thời gian.</li>
+                    <li>Nhanh dần đều có \( a.v > 0 \), chậm dần đều có \( a.v < 0 \).</li>
+                    <li>Hệ số góc của đồ thị v-t cho biết giá trị của gia tốc.</li>
+                    <li>Các công thức:
+                        <br> 1. \( v_t = v_0 + a.t \)
+                        <br> 2. \( d = v_0.t + \frac{1}{2}.a.t^2 \)
+                        <br> 3. \( v_t^2 - v_0^2 = 2.a.d \)
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="bg-purple-50 border-t-4 border-purple-500 rounded-[12px] p-6 shadow-md">
+                <h4 class="font-bold text-purple-800 uppercase mb-3 flex items-center gap-2">
+                    <span class="text-xl">💡</span> Em có thể
+                </h4>
+                <p class="text-sm text-gray-700">Từ đồ thị vận tốc - thời gian của chuyển động thẳng biến đổi đều mô tả được chuyển động này.</p>
+            </div>
+        </div>
+
+        <!-- PHẦN THÊM: TRẮC NGHIỆM CỦNG CỐ -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md border border-gray-200 mt-8">
+            <h3 class="text-xl font-bold uppercase text-gray-800 border-b-4 border-[#1e3a8a] inline-block mb-4">Bài tập trắc nghiệm củng cố</h3>
+            
+            <form id="quiz-form" class="space-y-6">
+                <!-- Câu 1 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 1: Chuyển động thẳng biến đổi đều là chuyển động có:</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="a" class="mr-2"> A. Gia tốc thay đổi đều theo thời gian.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="b" class="mr-2"> B. Vận tốc không đổi theo thời gian.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="c" class="mr-2"> C. Gia tốc không đổi theo thời gian.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="d" class="mr-2"> D. Độ dịch chuyển tăng đều theo thời gian.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 2 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 2: Công thức tính vận tốc của chuyển động thẳng nhanh dần đều là (với \(v_0 > 0\)):</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="a" class="mr-2"> A. \(v = v_0 + at\) (với \(a > 0\))</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="b" class="mr-2"> B. \(v = v_0 - at\) (với \(a > 0\))</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="c" class="mr-2"> C. \(v = v_0 + at^2\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="d" class="mr-2"> D. \(v = at\)</label>
+                    </div>
+                </div>
+
+                <!-- Câu 3 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 3: Trong chuyển động thẳng chậm dần đều, tích của vận tốc và gia tốc (\(a.v\)) có đặc điểm gì?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="a" class="mr-2"> A. \(a.v > 0\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="b" class="mr-2"> B. \(a.v < 0\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="c" class="mr-2"> C. \(a.v = 0\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="d" class="mr-2"> D. Không xác định được.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 4 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 4: Công thức liên hệ giữa vận tốc, gia tốc và độ dịch chuyển là:</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="a" class="mr-2"> A. \(v^2 - v_0^2 = ad\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="b" class="mr-2"> B. \(v - v_0 = 2ad\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="c" class="mr-2"> C. \(v^2 - v_0^2 = 2ad\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="d" class="mr-2"> D. \(v^2 + v_0^2 = 2ad\)</label>
+                    </div>
+                </div>
+
+                <!-- Câu 5 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 5: Diện tích hình phẳng giới hạn bởi đồ thị (v-t) đối với trục hoành biểu diễn đại lượng nào?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="a" class="mr-2"> A. Gia tốc.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="b" class="mr-2"> B. Thời gian chuyển động.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="c" class="mr-2"> C. Vận tốc trung bình.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="d" class="mr-2"> D. Độ dịch chuyển.</label>
+                    </div>
+                </div>
+
+                <div class="text-center mt-6 border-t pt-4">
+                    <button type="button" onclick="checkQuiz()" class="bg-[#1e3a8a] text-white font-bold px-8 py-3 rounded hover:bg-blue-900 transition shadow-md">NỘP BÀI</button>
+                    <div id="quiz-result" class="mt-4 font-bold text-lg"></div>
+                </div>
+            </form>
+        </div>
+
+        <!-- PHẦN THÊM: BÀI TẬP TÍNH TOÁN BỔ SUNG -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md border border-gray-200 mt-6 mb-10">
+            <h3 class="text-xl font-bold uppercase text-gray-800 border-b-4 border-[#1e3a8a] inline-block mb-4">Bài tập tự luyện thêm</h3>
+            
+            <div class="space-y-4">
+                <!-- BT 1 -->
+                <div class="border p-4 rounded bg-gray-50">
+                    <p class="font-semibold">Bài 1: Một ô tô bắt đầu rời bến chuyển động thẳng nhanh dần đều với gia tốc \( 2 \text{ m/s}^2 \). Tính vận tốc của ô tô sau 5 giây.</p>
+                    <button onclick="toggleAnswer('btthem-1')" class="mt-2 bg-[#660000] text-white px-3 py-1 rounded text-sm hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="btthem-1" class="hidden mt-3 text-sm text-green-900 bg-green-100 p-3 rounded">
+                        <strong>Giải:</strong><br>
+                        Vật bắt đầu chuyển động nên \( v_0 = 0 \).<br>
+                        Áp dụng công thức: \( v = v_0 + at = 0 + 2 \times 5 = 10 \text{ (m/s)} \).
+                    </div>
+                </div>
+
+                <!-- BT 2 -->
+                <div class="border p-4 rounded bg-gray-50">
+                    <p class="font-semibold">Bài 2: Một đoàn tàu đang chạy với vận tốc \( 20 \text{ m/s} \) thì hãm phanh, chuyển động thẳng chậm dần đều và dừng lại sau 10 giây. Tính gia tốc và độ dịch chuyển của tàu trong thời gian hãm phanh.</p>
+                    <button onclick="toggleAnswer('btthem-2')" class="mt-2 bg-[#660000] text-white px-3 py-1 rounded text-sm hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="btthem-2" class="hidden mt-3 text-sm text-green-900 bg-green-100 p-3 rounded">
+                        <strong>Giải:</strong><br>
+                        Ta có: \( v_0 = 20 \text{ m/s}, v = 0, t = 10 \text{ s} \).<br>
+                        Gia tốc: \( a = \frac{v - v_0}{t} = \frac{0 - 20}{10} = -2 \text{ (m/s}^2) \).<br>
+                        Độ dịch chuyển: \( d = v_0t + \frac{1}{2}at^2 = 20 \times 10 + \frac{1}{2} \times (-2) \times 10^2 = 200 - 100 = 100 \text{ (m)} \).
+                    </div>
+                </div>
+
+                <!-- BT 3 -->
+                <div class="border p-4 rounded bg-gray-50">
+                    <p class="font-semibold">Bài 3: Một vật chuyển động có phương trình độ dịch chuyển là \( d = 5t + 2t^2 \) (m, s). Hãy xác định vận tốc ban đầu, gia tốc của vật và vận tốc của vật lúc \( t = 2 \text{s} \).</p>
+                    <button onclick="toggleAnswer('btthem-3')" class="mt-2 bg-[#660000] text-white px-3 py-1 rounded text-sm hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="btthem-3" class="hidden mt-3 text-sm text-green-900 bg-green-100 p-3 rounded">
+                        <strong>Giải:</strong><br>
+                        Đối chiếu phương trình \( d = 5t + 2t^2 \) với phương trình tổng quát \( d = v_0t + \frac{1}{2}at^2 \), ta suy ra:<br>
+                        \( v_0 = 5 \text{ (m/s)} \)<br>
+                        \( \frac{1}{2}a = 2 \Rightarrow a = 4 \text{ (m/s}^2) \)<br>
+                        Vận tốc tại \( t = 2 \text{s} \): \( v = v_0 + at = 5 + 4 \times 2 = 13 \text{ (m/s)} \).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Hàm ẩn hiện câu trả lời
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                MathJax.typesetPromise([el]); // Render lại toán học nếu cần
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Hàm chấm điểm trắc nghiệm
+        function checkQuiz() {
+            const answers = {
+                q1: 'c',
+                q2: 'a',
+                q3: 'b',
+                q4: 'c',
+                q5: 'd'
+            };
+            
+            let score = 0;
+            const total = Object.keys(answers).length;
+            const form = document.getElementById('quiz-form');
+            
+            for (let [question, correctAnswer] of Object.entries(answers)) {
+                const selected = form.querySelector(`input[name="${question}"]:checked`);
+                if (selected && selected.value === correctAnswer) {
+                    score++;
+                }
+            }
+
+            const resultDiv = document.getElementById('quiz-result');
+            if (score === total) {
+                resultDiv.innerHTML = `Tuyệt vời! Bạn làm đúng ${score}/${total} câu.`;
+                resultDiv.className = "mt-4 font-bold text-lg text-green-600";
+            } else {
+                resultDiv.innerHTML = `Bạn làm đúng ${score}/${total} câu. Hãy ôn tập lại nhé!`;
+                resultDiv.className = "mt-4 font-bold text-lg text-red-600";
+            }
+        }
+    </script>
+</body>
+</html>

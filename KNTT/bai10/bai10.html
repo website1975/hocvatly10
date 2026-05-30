@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chương II - Bài 10: Sự Rơi Tự Do</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for Math Formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        .main-color {
+            color: #660000;
+        }
+        .bg-main-color {
+            background-color: #660000;
+        }
+        .bg-main-color:hover {
+            background-color: #800000;
+        }
+        .section-title {
+            border-bottom: 4px solid #0f172a; /* Màu xanh đen */
+        }
+        /* Custom radio button color */
+        input[type="radio"] {
+            accent-color: #0f172a;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+
+        <!-- HEADER -->
+        <div class="bg-main-color rounded-[12px] text-white p-6 text-center shadow-md mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold mb-2">CHƯƠNG II: ĐỘNG HỌC</h2>
+            <hr class="border-t border-white/40 w-2/3 mx-auto my-3">
+            <h1 class="text-2xl md:text-4xl font-bold uppercase tracking-wide">BÀI 10: SỰ RƠI TỰ DO</h1>
+        </div>
+
+        <!-- LỜI DẪN -->
+        <div class="border border-black bg-white italic p-5 rounded-[12px] shadow-md mb-8">
+            <p>"Năm 1971, nhà du hành vũ trụ người Mỹ David Scott đã đồng thời thả rơi trên Mặt Trăng một chiếc lông chim và một chiếc búa ở cùng một độ cao và nhận thấy cả hai đều rơi xuống như nhau. Em có suy nghĩ gì về hiện tượng này?"</p>
+        </div>
+
+        <!-- MỤC I -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold uppercase section-title pb-2 mb-6 main-color">I. SỰ RƠI TRONG KHÔNG KHÍ</h2>
+            
+            <p class="mb-4">Sự rơi của các vật trong không khí là chuyển động thường gặp. Ai cũng thấy hòn đá rơi nhanh hơn viên phấn, viên phấn rơi nhanh hơn chiếc lông chim. Vậy rơi nhanh hay chậm có phải do vật nặng hay nhẹ?</p>
+
+            <!-- Khung Hoạt động (Thí nghiệm) -->
+            <div class="mb-6">
+                <div class="bg-[#edf2f7] border-l-4 border-[#0f172a] p-4 rounded-r flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div class="mb-3 md:mb-0">
+                        <p class="font-bold">✋ Hoạt động: Các thí nghiệm kiểm tra sự rơi trong không khí</p>
+                        <ul class="list-disc ml-5 mt-2">
+                            <li><strong>TN 1:</strong> Thả rơi một viên bi và một chiếc lá.</li>
+                            <li><strong>TN 2:</strong> Thả hai tờ giấy giống nhau, một tờ vo tròn, một tờ để nguyên.</li>
+                            <li><strong>TN 3:</strong> Thả rơi hai viên bi cùng kích thước, một bằng sắt, một bằng thuỷ tinh.</li>
+                        </ul>
+                    </div>
+                    <button onclick="toggleElement('hd1')" class="bg-main-color text-white px-4 py-2 rounded shadow whitespace-nowrap">Xem nhận xét</button>
+                </div>
+                <div id="hd1" class="hidden bg-green-100 p-4 rounded mt-2 border border-green-300">
+                    <p class="font-bold mb-2">Nhận xét:</p>
+                    <p>Sự rơi nhanh hay chậm của vật phụ thuộc vào độ lớn của lực cản không khí tác dụng lên vật. Lực cản càng nhỏ so với trọng lực tác dụng lên vật thì vật sẽ rơi càng nhanh và ngược lại.</p>
+                </div>
+            </div>
+
+            <!-- Khung Câu hỏi 1 -->
+            <div class="mb-6">
+                <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded-r flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <p class="font-bold text-blue-900">? Trả lời các câu hỏi sau từ thí nghiệm:</p>
+                        <ol class="list-decimal ml-5 mt-1">
+                            <li>Trong TN 1, tại sao viên bi rơi nhanh hơn chiếc lá?</li>
+                            <li>Trong TN 2, tại sao tờ giấy vo tròn lại rơi nhanh hơn?</li>
+                            <li>Trong TN 3, trọng lượng bi sắt lớn hơn bi thuỷ tinh, tại sao rơi nhanh như nhau?</li>
+                        </ol>
+                    </div>
+                    <button onclick="toggleElement('ans_tn1')" class="bg-main-color text-white px-4 py-2 rounded shadow whitespace-nowrap">Xem lời giải</button>
+                </div>
+                <div id="ans_tn1" class="hidden bg-[#dcfce7] p-4 rounded mt-2 border border-green-300">
+                    <ol class="list-decimal ml-5">
+                        <li class="mb-1">Lực cản không khí tác dụng lên chiếc lá rất đáng kể so với trọng lượng của nó, làm nó rơi chậm hơn quả bóng.</li>
+                        <li class="mb-1">Tờ giấy vo tròn có diện tích cản gió nhỏ hơn nhiều so với tờ giấy để nguyên, do đó lực cản không khí nhỏ hơn, khiến nó rơi nhanh hơn.</li>
+                        <li>Lực cản không khí tác dụng lên cả hai viên bi đều rất nhỏ (không đáng kể) so với trọng lượng của chúng, nên chúng rơi nhanh như nhau.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Khung Câu hỏi 2 -->
+            <div class="mb-6">
+                <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded-r flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <p class="font-bold text-blue-900">? Theo em nếu loại bỏ được sức cản của không khí, các vật sẽ rơi như thế nào?</p>
+                    <button onclick="toggleElement('ans_newton')" class="bg-main-color text-white px-4 py-2 rounded shadow whitespace-nowrap">Xem câu trả lời</button>
+                </div>
+                <div id="ans_newton" class="hidden bg-[#dcfce7] p-4 rounded mt-2 border border-green-300 text-center">
+                    <p class="mb-3">Trong chân không (không có lực cản không khí), <strong>mọi vật đều rơi nhanh như nhau</strong>. Điều này đã được chứng minh qua thí nghiệm với ống hút chân không của Newton.</p>
+                    <div class="inline-block border border-gray-300 p-2 bg-white rounded">
+                        <img src="h1.png" alt="Thí nghiệm Ống Newton" class="mx-auto rounded w-64 h-auto object-cover bg-gray-200">
+                        <p class="italic text-sm text-gray-600 mt-2">Hình 10.1. Thí nghiệm về sự rơi tự do</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MỤC II -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold uppercase section-title pb-2 mb-6 main-color">II. SỰ RƠI TỰ DO</h2>
+
+            <h3 class="text-xl font-bold mb-3 text-gray-800">1. Sự rơi tự do</h3>
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded mb-6 shadow-sm">
+                <p class="font-semibold">Định nghĩa:</p>
+                <p><strong>Sự rơi tự do</strong> là sự rơi chỉ dưới tác dụng của trọng lực.</p>
+            </div>
+            
+            <div class="bg-orange-50 border border-orange-200 p-4 rounded-[12px] mb-6">
+                <p class="font-bold text-orange-800 mb-1">📌 LƯU Ý:</p>
+                <p>Nếu vật rơi trong không khí mà độ lớn của lực cản không khí không đáng kể so với trọng lượng của vật thì cũng coi là rơi tự do.</p>
+            </div>
+
+            <h3 class="text-xl font-bold mb-3 text-gray-800">2. Đặc điểm của chuyển động rơi tự do</h3>
+            
+            <h4 class="font-bold text-lg mb-2">a) Phương và chiều của chuyển động rơi tự do</h4>
+            <p class="mb-4">Vì trọng lực có phương thẳng đứng, chiều từ trên xuống nên sự rơi tự do có <strong>phương thẳng đứng, chiều từ trên xuống</strong>.</p>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-6 mb-6">
+                <div class="text-center border border-gray-300 p-2 rounded w-full md:w-1/2 bg-gray-50">
+                    <img src="h2.png" alt="Quả nặng và Dây dọi" class="mx-auto rounded h-48 object-cover bg-gray-200">
+                    <p class="italic text-sm text-gray-600 mt-2">Hình 10.2</p>
+                </div>
+                <div class="text-center border border-gray-300 p-2 rounded w-full md:w-1/2 bg-gray-50">
+                    <img src="h3.png" alt="Êke tam giác vuông" class="mx-auto rounded h-48 object-cover bg-gray-200">
+                    <p class="italic text-sm text-gray-600 mt-2">Hình 10.3. Êke tam giác vuông cân và dây dọi</p>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded-r flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <p class="font-bold text-blue-900">? Yêu cầu thí nghiệm:</p>
+                        <ol class="list-decimal ml-5 mt-1 text-sm">
+                            <li>Thực hiện thí nghiệm Hình 10.2 để kiểm tra.</li>
+                            <li>Dựa vào phương rơi tự do, kiểm tra bức tường có thẳng đứng không.</li>
+                            <li>Dùng êke và dây dọi kiểm tra sàn nhà có phẳng không.</li>
+                        </ol>
+                    </div>
+                    <button onclick="toggleElement('ans_phuong')" class="bg-main-color text-white px-4 py-2 rounded shadow whitespace-nowrap">Xem hướng dẫn</button>
+                </div>
+                <div id="ans_phuong" class="hidden bg-[#dcfce7] p-4 rounded mt-2 border border-green-300">
+                    <ul class="list-disc ml-5">
+                        <li>Dùng một dây dọi (sợi dây mềm treo vật nặng), khi dây đứng yên, sợi dây chỉ phương thẳng đứng. Đặt dọc dây dọi theo tường để kiểm tra tường.</li>
+                        <li>Để kiểm tra sàn phẳng, đặt 1 cạnh góc vuông của êke sát sàn, cạnh kia sẽ thẳng đứng. Dùng dây dọi áp vào cạnh thẳng đứng đó, nếu dây dọi song song với cạnh thì sàn phẳng nằm ngang.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg mb-2 mt-6">b) Tính chất của chuyển động rơi tự do</h4>
+            <p class="mb-4">Chuyển động rơi tự do là <strong>chuyển động thẳng nhanh dần đều</strong>.</p>
+            
+            <p class="font-semibold mb-2 text-center text-sm">Bảng 10.1. Quãng đường vật rơi tự do theo thời gian</p>
+            <div class="overflow-x-auto mb-4 border rounded border-[#cbd5e0]">
+                <table class="w-full border-collapse text-center">
+                    <thead>
+                        <tr>
+                            <th class="bg-[#e2e8f0] border border-[#cbd5e0] p-2">Thời gian rơi \(t\) (s)</th>
+                            <th class="bg-[#e2e8f0] border border-[#cbd5e0] p-2">Quãng đường rơi \(s\) (m)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="border border-[#cbd5e0] p-2">0,1</td><td class="border border-[#cbd5e0] p-2">0,049</td></tr>
+                        <tr><td class="border border-[#cbd5e0] p-2">0,2</td><td class="border border-[#cbd5e0] p-2">0,197</td></tr>
+                        <tr><td class="border border-[#cbd5e0] p-2">0,3</td><td class="border border-[#cbd5e0] p-2">0,441</td></tr>
+                        <tr><td class="border border-[#cbd5e0] p-2">0,4</td><td class="border border-[#cbd5e0] p-2">0,785</td></tr>
+                        <tr><td class="border border-[#cbd5e0] p-2">0,5</td><td class="border border-[#cbd5e0] p-2">1,227</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Câu hỏi tính gia tốc -->
+                <div>
+                    <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded-r h-full flex flex-col justify-between">
+                        <div>
+                            <p class="font-bold text-blue-900 mb-2">? Căn cứ vào số liệu bảng 10.1:</p>
+                            <ol class="list-decimal ml-5 mb-4">
+                                <li>Chứng tỏ chuyển động rơi tự do là nhanh dần đều.</li>
+                                <li>Tính gia tốc của chuyển động rơi tự do.</li>
+                            </ol>
+                        </div>
+                        <button onclick="toggleElement('ans_giatoc')" class="bg-main-color text-white px-4 py-2 rounded shadow self-start">Xem lời giải</button>
+                        <div id="ans_giatoc" class="hidden bg-[#dcfce7] p-3 rounded mt-3 border border-green-300 text-sm">
+                            <p>Sử dụng công thức \( s = \frac{1}{2}at^2 \Rightarrow a = \frac{2s}{t^2} \)</p>
+                            <p>- Tại t=0.1s: \(a = 2*0.049 / 0.1^2 = 9.8\)</p>
+                            <p>- Tại t=0.2s: \(a = 2*0.197 / 0.2^2 = 9.85\)</p>
+                            <p>Do a gần như không đổi \(\approx 9.8 \text{ m/s}^2\) nên đây là chuyển động nhanh dần đều.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Câu hỏi trắc nghiệm nhỏ -->
+                <div>
+                    <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded-r h-full flex flex-col justify-between">
+                        <div>
+                            <p class="font-bold text-blue-900 mb-2">? Trong các chuyển động sau, đâu là rơi tự do?</p>
+                            <ul class="list-[upper-alpha] ml-5 mb-4">
+                                <li>Chiếc lá đang rơi.</li>
+                                <li>Hạt bụi chuyển động trong không khí.</li>
+                                <li>Quả tạ rơi trong không khí.</li>
+                                <li>VĐV đang nhảy dù.</li>
+                            </ul>
+                        </div>
+                        <button onclick="toggleElement('ans_tracnghiem')" class="bg-main-color text-white px-4 py-2 rounded shadow self-start">Xem đáp án</button>
+                        <div id="ans_tracnghiem" class="hidden bg-[#dcfce7] p-3 rounded mt-3 border border-green-300 text-sm">
+                            <p><strong>Đáp án C.</strong> Quả tạ rơi có trọng lượng rất lớn so với lực cản của không khí, nên lực cản có thể bỏ qua, chuyển động coi như rơi tự do.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg mb-2">c) Gia tốc rơi tự do</h4>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mb-6 shadow-sm">
+                <p>Ở cùng một nơi trên Trái Đất, mọi vật rơi tự do với cùng một gia tốc \(g\).</p>
+                <p>Ở gần bề mặt Trái Đất người ta thường lấy giá trị của \(g \approx 9,8 \text{ m/s}^2\).</p>
+            </div>
+
+            <h3 class="text-xl font-bold mb-3 text-gray-800">3. Công thức rơi tự do</h3>
+            <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-[12px] shadow-sm mb-6">
+                <p class="mb-2">Chọn thời điểm ban đầu \(t_0 = 0\).</p>
+                <ul class="list-disc ml-5 space-y-2 font-semibold text-lg text-indigo-900">
+                    <li>Độ dịch chuyển, quãng đường: <span class="bg-white px-2 py-1 rounded border">\( d = s = \frac{1}{2}gt^2 \)</span></li>
+                    <li>Vận tốc tức thời: <span class="bg-white px-2 py-1 rounded border">\( v_t = gt \)</span></li>
+                    <li>Liên hệ giữa vận tốc, quãng đường, gia tốc: <span class="bg-white px-2 py-1 rounded border">\( v_t^2 = 2gs \)</span></li>
+                </ul>
+            </div>
+
+            <div class="mb-6">
+                <div class="bg-[#edf2f7] border-l-4 border-[#1e3a8a] p-4 rounded-r flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <p class="font-bold text-blue-900">? Câu hỏi vận dụng:</p>
+                        <ol class="list-decimal ml-5 mt-1">
+                            <li>Tại sao độ dịch chuyển và quãng đường trong sự rơi tự do có cùng độ lớn?</li>
+                            <li>Nêu cách đo gần đúng độ sâu cái giếng mỏ cạn (coi vận tốc âm thanh không đổi đã biết).</li>
+                        </ol>
+                    </div>
+                    <button onclick="toggleElement('ans_gieng')" class="bg-main-color text-white px-4 py-2 rounded shadow whitespace-nowrap">Xem lời giải</button>
+                </div>
+                <div id="ans_gieng" class="hidden bg-[#dcfce7] p-4 rounded mt-2 border border-green-300">
+                    <ol class="list-decimal ml-5 space-y-2">
+                        <li>Vì vật rơi tự do chuyển động thẳng không đổi chiều, nên độ dịch chuyển trùng với quãng đường đi được (\(d = s\)).</li>
+                        <li><strong>Cách đo giếng:</strong> Thả một hòn đá từ miệng giếng và bấm giờ \(t\) cho đến khi nghe tiếng vọng. <br>
+                        Thời gian \(t\) = thời gian đá rơi xuống (\(t_1\)) + thời gian âm thanh truyền lên (\(t_2\)). <br>
+                        Độ sâu \(h = \frac{1}{2}gt_1^2\) và \(h = v_{am} \times t_2\). Từ đó tính được \(h\).</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Bài tập ví dụ -->
+            <div class="bg-gray-100 border border-gray-300 rounded-[12px] p-5">
+                <h4 class="font-bold text-lg mb-2">📝 Bài tập vận dụng</h4>
+                <p class="italic mb-4">Một người thả một hòn bi từ trên cao xuống đất và đo được thời gian rơi là 3,1 s. Bỏ qua sức cản không khí. Lấy \(g = 9,8 \text{ m/s}^2\).</p>
+                <p>a) Tính độ cao của nơi thả hòn bi so với mặt đất và vận tốc lúc chạm đất.</p>
+                <p class="mb-4">b) Tính quãng đường rơi được trong 0,5 s cuối trước khi chạm đất.</p>
+                
+                <button onclick="toggleElement('sol_vd')" class="bg-main-color text-white px-4 py-2 rounded shadow w-full md:w-auto">Hiển thị giải chi tiết</button>
+                
+                <div id="sol_vd" class="hidden mt-4 p-4 bg-white border border-gray-200 rounded shadow-inner">
+                    <p class="font-bold text-green-700 mb-2">Lời giải:</p>
+                    <p class="mb-2"><strong>a)</strong> Độ cao thả hòn bi: <br>
+                    \( h = s = \frac{1}{2}gt^2 = \frac{1}{2} \times 9,8 \times (3,1)^2 \approx 47,089 \text{ (m)} \)</p>
+                    <p class="mb-4">Vận tốc lúc chạm đất: <br>
+                    \( v = gt = 9,8 \times 3,1 = 30,38 \text{ (m/s)} \)</p>
+                    
+                    <p class="mb-2"><strong>b)</strong> Quãng đường rơi trong 0,5s cuối = (Quãng đường rơi trong 3,1s) - (Quãng đường rơi trong 2,6s đầu).</p>
+                    <p>Quãng đường rơi trong 2,6s đầu là: <br>
+                    \( s' = \frac{1}{2}gt'^2 = \frac{1}{2} \times 9,8 \times (3,1 - 0,5)^2 = \frac{1}{2} \times 9,8 \times (2,6)^2 = 33,124 \text{ (m)} \)</p>
+                    <p class="mt-2 font-bold text-red-600">Quãng đường 0,5s cuối: \(\Delta s = h - s' = 47,089 - 33,124 = 13,965 \text{ (m)}\)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TỔNG KẾT -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-purple-100 border-2 border-purple-300 p-5 rounded-[12px] shadow">
+                <h3 class="text-xl font-bold text-purple-800 mb-3 uppercase">💡 Em Đã Học</h3>
+                <ul class="list-disc ml-5 space-y-2 text-sm md:text-base">
+                    <li>Chuyển động rơi chỉ chịu tác dụng của trọng lực gọi là rơi tự do.</li>
+                    <li>Rơi tự do là chuyển động thẳng nhanh dần đều theo phương thẳng đứng, chiều từ trên xuống.</li>
+                    <li>Tại một nơi và ở gần mặt đất, mọi vật đều rơi tự do cùng gia tốc \(g\).</li>
+                    <li>Công thức: \( v_t = gt \); \( d = s = \frac{1}{2}gt^2 = \frac{v_t^2}{2g} \)</li>
+                </ul>
+            </div>
+            
+            <div class="bg-teal-100 border-2 border-teal-300 p-5 rounded-[12px] shadow">
+                <h3 class="text-xl font-bold text-teal-800 mb-3 uppercase">🌟 Em Có Thể</h3>
+                <p class="mb-2 text-sm md:text-base">Vận dụng được những kiến thức về sự rơi tự do vào một số tình huống thực tế đơn giản.</p>
+                <p class="text-sm md:text-base">Biết cách xác định phương thẳng đứng (dùng dây dọi) và phương nằm ngang (dùng êke, ống nivo).</p>
+            </div>
+        </div>
+
+        <!-- BÀI TẬP CỦNG CỐ -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 border-t-8 border-[#660000]">
+            <h2 class="text-2xl font-bold uppercase pb-2 mb-4 text-[#660000] border-b-2 border-gray-200">🚀 Bài tập Trắc nghiệm & Vận dụng tính toán</h2>
+            
+            <!-- Trắc nghiệm -->
+            <div class="mb-8">
+                <h3 class="font-bold text-lg mb-4 text-gray-800 bg-gray-200 inline-block px-3 py-1 rounded">A. Trắc nghiệm (5 câu)</h3>
+                <form id="quizForm" class="space-y-6">
+                    <!-- Q1 -->
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <p class="font-semibold mb-2">Câu 1: Chuyển động rơi tự do là chuyển động:</p>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q1" value="A"> A. chỉ dưới tác dụng của trọng lực.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q1" value="B"> B. dưới tác dụng của trọng lực và lực cản không khí.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q1" value="C"> C. thẳng đều theo phương thẳng đứng.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q1" value="D"> D. có vận tốc ban đầu khác không.</label>
+                    </div>
+                    <!-- Q2 -->
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <p class="font-semibold mb-2">Câu 2: Công thức tính vận tốc của vật rơi tự do là:</p>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q2" value="A"> A. \(v = g/t\)</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q2" value="B"> B. \(v = gt\)</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q2" value="C"> C. \(v = \frac{1}{2}gt^2\)</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q2" value="D"> D. \(v = \sqrt{gt}\)</label>
+                    </div>
+                    <!-- Q3 -->
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <p class="font-semibold mb-2">Câu 3: Chọn phát biểu ĐÚNG. Đặc điểm của rơi tự do là:</p>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q3" value="A"> A. Phương ngang, chiều từ trái sang phải.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q3" value="B"> B. Phương thẳng đứng, chiều từ dưới lên.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q3" value="C"> C. Phương thẳng đứng, chiều từ trên xuống.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q3" value="D"> D. Chuyển động chậm dần đều.</label>
+                    </div>
+                    <!-- Q4 -->
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <p class="font-semibold mb-2">Câu 4: Tại cùng một vị trí trên Trái Đất, nếu bỏ qua lực cản không khí, hòn đá và chiếc lông chim sẽ:</p>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q4" value="A"> A. rơi nhanh như nhau.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q4" value="B"> B. hòn đá rơi nhanh hơn.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q4" value="C"> C. lông chim rơi nhanh hơn.</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q4" value="D"> D. vật nào có thể tích nhỏ hơn rơi nhanh hơn.</label>
+                    </div>
+                    <!-- Q5 -->
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <p class="font-semibold mb-2">Câu 5: Công thức tính quãng đường rơi trong thời gian t là:</p>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q5" value="A"> A. \(s = gt^2\)</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q5" value="B"> B. \(s = \frac{1}{2}gt^2\)</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q5" value="C"> C. \(s = 2gt^2\)</label>
+                        <label class="block cursor-pointer hover:bg-gray-100 p-1 rounded"><input type="radio" name="q5" value="D"> D. \(s = \frac{1}{2}v_t^2\)</label>
+                    </div>
+                    
+                    <div class="text-center md:text-left flex flex-col md:flex-row items-center gap-4">
+                        <button type="button" onclick="checkQuiz()" class="bg-[#0f172a] text-white font-bold py-2 px-6 rounded-[8px] hover:bg-blue-900 shadow-md">NỘP BÀI</button>
+                        <div id="quiz-result" class="text-lg"></div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Bài tập tự luận có đáp án -->
+            <div>
+                <h3 class="font-bold text-lg mb-4 text-gray-800 bg-gray-200 inline-block px-3 py-1 rounded">B. Bài tập vận dụng (3 câu)</h3>
+                
+                <!-- TL 1 -->
+                <div class="mb-4 bg-white border border-[#cbd5e0] rounded p-4 shadow-sm">
+                    <p class="font-semibold mb-2">Bài 1: Thả một vật rơi tự do từ độ cao 20m xuống đất. Lấy \(g = 10 \text{ m/s}^2\). Tính thời gian vật rơi để chạm đất.</p>
+                    <button onclick="toggleElement('tl1')" class="text-sm bg-main-color text-white px-3 py-1 rounded">Xem lời giải</button>
+                    <div id="tl1" class="hidden bg-[#dcfce7] p-3 rounded mt-3 border border-green-300">
+                        <p>Từ công thức: \( h = \frac{1}{2}gt^2 \Rightarrow t = \sqrt{\frac{2h}{g}} \)</p>
+                        <p>Thay số: \( t = \sqrt{\frac{2 \times 20}{10}} = \sqrt{4} = 2 \text{ (s)} \)</p>
+                    </div>
+                </div>
+
+                <!-- TL 2 -->
+                <div class="mb-4 bg-white border border-[#cbd5e0] rounded p-4 shadow-sm">
+                    <p class="font-semibold mb-2">Bài 2: Một vật rơi tự do chạm đất với vận tốc 40 m/s. Lấy \(g = 10 \text{ m/s}^2\). Tính độ cao nơi thả vật.</p>
+                    <button onclick="toggleElement('tl2')" class="text-sm bg-main-color text-white px-3 py-1 rounded">Xem lời giải</button>
+                    <div id="tl2" class="hidden bg-[#dcfce7] p-3 rounded mt-3 border border-green-300">
+                        <p>Từ hệ thức độc lập: \( v^2 = 2gh \Rightarrow h = \frac{v^2}{2g} \)</p>
+                        <p>Thay số: \( h = \frac{40^2}{2 \times 10} = \frac{1600}{20} = 80 \text{ (m)} \)</p>
+                    </div>
+                </div>
+
+                <!-- TL 3 -->
+                <div class="mb-4 bg-white border border-[#cbd5e0] rounded p-4 shadow-sm">
+                    <p class="font-semibold mb-2">Bài 3: Một vật rơi tự do, lấy \(g = 10 \text{ m/s}^2\). Tính quãng đường vật rơi được trong giây thứ 3.</p>
+                    <button onclick="toggleElement('tl3')" class="text-sm bg-main-color text-white px-3 py-1 rounded">Xem lời giải</button>
+                    <div id="tl3" class="hidden bg-[#dcfce7] p-3 rounded mt-3 border border-green-300">
+                        <p>Quãng đường đi được sau 3 giây: \( s_3 = \frac{1}{2} \times 10 \times 3^2 = 45 \text{ (m)} \)</p>
+                        <p>Quãng đường đi được sau 2 giây đầu: \( s_2 = \frac{1}{2} \times 10 \times 2^2 = 20 \text{ (m)} \)</p>
+                        <p class="font-bold text-red-600 mt-2">Quãng đường trong giây thứ 3: \(\Delta s = s_3 - s_2 = 45 - 20 = 25 \text{ (m)}\)</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Hàm ẩn/hiện element
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra trắc nghiệm
+        function checkQuiz() {
+            // Đáp án đúng
+            const answers = {
+                q1: 'A',
+                q2: 'B',
+                q3: 'C',
+                q4: 'A',
+                q5: 'B'
+            };
+            
+            let score = 0;
+            const total = 5;
+
+            // Kiểm tra từng câu
+            for (let i = 1; i <= total; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                const questionBlock = document.querySelector(`input[name="q${i}"]`).closest('.bg-gray-50');
+                
+                // Reset viền
+                questionBlock.classList.remove('border-red-400', 'border-green-400', 'bg-red-50', 'bg-green-50');
+
+                if (selected) {
+                    if (selected.value === answers[`q${i}`]) {
+                        score++;
+                        questionBlock.classList.add('border-green-400', 'bg-green-50');
+                    } else {
+                        questionBlock.classList.add('border-red-400', 'bg-red-50');
+                    }
+                }
+            }
+
+            // Hiển thị kết quả
+            const resultDiv = document.getElementById('quiz-result');
+            if (score === total) {
+                resultDiv.innerHTML = `<span class="text-green-600 font-bold">🎉 Xuất sắc! Bạn đã trả lời đúng ${score}/${total} câu.</span>`;
+            } else {
+                resultDiv.innerHTML = `<span class="text-red-600 font-bold">Bạn trả lời đúng ${score}/${total} câu. Hãy xem lại những câu sai (màu đỏ) nhé!</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

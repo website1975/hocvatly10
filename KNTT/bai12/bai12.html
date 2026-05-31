@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chương II - Bài 12: Chuyển Động Ném</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f4f7f9] text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto space-y-8">
+
+        <!-- HEADER -->
+        <div class="bg-[#660000] text-white rounded-[12px] overflow-hidden shadow-md">
+            <div class="text-center p-3 text-lg font-semibold border-b border-white/30">
+                CHƯƠNG II: ĐỘNG HỌC
+            </div>
+            <div class="text-center p-4 text-2xl font-bold uppercase">
+                BÀI 12: CHUYỂN ĐỘNG NÉM
+            </div>
+        </div>
+
+        <!-- LỜI DẪN -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 border border-black">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="w-full md:w-1/3 flex justify-center">
+                    <img src="h1.png" alt="Nhảy xa" class="max-w-full h-auto rounded border border-gray-300 shadow-sm">
+                </div>
+                <div class="w-full md:w-2/3 italic text-lg text-gray-700">
+                    Nhảy xa là một ví dụ về chuyển động ném. Theo em, trong việc nhảy xa thì những yếu tố nào có tính quyết định đến thành tích nhảy của vận động viên?
+                </div>
+            </div>
+        </div>
+
+        <!-- NỘI DUNG CHÍNH -->
+        
+        <!-- I. CHUYỂN ĐỘNG NÉM NGANG -->
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h2 class="text-2xl font-bold uppercase text-[#660000] border-b-4 border-[#1a202c] pb-2 mb-6">
+                I. CHUYỂN ĐỘNG NÉM NGANG
+            </h2>
+
+            <!-- 1. Khái niệm -->
+            <h3 class="text-xl font-bold mb-3">1. Khái niệm chuyển động ném ngang</h3>
+            <div class="bg-yellow-50 border border-yellow-300 p-4 rounded mb-6 shadow-sm">
+                <p class="font-semibold text-lg text-gray-800">
+                    Chuyển động ném ngang là chuyển động có vận tốc ban đầu theo phương nằm ngang và chuyển động dưới tác dụng của trọng lực.
+                </p>
+            </div>
+
+            <!-- 2. Thí nghiệm -->
+            <h3 class="text-xl font-bold mb-3">2. Thí nghiệm</h3>
+            <p class="mb-4">Thí nghiệm mô tả ở Hình 12.1 dùng để tìm hiểu chuyển động của vật bị ném theo phương nằm ngang.</p>
+            <p class="mb-4">Dùng búa đập nhẹ vào thanh thép giữ bi B, thanh thép chuyển động thả bi B rơi tự do đồng thời đẩy bi A theo phương nằm ngang khỏi giá đỡ với vận tốc \( v_{0} \).</p>
+            
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <div class="flex-1 text-center">
+                    <img src="h2.png" alt="Hình 12.1. Thí nghiệm" class="mx-auto rounded border border-gray-300 shadow-sm max-h-48">
+                    <p class="text-sm italic mt-2">Hình 12.1. Thí nghiệm về chuyển động nằm ngang</p>
+                </div>
+                <div class="flex-1 text-center">
+                    <img src="h3.png" alt="Hình 12.2. Ảnh hoạt nghiệm" class="mx-auto rounded border border-gray-300 shadow-sm max-h-48">
+                    <p class="text-sm italic mt-2">Hình 12.2. Ảnh chụp hoạt nghiệm chuyển động của hai viên bi A và B</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi thí nghiệm 1 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r mb-2">
+                <p class="font-bold text-[#660000]">❓ Câu hỏi:</p>
+                <p>Hai viên bi có chạm đất cùng một lúc không?</p>
+                <button onclick="toggleElement('ans-exp-1')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem câu trả lời</button>
+            </div>
+            <div id="ans-exp-1" class="bg-green-100 p-4 rounded mb-6 hidden border border-green-300">
+                <p><strong>Trả lời:</strong> Qua quan sát thí nghiệm, hai viên bi A và B chạm đất cùng một lúc.</p>
+            </div>
+
+            <p class="mb-4">Việc phân tích ảnh chụp hoạt nghiệm thí nghiệm trên (Hình 12.2) giúp ta so sánh chuyển động rơi tự do của bi B (sự thay đổi vị trí của bi B theo phương thẳng đứng) với vận tốc ban đầu \( v_{0y} = 0 \) với sự thay đổi vị trí theo phương thẳng đứng của viên bi A bị ném ngang với vận tốc ban đầu theo phương nằm ngang \( v_{0x} = v_{0} \).</p>
+
+            <!-- Câu hỏi thí nghiệm 2 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r mb-2">
+                <p class="font-bold text-[#660000]">❓ Câu hỏi:</p>
+                <p>Hãy nhận xét về sự thay đổi vị trí theo phương thẳng đứng của hai viên bi sau những khoảng thời gian bằng nhau.</p>
+                <button onclick="toggleElement('ans-exp-2')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem câu trả lời</button>
+            </div>
+            <div id="ans-exp-2" class="bg-green-100 p-4 rounded mb-6 hidden border border-green-300">
+                <p><strong>Trả lời:</strong> Sự thay đổi vị trí theo phương thẳng đứng của hai viên bi sau những khoảng thời gian bằng nhau là hoàn toàn giống nhau. Quãng đường rơi theo phương thẳng đứng ở mỗi thời điểm của hai bi là như nhau.</p>
+            </div>
+
+            <!-- 3. Phân tích -->
+            <h3 class="text-xl font-bold mb-3 mt-8">3. Phân tích kết quả thí nghiệm</h3>
+            <p class="mb-4">Thành phần chuyển động theo phương nằm ngang của viên bi A không ảnh hưởng đến thành phần chuyển động theo phương thẳng đứng của nó: Hai chuyển động thành phần này độc lập với nhau.</p>
+
+            <h4 class="font-bold text-lg mb-2">a) Thành phần chuyển động theo phương thẳng đứng</h4>
+            <p class="mb-2">Chuyển động thành phần theo phương thẳng đứng của vật là chuyển động rơi tự do với vận tốc ban đầu bằng 0.</p>
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded mb-4 text-center">
+                <p class="text-lg">\( H = \frac{1}{2} \cdot g \cdot t^{2} \Rightarrow t = \sqrt{\frac{2H}{g}} \)</p>
+            </div>
+            <div class="bg-yellow-50 border border-yellow-300 p-4 rounded mb-6 shadow-sm">
+                <p>Thời gian rơi của vật bị ném ngang chỉ phụ thuộc độ cao H của vật khi bị ném, không phụ thuộc vận tốc ném. Nếu từ cùng một độ cao, đồng thời ném ngang các vật khác nhau với các vận tốc khác nhau thì chúng đều rơi xuống đất cùng một lúc.</p>
+            </div>
+
+            <h4 class="font-bold text-lg mb-2">b) Thành phần chuyển động theo phương nằm ngang</h4>
+            <p class="mb-2">Độ dịch chuyển trong chuyển động thành phần nằm ngang là: \( d_{x} = v_{x} \cdot t = v_{0} \cdot t \)</p>
+            <p class="mb-2">Giá trị cực đại của độ dịch chuyển trong chuyển động thành phần nằm ngang được gọi là <strong>tầm xa L</strong> của chuyển động ném ngang:</p>
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded mb-4 text-center">
+                <p class="text-lg">\( L = d_{xmax} = v_{0} \cdot t_{max} \)</p>
+                <p class="text-lg mt-2 font-bold text-[#660000]">Do đó: \( L = v_{0} \sqrt{\frac{2 \cdot H}{g}} \)</p>
+            </div>
+
+            <div class="bg-yellow-50 border border-yellow-300 p-4 rounded mb-6 shadow-sm">
+                <ol class="list-decimal pl-5 space-y-2">
+                    <li>Tầm xa của vật bị ném ngang phụ thuộc vào độ cao H của vật khi bị ném và vận tốc ném. Nếu từ cùng một độ cao đồng thời ném các vật khác nhau với vận tốc khác nhau thì vật nào có vận tốc ném lớn hơn sẽ có tầm xa lớn hơn.</li>
+                    <li>Nếu từ các độ cao khác nhau ném ngang các vật với cùng vận tốc thì vật nào được ném ở độ cao lớn hơn sẽ có tầm xa lớn hơn.</li>
+                </ol>
+            </div>
+
+            <!-- Hình ảnh đồ thị ngang -->
+            <div class="flex justify-center mb-6">
+                <div class="text-center">
+                    <img src="h4.png" alt="Hình 12.3 và 12.4 Phân tích" class="rounded border border-gray-300 shadow-sm max-h-64">
+                    <p class="text-sm italic mt-2">Đồ thị và quỹ đạo phân tích chuyển động ném ngang</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi & Hoạt động ngang -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r mb-2">
+                <p class="font-bold text-[#660000]">❓ Câu hỏi:</p>
+                <p>Hãy quan sát ảnh hoạt nghiệm ở Hình 12.2 để chứng tỏ chuyển động thành phần theo phương nằm ngang là chuyển động thẳng đều với vận tốc \( v_{x} = v_{0} \).</p>
+                <button onclick="toggleElement('ans-exp-3')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem câu trả lời</button>
+            </div>
+            <div id="ans-exp-3" class="bg-green-100 p-4 rounded mb-4 hidden border border-green-300">
+                <p><strong>Trả lời:</strong> Trong ảnh hoạt nghiệm, khoảng cách theo phương nằm ngang giữa các vị trí liên tiếp của viên bi A trong những khoảng thời gian bằng nhau là luôn bằng nhau. Do đó chuyển động ngang là chuyển động thẳng đều.</p>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r mb-2">
+                <p class="font-bold text-[#660000]">🖐 Hoạt động:</p>
+                <p>1. Hãy đề xuất phương án thí nghiệm để kiểm tra những kết luận 2 và 3.</p>
+                <p>2. Dùng thước kẻ giữ ba viên bi (sắt, thủy tinh và gỗ) có cùng kích thước, trên một tấm thủy tinh đặt nghiêng... Hãy dự đoán tầm xa và làm thí nghiệm kiểm tra.</p>
+		<img src="h5.png" alt="Hình 12.3 và 12.4 Phân tích" class="rounded border border-gray-300 shadow-sm max-h-64">
+                <button onclick="toggleElement('ans-act-1')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem hướng giải quyết</button>
+            </div>
+            <div id="ans-act-1" class="bg-green-100 p-4 rounded mb-8 hidden border border-green-300">
+                <p><strong>Hướng giải quyết:</strong><br>
+                1. Dùng bộ thiết bị thí nghiệm ném ngang, thay đổi lò xo bật/vận tốc ban đầu để kiểm tra kết luận tầm xa, hoặc kê cao giá đỡ để kiểm tra sự phụ thuộc vào độ cao.<br>
+                2. Dự đoán: Do 3 viên bi lăn trên cùng mặt nghiêng, nếu bỏ qua ma sát và lực cản thì chúng rời mép bàn với cùng vận tốc \( v_0 \) và cùng độ cao \( H \), nên tầm xa \( L \) sẽ bằng nhau bất kể khối lượng.</p>
+            </div>
+
+            <!-- BÀI TẬP VÍ DỤ NÉM NGANG -->
+            <div class="border-2 border-[#660000] rounded-[12px] p-4 mb-6">
+                <h4 class="font-bold text-[#660000] text-lg mb-2">📝 BÀI TẬP VÍ DỤ</h4>
+                <p class="mb-4">Một người đứng từ một đài quan sát ven biển, ném một hòn đá theo phương nằm ngang hướng ra biển với vận tốc \( 12\text{ m/s} \). Biết độ cao từ vị trí ném so với mặt biển là 40 m. Bỏ qua sức cản của không khí.</p>
+                <p>a) Sau bao lâu thì hòn đá chạm mặt biển?</p>
+                <p>b) Tầm xa L của hòn đá là bao nhiêu mét?</p>
+                <button onclick="toggleElement('ans-vd-1')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem giải chi tiết</button>
+                
+                <div id="ans-vd-1" class="mt-4 pt-4 border-t border-gray-300 hidden">
+                    <p><strong>Tóm tắt:</strong> \( v_{0x} = v = 12\text{ m/s}; H = 40\text{ m}; g = 9,8\text{ m/s}^{2} \)</p>
+                    <p class="mt-2"><strong>Giải:</strong></p>
+                    <p>a) Ta có: \( H = d_{y} = \frac{1}{2} \cdot g \cdot t^{2} \)<br>
+                    Thời gian chạm mặt biển: \( t = \sqrt{\frac{2H}{g}} = \sqrt{\frac{2 \cdot 40}{9,8}} \approx 2,86\text{ s} \)</p>
+                    <p class="mt-2">b) Tầm xa: \( L = d_{xmax} = v \cdot t = 12 \cdot 2,86 \approx 34,3\text{ m} \)</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi củng cố phần I -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r mb-2">
+                <p class="font-bold text-[#660000]">❓ Luyện tập:</p>
+                <p>1. Nếu đồng thời ném hai quả bóng giống nhau với những vận tốc bằng nhau theo phương nằm ngang từ hai độ cao \( h_1, h_2 \) khác nhau (\( h_1 < h_2 \)) thì:</p>
+                <p class="ml-4">a) Quả bóng ném ở độ cao nào chạm đất trước?</p>
+                <p class="ml-4">b) Quả bóng ném ở độ cao nào có tầm xa lớn hơn?</p>
+                <p class="mt-2">2. Một máy bay chở hàng đang bay ngang ở độ cao 490 m với vận tốc \( 100\text{ m/s} \) thì thả một gói hàng. Lấy \( g = 9,8\text{ m/s}^{2} \).</p>
+                <p class="ml-4">a) Sau bao lâu gói hàng chạm đất?</p>
+                <p class="ml-4">b) Tầm xa của gói hàng?</p>
+                <p class="ml-4">c) Vận tốc khi chạm đất?</p>
+                <button onclick="toggleElement('ans-lt-1')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem lời giải</button>
+            </div>
+            <div id="ans-lt-1" class="bg-green-100 p-4 rounded mb-6 hidden border border-green-300">
+                <p><strong>1.</strong><br>
+                a) Bóng ném ở \( h_1 \) chạm đất trước (vì \( t = \sqrt{2h/g} \) tỉ lệ thuận với căn bậc 2 của h).<br>
+                b) Bóng ném ở \( h_2 \) có tầm xa lớn hơn (vì \( L = v_0 \cdot t \), t lớn hơn thì L lớn hơn).</p>
+                <p class="mt-2"><strong>2.</strong><br>
+                a) \( t = \sqrt{\frac{2 \cdot 490}{9,8}} = 10\text{ s} \).<br>
+                b) \( L = 100 \cdot 10 = 1000\text{ m} \).<br>
+                c) \( v_y = g \cdot t = 9,8 \cdot 10 = 98\text{ m/s} \). Vận tốc chạm đất: \( v = \sqrt{v_x^2 + v_y^2} = \sqrt{100^2 + 98^2} \approx 140\text{ m/s} \).</p>
+            </div>
+
+        </div>
+
+        <!-- II. CHUYỂN ĐỘNG NÉM XIÊN -->
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h2 class="text-2xl font-bold uppercase text-[#660000] border-b-4 border-[#1a202c] pb-2 mb-6">
+                II. CHUYỂN ĐỘNG NÉM XIÊN
+            </h2>
+
+            <p class="mb-4">Khi đánh một quả bóng tennis lên cao theo phương xiên góc với phương nằm ngang, người ta thấy quả bóng bay lên rồi rơi xuống theo một quỹ đạo có dạng hình parabol. Chuyển động của quả bóng trong trường hợp này gọi là chuyển động của vật bị ném xiên.</p>
+
+            <div class="text-center mb-6">
+                <img src="h6.png" alt="Hình 12.6 Ném xiên" class="mx-auto rounded border border-gray-300 shadow-sm max-h-48">
+                <p class="text-sm italic mt-2">Hình 12.6. Ảnh chụp hoạt nghiệm chuyển động ném xiên</p>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r mb-6">
+                <p class="font-bold text-[#660000]">❓ Câu hỏi:</p>
+                <p>Hãy tìm thêm ví dụ về chuyển động ném xiên trong đời sống.</p>
+                <button onclick="toggleElement('ans-exp-4')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem câu trả lời</button>
+            </div>
+            <div id="ans-exp-4" class="bg-green-100 p-4 rounded mb-6 hidden border border-green-300">
+                <p><strong>Trả lời:</strong> Ném bóng rổ vào rổ, sút bóng qua hàng rào trong bóng đá, bắn cung vút lên trời, vòi nước tưới cây phun xiên...</p>
+            </div>
+
+            <!-- 1. Phân tích -->
+            <h3 class="text-xl font-bold mb-3">1. Phân tích chuyển động ném xiên</h3>
+            <p class="mb-4">Phân tích chuyển động ném xiên thành hai chuyển động thành phần: chuyển động thành phần theo phương thẳng đứng và chuyển động thành phần theo phương nằm ngang.</p>
+            
+            <div class="text-center mb-6">
+                <img src="h7.png" alt="Hình 12.7 Phân tích ném xiên" class="mx-auto rounded border border-gray-300 shadow-sm max-h-48">
+                <p class="text-sm italic mt-2">Hình 12.7. Phân tích chuyển động ném xiên</p>
+            </div>
+
+            <!-- 2. Công thức -->
+            <h3 class="text-xl font-bold mb-3">2. Công thức xác định tầm cao và tầm xa</h3>
+            <p class="mb-4">Bỏ qua sức cản của không khí, có thể thiết lập được công thức xác định tầm cao và tầm xa của chuyển động ném xiên:</p>
+
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                <div>
+                    <p class="font-bold text-[#660000]">Tầm cao:</p>
+                    <p class="text-lg">\( H = d_{ymax} = \frac{v_{0}^{2} \cdot \sin^{2}\alpha}{2 \cdot g} \)</p>
+                </div>
+                <div>
+                    <p class="font-bold text-[#660000]">Tầm xa:</p>
+                    <p class="text-lg">\( L = d_{xmax} = \frac{v_{0}^{2} \cdot \sin 2\alpha}{g} \)</p>
+                </div>
+            </div>
+
+            <!-- BÀI TẬP VÍ DỤ NÉM XIÊN -->
+            <div class="border-2 border-[#660000] rounded-[12px] p-4 mb-6">
+                <h4 class="font-bold text-[#660000] text-lg mb-2">📝 BÀI TẬP VÍ DỤ</h4>
+                <p class="mb-4">Một người nhảy xa với vận tốc ban đầu 7,5 m/s theo phương xiên \( 30^{\circ} \) với phương nằm ngang. Biết vị trí dậm nhảy ngang với hố nhảy. Bỏ qua sức cản của không khí và lấy \( g = 9,8\text{ m/s}^{2} \). Tính:</p>
+                <p>a) Vận tốc ban đầu theo phương thẳng đứng và nằm ngang.</p>
+                <p>b) Tầm cao H.</p>
+                <p>c) Thời gian đạt tầm cao.</p>
+                <p>d) Thời gian rơi xuống hố.</p>
+                <p>e) Tầm xa L.</p>
+                <button onclick="toggleElement('ans-vd-2')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem giải chi tiết</button>
+                
+                <div id="ans-vd-2" class="mt-4 pt-4 border-t border-gray-300 hidden">
+                    <p><strong>Giải:</strong></p>
+                    <p>a) \( v_{0y} = v_{0} \cdot \sin 30^{\circ} = 3,75\text{ m/s} \)<br>
+                       \( v_{0x} = v_{0} \cdot \cos 30^{\circ} \approx 6,50\text{ m/s} \)</p>
+                    <p class="mt-2">b) \( H = \frac{v_{0y}^{2}}{2 \cdot g} = \frac{3,75^2}{2 \cdot 9,8} \approx 0,717\text{ m} \)</p>
+                    <p class="mt-2">c) Khi đạt tầm cao \( v_y = 0 \Rightarrow t = \frac{v_{0y}}{g} = \frac{3,75}{9,8} \approx 0,383\text{ s} \)</p>
+                    <p class="mt-2">d) Thời gian bay: \( t' = 2 \cdot t = 2 \cdot 0,383 = 0,766\text{ s} \)</p>
+                    <p class="mt-2">e) Tầm xa: \( L = v_{0x} \cdot t' = 6,5 \cdot 0,766 \approx 4,98\text{ m} \)</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi củng cố phần II -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r mb-2">
+                <p class="font-bold text-[#660000]">❓ Luyện tập:</p>
+                <p>Người ta bắn một viên bi với vận tốc ban đầu \( 4\text{ m/s} \) hướng lên theo phương xiên \( 45^{\circ} \). Tính: (g=9.8 m/s²)</p>
+                <p>1. Vận tốc nằm ngang và thẳng đứng lúc bắt đầu, sau 0.1s, sau 0.2s.</p>
+                <p>2. Thời điểm đạt tầm cao, tầm cao H, gia tốc tại H.</p>
+                <p>3. Vị trí và thời điểm vận tốc cực tiểu.</p>
+                <p>4. Thời điểm chạm sàn, vận tốc chạm sàn, tầm xa L.</p>
+                <button onclick="toggleElement('ans-lt-2')" class="mt-3 bg-[#660000] hover:bg-red-800 text-white font-semibold py-1 px-4 rounded transition">Xem lời giải</button>
+            </div>
+            <div id="ans-lt-2" class="bg-green-100 p-4 rounded mb-6 hidden border border-green-300 space-y-2">
+                <p><strong>1.</strong> Ban đầu: \( v_{0x} = v_{0y} = 4 \cdot \cos 45^\circ \approx 2,83\text{ m/s} \).<br>
+                Sau 0.1s: \( v_x = 2,83\text{ m/s}; v_y = 2,83 - 9,8 \cdot 0,1 = 1,85\text{ m/s} \).<br>
+                Sau 0.2s: \( v_x = 2,83\text{ m/s}; v_y = 2,83 - 9,8 \cdot 0,2 = 0,87\text{ m/s} \).</p>
+                <p><strong>2.</strong> a) Thời gian đạt H: \( t = v_{0y}/g = 2,83/9,8 \approx 0,29\text{ s} \).<br>
+                b) \( H = \frac{v_0^2 \sin^2 45}{2g} \approx 0,41\text{ m} \).<br>
+                c) Gia tốc tại đỉnh luôn là gia tốc trọng trường \( a = g = 9,8\text{ m/s}^2 \) (hướng xuống).</p>
+                <p><strong>3.</strong> Vận tốc cực tiểu tại đỉnh (tầm cao H) vì lúc này \( v_y = 0 \). Thời điểm \( t = 0,29\text{ s} \).</p>
+                <p><strong>4.</strong> a) Thời gian chạm sàn \( t' = 2t = 0,58\text{ s} \).<br>
+                b) Vận tốc chạm sàn có độ lớn bằng \( v_0 = 4\text{ m/s} \) (bỏ qua lực cản).<br>
+                c) \( L = \frac{v_0^2 \sin 90}{g} = \frac{16}{9,8} \approx 1,63\text{ m} \).</p>
+            </div>
+
+        </div>
+
+        <!-- CÁC PHẦN TÓM TẮT MỞ RỘNG -->
+        <div class="grid grid-cols-1 gap-6">
+            
+            <!-- EM ĐÃ HỌC -->
+            <div class="bg-blue-100 border-l-4 border-blue-600 rounded p-6 shadow-sm">
+                <h3 class="text-xl font-bold text-blue-800 mb-3 uppercase">💡 EM ĐÃ HỌC</h3>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>Chuyển động ném có thể phân tích thành hai chuyển động thành phần vuông góc với nhau: chuyển động với gia tốc theo phương thẳng đứng, chuyển động thẳng đều theo phương nằm ngang.</li>
+                    <li><strong>Các công thức:</strong> (Chỉ đúng khi lực cản không khí không đáng kể)
+                        <ul class="list-none pl-0 mt-2 space-y-2 font-semibold">
+                            <li>- Ném ngang: Tầm xa \( L = v_{0} \cdot t = v_{0} \sqrt{\frac{2H}{g}} \)</li>
+                            <li>- Ném xiên: Tầm cao \( H = \frac{v_{0}^{2} \cdot \sin^{2}\alpha}{2 \cdot g} \) ; Tầm xa \( L = \frac{v_{0}^{2} \cdot \sin 2\alpha}{g} \)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- EM CÓ THỂ -->
+            <div class="bg-green-100 border-l-4 border-green-600 rounded p-6 shadow-sm">
+                <h3 class="text-xl font-bold text-green-800 mb-3 uppercase">🌟 EM CÓ THỂ</h3>
+                <ul class="list-decimal pl-5 space-y-2">
+                    <li>Sử dụng được các công thức của chuyển động ném ngang để giải thích cách thả hàng cứu trợ bằng máy bay.</li>
+                    <li>Vận dụng được kiến thức về chuyển động ném xiên để giải thích một số tình huống đơn giản trong cuộc sống. Ví dụ: thành tích nhảy xa phụ thuộc vào góc nhảy, điều chỉnh góc bắn pháo.</li>
+                </ul>
+            </div>
+
+            <!-- HOẠT ĐỘNG TRẢI NGHIỆM -->
+            <div class="bg-purple-100 border-l-4 border-purple-600 rounded p-6 shadow-sm">
+                <h3 class="text-xl font-bold text-purple-800 mb-3 uppercase">🛠 HOẠT ĐỘNG TRẢI NGHIỆM</h3>
+                <p class="font-semibold mb-2">I. Mục đích:</p>
+                <p class="mb-4">Nghiên cứu tìm hiểu điều kiện để ném một vật đạt tầm bay xa lớn nhất.</p>
+                
+                <p class="font-semibold mb-2">II. Chuẩn bị:</p>
+                <p class="mb-4">Dụng cụ bắn bi, thước đo, địa điểm an toàn...</p>
+
+                <p class="font-semibold mb-2">III. Các bước tiến hành:</p>
+                <ul class="list-decimal pl-5 space-y-1 mb-4">
+                    <li>Tìm hiểu lý thuyết (Độ cao? Góc ném?)</li>
+                    <li>Lập phương án</li>
+                    <li>Thực hiện & Kết luận</li>
+                    <li>Báo cáo</li>
+                </ul>
+
+                <button onclick="toggleElement('ans-exp-5')" class="mt-2 bg-purple-700 hover:bg-purple-900 text-white font-semibold py-1 px-4 rounded transition">Xem hướng dẫn lý thuyết</button>
+                <div id="ans-exp-5" class="bg-white p-4 rounded mt-4 hidden border border-purple-300">
+                    <p><strong>Dự đoán lý thuyết:</strong></p>
+                    <p>- Ném ngang: Muốn bay xa nhất thì vận tốc ném \( v_0 \) phải lớn và độ cao \( H \) phải càng cao.</p>
+                    <p>- Ném xiên: Từ công thức \( L = \frac{v_0^2 \sin 2\alpha}{g} \), L max khi \( \sin 2\alpha = 1 \Rightarrow 2\alpha = 90^\circ \Rightarrow \alpha = 45^\circ \).</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PHẦN BỔ SUNG: BÀI TẬP VẬN DỤNG & TRẮC NGHIỆM -->
+        <!-- ========================================== -->
+        
+        <div class="bg-white rounded-[12px] shadow-md p-6 mt-8">
+            <h2 class="text-2xl font-bold uppercase text-[#660000] border-b-4 border-[#1a202c] pb-2 mb-6">
+                PHẦN BÀI TẬP BỔ SUNG
+            </h2>
+
+            <!-- 3 BÀI TẬP TỰ LUẬN -->
+            <h3 class="text-xl font-bold mb-4 text-[#660000]">I. Bài tập tính toán (Có lời giải)</h3>
+            
+            <!-- Câu 1 -->
+            <div class="mb-6">
+                <p class="font-semibold">Bài 1: Một vật được ném ngang từ độ cao \( H = 20\text{ m} \) với vận tốc ban đầu \( v_0 = 15\text{ m/s} \). Lấy \( g = 10\text{ m/s}^2 \). Tính thời gian rơi và tầm xa của vật.</p>
+                <button onclick="toggleElement('bai-1')" class="mt-2 bg-[#660000] hover:bg-red-800 text-white py-1 px-3 rounded text-sm">Xem lời giải</button>
+                <div id="bai-1" class="bg-green-50 p-4 mt-2 hidden border-l-4 border-green-500">
+                    <p>- Thời gian rơi: \( t = \sqrt{\frac{2H}{g}} = \sqrt{\frac{2 \cdot 20}{10}} = 2\text{ s} \)</p>
+                    <p>- Tầm xa: \( L = v_0 \cdot t = 15 \cdot 2 = 30\text{ m} \)</p>
+                </div>
+            </div>
+
+            <!-- Câu 2 -->
+            <div class="mb-6">
+                <p class="font-semibold">Bài 2: Một quả bóng được đá xiên góc \( \alpha = 45^\circ \) so với phương ngang với vận tốc \( v_0 = 20\text{ m/s} \). Lấy \( g = 10\text{ m/s}^2 \). Tính tầm cao cực đại và tầm bay xa của quả bóng.</p>
+                <button onclick="toggleElement('bai-2')" class="mt-2 bg-[#660000] hover:bg-red-800 text-white py-1 px-3 rounded text-sm">Xem lời giải</button>
+                <div id="bai-2" class="bg-green-50 p-4 mt-2 hidden border-l-4 border-green-500">
+                    <p>- Tầm cao: \( H = \frac{v_0^2 \cdot \sin^2\alpha}{2g} = \frac{20^2 \cdot \sin^2 45^\circ}{2 \cdot 10} = 10\text{ m} \)</p>
+                    <p>- Tầm xa: \( L = \frac{v_0^2 \cdot \sin 2\alpha}{g} = \frac{20^2 \cdot \sin 90^\circ}{10} = 40\text{ m} \)</p>
+                </div>
+            </div>
+
+            <!-- Câu 3 -->
+            <div class="mb-6">
+                <p class="font-semibold">Bài 3: Máy bay bay ngang với vận tốc \( v_0 = 50\text{ m/s} \) ở độ cao \( H = 500\text{ m} \) tiến hành thả hàng. Lấy \( g = 10\text{ m/s}^2 \). Để hàng rơi trúng mục tiêu, phi công phải thả hàng khi máy bay cách mục tiêu theo phương ngang một đoạn bao nhiêu?</p>
+                <button onclick="toggleElement('bai-3')" class="mt-2 bg-[#660000] hover:bg-red-800 text-white py-1 px-3 rounded text-sm">Xem lời giải</button>
+                <div id="bai-3" class="bg-green-50 p-4 mt-2 hidden border-l-4 border-green-500">
+                    <p>- Bài toán yêu cầu tính tầm xa \( L \).</p>
+                    <p>- Thời gian: \( t = \sqrt{\frac{2H}{g}} = \sqrt{\frac{2 \cdot 500}{10}} = 10\text{ s} \)</p>
+                    <p>- Khoảng cách ngang: \( L = v_0 \cdot t = 50 \cdot 10 = 500\text{ m} \)</p>
+                    <p>=> Phải thả hàng khi máy bay còn cách mục tiêu 500m theo phương ngang.</p>
+                </div>
+            </div>
+
+            <!-- 5 CÂU TRẮC NGHIỆM -->
+            <h3 class="text-xl font-bold mb-4 mt-8 text-[#660000]">II. Trắc nghiệm củng cố</h3>
+            
+            <form id="quiz-form" class="space-y-6">
+                <!-- Q1 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 1: Quỹ đạo của một vật ném ngang (bỏ qua sức cản không khí) có hình dạng gì?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q1" value="A"> A. Đường thẳng</label>
+                        <label class="block"><input type="radio" name="q1" value="B"> B. Đường tròn</label>
+                        <label class="block"><input type="radio" name="q1" value="C"> C. Một nhánh của Parabol</label>
+                        <label class="block"><input type="radio" name="q1" value="D"> D. Đường gấp khúc</label>
+                    </div>
+                </div>
+                <!-- Q2 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 2: Thời gian rơi của vật ném ngang phụ thuộc vào yếu tố nào?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q2" value="A"> A. Chỉ phụ thuộc vận tốc ném ban đầu</label>
+                        <label class="block"><input type="radio" name="q2" value="B"> B. Chỉ phụ thuộc độ cao lúc ném</label>
+                        <label class="block"><input type="radio" name="q2" value="C"> C. Phụ thuộc cả vận tốc ném và độ cao</label>
+                        <label class="block"><input type="radio" name="q2" value="D"> D. Phụ thuộc khối lượng của vật</label>
+                    </div>
+                </div>
+                <!-- Q3 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 3: Công thức tính tầm xa \( L \) của vật ném ngang từ độ cao \( H \) là?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q3" value="A"> A. \( L = v_0 \sqrt{\frac{H}{2g}} \)</label>
+                        <label class="block"><input type="radio" name="q3" value="B"> B. \( L = v_0 \frac{2H}{g} \)</label>
+                        <label class="block"><input type="radio" name="q3" value="C"> C. \( L = v_0 \sqrt{\frac{2H}{g}} \)</label>
+                        <label class="block"><input type="radio" name="q3" value="D"> D. \( L = \frac{1}{2}v_0 t^2 \)</label>
+                    </div>
+                </div>
+                <!-- Q4 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 4: Để một vật ném xiên đạt tầm xa lớn nhất (trong điều kiện lý tưởng), góc ném \( \alpha \) phải bằng bao nhiêu?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q4" value="A"> A. 30°</label>
+                        <label class="block"><input type="radio" name="q4" value="B"> B. 45°</label>
+                        <label class="block"><input type="radio" name="q4" value="C"> C. 60°</label>
+                        <label class="block"><input type="radio" name="q4" value="D"> D. 90°</label>
+                    </div>
+                </div>
+                <!-- Q5 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 5: Tại điểm cao nhất của quỹ đạo ném xiên, vận tốc của vật như thế nào?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block"><input type="radio" name="q5" value="A"> A. Bằng 0</label>
+                        <label class="block"><input type="radio" name="q5" value="B"> B. Có phương thẳng đứng</label>
+                        <label class="block"><input type="radio" name="q5" value="C"> C. Chỉ có thành phần theo phương nằm ngang</label>
+                        <label class="block"><input type="radio" name="q5" value="D"> D. Đạt giá trị cực đại</label>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex items-center gap-4">
+                    <button type="button" onclick="checkQuiz()" class="bg-[#1a202c] hover:bg-gray-800 text-white font-bold py-2 px-6 rounded-[8px] transition shadow-md">
+                        NỘP BÀI
+                    </button>
+                    <div id="quiz-result" class="font-bold text-lg hidden"></div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // Hàm ẩn hiện element (lời giải)
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra đáp án trắc nghiệm
+        function checkQuiz() {
+            // Đáp án chuẩn
+            const answers = {
+                q1: 'C',
+                q2: 'B',
+                q3: 'C',
+                q4: 'B',
+                q5: 'C'
+            };
+
+            let score = 0;
+            const total = Object.keys(answers).length;
+            const form = document.getElementById('quiz-form');
+            
+            // Xóa background cũ để reset
+            document.querySelectorAll('label').forEach(lbl => {
+                lbl.classList.remove('bg-green-200', 'bg-red-200', 'rounded', 'px-2');
+            });
+
+            // Kiểm tra từng câu
+            for (let q in answers) {
+                const selected = form.querySelector(`input[name="${q}"]:checked`);
+                const correctValue = answers[q];
+                
+                // Highlight đáp án đúng
+                const correctLabel = form.querySelector(`input[name="${q}"][value="${correctValue}"]`).parentElement;
+                correctLabel.classList.add('bg-green-200', 'rounded', 'px-2');
+
+                if (selected) {
+                    if (selected.value === correctValue) {
+                        score++;
+                    } else {
+                        // Highlight đáp án sai người dùng đã chọn
+                        selected.parentElement.classList.add('bg-red-200', 'rounded', 'px-2');
+                    }
+                }
+            }
+
+            // Hiển thị kết quả
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (score === total) {
+                resultDiv.innerHTML = `Tuyệt vời! Bạn làm đúng ${score}/${total} câu.`;
+                resultDiv.classList.add('text-green-600');
+            } else {
+                resultDiv.innerHTML = `Bạn làm đúng ${score}/${total} câu. Hãy xem lại lý thuyết nhé!`;
+                resultDiv.classList.add('text-red-600');
+            }
+        }
+    </script>
+</body>
+</html>

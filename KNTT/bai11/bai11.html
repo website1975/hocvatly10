@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 11: Thực hành đo gia tốc rơi tự do</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'main-theme': '#660000',
+                        'page-bg': '#f4f7f9',
+                        'q-bg': '#edf2f7',
+                        'q-border': '#1e3a8a', // dark blue
+                        'a-bg': '#dcfce7', // light green
+                        'table-border': '#cbd5e0',
+                        'table-head': '#e2e8f0',
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '12px': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- MathJax for rendering math formulas -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <style>
+        body { background-color: #f4f7f9; }
+        .box-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 4px solid #1e3a8a;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        table, th, td { border: 1px solid #cbd5e0; }
+        th { background-color: #e2e8f0; padding: 0.75rem; text-align: center;}
+        td { padding: 0.75rem; text-align: center;}
+        .formula-box { background-color: #fef9c3; padding: 1rem; border-radius: 8px; border: 1px dashed #ca8a04; text-align: center; margin: 1rem 0; font-size: 1.1rem; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+
+        <!-- HEADER -->
+        <div class="bg-main-theme text-white rounded-12px p-5 text-center shadow-md mb-6">
+            <h2 class="text-xl font-medium tracking-wider">CHƯƠNG II: ĐỘNG HỌC</h2>
+            <hr class="border-t border-white/40 my-3 w-3/4 mx-auto">
+            <h1 class="text-2xl font-bold uppercase tracking-wide">Bài 11: Thực hành - Đo gia tốc rơi tự do</h1>
+        </div>
+
+        <!-- LỜI DẪN -->
+        <div class="bg-white border border-gray-400 rounded-12px shadow-md p-5 mb-6 italic text-lg text-center text-gray-700">
+            "Các vật rơi tự do chuyển động rất nhanh, làm thế nào đo được gia tốc rơi tự do của vật?"
+        </div>
+
+        <!-- I. DỤNG CỤ THÍ NGHIỆM -->
+        <div class="box-container">
+            <h2 class="section-header">I. DỤNG CỤ THÍ NGHIỆM</h2>
+            <ul class="list-disc pl-6 space-y-2 mb-4">
+                <li>Máng đứng, có gắn dây dọi (1).</li>
+                <li>Vật bằng thép hình trụ (2).</li>
+                <li>Nam châm điện N, dùng giữ và thả trụ thép (3).</li>
+                <li>Cổng quang điện E (4).</li>
+                <li>Giá đỡ có để ba chân, có vít chỉnh cân bằng và trụ thép (5).</li>
+                <li>Đồng hồ đo thời gian hiện số (6).</li>
+                <li>Công tắc kép (7).</li>
+            </ul>
+            <div class="text-center my-4">
+                <img src="h1.png" alt="Hình 11.1. Bộ dụng cụ thí nghiệm đo gia tốc rơi tự do" class="mx-auto max-w-full h-auto border border-gray-300 p-1 rounded">
+                <p class="text-sm text-gray-500 mt-2">Hình 11.1. Bộ dụng cụ thí nghiệm đo gia tốc rơi tự do</p>
+            </div>
+        </div>
+
+        <!-- II. THIẾT KẾ PHƯƠNG ÁN THÍ NGHIỆM -->
+        <div class="box-container">
+            <h2 class="section-header">II. THIẾT KẾ PHƯƠNG ÁN THÍ NGHIỆM</h2>
+            <p class="mb-4"><strong>Hoạt động:</strong> Thảo luận về phương án thí nghiệm dựa trên hoạt động thả trụ thép rơi qua cổng quang điện trên máng đứng và trả lời câu hỏi.</p>
+            
+            <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                <p class="font-semibold mb-2">1. Xác định gia tốc rơi tự do của trụ thép theo công thức nào?</p>
+                <button onclick="toggleAnswer('ans-1')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans-1" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300">
+                    Sử dụng công thức của chuyển động nhanh dần đều không vận tốc đầu (\( v_0 = 0 \)):
+                    <div class="formula-box">
+                        \( s = \frac{1}{2}gt^2 \implies g = \frac{2s}{t^2} \)
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                <p class="font-semibold mb-2">2. Để xác định gia tốc rơi tự do của trụ thép cần đo các đại lượng nào?</p>
+                <button onclick="toggleAnswer('ans-2')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans-2" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300">
+                    Cần đo quãng đường rơi \( s \) (đo bằng thước milimet trên giá đỡ) và thời gian rơi \( t \) (đo bằng đồng hồ hiện số).
+                </div>
+            </div>
+
+            <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                <p class="font-semibold mb-2">3. Làm thế nào để trụ thép rơi qua cổng quang điện?</p>
+                <button onclick="toggleAnswer('ans-3')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans-3" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300">
+                    Sử dụng nam châm điện giữ trụ thép ở phía trên. Khi ngắt điện, nam châm mất từ tính, trụ thép sẽ rơi tự do theo phương thẳng đứng đi qua cổng quang điện đặt ở dưới.
+                </div>
+            </div>
+
+            <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                <p class="font-semibold mb-2">4. Cần đặt chế độ đo của đồng hồ ở vị trí nào để đo được đại lượng cần đo?</p>
+                <button onclick="toggleAnswer('ans-4')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans-4" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300">
+                    Đặt MODE ở chế độ \( A \leftrightarrow B \) để đo thời gian vật đi từ vị trí bắt đầu rơi (A - gắn công tắc ngắt nam châm) đến vị trí cổng quang điện (B).
+                </div>
+            </div>
+        </div>
+
+        <!-- III. TIẾN HÀNH THÍ NGHIỆM -->
+        <div class="box-container">
+            <h2 class="section-header">III. TIẾN HÀNH THÍ NGHIỆM</h2>
+            <ol class="list-decimal pl-6 space-y-2">
+                <li>Cắm nam châm điện vào ổ A và cổng quang vào B ở mặt sau của đồng hồ đo thời gian hiện số.</li>
+                <li>Đặt MODE đồng hồ đo thời gian hiện số ở chế độ thích hợp.</li>
+                <li>Đặt trụ thép tại vị trí tiếp xúc với nam châm điện N và bị giữ lại ở đó.</li>
+                <li>Nhấn nút RESET của đồng hồ MC964 để chuyển các số hiển thị về giá trị ban đầu 0.000.</li>
+                <li>Nhấn nút của hộp công tắc kép để ngắt điện vào nam châm điện: Trụ thép rơi xuống và chuyển động đi qua cổng quang điện.</li>
+                <li>Ghi lại các giá trị thời gian hiển thị trên đồng hồ vào Bảng 11.1.</li>
+                <li>Dịch chuyển cổng quang điện ra xa dần nam châm điện, thực hiện lại các thao tác 3,4,5,6 bốn lần nữa. Ghi các giá trị thời gian \( t \) tương ứng với quãng đường \( s \).</li>
+            </ol>
+            
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-4 text-sm">
+                <strong>Lưu ý thao tác thiết lập:</strong> Đặt máng đứng lên giá đỡ -> Vặn chặt vít hãm -> Nối công tắc điện với nam châm điện, nối ổ A, B tương ứng -> Cắm nguồn và bật công tắc đồng hồ.
+            </div>
+        </div>
+
+        <!-- IV. KẾT QUẢ THÍ NGHIỆM -->
+        <div class="box-container">
+            <h2 class="section-header">IV. KẾT QUẢ THÍ NGHIỆM</h2>
+            
+            <h3 class="font-bold mb-2">Bảng 11.1. Bảng số liệu</h3>
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Quãng đường</th>
+                            <th colspan="5">Lần đo thời gian</th>
+                        </tr>
+                        <tr>
+                            <th>Lần 1</th>
+                            <th>Lần 2</th>
+                            <th>Lần 3</th>
+                            <th>Lần 4</th>
+                            <th>Lần 5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>\( s_1 \)</td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>\( s_2 \)</td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>\( s_3 \)</td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>\( s_4 \)</td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>\( s_5 \)</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" class="text-left bg-gray-50">
+                                <strong>Kết quả:</strong> \( \overline{g} = ... \); \( \Delta g = ... \); \( g = \overline{g} \pm \Delta g \)
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <h3 class="font-bold mb-4">Nhận xét và đánh giá kết quả thí nghiệm</h3>
+            
+            <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                <p class="font-semibold mb-2">1. Hãy tính giá trị trung bình và sai số tuyệt đối của phép đo gia tốc rơi tự do.</p>
+                <button onclick="toggleAnswer('ans-5')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem gợi ý</button>
+                <div id="ans-5" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300">
+                    Áp dụng công thức \( g_i = \frac{2s_i}{t_i^2} \). Sau đó tính \( \overline{g} = \frac{g_1 + g_2 + ... + g_5}{5} \) và sai số tuyệt đối \( \Delta g = \overline{\Delta g} + \Delta g_{dc} \).
+                </div>
+            </div>
+
+            <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                <p class="font-semibold mb-2">2. Tại sao lại dùng trụ thép làm vật rơi trong thí nghiệm? Có thể dùng viên bi thép được không? Giải thích tại sao.</p>
+                <button onclick="toggleAnswer('ans-6')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans-6" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300">
+                    Dùng trụ thép vì nó có khối lượng riêng lớn, lực cản không khí không đáng kể so với trọng lượng, đảm bảo vật rơi tự do. Có thể dùng viên bi thép vì bi thép cũng nặng và nhỏ gọn, chịu lực cản ít, tuy nhiên trụ thép che tia hồng ngoại ở cổng quang điện dứt khoát và chuẩn xác hơn bi tròn.
+                </div>
+            </div>
+
+            <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                <p class="font-semibold mb-2">3. Vẽ đồ thị mô tả mối quan hệ \( s \) và \( t^2 \) trên hệ toạ độ \( (s-t^2) \).</p>
+                <p class="font-semibold mb-2">4. Nhận xét chung về dạng của đồ thị mô tả mối quan hệ \( s \) và \( t^2 \) rồi rút ra kết luận về tính chất của chuyển động rơi tự do.</p>
+                <button onclick="toggleAnswer('ans-7')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans-7" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300">
+                    Đồ thị \( (s-t^2) \) có dạng là một đường thẳng đi qua gốc tọa độ. Điều này chứng tỏ \( s \) tỉ lệ thuận với \( t^2 \). Kết luận: Chuyển động rơi tự do là chuyển động nhanh dần đều.
+                </div>
+            </div>
+
+            <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                <p class="font-semibold mb-2">5. Hãy đề xuất một phương án thí nghiệm khác để đo gia tốc rơi tự do của trụ thép.</p>
+                <button onclick="toggleAnswer('ans-8')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                <div id="ans-8" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300">
+                    Sử dụng con lắc đơn. Đo chiều dài dây treo \( l \) và chu kì dao động \( T \) của con lắc nhỏ. Áp dụng công thức \( T = 2\pi\sqrt{\frac{l}{g}} \implies g = \frac{4\pi^2l}{T^2} \).
+                </div>
+            </div>
+        </div>
+
+        <!-- CÁC MỤC MỞ RỘNG (ĐÓNG KHUNG MÀU SẮC) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-yellow-50 border-2 border-yellow-400 rounded-12px p-4 shadow-sm">
+                <h3 class="font-bold text-yellow-800 flex items-center gap-2 mb-2">
+                    <span class="text-xl">📚</span> EM ĐÃ HỌC
+                </h3>
+                <p class="text-sm">Rơi tự do là chuyển động thẳng, nhanh dần đều nên có thể xác định gia tốc rơi tự do theo công thức xác định gia tốc của chuyển động nhanh dần đều. Sử dụng đồng hồ đo thời gian hiện số và cổng quang để đo.</p>
+            </div>
+            
+            <div class="bg-blue-50 border-2 border-blue-400 rounded-12px p-4 shadow-sm">
+                <h3 class="font-bold text-blue-800 flex items-center gap-2 mb-2">
+                    <span class="text-xl">💡</span> EM CÓ THỂ
+                </h3>
+                <p class="text-sm mb-2">Sử dụng camera của điện thoại thông minh và phần mềm phân tích video để xác định được gia tốc rơi tự do của vật.</p>
+                <div class="text-center">
+                    <img src="h2.png" alt="Hình 11.2. Đo bằng camera" class="mx-auto h-24 border border-gray-300">
+                </div>
+            </div>
+
+            <div class="bg-purple-50 border-2 border-purple-400 rounded-12px p-4 shadow-sm">
+                <h3 class="font-bold text-purple-800 flex items-center gap-2 mb-2">
+                    <span class="text-xl">🌍</span> EM CÓ BIẾT?
+                </h3>
+                <p class="text-sm">Vào năm 1602, Galilei phát hiện ra chuyển động của con lắc và khoảng thời gian một chu kì tỉ lệ với căn bậc hai chiều dài con lắc. Nhờ phát hiện này có thể đo gia tốc rơi tự do bằng con lắc đơn.</p>
+            </div>
+        </div>
+
+        <!-- PHẦN BÀI TẬP VẬN DỤNG -->
+        <div class="box-container">
+            <h2 class="section-header">BÀI TẬP CỦNG CỐ & VẬN DỤNG</h2>
+
+            <!-- TRẮC NGHIỆM -->
+            <div class="mb-8">
+                <h3 class="font-bold text-lg text-main-theme mb-4">A. Bài tập trắc nghiệm</h3>
+                <form id="quiz-form" class="space-y-4">
+                    <!-- Câu 1 -->
+                    <div>
+                        <p class="font-semibold">Câu 1: Chuyển động rơi tự do của một vật là chuyển động:</p>
+                        <div class="pl-4 mt-1 space-y-1 text-sm">
+                            <label class="block"><input type="radio" name="q1" value="A" class="mr-2">A. Thẳng đều.</label>
+                            <label class="block"><input type="radio" name="q1" value="B" class="mr-2">B. Chậm dần đều.</label>
+                            <label class="block"><input type="radio" name="q1" value="C" class="mr-2">C. Nhanh dần đều.</label>
+                            <label class="block"><input type="radio" name="q1" value="D" class="mr-2">D. Thẳng biến đổi đều.</label>
+                        </div>
+                    </div>
+                    <!-- Câu 2 -->
+                    <div>
+                        <p class="font-semibold">Câu 2: Công thức tính quãng đường đi được của vật rơi tự do là:</p>
+                        <div class="pl-4 mt-1 space-y-1 text-sm">
+                            <label class="block"><input type="radio" name="q2" value="A" class="mr-2">A. \( s = \frac{1}{2}gt^2 \)</label>
+                            <label class="block"><input type="radio" name="q2" value="B" class="mr-2">B. \( s = gt^2 \)</label>
+                            <label class="block"><input type="radio" name="q2" value="C" class="mr-2">C. \( s = 2gt^2 \)</label>
+                            <label class="block"><input type="radio" name="q2" value="D" class="mr-2">D. \( s = \frac{1}{2}gt \)</label>
+                        </div>
+                    </div>
+                    <!-- Câu 3 -->
+                    <div>
+                        <p class="font-semibold">Câu 3: Trong bài thực hành, nam châm điện có vai trò gì?</p>
+                        <div class="pl-4 mt-1 space-y-1 text-sm">
+                            <label class="block"><input type="radio" name="q3" value="A" class="mr-2">A. Đo thời gian vật rơi.</label>
+                            <label class="block"><input type="radio" name="q3" value="B" class="mr-2">B. Giữ vật và thả vật rơi không vận tốc đầu.</label>
+                            <label class="block"><input type="radio" name="q3" value="C" class="mr-2">C. Đo quãng đường vật rơi.</label>
+                            <label class="block"><input type="radio" name="q3" value="D" class="mr-2">D. Báo hiệu vật chạm đất.</label>
+                        </div>
+                    </div>
+                    <!-- Câu 4 -->
+                    <div>
+                        <p class="font-semibold">Câu 4: Đồng hồ đo thời gian hiện số khi đo gia tốc rơi tự do thường được chỉnh ở chế độ nào?</p>
+                        <div class="pl-4 mt-1 space-y-1 text-sm">
+                            <label class="block"><input type="radio" name="q4" value="A" class="mr-2">A. Chế độ A.</label>
+                            <label class="block"><input type="radio" name="q4" value="B" class="mr-2">B. Chế độ B.</label>
+                            <label class="block"><input type="radio" name="q4" value="C" class="mr-2">C. Chế độ A ↔ B.</label>
+                            <label class="block"><input type="radio" name="q4" value="D" class="mr-2">D. Không cần chỉnh.</label>
+                        </div>
+                    </div>
+                    <!-- Câu 5 -->
+                    <div>
+                        <p class="font-semibold">Câu 5: Đơn vị chuẩn của gia tốc rơi tự do trong hệ SI là:</p>
+                        <div class="pl-4 mt-1 space-y-1 text-sm">
+                            <label class="block"><input type="radio" name="q5" value="A" class="mr-2">A. m/s</label>
+                            <label class="block"><input type="radio" name="q5" value="B" class="mr-2">B. m/s\(^2\)</label>
+                            <label class="block"><input type="radio" name="q5" value="C" class="mr-2">C. cm/s\(^2\)</label>
+                            <label class="block"><input type="radio" name="q5" value="D" class="mr-2">D. km/h</label>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="checkQuiz()" class="mt-4 bg-[#1e3a8a] text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition shadow-md">
+                        NỘP BÀI
+                    </button>
+                    <div id="quiz-result" class="mt-3"></div>
+                </form>
+            </div>
+
+            <!-- TỰ LUẬN TÍNH TOÁN -->
+            <div>
+                <h3 class="font-bold text-lg text-main-theme mb-4">B. Bài tập tính toán</h3>
+                
+                <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                    <p class="font-semibold mb-2">Bài 1: Một vật rơi tự do từ độ cao \( h \). Biết sau 2 giây thì vật chạm đất. Lấy \( g = 9,8 \text{ m/s}^2 \). Tính độ cao thả vật và vận tốc lúc chạm đất.</p>
+                    <button onclick="toggleAnswer('bt-1')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="bt-1" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300 text-sm">
+                        <p>- Độ cao thả vật: \( h = \frac{1}{2}gt^2 = \frac{1}{2} \cdot 9,8 \cdot 2^2 = 19,6 \text{ m} \)</p>
+                        <p>- Vận tốc lúc chạm đất: \( v = gt = 9,8 \cdot 2 = 19,6 \text{ m/s} \)</p>
+                    </div>
+                </div>
+
+                <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                    <p class="font-semibold mb-2">Bài 2: Thả một viên bi rơi tự do từ độ cao 45m. Lấy \( g = 10 \text{ m/s}^2 \). Tính thời gian vật rơi và quãng đường vật rơi trong giây cuối cùng.</p>
+                    <button onclick="toggleAnswer('bt-2')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="bt-2" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300 text-sm">
+                        <p>- Thời gian rơi: \( t = \sqrt{\frac{2h}{g}} = \sqrt{\frac{2 \cdot 45}{10}} = 3 \text{ s} \)</p>
+                        <p>- Quãng đường rơi trong 2 giây đầu: \( s_2 = \frac{1}{2}gt_2^2 = \frac{1}{2} \cdot 10 \cdot 2^2 = 20 \text{ m} \)</p>
+                        <p>- Quãng đường rơi trong giây cuối (giây thứ 3): \( \Delta s = h - s_2 = 45 - 20 = 25 \text{ m} \)</p>
+                    </div>
+                </div>
+
+                <div class="bg-q-bg border-l-4 border-q-border p-4 mb-4 rounded-r-md">
+                    <p class="font-semibold mb-2">Bài 3: Một vật rơi tự do, trong giây cuối cùng vật rơi được 15m. Lấy \( g = 10 \text{ m/s}^2 \). Tính thời gian rơi và độ cao nơi thả vật.</p>
+                    <button onclick="toggleAnswer('bt-3')" class="bg-main-theme text-white px-3 py-1 text-sm rounded hover:bg-red-800 transition">Xem lời giải</button>
+                    <div id="bt-3" class="hidden bg-a-bg p-3 mt-3 rounded border border-green-300 text-sm">
+                        <p>Gọi \( t \) là tổng thời gian rơi.</p>
+                        <p>Quãng đường rơi trong giây cuối: \( \Delta s = s(t) - s(t-1) = 15 \)</p>
+                        <p>\( \implies \frac{1}{2}gt^2 - \frac{1}{2}g(t-1)^2 = 15 \)</p>
+                        <p>\( \implies 5t^2 - 5(t^2 - 2t + 1) = 15 \)</p>
+                        <p>\( \implies 10t - 5 = 15 \implies 10t = 20 \implies t = 2 \text{ s} \)</p>
+                        <p>- Độ cao thả vật: \( h = \frac{1}{2}gt^2 = \frac{1}{2} \cdot 10 \cdot 2^2 = 20 \text{ m} \)</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Javascript -->
+    <script>
+        // Hàm ẩn hiện lời giải
+        function toggleAnswer(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+            } else {
+                element.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra trắc nghiệm
+        function checkQuiz() {
+            const correctAnswers = {
+                q1: 'C',
+                q2: 'A',
+                q3: 'B',
+                q4: 'C',
+                q5: 'B'
+            };
+
+            let score = 0;
+            const totalQuestions = 5;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = 'q' + i;
+                const radios = document.getElementsByName(questionName);
+                let selectedValue = null;
+
+                for (let radio of radios) {
+                    if (radio.checked) {
+                        selectedValue = radio.value;
+                        break;
+                    }
+                }
+
+                if (selectedValue === correctAnswers[questionName]) {
+                    score++;
+                }
+            }
+
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.innerHTML = ''; 
+
+            const resultText = document.createElement('p');
+            resultText.className = 'text-lg font-bold mt-2';
+
+            if (score === totalQuestions) {
+                resultText.textContent = `Tuyệt vời! Bạn đã trả lời đúng ${score}/${totalQuestions} câu.`;
+                resultText.classList.add('text-green-600');
+            } else {
+                resultText.textContent = `Bạn đã trả lời đúng ${score}/${totalQuestions} câu. Hãy xem lại bài nhé!`;
+                resultText.classList.add('text-red-600');
+            }
+
+            resultDiv.appendChild(resultText);
+        }
+    </script>
+</body>
+</html>

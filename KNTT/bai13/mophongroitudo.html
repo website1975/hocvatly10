@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô phỏng Thí nghiệm Rơi Tự Do (Ống Newton)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+        }
+        /* Custom scrollbar for control panel */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-slate-800 py-4 px-6 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-600 text-white p-2 rounded-lg shadow-lg shadow-blue-500/30">
+                    <i class="fa-solid fa-cloud-arrow-down text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                        Mô Phỏng Thí Nghiệm Rơi Tự Do
+                    </h1>
+                    <p class="text-xs text-slate-400">Dựa trên thí nghiệm lịch sử của Isaac Newton</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-700">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Môi trường tương tác 2D</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- Left Panel: Simulation Screens (8 cols on lg) -->
+        <section class="lg:col-span-7 xl:col-span-8 bg-slate-900/40 border border-slate-800 rounded-2xl p-4 md:p-6 flex flex-col justify-between shadow-inner relative overflow-hidden backdrop-blur-sm">
+            <!-- Background Decorative Grid -->
+            <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30 pointer-events-none"></div>
+
+            <div class="relative z-10 flex-1 grid grid-cols-2 gap-4 min-h-[450px] md:min-h-[550px]">
+                
+                <!-- Tube A: With Air (Có không khí) -->
+                <div class="flex flex-col items-center bg-slate-950/60 rounded-xl p-3 border border-slate-800/50 relative">
+                    <div class="absolute top-3 left-3 px-2 py-0.5 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] uppercase font-semibold tracking-wider rounded">
+                        Môi trường khí thực
+                    </div>
+                    
+                    <h3 class="text-sm font-semibold text-slate-300 mt-6 mb-2 text-center flex items-center gap-1.5">
+                        <i class="fa-solid fa-wind text-sky-400"></i>
+                        a) Ống Có Không Khí
+                    </h3>
+                    
+                    <!-- Tube Canvas Container -->
+                    <div class="flex-1 w-full flex justify-center items-center relative my-2">
+                        <!-- Tube Frame Graphic -->
+                        <div class="absolute inset-y-0 w-20 md:w-24 bg-gradient-to-r from-slate-800/20 via-sky-500/5 to-slate-800/20 border-x-2 border-sky-500/30 rounded-t-full rounded-b-full shadow-[0_0_20px_rgba(56,189,248,0.05)]">
+                            <!-- Air particles representation (faded dots) -->
+                            <div class="absolute inset-0 overflow-hidden rounded-t-full rounded-b-full opacity-30">
+                                <div class="absolute top-1/4 left-1/3 w-1.5 h-1.5 bg-sky-400/40 rounded-full blur-[0.5px]"></div>
+                                <div class="absolute top-1/3 right-1/4 w-1 h-1 bg-sky-300/30 rounded-full"></div>
+                                <div class="absolute top-1/2 left-1/4 w-2 h-2 bg-sky-400/20 rounded-full blur-[1px]"></div>
+                                <div class="absolute top-2/3 right-1/3 w-1 h-1 bg-sky-300/40 rounded-full"></div>
+                                <div class="absolute top-3/4 left-1/2 w-1.5 h-1.5 bg-sky-400/30 rounded-full"></div>
+                            </div>
+                            <!-- Valves at top and bottom -->
+                            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-3 bg-slate-700 border border-slate-600 rounded"></div>
+                            <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-1.5 h-3 bg-rose-500 rounded"></div>
+                            <div class="absolute -top-5 left-1/2 w-4 h-1 bg-rose-500"></div>
+                            <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-12 h-3 bg-slate-700 border border-slate-600 rounded"></div>
+                        </div>
+                        
+                        <canvas id="canvasAir" class="relative z-10 w-full h-full max-w-[150px]"></canvas>
+                    </div>
+
+                    <!-- Telemetry -->
+                    <div class="w-full bg-slate-900/80 p-2 rounded-lg border border-slate-800/80 text-xs space-y-1 z-10">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Vật 1 (Bi sắt):</span>
+                            <span id="telemetryAirBall" class="font-mono text-emerald-400">y = 0.00m</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Vật 2 (Nhẹ):</span>
+                            <span id="telemetryAirLight" class="font-mono text-cyan-400">y = 0.00m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tube B: Vacuum (Chân không) -->
+                <div class="flex flex-col items-center bg-slate-950/60 rounded-xl p-3 border border-slate-800/50 relative">
+                    <div class="absolute top-3 left-3 px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] uppercase font-semibold tracking-wider rounded">
+                        Chân không (100%)
+                    </div>
+                    
+                    <h3 class="text-sm font-semibold text-slate-300 mt-6 mb-2 text-center flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-nodes text-emerald-400"></i>
+                        b) Ống Chân Không
+                    </h3>
+                    
+                    <!-- Tube Canvas Container -->
+                    <div class="flex-1 w-full flex justify-center items-center relative my-2">
+                        <!-- Tube Frame Graphic (Clearer, darker inside to represent vacuum) -->
+                        <div class="absolute inset-y-0 w-20 md:w-24 bg-gradient-to-r from-slate-900/40 via-slate-950 to-slate-900/40 border-x-2 border-emerald-500/30 rounded-t-full rounded-b-full shadow-[0_0_25px_rgba(16,185,129,0.05)]">
+                            <!-- Valves at top and bottom -->
+                            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-3 bg-slate-700 border border-slate-600 rounded"></div>
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-6 h-1 bg-emerald-500 rounded"></div>
+                            <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-12 h-3 bg-slate-700 border border-slate-600 rounded"></div>
+                        </div>
+                        
+                        <canvas id="canvasVacuum" class="relative z-10 w-full h-full max-w-[150px]"></canvas>
+                    </div>
+
+                    <!-- Telemetry -->
+                    <div class="w-full bg-slate-900/80 p-2 rounded-lg border border-slate-800/80 text-xs space-y-1 z-10">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Vật 1 (Bi sắt):</span>
+                            <span id="telemetryVacBall" class="font-mono text-emerald-400">y = 0.00m</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Vật 2 (Nhẹ):</span>
+                            <span id="telemetryVacLight" class="font-mono text-cyan-400">y = 0.00m</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom State indicators -->
+            <div class="mt-4 flex flex-wrap gap-4 items-center justify-between border-t border-slate-800/60 pt-3 text-xs text-slate-400">
+                <div class="flex items-center gap-4">
+                    <span>Thời gian rơi: <strong id="timerVal" class="font-mono text-yellow-500 text-sm">0.000s</strong></span>
+                    <span>Chiều dài ống: <strong class="text-slate-200">10.0 mét</strong></span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
+                    <span>Bi sắt ($m = 200g$)</span>
+                    <span class="inline-block w-2 h-2 rounded-full bg-amber-400 ml-2"></span>
+                    <span id="lightObjectName">Lông vũ ($m = 1g$)</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Right Panel: Controls & Analysis (4 cols on lg) -->
+        <section class="lg:col-span-5 xl:col-span-4 flex flex-col gap-5">
+            
+            <!-- Controls Card -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg flex flex-col gap-4">
+                <h2 class="text-base font-bold text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i class="fa-solid fa-sliders text-blue-500"></i> Bảng Điều Khiển
+                </h2>
+
+                <!-- Core Trigger Actions -->
+                <div class="grid grid-cols-3 gap-2">
+                    <button id="btnStart" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-3 rounded-xl transition duration-200 flex flex-col items-center justify-center gap-1 shadow-lg shadow-blue-600/15">
+                        <i class="fa-solid fa-play text-sm"></i>
+                        <span class="text-[11px]">Bắt đầu</span>
+                    </button>
+                    <button id="btnPause" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 px-3 rounded-xl transition duration-200 flex flex-col items-center justify-center gap-1 border border-slate-700/50">
+                        <i class="fa-solid fa-pause text-sm"></i>
+                        <span class="text-[11px]">Tạm dừng</span>
+                    </button>
+                    <button id="btnReset" class="bg-slate-800 hover:bg-rose-950/50 hover:text-rose-400 text-slate-300 font-semibold py-2.5 px-3 rounded-xl transition duration-200 flex flex-col items-center justify-center gap-1 border border-slate-700/50">
+                        <i class="fa-solid fa-arrow-rotate-left text-sm"></i>
+                        <span class="text-[11px]">Đặt lại</span>
+                    </button>
+                </div>
+
+                <!-- Simulation Speed -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-400">Tốc độ mô phỏng</span>
+                        <span id="speedLabel" class="text-slate-300 font-mono font-bold">1.0x (Thời gian thực)</span>
+                    </div>
+                    <input type="range" id="speedSlider" min="0.1" max="2" step="0.1" value="1.0" class="w-full accent-blue-500 bg-slate-800 h-1.5 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <!-- Object Selectors -->
+                <div class="space-y-2">
+                    <label class="text-xs font-semibold text-slate-400 block">Chọn vật rơi tự do thứ hai</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="selectFeather" class="active-object bg-slate-800/80 border-2 border-blue-500 text-slate-100 py-2 px-3 rounded-xl transition text-xs flex items-center gap-2 justify-center">
+                            <i class="fa-solid fa-feather text-amber-400 text-sm"></i>
+                            <span>Lông vũ (Nhẹ nhất)</span>
+                        </button>
+                        <button id="selectPaper" class="bg-slate-800/40 border border-slate-800 text-slate-400 hover:bg-slate-800/60 py-2 px-3 rounded-xl transition text-xs flex items-center gap-2 justify-center">
+                            <i class="fa-solid fa-note-sticky text-sky-400 text-sm"></i>
+                            <span>Bóng giấy</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Environment Parameters -->
+                <div class="border-t border-slate-800/80 pt-4 space-y-4">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Thông số môi trường</h4>
+                    
+                    <!-- Gravity Slider -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400">Gia tốc trọng trường ($g$)</span>
+                            <span id="gravityVal" class="text-emerald-400 font-mono">9.81 m/s²</span>
+                        </div>
+                        <input type="range" id="gravitySlider" min="1.6" max="20.0" step="0.1" value="9.81" class="w-full accent-emerald-500 bg-slate-800 h-1.5 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-slate-500">
+                            <span>Mặt Trăng (1.6)</span>
+                            <span>Trái Đất (9.8)</span>
+                            <span>Mộc Tinh (24.8)</span>
+                        </div>
+                    </div>
+
+                    <!-- Air Resistance Coefficient Slider -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400">Hệ số cản không khí ($k$)</span>
+                            <span id="dragVal" class="text-sky-400 font-mono">0.15</span>
+                        </div>
+                        <input type="range" id="dragSlider" min="0.01" max="1.00" step="0.01" value="0.15" class="w-full accent-sky-500 bg-slate-800 h-1.5 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-slate-500">
+                            <span>Thấp (Ít cản)</span>
+                            <span>Trung bình</span>
+                            <span>Cao (Cản mạnh)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explanation & Theory Card -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg flex-1 flex flex-col justify-between">
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-slate-200 flex items-center gap-1.5">
+                        <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
+                        Giải Thích Khoa Học
+                    </h3>
+                    <div class="text-xs text-slate-400 space-y-2 leading-relaxed">
+                        <p>
+                            <strong class="text-slate-300">Ống có không khí:</strong> Lông vũ (hoặc quả bóng giấy) chịu <span class="text-sky-400 font-semibold">lực cản của không khí</span> rất lớn tác dụng ngược chiều với chuyển động. Vì trọng lượng lông vũ rất nhỏ, lực cản nhanh chóng cân bằng với trọng lực khiến nó rơi chậm hơn nhiều so với bi sắt.
+                        </p>
+                        <p>
+                            <strong class="text-slate-300">Ống chân không:</strong> Khi toàn bộ không khí được rút ra ngoài, lực cản không khí hoàn toàn biến mất ($k = 0$). Lúc này, cả hai vật chỉ chịu tác dụng duy nhất của <span class="text-emerald-400 font-semibold">Trọng lực</span>. 
+                        </p>
+                        <div class="bg-slate-950 p-2 rounded border border-slate-800 font-mono text-center text-slate-300 my-2">
+                            $$a = \frac{P}{m} = \frac{m \cdot g}{m} = g$$
+                        </div>
+                        <p class="italic text-[11px] text-indigo-300">
+                            Do đó, mọi vật không kể nặng nhẹ đều rơi tự do với cùng một gia tốc $g$ và chạm đáy đồng thời!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Educational Quote -->
+                <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 italic text-center">
+                    "Nếu không có sức cản không khí, một chiếc lông vũ sẽ rơi nhanh như một viên đá." - Galileo Galilei
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-500 text-xs text-center py-4 border-t border-slate-900 mt-auto">
+        <p>© 2026 Học liệu Vật lý Trực quan. Được thiết kế tối ưu cho máy tính và thiết bị di động.</p>
+    </footer>
+
+    <!-- Simulation Code logic -->
+    <script>
+        // Setup canvases and high DPI scaling
+        const canvasAir = document.getElementById('canvasAir');
+        const canvasVac = document.getElementById('canvasVacuum');
+        const ctxAir = canvasAir.getContext('2d');
+        const ctxVac = canvasVac.getContext('2d');
+
+        // Telemetry DOM elements
+        const telAirBall = document.getElementById('telemetryAirBall');
+        const telAirLight = document.getElementById('telemetryAirLight');
+        const telVacBall = document.getElementById('telemetryVacBall');
+        const telVacLight = document.getElementById('telemetryVacLight');
+        const timerVal = document.getElementById('timerVal');
+        const lightObjectName = document.getElementById('lightObjectName');
+
+        // Buttons and Sliders DOM elements
+        const btnStart = document.getElementById('btnStart');
+        const btnPause = document.getElementById('btnPause');
+        const btnReset = document.getElementById('btnReset');
+        const speedSlider = document.getElementById('speedSlider');
+        const speedLabel = document.getElementById('speedLabel');
+        const gravitySlider = document.getElementById('gravitySlider');
+        const gravityVal = document.getElementById('gravityVal');
+        const dragSlider = document.getElementById('dragSlider');
+        const dragVal = document.getElementById('dragVal');
+        const selectFeather = document.getElementById('selectFeather');
+        const selectPaper = document.getElementById('selectPaper');
+
+        // Physics Constants & Simulation States
+        let physics = {
+            g: 9.81,          // gravity m/s^2
+            k: 0.15,          // drag coefficient of feather/paper in tube A
+            tubeHeight: 10.0, // physical height of the tube represented in meters
+            pixelsPerMeter: 0, // calculated dynamically
+            speedMult: 1.0     // speed multiplier
+        };
+
+        // State machine
+        let isRunning = false;
+        let elapsedSimTime = 0; // cumulative simulated seconds
+        let lastTime = 0; // wall clock timestamp for dt calc
+
+        // Object classes & specifications
+        const OBJ_TYPES = {
+            FEATHER: {
+                name: "Lông vũ ($m = 1g$)",
+                label: "Lông vũ",
+                mass: 0.001, // kg
+                dragArea: 0.8, // high drag relative to mass
+                color: '#f59e0b', // amber
+                draw: drawFeather
+            },
+            PAPER: {
+                name: "Bóng giấy ($m = 5g$)",
+                label: "Quả bóng giấy",
+                mass: 0.005, // kg
+                dragArea: 0.18, // moderate drag
+                color: '#38bdf8', // sky
+                draw: drawPaperBall
+            },
+            STEEL_BALL: {
+                name: "Bi sắt ($m = 200g$)",
+                mass: 0.200, // kg
+                dragArea: 0.01, // very low drag area
+                color: '#94a3b8', // slate
+                draw: drawSteelBall
+            }
+        };
+
+        let activeLightObj = OBJ_TYPES.FEATHER;
+
+        // Dynamic State of falling objects
+        // Units: y is distance from top of tube in meters (0 to tubeHeight)
+        let state = {
+            airBall: { y: 0, v: 0 },
+            airLight: { y: 0, v: 0, rot: 0, sway: 0 },
+            vacBall: { y: 0, v: 0 },
+            vacLight: { y: 0, v: 0 }
+        };
+
+        // Resize & Initialization of canvas resolution
+        function resizeCanvases() {
+            [canvasAir, canvasVac].forEach(canvas => {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                const ctx = canvas.getContext('2d');
+                ctx.scale(dpr, dpr);
+            });
+            
+            // Re-calculate visual scale based on canvas height (leaving margins)
+            // Height represents physics.tubeHeight meters.
+            const padding = 30; // top & bottom margin inside canvas
+            physics.pixelsPerMeter = (canvasAir.getBoundingClientRect().height - padding * 2) / physics.tubeHeight;
+            
+            render();
+        }
+
+        window.addEventListener('resize', resizeCanvases);
+
+        // Drawing Utilities for falling assets
+        function drawSteelBall(ctx, x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Ball shadow
+            ctx.beginPath();
+            ctx.arc(1, 1, 9, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.fill();
+
+            // Ball main body
+            const gradient = ctx.createRadialGradient(-3, -3, 2, 0, 0, 9);
+            gradient.addColorStop(0, '#f1f5f9');
+            gradient.addColorStop(0.4, '#94a3b8');
+            gradient.addColorStop(1, '#334155');
+            ctx.beginPath();
+            ctx.arc(0, 0, 9, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Highlight shine
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawFeather(ctx, x, y, rotation = 0) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotation);
+
+            // Shadow
+            ctx.beginPath();
+            ctx.ellipse(2, 2, 4, 14, Math.PI / 6, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,0,0,0.25)';
+            ctx.fill();
+
+            // Shaft (quill)
+            ctx.beginPath();
+            ctx.moveTo(0, 14);
+            ctx.quadraticCurveTo(-1, 0, 0, -14);
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+
+            // Vanes (barbs) left & right
+            ctx.fillStyle = '#fbbf24'; // beautiful bright amber feather
+            ctx.beginPath();
+            ctx.moveTo(0, -12);
+            ctx.bezierCurveTo(-6, -6, -8, 4, -2, 10);
+            ctx.lineTo(0, 8);
+            ctx.bezierCurveTo(8, 4, 6, -6, 0, -12);
+            ctx.fill();
+
+            // Fine feather details (texture lines)
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 0.5;
+            for (let i = -8; i < 8; i += 3) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(-4, i + 2);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(4, i + 2);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function drawPaperBall(ctx, x, y, rotation = 0) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotation);
+
+            // Crumpled Paper shadow
+            ctx.beginPath();
+            ctx.arc(1, 1, 10, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fill();
+
+            // Paper outer profile with jagged edges
+            ctx.beginPath();
+            const points = 12;
+            const rBase = 9.5;
+            for (let i = 0; i < points; i++) {
+                const angle = (i / points) * Math.PI * 2;
+                // Add jitter to make it look crumpled
+                const jitter = (Math.sin(angle * 5) * 1.2) + (Math.cos(angle * 3) * 0.8);
+                const r = rBase + jitter;
+                const px = Math.cos(angle) * r;
+                const py = Math.sin(angle) * r;
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            
+            // Light sky blue/white paper texture
+            const gradient = ctx.createRadialGradient(-2, -2, 1, 0, 0, 10);
+            gradient.addColorStop(0, '#f0f9ff');
+            gradient.addColorStop(0.7, '#bae6fd');
+            gradient.addColorStop(1, '#0284c7');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Internal crease lines for realism
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(-5, -4); ctx.lineTo(3, 2); ctx.lineTo(-2, 7);
+            ctx.moveTo(4, -5); ctx.lineTo(-1, -1); ctx.lineTo(-6, 3);
+            ctx.moveTo(-3, -6); ctx.lineTo(6, 1);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawSingleTube(ctx, title, ballY, lightY, lightRot, lightSway, hasAir) {
+            const rect = ctx.canvas.getBoundingClientRect();
+            const w = rect.width;
+            const h = rect.height;
+            const padding = 30;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Mathematical calculation of display coordinate
+            // y_pixel = padding + y_physics * scale
+            const ballY_px = padding + ballY * physics.pixelsPerMeter;
+            const lightY_px = padding + lightY * physics.pixelsPerMeter;
+
+            // X coordinates of fall lanes inside the glass tube representation
+            const centerX = w / 2;
+            const laneOffset = w > 120 ? 15 : 12; // Adjust gap on small screens
+            const leftLaneX = centerX - laneOffset;
+            const rightLaneX = centerX + laneOffset + (hasAir ? lightSway : 0);
+
+            // Draw Falling Objects
+            // 1. Heavy Metal Ball (Left lane)
+            drawSteelBall(ctx, leftLaneX, ballY_px);
+
+            // 2. Secondary Custom Object (Right lane)
+            activeLightObj.draw(ctx, rightLaneX, lightY_px, lightRot);
+        }
+
+        // Main Rendering Dispatcher
+        function render() {
+            // Sway calculation for realistic feather fluttering in air
+            let featherSway = 0;
+            let featherRot = 0;
+
+            if (physics.k > 0) {
+                // Sway oscillates depending on simulated elapsed time and velocity
+                const velocityFactor = Math.min(state.airLight.v * 0.8, 4.0);
+                featherSway = Math.sin(elapsedSimTime * 15) * 12 * (velocityFactor / 4.0);
+                featherRot = Math.cos(elapsedSimTime * 15) * 0.6 * (velocityFactor / 4.0);
+            }
+
+            // Draw air tube
+            drawSingleTube(ctxAir, "Có Không Khí", state.airBall.y, state.airLight.y, featherRot, featherSway, true);
+            // Draw vacuum tube (no rotational sway, stable downward fall)
+            drawSingleTube(ctxVac, "Chân Không", state.vacBall.y, state.vacLight.y, 0, 0, false);
+
+            // Update on-screen analytics telemetry
+            telAirBall.textContent = `y = ${state.airBall.y.toFixed(2)}m (v = ${state.airBall.v.toFixed(1)}m/s)`;
+            telAirLight.textContent = `y = ${state.airLight.y.toFixed(2)}m (v = ${state.airLight.v.toFixed(1)}m/s)`;
+            
+            telVacBall.textContent = `y = ${state.vacBall.y.toFixed(2)}m (v = ${state.vacBall.v.toFixed(1)}m/s)`;
+            telVacLight.textContent = `y = ${state.vacLight.y.toFixed(2)}m (v = ${state.vacLight.v.toFixed(1)}m/s)`;
+
+            timerVal.textContent = `${elapsedSimTime.toFixed(3)}s`;
+        }
+
+        // Physics Engine Integrator (Runge-Kutta / Euler integration)
+        function updatePhysics(dt) {
+            // Apply speed multiplier
+            const simDt = dt * physics.speedMult;
+
+            // 1. Tube A: Air Resistance (F_drag = - k * A * v * |v|)
+            // Heavy Steel Ball A
+            const ballDragAir = - (physics.k * OBJ_TYPES.STEEL_BALL.dragArea * state.airBall.v * Math.abs(state.airBall.v)) / OBJ_TYPES.STEEL_BALL.mass;
+            const ballAccAir = physics.g + ballDragAir;
+            state.airBall.v += ballAccAir * simDt;
+            state.airBall.y += state.airBall.v * simDt;
+
+            // Lightweight Object A
+            const lightDragAir = - (physics.k * activeLightObj.dragArea * state.airLight.v * Math.abs(state.airLight.v)) / activeLightObj.mass;
+            const lightAccAir = physics.g + lightDragAir;
+            state.airLight.v += lightAccAir * simDt;
+            state.airLight.y += state.airLight.v * simDt;
+
+            // 2. Tube B: Absolute Vacuum (No air drag, k = 0)
+            // Heavy Steel Ball B
+            state.vacBall.v += physics.g * simDt;
+            state.vacBall.y += state.vacBall.v * simDt;
+
+            // Lightweight Object B
+            state.vacLight.v += physics.g * simDt;
+            state.vacLight.y += state.vacLight.v * simDt;
+
+            // Bound checking: stop at bottom of tube (physical depth = 10.0m)
+            let allFinished = true;
+
+            [state.airBall, state.airLight, state.vacBall, state.vacLight].forEach(obj => {
+                if (obj.y >= physics.tubeHeight) {
+                    obj.y = physics.tubeHeight;
+                    obj.v = 0;
+                } else {
+                    allFinished = false;
+                }
+            });
+
+            if (!allFinished) {
+                elapsedSimTime += simDt;
+            } else {
+                isRunning = false;
+            }
+        }
+
+        // Primary Core Animation Loop
+        function loop(timestamp) {
+            if (!lastTime) lastTime = timestamp;
+            let dt = (timestamp - lastTime) / 1000; // seconds
+            lastTime = timestamp;
+
+            // Guard against large dt hiccups on tab backgrounding
+            if (dt > 0.1) dt = 0.1;
+
+            if (isRunning) {
+                updatePhysics(dt);
+            }
+
+            render();
+            requestAnimationFrame(loop);
+        }
+
+        // Controller Event Bindings
+        btnStart.addEventListener('click', () => {
+            if (!isRunning) {
+                // If we've completed the drop, reset state automatically first
+                if (state.airBall.y >= physics.tubeHeight && state.airLight.y >= physics.tubeHeight) {
+                    resetSimulation();
+                }
+                isRunning = true;
+                lastTime = performance.now();
+                btnStart.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+                btnStart.classList.remove('bg-blue-600', 'hover:bg-blue-500');
+                btnStart.querySelector('span').textContent = "Đang chạy";
+            }
+        });
+
+        btnPause.addEventListener('click', () => {
+            isRunning = false;
+            btnStart.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+            btnStart.classList.add('bg-blue-600', 'hover:bg-blue-500');
+            btnStart.querySelector('span').textContent = "Tiếp tục";
+        });
+
+        function resetSimulation() {
+            isRunning = false;
+            elapsedSimTime = 0;
+            state.airBall = { y: 0, v: 0 };
+            state.airLight = { y: 0, v: 0 };
+            state.vacBall = { y: 0, v: 0 };
+            state.vacLight = { y: 0, v: 0 };
+            
+            btnStart.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+            btnStart.classList.add('bg-blue-600', 'hover:bg-blue-500');
+            btnStart.querySelector('span').textContent = "Bắt đầu";
+            
+            render();
+        }
+
+        btnReset.addEventListener('click', resetSimulation);
+
+        // Control Sliders Interaction Logic
+        speedSlider.addEventListener('input', (e) => {
+            physics.speedMult = parseFloat(e.target.value);
+            speedLabel.textContent = `${physics.speedMult.toFixed(1)}x ${physics.speedMult === 1.0 ? '(Thời gian thực)' : ''}`;
+        });
+
+        gravitySlider.addEventListener('input', (e) => {
+            physics.g = parseFloat(e.target.value);
+            gravityVal.textContent = `${physics.g.toFixed(2)} m/s²`;
+            resetSimulation();
+        });
+
+        dragSlider.addEventListener('input', (e) => {
+            physics.k = parseFloat(e.target.value);
+            dragVal.textContent = physics.k.toFixed(2);
+            resetSimulation();
+        });
+
+        // Object Selector Logic
+        function selectLightObject(type) {
+            activeLightObj = type;
+            lightObjectName.innerHTML = `${type.label} ($m = ${type.mass * 1000}g$)`;
+            
+            // Toggle active visual states on buttons
+            if (type === OBJ_TYPES.FEATHER) {
+                selectFeather.className = "active-object bg-slate-800/80 border-2 border-blue-500 text-slate-100 py-2 px-3 rounded-xl transition text-xs flex items-center gap-2 justify-center";
+                selectPaper.className = "bg-slate-800/40 border border-slate-800 text-slate-400 hover:bg-slate-800/60 py-2 px-3 rounded-xl transition text-xs flex items-center gap-2 justify-center";
+            } else {
+                selectPaper.className = "active-object bg-slate-800/80 border-2 border-blue-500 text-slate-100 py-2 px-3 rounded-xl transition text-xs flex items-center gap-2 justify-center";
+                selectFeather.className = "bg-slate-800/40 border border-slate-800 text-slate-400 hover:bg-slate-800/60 py-2 px-3 rounded-xl transition text-xs flex items-center gap-2 justify-center";
+            }
+            
+            resetSimulation();
+        }
+
+        selectFeather.addEventListener('click', () => selectLightObject(OBJ_TYPES.FEATHER));
+        selectPaper.addEventListener('click', () => selectLightObject(OBJ_TYPES.PAPER));
+
+        // Start initialization on window load
+        window.onload = function() {
+            resizeCanvases();
+            requestAnimationFrame(loop);
+        };
+    </script>
+</body>
+</html>

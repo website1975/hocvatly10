@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 14: Định luật 1 Newton</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#660000',
+                        darkblue: '#1e293b',
+                    },
+                    borderRadius: {
+                        '12px': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+        }
+        .hidden-answer {
+            display: none;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 text-gray-800">
+
+    <div class="max-w-5xl mx-auto space-y-8">
+
+        <!-- HEADER -->
+        <div class="bg-primary rounded-[12px] text-white text-center shadow-md overflow-hidden">
+            <div class="p-4 text-xl font-semibold tracking-wide">CHƯƠNG III: ĐỘNG LỰC HỌC</div>
+            <div class="h-[1px] bg-white/40 mx-8"></div>
+            <div class="p-5 text-3xl font-bold uppercase tracking-wider">Bài 14: Định luật 1 Newton</div>
+        </div>
+
+        <!-- LỜI DẪN -->
+        <div class="border border-black bg-white rounded-[12px] p-6 shadow-md italic text-lg leading-relaxed">
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+                <div class="flex-1">
+                    <p class="mb-4">Hình bên cho thấy một trong hai con tàu vũ trụ Voyager đang làm nhiệm vụ thăm dò các hành tinh nằm xa Trái Đất trong hệ Mặt Trời. Chúng được phóng lên từ Mũi Canaveral, Florida (Hoa Kì) vào năm 1977 và hiện nay cả hai con tàu đã ra khỏi hệ Mặt Trời, đang tiếp tục hoạt động và gửi thông tin về Trái Đất.</p>
+                    <p class="font-semibold text-primary">Điều gì đã giúp cho tàu Voyager tiếp tục chuyển động rời xa Trái Đất, mặc dù thực tế không còn lực nào tác dụng lên chúng nữa?</p>
+                </div>
+                <div class="w-full md:w-1/3 flex justify-center flex-col items-center">
+                    <img src="h1.png" alt="Tàu vũ trụ Voyager" class="max-w-full h-auto border border-gray-300 rounded shadow-sm">
+                    <span class="text-xs text-gray-500 mt-2 not-italic">Nguồn ảnh: NASA Voyager</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- I. LỰC VÀ CHUYỂN ĐỘNG -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h2 class="text-2xl font-bold uppercase border-b-4 border-darkblue pb-2 mb-6 text-primary">I. Lực và chuyển động</h2>
+            
+            <div class="mb-4">
+                <p class="font-semibold mb-2">Lực có phải là nguyên nhân làm cho một vật chuyển động và duy trì chuyển động đó hay không?</p>
+            </div>
+
+            <!-- Câu hỏi 1 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px] mb-6">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">❓</span>
+                    <div>
+                        <p>Một quyển sách đang nằm yên trên mặt bàn. Ta phải đẩy nó thì nó mới dịch chuyển và khi ngừng đẩy thì nó dừng lại. Nếu em đặt mình vào thời của nhà khoa học Hy Lạp Aristotle (384-322 TCN), khi mà mọi người còn chưa biết đến ma sát, thì em sẽ trả lời câu hỏi nêu ra như thế nào?</p>
+                    </div>
+                </div>
+                <button onclick="toggleAnswer('ans_aristotle')" class="mt-4 bg-primary text-white px-5 py-2 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                <div id="ans_aristotle" class="hidden-answer bg-green-100 p-4 mt-4 rounded-[12px] text-green-900 border border-green-300">
+                    <strong>Lời giải:</strong> Nếu ở thời điểm đó chưa biết đến ma sát, ta sẽ nghĩ rằng: "Lực là nguyên nhân tạo ra và duy trì chuyển động. Khi ngừng tác dụng lực, vật sẽ dừng lại ngay lập tức."
+                </div>
+            </div>
+
+            <p class="mb-4">Galilei bố trí thí nghiệm như Hình 14.1, rồi thả hòn bi cho lăn xuống theo máng nghiêng 1. Ông nhận thấy hòn bi lăn ngược lên máng 2 đến một độ cao thấp hơn độ cao ban đầu.</p>
+            <p class="mb-4">Khi hạ thấp độ nghiêng của máng 2, ông thấy hòn bi lăn trên máng 2 được một đoạn dài hơn. Ông cho rằng hòn bi không lăn được đến độ cao ban đầu là vì có ma sát. Ông tiên đoán rằng nếu không có ma sát và nếu máng nghiêng 2 nằm ngang thì hòn bi sẽ lăn mãi mãi với vận tốc không đổi.</p>
+            
+            <div class="flex flex-col items-center my-6">
+                <table><tr><td><img src="h2a.png"></td><td></img><img src="h2b.png"></img></td><td><img src="h2c.png"></img></td></table>
+                <p class="text-sm text-gray-600 mt-2 italic">Hình 14.1. Minh hoạ thí nghiệm của Galilei</p>
+            </div>
+        </div>
+
+        <!-- II. ĐỊNH LUẬT 1 NEWTON -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h2 class="text-2xl font-bold uppercase border-b-4 border-darkblue pb-2 mb-6 text-primary">II. Định luật 1 Newton</h2>
+            
+            <p class="mb-4">Năm 1687, nhà vật lí người Anh Newton đã khái quát kết quả nghiên cứu của mình, đồng thời phát triển các ý tưởng của Galilei thành một định luật chuyển động, sau này được gọi là định luật 1 Newton:</p>
+
+            <!-- Khung định luật -->
+            <div class="bg-yellow-50 border-2 border-yellow-400 p-5 rounded-[12px] shadow-sm mb-6">
+                <p class="text-lg font-bold text-primary mb-2">Định luật 1 Newton:</p>
+                <p class="text-gray-800 text-lg">Nếu một vật không chịu tác dụng của lực nào hoặc chịu tác dụng của các lực có hợp lực bằng không, thì vật đang đứng yên sẽ tiếp tục đứng yên, đang chuyển động sẽ tiếp tục chuyển động thẳng đều.</p>
+            </div>
+
+            <!-- Câu hỏi 2 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px] mb-6">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">❓</span>
+                    <div class="w-full">
+                        <p class="mb-2 font-semibold">Quan sát các vật trong Hình 14.2.</p>
+                        <ol class="list-decimal list-inside space-y-1">
+                            <li>Giải thích tại sao quả cầu đứng yên.</li>
+                            <li>Tại sao người trượt ván có thể giữ nguyên vận tốc của mình?</li>
+                        </ol>
+                        <div class="flex justify-center gap-6 mt-4">
+                            <div class="text-center w-1/2">
+                                <img src="h3.png" alt="Quả cầu treo" class="mx-auto border border-gray-300 rounded mb-2 max-h-40">
+                                <p class="text-sm italic">a) Quả cầu đứng yên khi được treo vào một sợi dây</p>
+                            </div>
+                            <div class="text-center w-1/2">
+                                <img src="h4.png" alt="Trượt ván" class="mx-auto border border-gray-300 rounded mb-2 max-h-40">
+                                <p class="text-sm italic">b) Người trượt ván chuyển động với vận tốc không đổi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleAnswer('ans_newton1')" class="mt-4 bg-primary text-white px-5 py-2 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                <div id="ans_newton1" class="hidden-answer bg-green-100 p-4 mt-4 rounded-[12px] text-green-900 border border-green-300">
+                    <strong>Lời giải:</strong><br>
+                    1. Quả cầu đứng yên vì nó chịu tác dụng của hai lực cân bằng (hợp lực bằng 0): Trọng lực hướng xuống và lực căng dây hướng lên.<br>
+                    2. Người trượt ván giữ nguyên vận tốc vì nếu bỏ qua ma sát và sức cản, tổng các lực tác dụng lên người và ván (trọng lực, phản lực mặt đường) triệt tiêu lẫn nhau (hợp lực bằng 0), theo Định luật 1 Newton vật tiếp tục chuyển động thẳng đều.
+                </div>
+            </div>
+        </div>
+
+        <!-- III. QUÁN TÍNH -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h2 class="text-2xl font-bold uppercase border-b-4 border-darkblue pb-2 mb-6 text-primary">III. Quán tính</h2>
+            
+            <h3 class="text-xl font-bold mb-4 text-gray-800">1. Quán tính</h3>
+            
+            <!-- Khung định nghĩa quán tính -->
+            <div class="bg-blue-50 border-2 border-blue-400 p-4 rounded-[12px] shadow-sm mb-6">
+                <p class="text-gray-800 text-lg mb-2">Tính chất bảo toàn trạng thái đứng yên hay chuyển động của vật, gọi là <strong>quán tính</strong> của vật.</p>
+                <p class="text-gray-800">Do có quán tính mà mọi vật có xu hướng bảo toàn vận tốc cả về hướng và độ lớn. Định luật 1 Newton còn được gọi là định luật quán tính.</p>
+            </div>
+
+            <!-- Hoạt động thí nghiệm -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px] mb-6">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">🖐️</span>
+                    <div>
+                        <p class="font-semibold text-lg text-primary mb-2">Thí nghiệm minh hoạ quán tính của vật (Hình 14.3)</p>
+                        <p><strong>Chuẩn bị:</strong> Một tấm ván dài khoảng 1 m làm mặt phẳng nghiêng, xe lăn, vật nhỏ đặt trên xe lăn, vật chắn (có thể dùng quyển sách dày).</p>
+                        <p><strong>Tiến hành:</strong></p>
+                        <ul class="list-disc list-inside ml-4 mb-2">
+                            <li>Đặt các vật nhỏ lên xe lăn. Giữ các vật và xe đứng yên trên đỉnh mặt phẳng nghiêng.</li>
+                            <li>Thả cho xe trượt xuống dốc, dọc theo mặt phẳng nghiêng.</li>
+                            <li>Quan sát hiện tượng xảy ra đối với xe và các vật trên xe.</li>
+                        </ul>
+                        <p><strong>Thảo luận:</strong></p>
+                        <ol class="list-decimal list-inside ml-4 font-semibold text-gray-800">
+                            <li>Giải thích tại sao khi xe trượt xuống dốc và bị cản lại ở cuối dốc thì vật nhỏ bị văng về phía trước.</li>
+                            <li>Làm thế nào để giữ cho vật trên xe không bị văng đi?</li>
+                        </ol>
+                        <div class="mt-4 flex justify-center">
+                            <img src="h5.png" alt="Thí nghiệm Hình 14.3" class="max-w-full h-auto border border-gray-300 rounded shadow-sm">
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleAnswer('ans_hoatdong1')" class="mt-4 bg-primary text-white px-5 py-2 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải thảo luận</button>
+                <div id="ans_hoatdong1" class="hidden-answer bg-green-100 p-4 mt-4 rounded-[12px] text-green-900 border border-green-300">
+                    <strong>Lời giải:</strong><br>
+                    1. Khi xe bị vật cản giữ lại đột ngột, xe dừng lại. Tuy nhiên, do có <strong>quán tính</strong>, vật nhỏ trên xe chưa kịp thay đổi vận tốc (vẫn giữ xu hướng chuyển động thẳng về phía trước), nên nó tiếp tục trượt hoặc văng về phía trước.<br>
+                    2. Để vật không bị văng đi, ta cần dùng dây chằng buộc chặt vật vào xe, hoặc tăng ma sát giữa vật và xe (tạo lực cản ngăn xu hướng chuyển động do quán tính).
+                </div>
+            </div>
+
+            <!-- Bài tập trong mục -->
+            <div class="space-y-4">
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px]">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">❓</span>
+                        <p class="font-semibold">1. Mô tả và giải thích điều gì xảy ra đối với một hành khách ngồi trong ô tô ở các tình huống sau:<br>
+                            a) Xe đột ngột tăng tốc.<br>
+                            b) Xe phanh gấp.<br>
+                            c) Xe rẽ nhanh sang trái.
+                        </p>
+                    </div>
+                    <button onclick="toggleAnswer('ans_cau1')" class="mt-3 bg-primary text-white px-4 py-1.5 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                    <div id="ans_cau1" class="hidden-answer bg-green-100 p-4 mt-3 rounded-[12px] text-green-900 border border-green-300">
+                        <strong>Lời giải:</strong><br>
+                        a) Xe đột ngột tăng tốc: Hành khách ngả về phía sau do quán tính bảo toàn trạng thái đứng yên (hoặc chuyển động chậm) ban đầu.<br>
+                        b) Xe phanh gấp: Hành khách chúi người về phía trước do quán tính bảo toàn vận tốc đang chạy tới.<br>
+                        c) Xe rẽ nhanh sang trái: Hành khách nghiêng người sang phải do quán tính bảo toàn hướng chuyển động thẳng ban đầu.
+                    </div>
+                </div>
+
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px]">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">❓</span>
+                        <div class="w-full">
+                            <p class="font-semibold mb-2">2. Một vật đang chuyển động với vận tốc \( 3~m/s \) dưới tác dụng của các lực. Nếu bỗng nhiên các lực này mất đi thì:</p>
+                            <ul class="list-none ml-4 space-y-1">
+                                <li>A. Vật dừng lại ngay.</li>
+                                <li>B. Vật đổi hướng chuyển động.</li>
+                                <li>C. Vật chuyển động chậm dần rồi dừng lại.</li>
+                                <li>D. Vật tiếp tục chuyển động theo hướng cũ với vận tốc \( 3~m/s \).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button onclick="toggleAnswer('ans_cau2')" class="mt-3 bg-primary text-white px-4 py-1.5 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                    <div id="ans_cau2" class="hidden-answer bg-green-100 p-4 mt-3 rounded-[12px] text-green-900 border border-green-300">
+                        <strong>Lời giải: Chọn D.</strong> Dựa vào định luật 1 Newton, nếu các lực bỗng nhiên mất đi (hợp lực bằng 0), vật đang chuyển động sẽ tiếp tục chuyển động thẳng đều.
+                    </div>
+                </div>
+
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px]">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">❓</span>
+                        <p class="font-semibold">3. Một vật đang nằm yên trên mặt bàn nằm ngang. Tại sao ta có thể khẳng định rằng bàn đã tác dụng một lực lên nó?</p>
+                    </div>
+                    <button onclick="toggleAnswer('ans_cau3')" class="mt-3 bg-primary text-white px-4 py-1.5 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                    <div id="ans_cau3" class="hidden-answer bg-green-100 p-4 mt-3 rounded-[12px] text-green-900 border border-green-300">
+                        <strong>Lời giải:</strong> Mọi vật có khối lượng đều chịu tác dụng của trọng lực hướng xuống Trái Đất. Vì vật đang nằm yên (trạng thái cân bằng), theo Định luật 1 Newton, hợp lực tác dụng lên vật phải bằng 0. Do đó, mặt bàn bắt buộc phải tác dụng một lực đẩy ngược hướng lên (phản lực) có độ lớn bằng với trọng lực để triệt tiêu nó.
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold mt-8 mb-4 text-gray-800">2. Ứng dụng của quán tính trong đời sống</h3>
+            
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px] mb-6">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">❓</span>
+                    <div class="w-full">
+                        <ol class="list-decimal list-inside font-semibold mb-4 space-y-3">
+                            <li>Khi ngồi trên ô tô, tàu lượn cao tốc hoặc máy bay, hành khách luôn được nhắc thắt dây an toàn. Giải thích điều này.</li>
+                            <li>Để tra đầu búa vào cán, nên chọn cách nào dưới đây? Giải thích tại sao.
+                                <ul class="list-none ml-6 font-normal mt-2">
+                                    <li>a) Đập mạnh cán búa xuống đất như Hình 14.4a.</li>
+                                    <li>b) Đập mạnh đầu búa xuống đất như Hình 14.4b.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <div class="flex justify-center gap-8 mt-4">
+                            <img src="h6a.png" alt="Đập cán búa" class="border border-gray-300 rounded shadow-sm max-h-48">
+                            <img src="h6b.png" alt="Đập đầu búa" class="border border-gray-300 rounded shadow-sm max-h-48">
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleAnswer('ans_ungdung')" class="mt-4 bg-primary text-white px-5 py-2 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                <div id="ans_ungdung" class="hidden-answer bg-green-100 p-4 mt-4 rounded-[12px] text-green-900 border border-green-300">
+                    <strong>Lời giải:</strong><br>
+                    1. Thắt dây an toàn giúp tạo ra một lực giữ cơ thể người dính chặt vào ghế. Nhờ vậy, khi phương tiện phanh gấp hoặc va chạm (vận tốc giảm đột ngột), cơ thể không bị văng mạnh về phía trước do quán tính, bảo vệ an toàn tính mạng.<br>
+                    2. Chọn cách <strong>a) Đập mạnh cán búa xuống đất</strong>. Giải thích: Khi cán búa chạm đất đột ngột dừng lại, đầu búa (vốn đang chuyển động đi xuống cùng cán) do có quán tính nên tiếp tục chuyển động đi xuống, kết quả là đầu búa sẽ cắm chặt hơn vào cán.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EM ĐÃ HỌC -->
+        <div class="bg-[#e0f2fe] border-2 border-[#bae6fd] rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase text-blue-900 mb-4 flex items-center gap-2">
+                <span>📚</span> EM ĐÃ HỌC
+            </h3>
+            <ul class="list-disc list-inside space-y-2 text-blue-900 font-medium text-lg">
+                <li><strong>Định luật 1 Newton:</strong> Nếu một vật không chịu tác dụng của lực nào hoặc chịu tác dụng của các lực có hợp lực bằng 0, thì vật đang đứng yên sẽ tiếp tục đứng yên, đang chuyển động sẽ tiếp tục chuyển động thẳng đều.</li>
+                <li><strong>Quán tính</strong> của vật là tính chất bảo toàn trạng thái đứng yên hay chuyển động.</li>
+            </ul>
+        </div>
+
+        <!-- EM CÓ THỂ -->
+        <div class="bg-[#fce7f3] border-2 border-[#fbcfe8] rounded-[12px] p-6 shadow-md">
+            <h3 class="text-xl font-bold uppercase text-pink-900 mb-4 flex items-center gap-2">
+                <span>💡</span> EM CÓ THỂ
+            </h3>
+            <ol class="list-decimal list-inside space-y-4 text-pink-900 font-medium">
+                <li>
+                    Dùng khái niệm quán tính để giải thích hiện tượng trong Hình 14.5: Khi dùng tay kéo từ từ tờ giấy và khi giật mạnh tờ giấy.
+                    <div class="flex justify-center mt-3">
+                        <img src="h7.png" alt="Kéo tờ giấy dưới cốc nước" class="border border-pink-300 rounded shadow-sm max-h-40 bg-white">
+                    </div>
+                </li>
+                <li>
+                    Giải thích được nguyên nhân của nhiều vụ tai nạn giao thông liên quan đến quán tính. Chuẩn bị một bài thuyết trình (dài khoảng 15 phút) về đề tài: "Rất nhiều vụ tai nạn giao thông có nguyên nhân từ quán tính. Nêu ví dụ và cách phòng tránh".
+                </li>
+            </ol>
+        </div>
+
+        <!-- BÀI TẬP CỦNG CỐ & VẬN DỤNG THÊM -->
+        
+        <!-- Bài tập vận dụng tính toán -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h2 class="text-2xl font-bold uppercase border-b-4 border-darkblue pb-2 mb-6 text-primary">Bài tập vận dụng (Tự luận)</h2>
+            <div class="space-y-6">
+                
+                <!-- VD1 -->
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px]">
+                    <div class="flex flex-col">
+                        <p class="font-semibold mb-2">Bài 1: Một khối gỗ khối lượng \( m = 2~kg \) đang trượt thẳng đều trên mặt sàn nằm ngang. Biết lực đẩy tác dụng vào khối gỗ có phương ngang, độ lớn \( F = 5~N \). Tính độ lớn của lực ma sát giữa khối gỗ và mặt sàn.</p>
+                        <button onclick="toggleAnswer('vd1')" class="self-start mt-2 bg-primary text-white px-4 py-1.5 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                    </div>
+                    <div id="vd1" class="hidden-answer bg-green-100 p-4 mt-3 rounded-[12px] text-green-900 border border-green-300">
+                        <strong>Lời giải chi tiết:</strong><br>
+                        Vì khối gỗ chuyển động <strong>thẳng đều</strong> nên gia tốc \( a = 0 \).<br>
+                        Theo định luật 1 Newton, hợp lực tác dụng lên khối gỗ theo phương ngang phải bằng 0.<br>
+                        Các lực tác dụng theo phương ngang gồm lực đẩy \( \vec{F} \) và lực cản ma sát \( \vec{F}_{ms} \).<br>
+                        \( F - F_{ms} = 0 \Rightarrow F_{ms} = F \)<br>
+                        Vậy lực ma sát có độ lớn là: <strong>\( F_{ms} = 5~N \)</strong>.
+                    </div>
+                </div>
+
+                <!-- VD2 -->
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px]">
+                    <div class="flex flex-col">
+                        <p class="font-semibold mb-2">Bài 2: Một vệ tinh đang bay trong không gian rỗng (không có lực hấp dẫn, không có lực cản) với vận tốc \( v = 2000~m/s \). Vệ tinh tắt động cơ. Hỏi sau \( t = 10~s \), vệ tinh đi được quãng đường là bao nhiêu?</p>
+                        <button onclick="toggleAnswer('vd2')" class="self-start mt-2 bg-primary text-white px-4 py-1.5 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                    </div>
+                    <div id="vd2" class="hidden-answer bg-green-100 p-4 mt-3 rounded-[12px] text-green-900 border border-green-300">
+                        <strong>Lời giải chi tiết:</strong><br>
+                        Trong không gian rỗng và tắt động cơ, vệ tinh không chịu tác dụng của lực nào (Hợp lực = 0).<br>
+                        Theo định luật 1 Newton, vệ tinh sẽ tiếp tục trạng thái chuyển động <strong>thẳng đều</strong> với vận tốc không đổi \( v = 2000~m/s \).<br>
+                        Quãng đường vệ tinh đi được sau \( 10~s \) là:<br>
+                        \( s = v \cdot t = 2000 \cdot 10 = 20000~m \) (hoặc \( 20~km \)).
+                    </div>
+                </div>
+
+                <!-- VD3 -->
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-[12px]">
+                    <div class="flex flex-col">
+                        <p class="font-semibold mb-2">Bài 3: Hai lực có độ lớn lần lượt là \( F_1 = 30~N \) và \( F_2 = 40~N \) tác dụng vào cùng một vật đứng yên. Biết hai lực này có phương vuông góc với nhau. Hỏi cần tác dụng thêm một lực \( \vec{F}_3 \) có độ lớn bao nhiêu để vật vẫn giữ nguyên trạng thái đứng yên?</p>
+                        <button onclick="toggleAnswer('vd3')" class="self-start mt-2 bg-primary text-white px-4 py-1.5 rounded-[12px] text-sm hover:bg-red-800 transition font-semibold shadow">Xem lời giải</button>
+                    </div>
+                    <div id="vd3" class="hidden-answer bg-green-100 p-4 mt-3 rounded-[12px] text-green-900 border border-green-300">
+                        <strong>Lời giải chi tiết:</strong><br>
+                        Để vật tiếp tục đứng yên, theo định luật 1 Newton, tổng các lực tác dụng lên vật phải bằng 0: \( \vec{F}_1 + \vec{F}_2 + \vec{F}_3 = 0 \).<br>
+                        Gọi \( \vec{F}_{12} = \vec{F}_1 + \vec{F}_2 \) là hợp lực của hai lực vuông góc.<br>
+                        Độ lớn của \( \vec{F}_{12} \) là: \( F_{12} = \sqrt{F_1^2 + F_2^2} = \sqrt{30^2 + 40^2} = 50~N \).<br>
+                        Ta có: \( \vec{F}_{12} + \vec{F}_3 = 0 \Rightarrow \vec{F}_3 = -\vec{F}_{12} \).<br>
+                        Vậy lực \( \vec{F}_3 \) phải ngược chiều với \( \vec{F}_{12} \) và có độ lớn <strong>\( F_3 = 50~N \)</strong>.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bài tập trắc nghiệm -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md mb-8">
+            <h2 class="text-2xl font-bold uppercase border-b-4 border-darkblue pb-2 mb-6 text-primary">Bài tập trắc nghiệm củng cố</h2>
+            <form id="quizForm" onsubmit="event.preventDefault(); checkQuiz();">
+                <div class="space-y-6">
+                    <!-- Câu 1 -->
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-[12px]">
+                        <p class="font-semibold mb-3">Câu 1: Câu khẳng định nào sau đây là đúng về định luật 1 Newton?</p>
+                        <div class="space-y-2 ml-2">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz1" value="A"> A. Nếu không có lực tác dụng, vật sẽ giữ nguyên trạng thái đang đứng yên hoặc chuyển động thẳng đều.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz1" value="B"> B. Lực là nguyên nhân duy trì chuyển động.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz1" value="C"> C. Khi có lực tác dụng, vật không thể đứng yên.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz1" value="D"> D. Vật luôn dừng lại nếu lực đẩy ngừng tác dụng.</label>
+                        </div>
+                        <div id="res1" class="mt-2"></div>
+                    </div>
+
+                    <!-- Câu 2 -->
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-[12px]">
+                        <p class="font-semibold mb-3">Câu 2: Quán tính của một vật là:</p>
+                        <div class="space-y-2 ml-2">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz2" value="A"> A. Tính chất luôn hướng về tâm Trái Đất.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz2" value="B"> B. Xu hướng luôn tăng tốc khi chuyển động.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz2" value="C"> C. Tính chất bảo toàn trạng thái đứng yên hay chuyển động của vật.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz2" value="D"> D. Lực cản sinh ra do ma sát.</label>
+                        </div>
+                        <div id="res2" class="mt-2"></div>
+                    </div>
+
+                    <!-- Câu 3 -->
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-[12px]">
+                        <p class="font-semibold mb-3">Câu 3: Một người đang ngồi yên trên xe buýt. Xe đột ngột rẽ phải, người đó sẽ có xu hướng:</p>
+                        <div class="space-y-2 ml-2">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz3" value="A"> A. Ngã về phía sau.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz3" value="B"> B. Ngả người về phía bên trái.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz3" value="C"> C. Chúi người về phía trước.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz3" value="D"> D. Ngả người về phía bên phải.</label>
+                        </div>
+                        <div id="res3" class="mt-2"></div>
+                    </div>
+
+                    <!-- Câu 4 -->
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-[12px]">
+                        <p class="font-semibold mb-3">Câu 4: Hiện tượng nào sau đây <strong>không</strong> phải là do quán tính?</p>
+                        <div class="space-y-2 ml-2">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz4" value="A"> A. Bụi bay ra khỏi thảm khi ta vỗ mạnh tấm thảm.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz4" value="B"> B. Rũ quần áo ướt thấy nước văng ra.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz4" value="C"> C. Lưỡi búa siết chặt vào cán khi gõ mạnh cán búa xuống đất.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz4" value="D"> D. Lá rơi từ trên cây xuống đất dưới tác dụng của trọng lực.</label>
+                        </div>
+                        <div id="res4" class="mt-2"></div>
+                    </div>
+
+                    <!-- Câu 5 -->
+                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-[12px]">
+                        <p class="font-semibold mb-3">Câu 5: Một vật đang trượt trên mặt phẳng nằm ngang. Nếu hợp lực tác dụng lên vật bằng 0 thì vật sẽ:</p>
+                        <div class="space-y-2 ml-2">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz5" value="A"> A. Chuyển động thẳng đều mãi mãi.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz5" value="B"> B. Chuyển động chậm dần đều rồi dừng lại.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz5" value="C"> C. Dừng lại ngay lập tức.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz5" value="D"> D. Đổi chiều chuyển động.</label>
+                        </div>
+                        <div id="res5" class="mt-2"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center mt-8">
+                    <button type="submit" class="bg-darkblue text-white px-8 py-3 rounded-[12px] text-lg font-bold hover:bg-gray-800 shadow-lg transition">NỘP BÀI</button>
+                </div>
+                <div id="quiz-summary" class="hidden-answer mt-6"></div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function toggleAnswer(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('hidden-answer')) {
+                element.classList.remove('hidden-answer');
+                element.classList.add('block');
+            } else {
+                element.classList.add('hidden-answer');
+                element.classList.remove('block');
+            }
+        }
+
+        const correctAnswers = {
+            quiz1: 'A',
+            quiz2: 'C',
+            quiz3: 'B',
+            quiz4: 'D',
+            quiz5: 'A'
+        };
+
+        function checkQuiz() {
+            let score = 0;
+            const totalQuestions = 5;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selectedOption = document.querySelector(`input[name="quiz${i}"]:checked`);
+                const resultDiv = document.getElementById(`res${i}`);
+                
+                if (selectedOption) {
+                    if (selectedOption.value === correctAnswers[`quiz${i}`]) {
+                        score++;
+                        resultDiv.innerHTML = '✅ <span class="text-green-600 font-bold">Chính xác! Lời giải chi tiết đã đúng.</span>';
+                    } else {
+                        resultDiv.innerHTML = `❌ <span class="text-red-600 font-bold">Sai. Đáp án đúng là ${correctAnswers['quiz'+i]}</span>`;
+                    }
+                } else {
+                    resultDiv.innerHTML = '⚠️ <span class="text-orange-500 font-bold">Bạn chưa chọn đáp án cho câu này.</span>';
+                }
+            }
+
+            const summaryDiv = document.getElementById('quiz-summary');
+            summaryDiv.classList.remove('hidden-answer');
+            summaryDiv.classList.add('block');
+            
+            if (score === totalQuestions) {
+                summaryDiv.className = 'mt-6 p-4 rounded-[12px] bg-green-100 text-green-800 font-bold text-xl text-center border border-green-400 block';
+                summaryDiv.innerHTML = `🎉 Tuyệt vời! Bạn đã trả lời đúng ${score}/${totalQuestions} câu.`;
+            } else {
+                summaryDiv.className = 'mt-6 p-4 rounded-[12px] bg-red-100 text-red-800 font-bold text-xl text-center border border-red-400 block';
+                summaryDiv.innerHTML = `Báo cáo: Bạn đã trả lời đúng ${score}/${totalQuestions} câu. Hãy ôn tập lại lý thuyết nhé!`;
+            }
+        }
+    </script>
+</body>
+</html>

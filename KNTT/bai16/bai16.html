@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 16: Định luật 3 Newton</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for Math Formulas -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+        }
+        .main-color {
+            color: #000080;
+        }
+        .bg-main-color {
+            background-color: #000080;
+        }
+        .border-main-color {
+            border-color: #000080;
+        }
+        /* Custom scrollbar for better look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+    </style>
+</head>
+<body class="text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+
+        <!-- HEADER CHƯƠNG VÀ BÀI -->
+        <div class="bg-main-color text-white rounded-[12px] shadow-md p-6 mb-8 text-center">
+            <h2 class="text-xl md:text-2xl font-semibold uppercase tracking-wide">Chương III: ĐỘNG LỰC HỌC</h2>
+            <hr class="border-t border-blue-300 my-4 w-2/3 mx-auto opacity-50">
+            <h1 class="text-2xl md:text-4xl font-bold uppercase">Bài 16: ĐỊNH LUẬT 3 NEWTON</h1>
+        </div>
+
+        <!-- LỜI DẪN -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8 border border-gray-300">
+            <div class="italic text-gray-700 space-y-4">
+                <p>Móc hai lực kế vào nhau rồi kéo một trong hai lực kế như hình sau.</p>
+
+                <div class="flex justify-center my-4">
+                    <img src="h16_mo_dau.png" alt="Hình móc 2 lực kế" class="max-w-full h-auto rounded border border-gray-200" onerror="this.src='https://via.placeholder.com/400x150?text=Hình+móc+2+lực+kế'">
+                </div>
+                <div class="space-y-2">
+                    <p>a) Dự đoán xem số chỉ của hai lực kế giống nhau hay khác nhau.</p>
+                    <p>b) Hãy kiểm tra kết quả và nêu kết luận.</p>
+                    <p>c) Nếu cả hai tiếp tục kéo về hai phía ngược nhau với độ lớn lực tăng lên thì số chỉ của hai lực kế sẽ thay đổi thế nào?</p>
+                </div>
+                <button onclick="toggleAnswer('ans-intro')" class="mt-4 bg-main-color hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded transition duration-300">
+                    Xem hướng giải quyết
+                </button>
+                <div id="ans-intro" class="hidden bg-green-100 p-4 mt-4 rounded-lg text-green-900 border-l-4 border-green-500">
+                    <p><strong>Hướng giải quyết:</strong></p>
+                    <p>a) Dự đoán: Số chỉ của hai lực kế giống nhau.</p>
+                    <p>b) Kết luận: Khi hai vật tương tác với nhau, chúng tác dụng lên nhau các lực có độ lớn bằng nhau.</p>
+                    <p>c) Nếu lực kéo tăng lên, số chỉ của cả hai lực kế đều tăng lên và luôn duy trì giá trị bằng nhau.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- NỘI DUNG CHÍNH -->
+        
+        <!-- I. ĐỊNH LUẬT 3 NEWTON -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+            <h2 class="text-xl font-bold main-color uppercase border-b-2 border-main-color pb-2 mb-6">I. ĐỊNH LUẬT 3 NEWTON</h2>
+            
+            <h3 class="font-bold text-lg mb-4">1. Lực tương tác giữa hai vật</h3>
+            <p class="mb-4">Quan sát thí nghiệm được mô tả trong Hình 16.1.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="text-center">
+                    <img src="h16_1a.png" alt="Hình 16.1a: Sắt và Nam châm" class="mx-auto border border-gray-200 rounded" onerror="this.src='https://via.placeholder.com/300x200?text=Hình+16.1a'">
+                    <p class="text-sm mt-2 italic">a) Thanh sắt và nam châm</p>
+                </div>
+                <div class="text-center">
+                    <img src="h16_1b.png" alt="Hình 16.1b: Hai xe lăn" class="mx-auto border border-gray-200 rounded" onerror="this.src='https://via.placeholder.com/300x200?text=Hình+16.1b'">
+                    <p class="text-sm mt-2 italic">b) Hai xe lăn và lò xo</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi (?) -->
+            <div class="bg-[#edf2f7] border-l-4 border-main-color p-4 mb-6 rounded-r-lg">
+                <div class="flex items-start">
+                    <div class="text-2xl text-main-color mr-3 font-bold">?</div>
+                    <div class="flex-1">
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li>Một thanh sắt và một thanh nam châm được treo như Hình 16.1a. Trong thí nghiệm này, lực nào làm cho thanh nam châm dịch chuyển lại gần thanh sắt?</li>
+                            <li>Xe lăn 1 có khối lượng \(m_{1}\) và có gắn một lò xo nhẹ. Xe lăn 2 có khối lượng \(m_{2}\). Ta cho hai xe áp lại gần nhau bằng cách buộc dây để nén lò xo (Hình 16.1b). Quan sát hiện tượng xảy ra khi đốt sợi dây buộc. Thảo luận để làm sáng tỏ ý kiến sau: <em>Lực không tồn tại riêng lẻ. Các lực hút hoặc đẩy luôn xuất hiện thành từng cặp giữa hai vật.</em></li>
+                        </ol>
+                        <button onclick="toggleAnswer('ans-q1')" class="mt-3 text-sm bg-main-color hover:bg-blue-800 text-white font-semibold py-1.5 px-3 rounded transition duration-300">
+                            Xem lời giải
+                        </button>
+                    </div>
+                </div>
+                <div id="ans-q1" class="hidden bg-green-100 p-4 mt-3 rounded-lg text-green-900">
+                    <p><strong>Lời giải:</strong></p>
+                    <p>1. Lực từ do thanh sắt tác dụng lên nam châm làm nam châm dịch chuyển lại gần thanh sắt. (Đồng thời nam châm cũng hút sắt).</p>
+                    <p>2. Khi đốt dây, lò xo giãn ra đẩy cả hai xe văng về hai phía ngược nhau. Điều này chứng tỏ xe 1 đẩy xe 2, đồng thời xe 2 cũng đẩy lại xe 1. Qua đó thấy rằng lực luôn xuất hiện thành từng cặp (tác dụng qua lại lẫn nhau).</p>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-lg mb-4 mt-8">2. Định luật 3 Newton</h3>
+            
+            <div class="bg-yellow-50 border border-yellow-300 p-5 rounded-lg shadow-sm mb-6">
+                <p class="mb-3 font-semibold text-gray-800">Phát biểu định luật:</p>
+                <p class="mb-3">Trong mọi trường hợp, khi vật A tác dụng lên vật B một lực thì vật B cũng tác dụng trở lại vật A một lực. Hai lực này là hai lực trực đối.</p>
+                <div class="text-center my-4">
+                    <span class="text-xl font-bold bg-white px-4 py-2 rounded shadow border border-gray-200 text-main-color">
+                        \( \vec{F}_{AB} = -\vec{F}_{BA} \)
+                    </span>
+                </div>
+                <p class="mb-0"><strong>Hai lực trực đối</strong> là hai lực tác dụng theo cùng một đường thẳng, ngược chiều nhau, có độ lớn bằng nhau và điểm đặt lên hai vật khác nhau.</p>
+            </div>
+
+            <div class="text-center mb-6">
+                <img src="h16_2.png" alt="Hình 16.2: Cặp lực và phản lực" class="mx-auto border border-gray-200 rounded max-w-[300px]" onerror="this.src='https://via.placeholder.com/400x150?text=Hình+16.2'">
+                <p class="text-sm mt-2 italic">Hình 16.2. Cặp lực và phản lực</p>
+            </div>
+        </div>
+
+        <!-- II. CÁC ĐẶC ĐIỂM CỦA LỰC VÀ PHẢN LỰC -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+            <h2 class="text-xl font-bold main-color uppercase border-b-2 border-main-color pb-2 mb-6">II. CÁC ĐẶC ĐIỂM CỦA LỰC VÀ PHẢN LỰC</h2>
+            
+            <p class="mb-4">Theo định luật 3 Newton, trong tương tác giữa hai vật, một lực gọi là <strong>lực tác dụng</strong> còn lực kia gọi là <strong>phản lực</strong>.</p>
+
+            <!-- Câu hỏi (?) 1 -->
+            <div class="bg-[#edf2f7] border-l-4 border-main-color p-4 mb-6 rounded-r-lg">
+                <div class="flex items-start">
+                    <div class="text-2xl text-main-color mr-3 font-bold">?</div>
+                    <div class="flex-1">
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li>Cặp lực và phản lực có những đặc điểm gì?</li>
+                            <li>Cặp lực và phản lực có phải là hai lực cân bằng hay không? Tại sao?</li>
+                        </ol>
+                        <button onclick="toggleAnswer('ans-q2')" class="mt-3 text-sm bg-main-color hover:bg-blue-800 text-white font-semibold py-1.5 px-3 rounded transition duration-300">
+                            Xem lời giải
+                        </button>
+                    </div>
+                </div>
+                <div id="ans-q2" class="hidden bg-green-100 p-4 mt-3 rounded-lg text-green-900">
+                    <p><strong>Lời giải:</strong></p>
+                    <ul class="list-disc list-inside">
+                        <li>1. Đặc điểm: Cùng phương, ngược chiều, cùng độ lớn, xuất hiện và mất đi đồng thời, đặt vào <strong>hai vật khác nhau</strong>, là hai lực cùng bản chất.</li>
+                        <li>2. <strong>Không</strong> phải là hai lực cân bằng. Vì hai lực này tác dụng lên hai vật khác nhau, trong khi hai lực cân bằng phải tác dụng lên <em>cùng một vật</em>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Câu hỏi (?) 2 - Hình 16.2 -->
+            <div class="bg-[#edf2f7] border-l-4 border-main-color p-4 mb-6 rounded-r-lg">
+                <div class="flex items-start">
+                    <div class="text-2xl text-main-color mr-3 font-bold">?</div>
+                    <div class="flex-1">
+                        <p>Hãy chỉ rõ điểm đặt của mỗi lực trong mỗi cặp lực ở Hình 16.2 a, b.</p>
+                        <button onclick="toggleAnswer('ans-q3')" class="mt-3 text-sm bg-main-color hover:bg-blue-800 text-white font-semibold py-1.5 px-3 rounded transition duration-300">
+                            Xem lời giải
+                        </button>
+                    </div>
+                </div>
+                <div id="ans-q3" class="hidden bg-green-100 p-4 mt-3 rounded-lg text-green-900">
+                    <p><strong>Lời giải:</strong></p>
+                    <p>- Hình 16.2a (Hai ngón tay móc vào nhau): Lực \(\vec{F}_{AB}\) đặt tại ngón tay B, lực \(\vec{F}_{BA}\) đặt tại ngón tay A.</p>
+                    <p>- Hình 16.2b (Hai xe đâm nhau): Lực \(\vec{F}_{AB}\) đặt tại xe B, lực \(\vec{F}_{BA}\) đặt tại xe A.</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi (?) 3 - Hình 16.3 -->
+            <div class="bg-[#edf2f7] border-l-4 border-main-color p-4 mb-6 rounded-r-lg">
+                <div class="flex items-start">
+                    <div class="text-2xl text-main-color mr-3 font-bold">?</div>
+                    <div class="flex-1">
+                        <div class="flex flex-col md:flex-row gap-4 mb-4">
+                            <div class="text-center w-full md:w-1/2">
+                                <img src="h16_3a.png" alt="Sách trên bàn" class="mx-auto rounded" onerror="this.src='https://via.placeholder.com/200x150?text=Sách+trên+bàn'">
+                                <p class="text-xs mt-1">Hình 16.3a</p>
+                            </div>
+                            <div class="text-center w-full md:w-1/2">
+                                <img src="h16_3b.png" alt="Búa đóng đinh" class="mx-auto rounded" onerror="this.src='https://via.placeholder.com/200x150?text=Búa+đóng+đinh'">
+                                <p class="text-xs mt-1">Hình 16.3b</p>
+                            </div>
+                        </div>
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li>Hãy chỉ ra các cặp lực và phản lực trong hai trường hợp: a) Quyển sách nằm yên trên mặt bàn. b) Dùng búa đóng đinh vào gỗ.</li>
+                            <li>Quyển sách nằm yên có phải là kết quả của sự cân bằng giữa lực và phản lực hay không?</li>
+                            <li>Lực do búa tác dụng vào đinh và phản lực của đinh lên búa có các đặc điểm gì?</li>
+                        </ol>
+                        <button onclick="toggleAnswer('ans-q4')" class="mt-3 text-sm bg-main-color hover:bg-blue-800 text-white font-semibold py-1.5 px-3 rounded transition duration-300">
+                            Xem lời giải
+                        </button>
+                    </div>
+                </div>
+                <div id="ans-q4" class="hidden bg-green-100 p-4 mt-3 rounded-lg text-green-900">
+                    <p><strong>Lời giải:</strong></p>
+                    <p>1. a) Sách nén lên bàn một lực, bàn tác dụng lại sách một phản lực. <br> b) Búa tác dụng lực vào đinh đẩy đinh xuống, đinh tác dụng phản lực vào búa làm búa bật lại.</p>
+                    <p>2. Không. Quyển sách nằm yên do sự cân bằng của 2 lực: <strong>Trọng lực</strong> (Trái Đất hút sách) và <strong>Phản lực của bàn</strong> (bàn đỡ sách). Đây không phải cặp lực-phản lực của ĐL 3 Newton.</p>
+                    <p>3. Cùng phương, ngược chiều, cùng độ lớn, điểm đặt khác nhau (một đặt ở búa, một đặt ở đinh), xuất hiện đồng thời.</p>
+                </div>
+            </div>
+
+            <!-- Hoạt động (Bàn tay) -->
+            <div class="bg-gray-50 border border-gray-300 p-4 mb-6 rounded-[12px]">
+                <div class="flex items-start">
+                    <div class="text-2xl mr-3 font-bold">✍️</div>
+                    <div class="flex-1">
+                        <p class="font-bold mb-2">Thảo luận / Hoạt động:</p>
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li>Trong thí nghiệm ở phần mở đầu, nếu cả hai người cùng kéo nhưng để lực kế di chuyển về phía một người (cùng di chuyển sang phải) thì số chỉ hai lực kế giống hay khác nhau?</li>
+                            <li>Nêu thêm một số ví dụ trong thực tế để làm sáng tỏ: Cặp lực và phản lực luôn xuất hiện thành từng cặp, trực đối, không cân bằng, cùng loại.</li>
+                        </ol>
+                        <button onclick="toggleAnswer('ans-act1')" class="mt-3 text-sm bg-gray-700 hover:bg-gray-900 text-white font-semibold py-1.5 px-3 rounded transition duration-300">
+                            Xem kết quả
+                        </button>
+                    </div>
+                </div>
+                <div id="ans-act1" class="hidden bg-white border border-gray-300 p-4 mt-3 rounded-lg text-gray-800 shadow-inner">
+                    <p>1. Số chỉ 2 lực kế <strong>vẫn giống hệt nhau</strong> ở mọi thời điểm, dù hệ đang đứng yên hay chuyển động. Đây là tính chất tuyệt đối của Định luật 3 Newton.</p>
+                    <p>2. Ví dụ: Quả bóng đập vào tường. Bóng tác dụng lực nén làm tường biến dạng nhẹ (Lực đàn hồi). Tường tác dụng lực bật ngược lại làm bóng nảy ra. Hai lực này cùng độ lớn, ngược chiều, nhưng đặt ở 2 vật khác nhau nên bóng bị văng ra mà không đứng yên tại tường.</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi (?) Ô tô -->
+            <div class="bg-[#edf2f7] border-l-4 border-main-color p-4 mb-6 rounded-r-lg">
+                <div class="flex items-start">
+                    <div class="text-2xl text-main-color mr-3 font-bold">?</div>
+                    <div class="flex-1">
+                        <div class="text-center mb-4">
+                            <img src="h16_4.png" alt="Ô tô chuyển động" class="mx-auto rounded max-w-[400px] w-full" onerror="this.src='https://via.placeholder.com/400x200?text=Hình+16.4:+Ô+tô'">
+                        </div>
+                        <p>Một ô tô chuyển động trên mặt đường (Hình 16.4), nếu lực do ô tô tác dụng lên mặt đường có độ lớn bằng lực mà mặt đường đẩy ô tô thì tại sao chúng không "khử nhau"?</p>
+                        <button onclick="toggleAnswer('ans-q5')" class="mt-3 text-sm bg-main-color hover:bg-blue-800 text-white font-semibold py-1.5 px-3 rounded transition duration-300">
+                            Xem lời giải
+                        </button>
+                    </div>
+                </div>
+                <div id="ans-q5" class="hidden bg-green-100 p-4 mt-3 rounded-lg text-green-900">
+                    <p><strong>Lời giải:</strong></p>
+                    <p>Hai lực này không "khử nhau" (không cân bằng nhau) vì <strong>chúng tác dụng lên hai vật hoàn toàn khác nhau</strong>. Lực đẩy tác dụng lên mặt đường (làm đường có xu hướng lùi lại), còn phản lực tác dụng lên bánh xe ô tô (làm ô tô tiến lên). Do đó xe vẫn được gia tốc để chuyển động tiến về phía trước.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CÁC KHUNG TỔNG KẾT VÀ MỞ RỘNG -->
+        
+        <!-- EM ĐÃ HỌC -->
+        <div class="bg-blue-50 border border-blue-200 p-6 rounded-[12px] shadow-sm mb-6">
+            <h3 class="text-lg font-bold text-blue-800 mb-3 uppercase flex items-center">
+                <span class="mr-2">📚</span> EM ĐÃ HỌC
+            </h3>
+            <div class="bg-white p-4 rounded border border-blue-100">
+                <p><strong>Định luật 3 Newton:</strong> Trong mọi trường hợp, khi vật A tác dụng lên vật B một lực, thì vật B cũng tác dụng trở lại vật A một lực. Hai lực này tác dụng theo cùng một phương, cùng độ lớn, nhưng ngược chiều, điểm đặt lên hai vật khác nhau:</p>
+                <p class="text-center mt-2 font-bold text-lg text-blue-900">\( \vec{F}_{AB} = -\vec{F}_{BA} \)</p>
+            </div>
+        </div>
+
+        <!-- EM CÓ THỂ -->
+        <div class="bg-purple-50 border border-purple-200 p-6 rounded-[12px] shadow-sm mb-8">
+            <h3 class="text-lg font-bold text-purple-800 mb-3 uppercase flex items-center">
+                <span class="mr-2">💡</span> EM CÓ THỂ
+            </h3>
+            <p class="mb-3 text-gray-800">Giải thích tại sao các vận động viên khi bơi tới mép hồ bơi và quay lại thì dùng chân đẩy mạnh vào vách hồ bơi để di chuyển nhanh hơn.</p>
+            <button onclick="toggleAnswer('ans-emcothe')" class="bg-purple-600 hover:bg-purple-800 text-white font-semibold py-1.5 px-4 rounded transition duration-300 text-sm">
+                Xem gợi ý giải thích
+            </button>
+            <div id="ans-emcothe" class="hidden bg-white p-4 mt-3 rounded-lg border border-purple-200 text-gray-800">
+                <p>Theo định luật 3 Newton, khi vận động viên dùng chân đạp mạnh vào vách hồ (tác dụng <strong>lực</strong> lên vách hồ hướng ra phía sau), thì vách hồ cũng tác dụng lại chân vận động viên một <strong>phản lực</strong> có cùng độ lớn nhưng hướng về phía trước. Phản lực này đóng vai trò là lực đẩy, giúp cơ thể vận động viên lao đi trong nước nhanh hơn.</p>
+            </div>
+        </div>
+
+        <!-- LƯU Ý -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-5 rounded-r-lg shadow-sm mb-8">
+            <h3 class="text-red-700 font-bold uppercase mb-2">⚠️ LƯU Ý TRỌNG TÂM</h3>
+            <p class="text-gray-800">Học sinh rất hay nhầm lẫn giữa <strong>Hai lực cân bằng</strong> và <strong>Cặp lực - Phản lực</strong>. Điểm mấu chốt để phân biệt: Hai lực cân bằng tác dụng vào <strong>CÙNG MỘT VẬT</strong>, trong khi Cặp lực - phản lực tác dụng lên <strong>HAI VẬT KHÁC NHAU</strong> tham gia tương tác.</p>
+        </div>
+
+
+        <!-- BÀI TẬP VẬN DỤNG TÍNH TOÁN -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+            <h2 class="text-xl font-bold text-orange-600 uppercase border-b-2 border-orange-500 pb-2 mb-6">BÀI TẬP VẬN DỤNG TÍNH TOÁN</h2>
+            
+            <div class="space-y-6">
+                <!-- BT 1 -->
+                <div class="border border-gray-200 p-4 rounded-lg">
+                    <p class="font-bold text-gray-800 mb-2">Bài 1:</p>
+                    <p>Hai người trượt băng đứng đối diện nhau trên mặt băng nhẵn. Người A khối lượng 50kg, người B khối lượng 60kg. Người A đẩy người B với một lực 30N. Tính gia tốc mà mỗi người nhận được ngay lúc đẩy (Bỏ qua ma sát).</p>
+                    <button onclick="toggleAnswer('bt-1')" class="mt-3 text-sm bg-orange-500 hover:bg-orange-700 text-white py-1.5 px-4 rounded transition">Xem giải chi tiết</button>
+                    
+                    <div id="bt-1" class="hidden bg-gray-50 p-4 mt-3 rounded border border-gray-200">
+                        <p class="mb-2"><strong>Giải:</strong></p>
+                        <p>Theo định luật 3 Newton, người A đẩy người B lực \(F_{A \rightarrow B} = 30N\), thì người B cũng đẩy lại A lực \(F_{B \rightarrow A} = 30N\).</p>
+                        <p>Áp dụng định luật 2 Newton cho từng người:</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1 ml-4">
+                            <li>Gia tốc người A: \(a_A = \frac{F_{B \rightarrow A}}{m_A} = \frac{30}{50} = 0.6 \, \text{m/s}^2\)</li>
+                            <li>Gia tốc người B: \(a_B = \frac{F_{A \rightarrow B}}{m_B} = \frac{30}{60} = 0.5 \, \text{m/s}^2\)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- BT 2 -->
+                <div class="border border-gray-200 p-4 rounded-lg">
+                    <p class="font-bold text-gray-800 mb-2">Bài 2:</p>
+                    <p>Một quả bóng khối lượng 0.5kg bay với tốc độ 10 m/s đập vuông góc vào một bức tường rồi bật ngược lại với tốc độ 8 m/s. Thời gian va chạm là 0.05 giây. Tính độ lớn lực trung bình do tường tác dụng lên quả bóng và lực do quả bóng tác dụng lên tường.</p>
+                    <button onclick="toggleAnswer('bt-2')" class="mt-3 text-sm bg-orange-500 hover:bg-orange-700 text-white py-1.5 px-4 rounded transition">Xem giải chi tiết</button>
+                    
+                    <div id="bt-2" class="hidden bg-gray-50 p-4 mt-3 rounded border border-gray-200">
+                        <p class="mb-2"><strong>Giải:</strong></p>
+                        <p>Chọn chiều dương là chiều bóng bật ra khỏi tường. \(v_0 = -10 \text{ m/s}, v = 8 \text{ m/s}\).</p>
+                        <p>Gia tốc của quả bóng: \(a = \frac{v - v_0}{\Delta t} = \frac{8 - (-10)}{0.05} = 360 \, \text{m/s}^2\)</p>
+                        <p>Lực do tường tác dụng lên bóng: \(F = m \cdot a = 0.5 \cdot 360 = 180 \, \text{N}\)</p>
+                        <p>Theo định luật 3 Newton, lực do bóng tác dụng lên tường có cùng độ lớn bằng phản lực của tường. Vậy lực bóng tác dụng lên tường là \(180 \, \text{N}\).</p>
+                    </div>
+                </div>
+
+                <!-- BT 3 -->
+                <div class="border border-gray-200 p-4 rounded-lg">
+                    <p class="font-bold text-gray-800 mb-2">Bài 3:</p>
+                    <p>Một học sinh đá vào một hòn đá khối lượng 2kg đang nằm yên trên mặt đất. Chân tác dụng vào đá một lực 50N trong thời gian 0.02s. Tính vận tốc của hòn đá ngay sau khi đá. Cho biết lực mà hòn đá tác dụng lại chân học sinh là bao nhiêu?</p>
+                    <button onclick="toggleAnswer('bt-3')" class="mt-3 text-sm bg-orange-500 hover:bg-orange-700 text-white py-1.5 px-4 rounded transition">Xem giải chi tiết</button>
+                    
+                    <div id="bt-3" class="hidden bg-gray-50 p-4 mt-3 rounded border border-gray-200">
+                        <p class="mb-2"><strong>Giải:</strong></p>
+                        <p>Theo định luật 2 Newton, gia tốc của hòn đá: \(a = \frac{F}{m} = \frac{50}{2} = 25 \, \text{m/s}^2\)</p>
+                        <p>Vận tốc của hòn đá: \(v = v_0 + a \cdot t = 0 + 25 \cdot 0.02 = 0.5 \, \text{m/s}\)</p>
+                        <p>Theo định luật 3 Newton, hòn đá tác dụng lại chân học sinh một phản lực bằng đúng lực tác dụng là \(F' = 50 \, \text{N}\) (ngược chiều chuyển động của chân).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BÀI TẬP TRẮC NGHIỆM -->
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h2 class="text-xl font-bold main-color uppercase border-b-2 border-main-color pb-2 mb-6">CỦNG CỐ TRẮC NGHIỆM</h2>
+            
+            <form id="quizForm" class="space-y-6">
+                <!-- Câu 1 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 1: Chọn phát biểu đúng nhất về định luật 3 Newton.</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="A" class="mr-2"> A. Lực và phản lực luôn cân bằng nhau.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="B" class="mr-2"> B. Khi A tác dụng lên B một lực thì B cũng tác dụng lại A một lực, hai lực này cùng phương, ngược chiều, cùng độ lớn.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="C" class="mr-2"> C. Lực tác dụng bao giờ cũng lớn hơn phản lực.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="D" class="mr-2"> D. Chỉ khi hai vật va chạm mới xuất hiện lực và phản lực.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 2 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 2: Hai lực trực đối là hai lực:</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="A" class="mr-2"> A. Cùng phương, ngược chiều, cùng độ lớn và đặt vào cùng một vật.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="B" class="mr-2"> B. Có độ lớn bằng nhau nhưng khác phương.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="C" class="mr-2"> C. Cùng phương, cùng chiều, cùng độ lớn.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="D" class="mr-2"> D. Cùng phương, ngược chiều, cùng độ lớn và đặt vào hai vật khác nhau.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 3 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 3: Đặc điểm nào sau đây KHÔNG phải là đặc điểm của lực và phản lực?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="A" class="mr-2"> A. Xuất hiện và mất đi đồng thời.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="B" class="mr-2"> B. Tác dụng lên hai vật khác nhau.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="C" class="mr-2"> C. Khử lẫn nhau để vật đứng yên.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="D" class="mr-2"> D. Cùng bản chất.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 4 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 4: Một con muỗi bay tông vào kính chắn gió của một chiếc ô tô đang chạy. So sánh độ lớn lực do muỗi tác dụng lên ô tô (\(F_1\)) và lực do ô tô tác dụng lên muỗi (\(F_2\)):</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="A" class="mr-2"> A. \(F_1 < F_2\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="B" class="mr-2"> B. \(F_1 > F_2\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="C" class="mr-2"> C. \(F_1 = F_2\)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="D" class="mr-2"> D. Không thể so sánh được.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 5 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 5: Cặp lực nào sau đây là lực và phản lực theo định luật 3 Newton?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="A" class="mr-2"> A. Trọng lực của một cuốn sách và phản lực của bàn đỡ cuốn sách.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="B" class="mr-2"> B. Lực tay đẩy vào tường và lực tường đẩy lại tay.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="C" class="mr-2"> C. Lực kéo của ngựa làm xe tiến lên và lực ma sát của đường cản xe.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="D" class="mr-2"> D. Trọng lực của vật rơi tự do và lực cản của không khí.</label>
+                    </div>
+                </div>
+
+                <div class="mt-6 border-t pt-4 text-center">
+                    <button type="button" onclick="checkQuiz()" class="bg-[#000080] hover:bg-blue-900 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 text-lg">
+                        NỘP BÀI
+                    </button>
+                </div>
+            </form>
+
+            <div id="quizResult" class="mt-6 text-center text-lg font-bold p-4 rounded hidden"></div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // Hàm ẩn/hiện lời giải
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra trắc nghiệm
+        function checkQuiz() {
+            // Đáp án đúng
+            const answers = {
+                q1: 'B',
+                q2: 'D',
+                q3: 'C',
+                q4: 'C',
+                q5: 'B'
+            };
+            
+            let score = 0;
+            let total = 5;
+            let form = document.forms['quizForm'];
+
+            for (let q in answers) {
+                let userAns = form.elements[q].value;
+                if (userAns === answers[q]) {
+                    score++;
+                }
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+            
+            if (score === total) {
+                resultDiv.innerHTML = `Tuyệt vời! Bạn làm đúng ${score}/${total} câu.`;
+                resultDiv.classList.add('bg-green-100', 'text-green-800');
+            } else {
+                resultDiv.innerHTML = `Bạn làm đúng ${score}/${total} câu. Hãy ôn lại bài nhé! <br> 
+                <span class="text-sm font-normal text-gray-600 mt-2 block">Gợi ý đáp án: 1B, 2D, 3C, 4C, 5B</span>`;
+                resultDiv.classList.add('bg-red-100', 'text-red-800');
+            }
+        }
+    </script>
+</body>
+</html>

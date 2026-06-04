@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 18: Lực Ma Sát</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#000080',
+                        bodybg: '#f4f7f9',
+                        qbg: '#edf2f7',
+                        abg: '#d1fae5',
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body { background-color: #f4f7f9; }
+        .content-box {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-title {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 1.25rem;
+            border-bottom: 4px solid #000080;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800 p-4 md:p-8">
+
+    <div class="bg-navy text-white rounded-[12px] p-6 mb-6 shadow-md text-center max-w-4xl mx-auto">
+        <div class="text-lg">CHƯƠNG III: ĐỘNG LỰC HỌC </div>
+        <hr class="border-white/40 my-3 w-1/2 mx-auto">
+        <div class="text-2xl font-bold uppercase">BÀI 18: LỰC MA SÁT </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+        <div class="border border-black bg-white rounded-[12px] shadow-md p-4 mb-6 italic">
+            <p>Điều gì ngăn cản thùng hàng (Hình a), khiến nó không thể di chuyển? Tại sao lực đẩy tăng lên (Hình b) mà vẫn không làm cho thùng hàng di chuyển? </p>
+            <p class="mt-2">Có cách nào làm thùng hàng di chuyển dễ dàng hơn không? </p>
+	    <img src="h0.png" class="mx-auto rounded border shadow-sm">
+        </div>
+
+        <div class="content-box">
+            <h2 class="section-title text-navy">I. LỰC MA SÁT NGHỈ [cite: 7]</h2>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mb-4">
+                <strong>Định nghĩa:</strong> Lực ma sát nghỉ là lực ma sát tác dụng lên mặt tiếp xúc của vật, khi vật có xu hướng chuyển động nhưng chưa chuyển động[cite: 8].
+            </div>
+            
+            <div class="text-center mb-4">
+                <img src="h1.png" alt="Hình 18.1 - Lực ma sát nghỉ" class="mx-auto rounded border shadow-sm">
+                <p class="text-sm text-gray-500 mt-2">Hình 18.1 </p>
+            </div>
+
+            <div class="bg-qbg border-l-4 border-navy p-4 rounded mb-4">
+                <div class="font-bold mb-2 flex items-center"><span class="text-xl mr-2">❓</span> Câu hỏi thảo luận</div>
+                <ul class="list-none space-y-2">
+                    <li>1. Điều nào sau đây không đúng khi nói về lực ma sát nghỉ? <br>
+                        A. Lực ma sát nghỉ luôn xuất hiện ở bề mặt tiếp xúc giữa hai vật. <br>
+                        B. Lực ma sát nghỉ giữ cho các điểm tiếp xúc của vật không trượt trên bề mặt. <br>
+                        C. Một vật có thể đứng yên trên mặt phẳng nghiêng mà không cần đến lực ma sát nghỉ. <br>
+                        D. Một vật có thể đứng yên trên mặt phẳng ngang mà không cần đến lực ma sát nghỉ. 
+                    </li>
+                    <li>2. Các tình huống sau đây liên quan đến loại lực ma sát nào? <br>
+                        a) Xoa hai bàn tay vào nhau. <br>
+                        b) Đặt vali lên một băng chuyền đang chuyển động ở sân bay. 
+                    </li>
+                </ul>
+                <button onclick="toggleAnswer('ans-i-1')" class="mt-3 bg-navy text-white px-4 py-2 rounded hover:bg-blue-800 transition text-sm">Xem lời giải</button>
+                <div id="ans-i-1" class="hidden bg-abg mt-3 p-3 rounded text-sm text-green-900 border border-green-300">
+                    <strong>Gợi ý:</strong><br>
+                    1. Câu không đúng là C. Trên mặt phẳng nghiêng, trọng lực luôn có thành phần kéo vật trượt xuống, nên bắt buộc phải có lực ma sát nghỉ để giữ nó đứng yên.<br>
+                    2. a) Lực ma sát trượt. b) Lực ma sát nghỉ (vali đứng yên so với băng chuyền).
+                </div>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h2 class="section-title text-navy">II. LỰC MA SÁT TRƯỢT </h2>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mb-4">
+                <strong>Khái niệm:</strong> Lực ma sát trượt là lực ma sát cản trở vật trượt trên bề mặt tiếp xúc.
+            </div>
+
+            <div class="text-center mb-4">
+                <img src="h2.png" alt="Hình 18.2" class="mx-auto rounded border shadow-sm">
+                <p class="text-sm text-gray-500 mt-2">Hình 18.2: a) Vật đứng yên; b) Vật bắt đầu chuyển động; c) Vật tiếp tục chuyển động </p>
+            </div>
+            
+            <div class="text-center mb-4">
+                <img src="h3.png" alt="Hình 18.3" class="mx-auto rounded border shadow-sm">
+                <p class="text-sm text-gray-500 mt-2">Hình 18.3 </p>
+            </div>
+
+            <h3 class="font-bold text-lg mb-2">1. Đặc điểm của lực ma sát trượt </h3>
+            
+            <div class="bg-gray-100 p-4 rounded mb-4">
+                <strong>Thí nghiệm 1:</strong> Kiểm chứng độ lớn của lực ma sát phụ thuộc vào vật liệu và tình trạng của bề mặt tiếp xúc, nhưng không phụ thuộc vào diện tích tiếp xúc.<br>
+                <img src="h4.png" alt="Hình 18.4" class="mx-auto my-2 rounded">
+                <em class="text-sm text-center block text-gray-600">Hình 18.4 </em>
+                
+                <table class="w-full text-center border-collapse border border-gray-400 mt-3 text-sm">
+                    <thead>
+                        <tr class="bg-slate-200">
+                            <th class="border border-gray-400 p-2" rowspan="2">Bề mặt tiếp xúc </th>
+                            <th class="border border-gray-400 p-2" colspan="4">Độ lớn lực ma sát trượt (N) </th>
+                        </tr>
+                        <tr class="bg-slate-200">
+                            <th class="border border-gray-400 p-2">Lần 1 </th>
+                            <th class="border border-gray-400 p-2">Lần 2 </th>
+                            <th class="border border-gray-400 p-2">Lần 3 </th>
+                            <th class="border border-gray-400 p-2">Trung bình </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-400 p-2">Mặt gỗ </td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-400 p-2">Mặt giấy </td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bg-qbg border-l-4 border-navy p-4 rounded mb-4">
+                <div class="font-bold mb-2">Thảo luận và phân tích: </div>
+                <p>a) Nêu các lực tác dụng lên khối gỗ khi mặt tiếp xúc bên dưới nó được kéo trượt đều. Tại sao khi đó số chỉ của lực kế bằng độ lớn của lực ma sát trượt? </p>
+                <p>b) Sắp xếp thứ tự theo mức tăng dần lực ma sát trên mỗi bề mặt. </p>
+                <p>c) Điều gì xảy ra đối với độ lớn của lực ma sát trượt khi diện tích tiếp xúc thay đổi, khi vật liệu và tình trạng của bề mặt tiếp xúc thay đổi? </p>
+                
+                <button onclick="toggleAnswer('ans-ii-1')" class="mt-3 bg-navy text-white px-4 py-2 rounded text-sm">Xem lời giải</button>
+                <div id="ans-ii-1" class="hidden bg-abg mt-3 p-3 rounded text-sm text-green-900 border border-green-300">
+                    <strong>Gợi ý:</strong><br>
+                    a) Các lực: Trọng lực, phản lực, lực kéo của lực kế, lực ma sát trượt. Vì vật trượt đều (gia tốc bằng 0) nên lực kéo cân bằng với lực ma sát trượt.<br>
+                    c) Độ lớn ma sát trượt không phụ thuộc vào diện tích tiếp xúc, nhưng phụ thuộc vào vật liệu và tình trạng bề mặt.
+                </div>
+            </div>
+
+            <div class="bg-gray-100 p-4 rounded mb-4">
+                <strong>Thí nghiệm 2:</strong> Mối liên hệ giữa độ lớn của lực ma sát trượt với độ lớn của áp lực lên bề mặt tiếp xúc.<br>
+                <table class="w-full text-center border-collapse border border-gray-400 mt-3 text-sm">
+                    <thead>
+                        <tr class="bg-slate-200">
+                            <th class="border border-gray-400 p-2" rowspan="2">Áp lực của các khối gỗ (N) </th>
+                            <th class="border border-gray-400 p-2" colspan="4">Độ lớn lực ma sát trượt (N) </th>
+                        </tr>
+                        <tr class="bg-slate-200">
+                            <th class="border border-gray-400 p-2">Lần 1 </th>
+                            <th class="border border-gray-400 p-2">Lần 2 </th>
+                            <th class="border border-gray-400 p-2">Lần 3 </th>
+                            <th class="border border-gray-400 p-2">Trung bình </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="border border-gray-400 p-2">1 khối gỗ: </td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td></tr>
+                        <tr><td class="border border-gray-400 p-2">2 khối gỗ: </td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td></tr>
+                        <tr><td class="border border-gray-400 p-2">3 khối gỗ: </td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td><td class="border border-gray-400 p-2"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="font-bold text-lg mb-2">3. Công thức của lực ma sát trượt </h3>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mb-4">
+                <p><strong>a) Hệ số ma sát trượt </strong></p>
+                <p>Tỉ số giữa độ lớn của lực ma sát trượt \( F_{ms} \) và áp lực \( N \) gọi là hệ số ma sát trượt, kí hiệu là \( \mu \). Hệ số \( \mu \) phụ thuộc vào vật liệu và tình trạng của hai mặt tiếp xúc.</p>
+                <p class="mt-2"><strong>b) Công thức tính lực ma sát trượt </strong></p>
+                <div class="text-center text-xl font-bold my-2 text-navy">
+                    \( F_{ms} = \mu . N \) 
+                </div>
+            </div>
+
+            <p class="font-bold mt-4 mb-2">Bảng 18.3. Hệ số ma sát trượt (gần đúng) của một số cặp vật liệu </p>
+            <table class="w-full text-center border-collapse border border-gray-400 text-sm max-w-md mx-auto">
+                <thead>
+                    <tr class="bg-slate-200">
+                        <th class="border border-gray-400 p-2">Cặp vật liệu tiếp xúc nhau </th>
+                        <th class="border border-gray-400 p-2">\( \mu \) </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="border border-gray-400 p-2">Gỗ trên gỗ (khô) </td><td class="border border-gray-400 p-2">0,20 </td></tr>
+                    <tr><td class="border border-gray-400 p-2">Thép trên thép (khô) </td><td class="border border-gray-400 p-2">0,57 </td></tr>
+                    <tr><td class="border border-gray-400 p-2">Thép trên thép (trơn) </td><td class="border border-gray-400 p-2">0,07 </td></tr>
+                    <tr><td class="border border-gray-400 p-2">Cao su trên bê tông (khô) </td><td class="border border-gray-400 p-2">0,70 </td></tr>
+                    <tr><td class="border border-gray-400 p-2">Cao su trên bê tông (ướt) </td><td class="border border-gray-400 p-2">0,50 </td></tr>
+                    <tr><td class="border border-gray-400 p-2">Cao su trên băng </td><td class="border border-gray-400 p-2">0,10 </td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="content-box">
+            <h2 class="section-title text-navy">III. BÀI TẬP VÍ DỤ </h2>
+            
+            <div class="bg-qbg border-l-4 border-navy p-4 rounded mb-4">
+                <p>Một người đi xe đạp có khối lượng tổng cộng \( m = 86 \, \text{kg} \) đang chuyển động trên đường nằm ngang với vận tốc \( v_0 = 4 \, \text{m/s} \). Nếu người đi xe ngừng đạp và hãm phanh để giữ không cho các bánh xe quay, xe trượt đi một đoạn đường 2m thì dừng lại. </p>
+                <p>1. Lực nào đã gây ra gia tốc cho xe? Tính độ lớn của lực này. </p>
+                <p>2. Tính hệ số ma sát trượt giữa mặt đường và lốp xe? Lấy \( g = 10 \, \text{m/s}^2 \). </p>
+                
+                <button onclick="toggleAnswer('ans-iii-ex')" class="mt-3 bg-navy text-white px-4 py-2 rounded text-sm">Xem lời giải</button>
+                <div id="ans-iii-ex" class="hidden bg-abg mt-3 p-3 rounded text-sm text-green-900 border border-green-300">
+                    <p><strong>Giải:</strong> Khi tính lực và gia tốc, ta coi người + xe là chất điểm. Chọn chiều dương là chiều chuyển động của người và xe. [cite: 104, 105]</p>
+                    <p>1. Gia tốc: \( a = \frac{v_t^2 - v_0^2}{2 \cdot s} = \frac{0 - 16}{2 \cdot 2} = -4 \, \text{m/s}^2 \) [cite: 106, 107]</p>
+                    <p>Lực gây ra gia tốc này là lực ma sát trượt: \( F = m \cdot a = 86 \cdot (-4) = -344 \, \text{N} \) [cite: 108, 109]</p>
+                    <p>2. Hệ số ma sát trượt: \( F_{ms} = \mu N \Rightarrow \mu = \frac{F_{ms}}{N} \)[cite: 111, 112]. Do đi ngang nên \( N = P = m \cdot g \)[cite: 113].<br>
+                    \( \Rightarrow \mu = \frac{344}{86 \cdot 10} = 0,4 \)[cite: 114].</p>
+                </div>
+            </div>
+            
+            <div class="bg-qbg border-l-4 border-navy p-4 rounded mb-4">
+                <div class="font-bold mb-2 flex items-center"><span class="text-xl mr-2">❓</span> Câu hỏi vận dụng</div>
+                <p>1. Các lực tác dụng lên xe chở hàng được quy ước vẽ tại trọng tâm của xe (Hình 18.5): <br>
+                a) Các lực này có tên gọi là gì? <br>
+                b) Hãy chỉ ra các cặp lực cân bằng nhau. </p>
+                
+                <p class="mt-2">2. Để đẩy chiếc tủ, cần tác dụng một lực theo phương nằm ngang có giá trị tối thiểu 300N để thắng lực ma sát nghỉ. Nếu một người kéo tủ với lực 35N và người kia đẩy tủ với lực 260N, có thể làm dịch chuyển tủ được không? Biểu diễn các lực tác dụng lên tủ. </p>
+                
+                <div class="text-center my-3">
+                    <img src="h5.png" alt="Hình 18.5" class="mx-auto rounded border shadow-sm">
+                    <p class="text-sm text-gray-500 mt-1">Hình 18.5 </p>
+                </div>
+                
+                <button onclick="toggleAnswer('ans-iii-2')" class="mt-3 bg-navy text-white px-4 py-2 rounded text-sm">Xem lời giải</button>
+                <div id="ans-iii-2" class="hidden bg-abg mt-3 p-3 rounded text-sm text-green-900 border border-green-300">
+                    <strong>Gợi ý:</strong><br>
+                    1. a) Trọng lực, phản lực, lực kéo/đẩy, lực ma sát. b) Trọng lực và phản lực của mặt phẳng ngang.<br>
+                    2. Tổng lực đẩy và kéo cùng chiều = 35 + 260 = 295N. Lực này nhỏ hơn 300N (giá trị tối đa của ma sát nghỉ) nên tủ không dịch chuyển được.
+                </div>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h2 class="section-title text-navy">IV. LỰC MA SÁT TRONG ĐỜI SỐNG </h2>
+            
+            <div class="bg-qbg border-l-4 border-navy p-4 rounded mb-4">
+                <div class="font-bold mb-2 flex items-center"><span class="text-xl mr-2">❓</span> Câu hỏi</div>
+                <p>Nêu vai trò của lực ma sát trong các tình huống sau: <br>
+                a) Người di chuyển trên đường. <br>
+                b) Vận động viên thể dục dụng cụ xoa phấn vào lòng bàn tay trước khi nâng tạ. </p>
+                
+                <button onclick="toggleAnswer('ans-iv-1')" class="mt-3 bg-navy text-white px-4 py-2 rounded text-sm">Xem lời giải</button>
+                <div id="ans-iv-1" class="hidden bg-abg mt-3 p-3 rounded text-sm text-green-900 border border-green-300">
+                    <strong>Gợi ý:</strong><br>
+                    a) Lực ma sát nghỉ giúp bàn chân không bị trượt về phía sau, đẩy người tiến về phía trước.<br>
+                    b) Phấn giúp hút mồ hôi và tăng hệ số ma sát giữa tay và tạ, giúp cầm nắm chắc chắn hơn.
+                </div>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded mb-4 flex">
+                <span class="text-2xl mr-3">🖐️</span>
+                <div>
+                    <div class="font-bold mb-1">Hoạt động thảo luận</div>
+                    <p>1. Thảo luận để làm sáng tỏ những vấn đề sau đây: Trong thực tế, có một số trường hợp lực ma sát có tác dụng cản trở chuyển động, nhưng cũng có trường hợp lực ma sát thúc đẩy chuyển động. Vai trò của ma sát trong lĩnh vực thể thao. </p>
+                    <p>2. Nêu một số cách làm giảm ma sát trong kĩ thuật và trong đời sống. </p>
+                    <button onclick="toggleAnswer('ans-iv-2')" class="mt-3 bg-navy text-white px-4 py-2 rounded text-sm">Hướng giải quyết</button>
+                    <div id="ans-iv-2" class="hidden bg-abg mt-3 p-3 rounded text-sm text-green-900 border border-green-300">
+                        - <strong>Cản trở:</strong> Máy móc bị mài mòn, sinh nhiệt. <strong>Thúc đẩy:</strong> Giúp xe cộ, con người di chuyển.<br>
+                        - <strong>Giảm ma sát:</strong> Bôi trơn (dầu mỡ), thay ma sát trượt bằng ma sát lăn (dùng vòng bi).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-pink-50 border-l-4 border-pink-500 p-4 rounded shadow-sm">
+                <h3 class="font-bold text-pink-700 mb-2">EM CÓ BIẾT? </h3>
+                <p class="text-sm">Trong các điều kiện cùng áp lực N thì lực ma sát nghỉ tác dụng vào các vật lăn nhỏ hơn lực ma sát trượt tác dụng lên các vật trượt rất nhiều. </p>
+                <p class="text-sm mt-2">Trong đời sống và kĩ thuật, để giảm ma sát người ta thay vật trượt bằng vật lăn (hình cầu hoặc hình trụ) như dùng ổ bi (Hình 18.6). </p>
+                <div class="text-center mt-2">
+                    <img src="h6.png" alt="Hình 18.6" class="mx-auto max-h-40">
+                </div>
+            </div>
+            
+            <div>
+                <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded shadow-sm mb-4">
+                    <h3 class="font-bold text-indigo-700 mb-2">EM CÓ THỂ </h3>
+                    <p class="text-sm">Thuyết trình về ích lợi, tác hại của ma sát trong an toàn giao thông đường bộ. </p>
+                </div>
+
+                <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded shadow-sm">
+                    <h3 class="font-bold text-teal-700 mb-2">EM ĐÃ HỌC </h3>
+                    <ul class="list-disc pl-5 text-sm space-y-1">
+                        <li>Lực ma sát nghỉ và lực ma sát trượt đều là những lực tiếp xúc. </li>
+                        <li>Lực ma sát nghỉ có giá trị cực đại \( F_0 \). Khi \( F > F_0 \) thì vật bắt đầu trượt. </li>
+                        <li>Công thức: \( F_{ms} = \mu . N \). Trong đó \( \mu \) là hệ số ma sát trượt (không có đơn vị), \( N \) là áp lực lên bề mặt. [cite: 143, 144, 145]</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h2 class="section-title text-navy">BÀI TẬP CỦNG CỐ & VẬN DỤNG</h2>
+            
+            <h3 class="font-bold text-lg mb-3 mt-4 text-blue-900">A. Trắc nghiệm kiểm tra</h3>
+            <div id="quiz-container" class="space-y-4">
+                <div class="bg-qbg p-4 rounded border-l-4 border-navy">
+                    <p class="font-semibold">Câu 1: Lực ma sát trượt xuất hiện khi nào?</p>
+                    <label class="block mt-2"><input type="radio" name="q1" value="A"> A. Khi vật đứng yên trên mặt nghiêng.</label>
+                    <label class="block"><input type="radio" name="q1" value="B"> B. Khi vật trượt trên bề mặt của vật khác.</label>
+                    <label class="block"><input type="radio" name="q1" value="C"> C. Khi vật lăn trên mặt đường.</label>
+                    <label class="block"><input type="radio" name="q1" value="D"> D. Khi vật lơ lửng trong không khí.</label>
+                </div>
+                
+                <div class="bg-qbg p-4 rounded border-l-4 border-navy">
+                    <p class="font-semibold">Câu 2: Hệ số ma sát trượt \( \mu \) phụ thuộc vào yếu tố nào?</p>
+                    <label class="block mt-2"><input type="radio" name="q2" value="A"> A. Vận tốc của vật.</label>
+                    <label class="block"><input type="radio" name="q2" value="B"> B. Diện tích mặt tiếp xúc.</label>
+                    <label class="block"><input type="radio" name="q2" value="C"> C. Vật liệu và tình trạng của hai mặt tiếp xúc.</label>
+                    <label class="block"><input type="radio" name="q2" value="D"> D. Khối lượng của vật.</label>
+                </div>
+
+                <div class="bg-qbg p-4 rounded border-l-4 border-navy">
+                    <p class="font-semibold">Câu 3: Công thức tính lực ma sát trượt là gì?</p>
+                    <label class="block mt-2"><input type="radio" name="q3" value="A"> A. \( F_{ms} = \mu + N \)</label>
+                    <label class="block"><input type="radio" name="q3" value="B"> B. \( F_{ms} = \mu \cdot N \)</label>
+                    <label class="block"><input type="radio" name="q3" value="C"> C. \( F_{ms} = \mu / N \)</label>
+                    <label class="block"><input type="radio" name="q3" value="D"> D. \( F_{ms} = N / \mu \)</label>
+                </div>
+
+                <div class="bg-qbg p-4 rounded border-l-4 border-navy">
+                    <p class="font-semibold">Câu 4: Biện pháp nào sau đây giúp làm giảm ma sát hiệu quả nhất trong chế tạo máy?</p>
+                    <label class="block mt-2"><input type="radio" name="q4" value="A"> A. Tăng diện tích tiếp xúc.</label>
+                    <label class="block"><input type="radio" name="q4" value="B"> B. Sử dụng ổ bi (thay ma sát trượt bằng ma sát lăn).</label>
+                    <label class="block"><input type="radio" name="q4" value="C"> C. Làm nhám bề mặt.</label>
+                    <label class="block"><input type="radio" name="q4" value="D"> D. Ép hai mặt tiếp xúc mạnh hơn.</label>
+                </div>
+
+                <div class="bg-qbg p-4 rounded border-l-4 border-navy">
+                    <p class="font-semibold">Câu 5: Phát biểu nào đúng về lực ma sát nghỉ?</p>
+                    <label class="block mt-2"><input type="radio" name="q5" value="A"> A. Luôn luôn cản trở chuyển động của vật.</label>
+                    <label class="block"><input type="radio" name="q5" value="B"> B. Giữ cho vật không bị trượt khi có lực tác dụng nhưng chưa đủ lớn.</label>
+                    <label class="block"><input type="radio" name="q5" value="C"> C. Tỉ lệ thuận với diện tích tiếp xúc.</label>
+                    <label class="block"><input type="radio" name="q5" value="D"> D. Chỉ xuất hiện khi vật đang chuyển động nhanh dần.</label>
+                </div>
+
+                <button onclick="checkQuiz()" class="bg-navy text-white px-6 py-2 rounded font-bold hover:bg-blue-800 transition">NỘP BÀI</button>
+                <div id="quiz-result" class="hidden mt-4 p-4 rounded font-bold"></div>
+                <div id="quiz-explanation" class="hidden bg-gray-100 p-4 mt-2 border rounded text-sm space-y-2">
+                    <p><strong>Giải thích chi tiết:</strong></p>
+                    <p>Câu 1: B (Theo định nghĩa: lực ma sát trượt cản trở vật trượt trên bề mặt tiếp xúc).</p>
+                    <p>Câu 2: C (Hệ số \(\mu\) phụ thuộc vào vật liệu và tình trạng bề mặt tiếp xúc, không phụ thuộc diện tích).</p>
+                    <p>Câu 3: B (\( F_{ms} = \mu \cdot N \)).</p>
+                    <p>Câu 4: B (Thay ma sát trượt bằng ma sát lăn kết hợp dầu mỡ là cách giảm ma sát hiệu quả).</p>
+                    <p>Câu 5: B (Lực ma sát nghỉ giữ vật không trượt khi có xu hướng chuyển động).</p>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-lg mt-8 mb-3 text-blue-900">B. Bài tập tính toán</h3>
+            
+            <div class="bg-qbg border-l-4 border-navy p-4 rounded mb-4">
+                <p><strong>Bài 1:</strong> Một vật có khối lượng 10kg được kéo trượt đều trên mặt sàn nằm ngang. Hệ số ma sát trượt giữa vật và sàn là 0,2. Lấy \( g = 10 \, \text{m/s}^2 \). Tính độ lớn lực kéo.</p>
+                <button onclick="toggleAnswer('calc-1')" class="mt-3 bg-navy text-white px-4 py-2 rounded text-sm">Xem lời giải chi tiết</button>
+                <div id="calc-1" class="hidden bg-abg mt-3 p-3 rounded text-sm border border-green-300">
+                    <p>Vật trượt đều nằm ngang \( \Rightarrow \) Lực kéo \( F = F_{ms} \)</p>
+                    <p>Áp lực \( N = P = m \cdot g = 10 \cdot 10 = 100 \, \text{N} \)</p>
+                    <p>Lực ma sát trượt: \( F_{ms} = \mu \cdot N = 0,2 \cdot 100 = 20 \, \text{N} \)</p>
+                    <p>Vậy độ lớn lực kéo là 20N.</p>
+                </div>
+            </div>
+
+            <div class="bg-qbg border-l-4 border-navy p-4 rounded mb-4">
+                <p><strong>Bài 2:</strong> Một ô tô khối lượng 1500kg đang chạy với vận tốc 20 m/s thì hãm phanh. Xe trượt thêm 40m thì dừng lại. Tính lực ma sát trượt giữa bánh xe và mặt đường (coi như không có ma sát cản của không khí).</p>
+                <button onclick="toggleAnswer('calc-2')" class="mt-3 bg-navy text-white px-4 py-2 rounded text-sm">Xem lời giải chi tiết</button>
+                <div id="calc-2" class="hidden bg-abg mt-3 p-3 rounded text-sm border border-green-300">
+                    <p>Gia tốc của xe: \( a = \frac{v^2 - v_0^2}{2s} = \frac{0^2 - 20^2}{2 \cdot 40} = -5 \, \text{m/s}^2 \)</p>
+                    <p>Định luật II Newton (chiều dương cùng chiều chuyển động): \( -F_{ms} = m \cdot a \)</p>
+                    <p>\( \Rightarrow F_{ms} = -m \cdot a = -1500 \cdot (-5) = 7500 \, \text{N} \)</p>
+                </div>
+            </div>
+
+            <div class="bg-qbg border-l-4 border-navy p-4 rounded mb-4">
+                <p><strong>Bài 3:</strong> Một thùng gỗ khối lượng 50kg đặt trên sàn ngang. Hệ số ma sát nghỉ cực đại giữa thùng và sàn là 0,4. Hỏi phải dùng một lực đẩy tối thiểu bao nhiêu theo phương ngang để thùng bắt đầu nhúc nhích? (\( g = 10 \, \text{m/s}^2 \)).</p>
+                <button onclick="toggleAnswer('calc-3')" class="mt-3 bg-navy text-white px-4 py-2 rounded text-sm">Xem lời giải chi tiết</button>
+                <div id="calc-3" class="hidden bg-abg mt-3 p-3 rounded text-sm border border-green-300">
+                    <p>Để thùng bắt đầu nhúc nhích, lực đẩy phải ít nhất bằng lực ma sát nghỉ cực đại.</p>
+                    <p>\( F_{đẩy} \ge F_{ms\_nghỉ\_max} = \mu_{n} \cdot N \)</p>
+                    <p>Do đặt trên sàn ngang: \( N = P = m \cdot g = 50 \cdot 10 = 500 \, \text{N} \)</p>
+                    <p>\( F_{đẩy} \ge 0,4 \cdot 500 = 200 \, \text{N} \). Vậy lực đẩy tối thiểu là 200N.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        function checkQuiz() {
+            const answers = {
+                q1: 'B',
+                q2: 'C',
+                q3: 'B',
+                q4: 'B',
+                q5: 'B'
+            };
+            
+            let score = 0;
+            let total = 5;
+            
+            for (let q in answers) {
+                const selected = document.querySelector(`input[name="${q}"]:checked`);
+                if (selected && selected.value === answers[q]) {
+                    score++;
+                }
+            }
+            
+            const resultDiv = document.getElementById('quiz-result');
+            const explainDiv = document.getElementById('quiz-explanation');
+            
+            resultDiv.classList.remove('hidden');
+            explainDiv.classList.remove('hidden');
+            
+            if (score === total) {
+                resultDiv.className = 'mt-4 p-4 rounded font-bold bg-green-100 text-green-700 border border-green-400';
+                resultDiv.innerText = `Xuất sắc! Bạn trả lời đúng ${score}/${total} câu.`;
+            } else {
+                resultDiv.className = 'mt-4 p-4 rounded font-bold bg-red-100 text-red-700 border border-red-400';
+                resultDiv.innerText = `Bạn trả lời đúng ${score}/${total} câu. Hãy xem lại phần giải thích bên dưới nhé.`;
+            }
+        }
+    </script>
+</body>
+</html>

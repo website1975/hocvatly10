@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 19: Lực Cản Và Lực Nâng</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#000080',
+                        bglight: '#f4f7f9',
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '12px': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- MathJax for rendering math equations -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { background-color: #f4f7f9; font-family: 'Segoe UI', sans-serif; }
+        .hide { display: none; }
+    </style>
+</head>
+<body class="text-gray-800 p-4 md:p-8 max-w-5xl mx-auto">
+
+    <!-- Header Chương và Bài -->
+    <div class="bg-primary text-white rounded-12px p-6 shadow-md mb-8 text-center">
+        <h2 class="text-lg md:text-xl font-semibold uppercase tracking-wider">Chương III: Động lực học</h2>
+        <hr class="border-t border-blue-300 w-1/3 mx-auto my-3 opacity-50">
+        <h1 class="text-2xl md:text-3xl font-bold uppercase">Bài 19: Lực cản và lực nâng</h1>
+    </div>
+
+    <!-- Lời dẫn -->
+    <div class="bg-white border border-gray-400 rounded-12px p-6 shadow-md mb-8">
+        <div class="flex flex-col md:flex-row gap-6 items-center">
+            <div class="md:w-2/3 italic text-gray-700 text-lg leading-relaxed">
+                Một hãng ô tô sử dụng cùng loại động cơ cho hai chiếc ô tô A và B có khối lượng như nhau. Khi cho hai ô tô này chạy thử nghiệm trên cùng quãng đường 100 km, với cùng tốc độ 72 km/h, các kĩ sư thấy rằng ô tô A tiêu thụ ít nhiên liệu hơn nhiều so với ô tô B. <br><br>
+                <span class="font-bold text-primary">Tại sao lại có sự khác biệt như vậy?</span>
+            </div>
+            <div class="md:w-1/3 w-full text-center">
+                <!-- Hình ảnh ô tô A và B -->
+                <div class="bg-gray-200 border-2 border-dashed border-gray-400 p-4 rounded text-gray-500">
+                    <img src="h1.png" alt="Hình hai ô tô A và B" class="w-full h-auto mx-auto object-cover" onerror="this.outerHTML='<span>[Khung hình: Hình hai ô tô A và B]</span>'">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- I. LỰC CẢN CỦA CHẤT LƯU -->
+    <div class="bg-white rounded-12px p-6 shadow-md mb-8">
+        <h2 class="text-2xl font-bold uppercase border-b-4 border-primary pb-2 mb-6 text-primary">I. LỰC CẢN CỦA CHẤT LƯU</h2>
+        
+        <!-- 1. Lực cản -->
+        <h3 class="text-xl font-bold mb-4">1. Lực cản</h3>
+        <p class="mb-4">Thông thường thuật ngữ chất lưu được dùng để chỉ chất lỏng và chất khí.</p>
+        <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6 shadow-sm">
+            <p class="font-semibold text-primary text-lg">Mọi vật chuyển động trong chất lưu luôn chịu tác dụng bởi lực cản của chất lưu.</p>
+            <p class="text-gray-700">Lực này ngược hướng chuyển động và cản trở chuyển động của vật.</p>
+        </div>
+        
+        <div class="my-6">
+            <div class="bg-gray-200 border-2 border-dashed border-gray-400 p-4 rounded text-gray-500 text-center max-w-2xl mx-auto">
+                <img src="h2.png" alt="Hình 19.1. Ví dụ về lực cản của chất lưu" class="w-full h-auto mx-auto" onerror="this.outerHTML='<span>[Khung hình: Hình 19.1 - Ví dụ về lực cản của chất lưu (Tên lửa, xe đạp, nhảy dù, tàu thủy)]</span>'">
+                <img src="h3.png" alt="Hình 19.1. Ví dụ về lực cản của chất lưu" class="w-full h-auto mx-auto" onerror="this.outerHTML='<span>[Khung hình: Hình 19.1 - Ví dụ về lực cản của chất lưu (Tên lửa, xe đạp, nhảy dù, tàu thủy)]</span>'">
+                <img src="h4.png" alt="Hình 19.1. Ví dụ về lực cản của chất lưu" class="w-full h-auto mx-auto" onerror="this.outerHTML='<span>[Khung hình: Hình 19.1 - Ví dụ về lực cản của chất lưu (Tên lửa, xe đạp, nhảy dù, tàu thủy)]</span>'">
+            </div>
+        </div>
+
+        <!-- 2. Lực cản phụ thuộc vào những yếu tố nào? -->
+        <h3 class="text-xl font-bold mb-4 mt-8">2. Lực cản phụ thuộc vào những yếu tố nào?</h3>
+        
+        <!-- Hoạt động dự đoán -->
+        <div class="bg-[#edf2f7] border-l-4 border-primary p-4 rounded-r-md mb-6">
+            <div class="font-bold flex items-center text-primary mb-2">
+                <span class="text-xl mr-2">✋</span> Hoạt động thảo luận
+            </div>
+            <p class="mb-2">a) Bằng cảm nhận trực giác, em thử đoán xem độ lớn của lực cản phụ thuộc vào những yếu tố nào?</p>
+            <p>b) Em hãy tìm những thí nghiệm để chứng minh cho những dự đoán của em.</p>
+            <button onclick="toggleAnswer('act1')" class="mt-3 bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition font-medium text-sm">Xem hướng giải quyết</button>
+            <div id="act1" class="hidden mt-4 bg-green-100 border border-green-300 p-4 rounded text-green-900 text-sm">
+                <p><strong>Hướng dẫn:</strong></p>
+                <p>a) Trực giác: Lực cản phụ thuộc vào tốc độ (đi xe đạp càng nhanh gió tạt càng mạnh), phụ thuộc vào hình dạng/tiết diện vật (cúi người đạp xe sẽ ít cản gió hơn là ngồi thẳng).</p>
+                <p>b) Thí nghiệm: Cho hai tờ giấy giống nhau rơi tự do, một tờ vo tròn, một tờ để phẳng. Tờ phẳng sẽ rơi chậm hơn nhiều do tiết diện cản gió lớn hơn (chứng minh hình dạng). Hoặc khua tay dưới nước từ từ và khua thật nhanh để cảm nhận lực cản thay đổi theo tốc độ.</p>
+            </div>
+        </div>
+
+        <!-- Câu hỏi -->
+        <div class="bg-[#edf2f7] border-l-4 border-primary p-4 rounded-r-md mb-6">
+            <div class="font-bold flex items-center text-primary mb-2">
+                <span class="text-xl mr-2">❓</span> Câu hỏi
+            </div>
+            <p class="mb-2"><strong>1.</strong> Trong hình ở phần mở đầu bài học, ô tô nào chịu lực cản nhỏ hơn?</p>
+            <p><strong>2.</strong> Nêu thêm một số ví dụ chứng tỏ lực cản của không khí liên quan đến hình dạng và tốc độ của vật.</p>
+            <button onclick="toggleAnswer('q1')" class="mt-3 bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition font-medium text-sm">Xem lời giải</button>
+            <div id="q1" class="hidden mt-4 bg-green-100 border border-green-300 p-4 rounded text-green-900 text-sm">
+                <p><strong>Giải đáp:</strong></p>
+                <p>1. Ô tô A chịu lực cản nhỏ hơn vì có thiết kế hình dạng thon gọn, mượt mà hơn (khí động học tốt hơn), làm giảm lực cản không khí so với ô tô B.</p>
+                <p>2. Ví dụ:</p>
+                <ul class="list-disc ml-5">
+                    <li><strong>Hình dạng:</strong> Tàu ngầm, mũi tên lửa, đầu tàu hỏa cao tốc thường được làm thon, nhọn (hình con thoi) để rẽ không khí/nước dễ dàng hơn.</li>
+                    <li><strong>Tốc độ:</strong> Khi chạy xe máy, đi chậm thấy gió tạt bình thường, nhưng nếu tăng tốc chạy nhanh thì gió đập vào người rất mạnh, chứng tỏ vận tốc lớn thì lực cản lớn.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-yellow-50 border border-yellow-300 rounded p-4 shadow-sm text-center">
+            <h4 class="font-bold text-yellow-800">Nhận xét quan trọng</h4>
+            <p class="text-gray-800 mt-2 font-medium">Lực cản của chất lưu (không khí, nước) phụ thuộc vào hình dạng và tốc độ của vật.</p>
+        </div>
+    </div>
+
+    <!-- II. LỰC NÂNG CỦA CHẤT LƯU -->
+    <div class="bg-white rounded-12px p-6 shadow-md mb-8">
+        <h2 class="text-2xl font-bold uppercase border-b-4 border-primary pb-2 mb-6 text-primary">II. LỰC NÂNG CỦA CHẤT LƯU</h2>
+        
+        <p class="mb-4">Khi vật chuyển động trong nước hay trong không khí thì ngoài lực cản, vật còn chịu tác dụng của <strong>lực nâng</strong>.</p>
+        <p class="mb-6">Ví dụ: Nếu cánh máy bay nghiêng đi một chút, chếch theo luồng gió, thì tăng thêm lực nâng tác dụng vuông góc với mặt dưới của cánh để nâng máy bay lên cao.</p>
+
+        <div class="bg-[#f0f9ff] border border-blue-200 rounded-12px p-4 mb-6 shadow-sm">
+            <p class="font-bold text-primary mb-2 text-lg">Nhờ có lực nâng:</p>
+            <ul class="list-disc ml-6 text-gray-700 space-y-2">
+                <li>Máy bay có thể di chuyển trong không khí.</li>
+                <li>Tàu thuyền có thể nổi và di chuyển được trên mặt nước.</li>
+                <li>Khinh khí cầu lơ lửng trên không trung.</li>
+                <li>Nhiều sinh vật bay lượn dễ dàng trong không khí.</li>
+            </ul>
+        </div>
+
+        <div class="my-6 text-center grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-gray-200 border-2 border-dashed border-gray-400 p-4 rounded text-gray-500">
+                <img src="h5.png" alt="Hình 19.3. Máy bay" class="w-full h-auto mx-auto" onerror="this.outerHTML='<span>[Khung hình: Hình 19.3 - Các lực tác dụng lên máy bay (Lực cản, lực đẩy, trọng lực, lực nâng)]</span>'">
+            </div>
+            <div class="bg-gray-200 border-2 border-dashed border-gray-400 p-4 rounded text-gray-500">
+                <img src="h6.png" alt="Hình 19.4. Tàu thủy" class="w-full h-auto mx-auto" onerror="this.outerHTML='<span>[Khung hình: Hình 19.4 - Lực nâng và trọng lực tác dụng lên tàu thủy]</span>'">
+            </div>
+        </div>
+
+        <p class="mb-6 bg-red-50 text-red-800 p-4 border border-red-200 rounded font-medium">
+            <strong>Lưu ý:</strong> Khi vật rơi trong chất lưu dưới tác dụng của trọng lực và lực cản của chất lưu thì đến một lúc nào đó vật sẽ đạt tới vận tốc giới hạn và sẽ chuyển động đều với vận tốc này.
+        </p>
+
+        <!-- Lực đẩy Archimedes -->
+        <div class="bg-yellow-100 border border-yellow-400 rounded-12px p-5 mb-6 shadow-sm">
+            <h3 class="text-xl font-bold text-yellow-900 mb-2 border-b border-yellow-300 pb-2">Lực đẩy Archimedes</h3>
+            <p class="mb-3">Lực đẩy Archimedes học ở môn KHTN lớp 8 là trường hợp riêng của lực nâng vật đứng yên trong chất lưu.</p>
+            <p class="font-bold mb-2">Công thức tính lực đẩy Archimedes:</p>
+            <div class="text-center text-2xl text-primary font-bold my-4">
+                \( F_A = \rho \cdot g \cdot V \)
+            </div>
+            <p><strong>Trong đó:</strong></p>
+            <ul class="list-disc ml-6 space-y-1 mt-2">
+                <li>\( F_A \): lực đẩy Archimedes (N).</li>
+                <li>\( \rho \): khối lượng riêng của chất lỏng (kg/m³).</li>
+                <li>\( V \): thể tích phần chất lỏng bị vật chiếm chỗ (m³).</li>
+            </ul>
+        </div>
+
+        <!-- Câu hỏi mục II -->
+        <div class="bg-[#edf2f7] border-l-4 border-primary p-4 rounded-r-md mb-6">
+            <div class="font-bold flex items-center text-primary mb-2">
+                <span class="text-xl mr-2">❓</span> Câu hỏi
+            </div>
+            <ol class="list-decimal ml-4 space-y-2 mb-4">
+                <li>Chuồn chuồn có thể bay lượn trong không trung. Tại sao chúng không bị rơi xuống đất do trọng lực?</li>
+                <li>Biểu diễn các lực tác dụng lên một khí cầu đang lơ lửng trong không khí.</li>
+                <li>Hình 19.6 biểu diễn các vectơ lực tác dụng lên một máy bay đang bay ngang ở độ cao ổn định với tốc độ không đổi. Nếu khối lượng tổng cộng của máy bay là 500 tấn thì lực nâng có độ lớn bao nhiêu? (lấy \( g = 9.8 \, m/s^2 \)).</li>
+                <li>Nêu những điểm khác biệt giữa lực cản và lực nâng.</li>
+            </ol>
+        <div class="my-6 text-center grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-gray-200 border-2 border-dashed border-gray-400 p-4 rounded text-gray-500">
+                <img src="h8.png" class="w-full h-auto mx-auto" onerror="this.outerHTML='<span>[Khung hình: Hình 19.3 - Các lực tác dụng lên máy bay (Lực cản, lực đẩy, trọng lực, lực nâng)]</span>'">
+            </div>
+            <div class="bg-gray-200 border-2 border-dashed border-gray-400 p-4 rounded text-gray-500">
+                <img src="h9.png" class="w-full h-auto mx-auto" onerror="this.outerHTML='<span>[Khung hình: Hình 19.4 - Lực nâng và trọng lực tác dụng lên tàu thủy]</span>'">
+            </div>
+        </div>
+
+            <button onclick="toggleAnswer('q2')" class="mt-2 bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-800 transition font-medium text-sm">Xem lời giải</button>
+            <div id="q2" class="hidden mt-4 bg-green-100 border border-green-300 p-4 rounded text-green-900 text-sm space-y-3">
+                <p><strong>1.</strong> Chuồn chuồn không bị rơi xuống đất là nhờ khi vỗ cánh tạo ra luồng không khí đi qua cánh, sinh ra <strong>lực nâng khí động học</strong> cân bằng với trọng lực hướng xuống.</p>
+                <p><strong>2.</strong> Khi lơ lửng, khí cầu chịu tác dụng của 2 lực cân bằng: Trọng lực \( \vec{P} \) (hướng thẳng đứng từ trên xuống) và Lực nâng của không khí - lực Archimedes \( \vec{F}_A \) (hướng thẳng đứng từ dưới lên). Vẽ hai lực này cùng giá, ngược chiều, độ dài bằng nhau.</p>
+                <p><strong>3.</strong> Khi máy bay bay ngang ổn định, lực nâng cân bằng với trọng lực. <br>
+                    Khối lượng \( m = 500 \, \text{tấn} = 500,000 \, \text{kg} \).<br>
+                    Trọng lượng \( P = m \cdot g = 500,000 \cdot 9.8 = 4,900,000 \, \text{N} \).<br>
+                    Vậy lực nâng \( F_n = P = 4,900,000 \, \text{N} \) (hay 4.900 kN).
+                </p>
+		
+                <p><strong>4. Khác biệt:</strong><br>
+                - <em>Lực cản:</em> Cùng phương, ngược chiều với hướng chuyển động, có tác dụng cản trở sự chuyển động của vật.<br>
+                - <em>Lực nâng:</em> Phương thường vuông góc với hướng chuyển động, có tác dụng nâng đỡ, chống lại trọng lực giúp vật không bị rơi (hoặc nổi trên mặt nước).
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CÁC MỤC ĐẶC BIỆT -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <!-- Em đã học -->
+        <div class="bg-blue-50 border border-blue-300 rounded-12px p-5 shadow-sm">
+            <h3 class="font-bold text-xl text-primary mb-3 flex items-center">
+                <span class="mr-2">📚</span> EM ĐÃ HỌC
+            </h3>
+            <ul class="list-disc ml-5 space-y-2 text-gray-700">
+                <li>Lực cản của chất lưu có tác dụng tương tự như lực ma sát, chúng làm chuyển động của các vật bị chậm lại. Lực cản phụ thuộc vào hình dạng và tốc độ của vật.</li>
+                <li>Lực nâng của chất lưu giúp khinh khí cầu lơ lửng trên không trung, máy bay di chuyển trong không khí, cho phép tàu thuyền di chuyển trên mặt nước,...</li>
+            </ul>
+        </div>
+
+        <!-- Em có thể -->
+        <div class="bg-green-50 border border-green-300 rounded-12px p-5 shadow-sm">
+            <h3 class="font-bold text-xl text-green-700 mb-3 flex items-center">
+                <span class="mr-2">🚀</span> EM CÓ THỂ
+            </h3>
+            <ul class="list-decimal ml-5 space-y-2 text-gray-700">
+                <li>Giải thích tại sao các phương tiện giao thông tốc độ cao lại cần có hình con thoi.</li>
+                <li>Chỉ ra được lực nâng và lực cản khi máy bay hạ cánh hoặc cất cánh.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Em có biết -->
+    <div class="bg-purple-50 border border-purple-300 rounded-12px p-6 shadow-md mb-8">
+        <h3 class="font-bold text-xl text-purple-800 mb-3 flex items-center">
+            <span class="mr-2">💡</span> EM CÓ BIẾT? - Kết nối tri thức với cuộc sống
+        </h3>
+        <p class="font-bold text-lg mb-2">Hình dạng khí động học</p>
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="md:w-3/4 text-gray-700 space-y-2">
+                <p>Người đầu tiên khởi xướng mô hình khí động học trên ô tô là nhà thiết kế nổi tiếng Eduard Rumpler, cha đẻ của ngành hàng không Đức.</p>
+                <p>Vào những năm 1930 - 1940, tại đường đua Le Mans (Pháp 1937), chiếc ô tô dung tích động cơ 1.7 lít đã gây sốc khi chiến thắng ngoạn mục trước những ô tô 2 lít. Bí quyết là cải tiến hình dạng sao cho lực cản nhỏ nhất.</p>
+                <p>Từ đó đến nay, hầu hết các kiểu xe đều chú trọng tối ưu <strong>hình dáng con thoi (hình khí động học)</strong> giúp xe ít hao phí nhiên liệu hơn.</p>
+            </div>
+            <div class="md:w-1/4">
+                <div class="bg-gray-200 border-2 border-dashed border-gray-400 p-2 rounded text-gray-500 text-sm text-center h-full flex items-center justify-center">
+			<img src="h7.png" alt="Hình 19.3. Máy bay" class="w-full h-auto mx-auto" onerror="this.outerHTML='<span>[Khung hình: Hình 19.3 - Các lực tác dụng lên máy bay (Lực cản, lực đẩy, trọng lực, lực nâng)]</span>'">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="border-t border-gray-300 my-8">
+
+    <!-- BÀI TẬP VẬN DỤNG CỦNG CỐ -->
+    <h2 class="text-2xl font-bold uppercase text-primary mb-6 text-center">BÀI TẬP CỦNG CỐ & VẬN DỤNG</h2>
+
+    <!-- Trắc nghiệm -->
+    <div class="bg-white rounded-12px p-6 shadow-md mb-8 border border-gray-200">
+        <h3 class="text-xl font-bold mb-4 text-primary border-b pb-2">A. 5 Câu Trắc Nghiệm</h3>
+        <form id="quizForm" class="space-y-6">
+            
+            <div class="quiz-item">
+                <p class="font-semibold mb-2">Câu 1: Lực cản của chất lưu tác dụng lên vật chuyển động phụ thuộc chủ yếu vào các yếu tố nào?</p>
+                <div class="space-y-1 ml-2">
+                    <label class="flex items-center space-x-2"><input type="radio" name="q1" value="A"> <span>A. Chỉ phụ thuộc khối lượng vật.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q1" value="B"> <span>B. Chỉ phụ thuộc vào vận tốc của vật.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q1" value="C"> <span>C. Hình dạng và tốc độ của vật.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q1" value="D"> <span>D. Trọng lượng và thể tích vật.</span></label>
+                </div>
+            </div>
+
+            <div class="quiz-item">
+                <p class="font-semibold mb-2">Câu 2: Lực đẩy Archimedes tác dụng lên vật nhúng trong chất lỏng là một trường hợp riêng của lực nào?</p>
+                <div class="space-y-1 ml-2">
+                    <label class="flex items-center space-x-2"><input type="radio" name="q2" value="A"> <span>A. Lực ma sát trượt.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q2" value="B"> <span>B. Lực nâng của chất lưu.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q2" value="C"> <span>C. Lực cản của chất lưu.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q2" value="D"> <span>D. Trọng lực.</span></label>
+                </div>
+            </div>
+
+            <div class="quiz-item">
+                <p class="font-semibold mb-2">Câu 3: Công thức tính lực đẩy Archimedes là gì?</p>
+                <div class="space-y-1 ml-2">
+                    <label class="flex items-center space-x-2"><input type="radio" name="q3" value="A"> <span>A. \( F_A = \rho \cdot V \)</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q3" value="B"> <span>B. \( F_A = m \cdot g \)</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q3" value="C"> <span>C. \( F_A = \rho \cdot g \cdot V \)</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q3" value="D"> <span>D. \( F_A = \frac{1}{2} \rho V^2 \)</span></label>
+                </div>
+            </div>
+
+            <div class="quiz-item">
+                <p class="font-semibold mb-2">Câu 4: Khi một vật rơi trong chất lưu, nếu vận tốc vật tăng dần đến một giá trị nào đó khiến lực cản cộng lực nâng bằng trọng lượng của vật, thì vật sẽ:</p>
+                <div class="space-y-1 ml-2">
+                    <label class="flex items-center space-x-2"><input type="radio" name="q4" value="A"> <span>A. Chuyển động chậm dần đều.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q4" value="B"> <span>B. Rơi tự do với gia tốc \(g\).</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q4" value="C"> <span>C. Chuyển động tròn đều.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q4" value="D"> <span>D. Đạt vận tốc giới hạn và chuyển động thẳng đều.</span></label>
+                </div>
+            </div>
+
+            <div class="quiz-item">
+                <p class="font-semibold mb-2">Câu 5: Để ô tô tiết kiệm nhiên liệu khi chạy ở tốc độ cao, các kĩ sư thiết kế ô tô cần tối ưu đặc điểm nào nhất?</p>
+                <div class="space-y-1 ml-2">
+                    <label class="flex items-center space-x-2"><input type="radio" name="q5" value="A"> <span>A. Tăng khối lượng ô tô để xe đầm hơn.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q5" value="B"> <span>B. Thiết kế vỏ xe có hình dạng khí động học (hình con thoi).</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q5" value="C"> <span>C. Làm vỏ xe gồ ghề để tăng ma sát.</span></label>
+                    <label class="flex items-center space-x-2"><input type="radio" name="q5" value="D"> <span>D. Tăng kích thước bề mặt cản gió của xe.</span></label>
+                </div>
+            </div>
+
+            <div class="text-center pt-4 border-t">
+                <button type="button" onclick="checkQuiz()" class="bg-primary text-white font-bold py-3 px-8 rounded-full hover:bg-blue-800 transition shadow-lg transform hover:scale-105 text-lg">NỘP BÀI</button>
+            </div>
+        </form>
+
+        <!-- Khung hiển thị kết quả trắc nghiệm -->
+        <div id="quizResult" class="hidden mt-6 p-4 rounded-12px">
+            <!-- Nội dung kết quả sẽ được JS chèn vào đây -->
+        </div>
+    </div>
+
+    <!-- Bài tập tự luận tính toán -->
+    <div class="bg-white rounded-12px p-6 shadow-md mb-8 border border-gray-200">
+        <h3 class="text-xl font-bold mb-6 text-primary border-b pb-2">B. 3 Bài Tập Vận Dụng Tự Luận</h3>
+        
+        <!-- BT 1 -->
+        <div class="mb-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+            <p class="font-bold mb-2">Bài tập 1:</p>
+            <p class="mb-3">Một máy bay chở khách có tổng khối lượng \( m = 60 \) tấn đang bay ngang ở độ cao ổn định. Lấy \( g = 10 \, m/s^2 \). Xác định độ lớn lực nâng của không khí tác dụng lên máy bay trong giai đoạn này.</p>
+            <button onclick="toggleAnswer('bt1')" class="bg-primary text-white px-4 py-1.5 rounded hover:bg-blue-800 text-sm font-medium transition">Xem giải chi tiết</button>
+            <div id="bt1" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-800">
+                <p><strong>Giải:</strong></p>
+                <p>Đổi khối lượng: \( m = 60 \, \text{tấn} = 60,000 \, \text{kg} \).</p>
+                <p>Vì máy bay bay ngang ở độ cao ổn định nên lực nâng của không khí cân bằng với trọng lượng của máy bay:</p>
+                <p class="my-2">\( F_n = P = m \cdot g \)</p>
+                <p>Thay số: \( F_n = 60,000 \cdot 10 = 600,000 \, \text{N} \) (hay 600 kN).</p>
+                <p><strong>Kết luận:</strong> Độ lớn lực nâng là \( 600,000 \, \text{N} \).</p>
+            </div>
+        </div>
+
+        <!-- BT 2 -->
+        <div class="mb-6 bg-gray-50 p-4 rounded-md border border-gray-200">
+            <p class="font-bold mb-2">Bài tập 2:</p>
+            <p class="mb-3">Một chiếc phao hình hộp chữ nhật nổi trên mặt hồ nước. Biết phần thể tích phao chìm dưới nước là \( 0.5 \, m^3 \), khối lượng riêng của nước là \( \rho = 1000 \, kg/m^3 \), \( g = 9.8 \, m/s^2 \). Tính lực đẩy Archimedes (lực nâng) của nước tác dụng lên chiếc phao.</p>
+            <button onclick="toggleAnswer('bt2')" class="bg-primary text-white px-4 py-1.5 rounded hover:bg-blue-800 text-sm font-medium transition">Xem giải chi tiết</button>
+            <div id="bt2" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-800">
+                <p><strong>Giải:</strong></p>
+                <p>Áp dụng công thức tính lực đẩy Archimedes:</p>
+                <p class="my-2">\( F_A = \rho \cdot g \cdot V \)</p>
+                <p>Với:</p>
+                <ul class="list-disc ml-6 mb-2">
+                    <li>\( \rho = 1000 \, kg/m^3 \)</li>
+                    <li>\( g = 9.8 \, m/s^2 \)</li>
+                    <li>\( V = 0.5 \, m^3 \) (thể tích chìm)</li>
+                </ul>
+                <p>Ta có: \( F_A = 1000 \cdot 9.8 \cdot 0.5 = 4,900 \, \text{N} \).</p>
+                <p><strong>Kết luận:</strong> Lực đẩy Archimedes tác dụng lên phao là \( 4,900 \, \text{N} \).</p>
+            </div>
+        </div>
+
+        <!-- BT 3 -->
+        <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+            <p class="font-bold mb-2">Bài tập 3:</p>
+            <p class="mb-3">Một hòn bi nhỏ được thả rơi thẳng đứng trong một bình chứa chất lỏng nhớt. Sau một thời gian, bi đạt trạng thái chuyển động thẳng đều. Biết trọng lượng của bi là \( P = 0.2 \, \text{N} \) và lực đẩy Archimedes tác dụng lên bi là \( F_A = 0.05 \, \text{N} \). Hãy tính lực cản của chất lỏng tác dụng lên hòn bi ở giai đoạn chuyển động đều.</p>
+            <button onclick="toggleAnswer('bt3')" class="bg-primary text-white px-4 py-1.5 rounded hover:bg-blue-800 text-sm font-medium transition">Xem giải chi tiết</button>
+            <div id="bt3" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-800">
+                <p><strong>Giải:</strong></p>
+                <p>Khi vật rơi đều trong chất lỏng, các lực tác dụng lên vật triệt tiêu lẫn nhau (theo phương thẳng đứng). Các lực gồm:</p>
+                <ul class="list-disc ml-6 mb-2">
+                    <li>Trọng lực \( P \) hướng xuống.</li>
+                    <li>Lực đẩy Archimedes \( F_A \) hướng lên.</li>
+                    <li>Lực cản của chất lỏng \( F_c \) ngược chiều chuyển động (hướng lên).</li>
+                </ul>
+                <p>Định luật I Newton cho chuyển động đều: \( P = F_A + F_c \)</p>
+                <p>Suy ra: \( F_c = P - F_A \)</p>
+                <p>Thay số: \( F_c = 0.2 - 0.05 = 0.15 \, \text{N} \).</p>
+                <p><strong>Kết luận:</strong> Lực cản của chất lỏng là \( 0.15 \, \text{N} \).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // 1. Hàm bật tắt xem lời giải
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if(el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // 2. Hàm chấm bài trắc nghiệm
+        function checkQuiz() {
+            const answers = {
+                q1: 'C',
+                q2: 'B',
+                q3: 'C',
+                q4: 'D',
+                q5: 'B'
+            };
+
+            const explanations = {
+                q1: 'Giải thích: Lực cản của chất lưu phụ thuộc vào tốc độ và hình dạng của vật.',
+                q2: 'Giải thích: Lực đẩy Archimedes chính là trường hợp riêng của lực nâng chất lưu khi vật đứng yên.',
+                q3: 'Giải thích: Theo lý thuyết sách giáo khoa, công thức là \\( F_A = \\rho \\cdot g \\cdot V \\).',
+                q4: 'Giải thích: Theo mục lưu ý của bài, vật rơi sẽ đạt đến vận tốc giới hạn và chuyển động thẳng đều.',
+                q5: 'Giải thích: Dựa vào mục "Em có biết", hình dạng con thoi (khí động học) giúp tối ưu, giảm thiểu lực cản không khí.'
+            };
+
+            let score = 0;
+            let total = 5;
+            let resultHTML = '<h3 class="font-bold text-lg mb-4 border-b pb-2">KẾT QUẢ BÀI LÀM:</h3><ul class="space-y-4">';
+
+            const form = document.getElementById('quizForm');
+            const formData = new FormData(form);
+
+            for(let i = 1; i <= total; i++) {
+                const questionName = 'q' + i;
+                const userAnswer = formData.get(questionName);
+                const correctAnswer = answers[questionName];
+                const explainText = explanations[questionName];
+
+                if(userAnswer === correctAnswer) {
+                    score++;
+                    resultHTML += `
+                    <li class="p-3 bg-green-50 border-l-4 border-green-500 rounded text-green-800">
+                        <strong>Câu ${i}: Đúng!</strong> (Bạn chọn: ${userAnswer}).<br>
+                        <span class="text-sm italic">${explainText}</span>
+                    </li>`;
+                } else if (!userAnswer) {
+                     resultHTML += `
+                    <li class="p-3 bg-yellow-50 border-l-4 border-yellow-500 rounded text-yellow-800">
+                        <strong>Câu ${i}: Chưa làm.</strong> Đáp án đúng là: ${correctAnswer}.<br>
+                        <span class="text-sm italic">${explainText}</span>
+                    </li>`;
+                } else {
+                    resultHTML += `
+                    <li class="p-3 bg-red-50 border-l-4 border-red-500 rounded text-red-800">
+                        <strong>Câu ${i}: Sai!</strong> Bạn chọn: ${userAnswer}. Đáp án đúng là: ${correctAnswer}.<br>
+                        <span class="text-sm italic">${explainText}</span>
+                    </li>`;
+                }
+            }
+
+            resultHTML += '</ul>';
+            
+            // Xếp loại
+            resultHTML += `<div class="mt-4 p-4 text-center text-xl font-bold rounded-md `;
+            if(score === total) {
+                resultHTML += `bg-green-600 text-white">Xuất sắc! Bạn đạt điểm tối đa ${score}/${total}. 🌟</div>`;
+            } else if (score >= 3) {
+                resultHTML += `bg-blue-500 text-white">Khá tốt! Bạn đạt ${score}/${total} điểm. 👍</div>`;
+            } else {
+                resultHTML += `bg-red-500 text-white">Cần cố gắng hơn! Bạn đạt ${score}/${total} điểm. 📚</div>`;
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.innerHTML = resultHTML;
+            resultDiv.classList.remove('hidden');
+            resultDiv.classList.add('bg-white', 'border');
+
+            // Render math in the result block
+            MathJax.typesetPromise([resultDiv]);
+        }
+    </script>
+</body>
+</html>

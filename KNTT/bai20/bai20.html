@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 20: Một số ví dụ về cách giải các bài toán thuộc phần Động lực học</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cấu hình MathJax -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <!-- Thư viện MathJax -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+        }
+        .text-primary { color: #000080; }
+        .bg-primary { background-color: #000080; }
+        .border-primary { border-color: #000080; }
+        
+        .box-content {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #000080;
+            border-bottom: 4px solid #000080;
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .question-box {
+            background-color: #edf2f7;
+            border-left: 4px solid #000080;
+            padding: 1rem;
+            border-radius: 0 0.375rem 0.375rem 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .answer-box {
+            background-color: #f0fdf4; /* Xanh lá nhạt */
+            border: 1px solid #bbf7d0;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-top: 0.5rem;
+            display: none; /* Ẩn mặc định */
+        }
+
+        .formula-box {
+            background-color: #fffbeb;
+            border: 1px solid #fde68a;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <!-- Header -->
+        <div class="bg-primary text-white rounded-[12px] p-6 text-center shadow-md">
+            <h2 class="text-xl font-bold uppercase tracking-wider">Chương II: ĐỘNG LỰC HỌC</h2>
+            <hr class="my-3 border-t border-white/40 w-2/3 mx-auto">
+            <h1 class="text-2xl font-bold uppercase">BÀI 20: MỘT SỐ VÍ DỤ VỀ CÁCH GIẢI CÁC BÀI TOÁN THUỘC PHẦN ĐỘNG LỰC HỌC</h1>
+        </div>
+
+        <!-- Lời dẫn -->
+        <div class="border border-gray-400 bg-white rounded-[12px] p-4 italic shadow-sm text-gray-700">
+            Làm thế nào để vận dụng các định luật Newton và các đặc điểm của lực cơ học để giải quyết các bài toán chuyển động trong thực tế? Bài học này sẽ hướng dẫn chi tiết các bước và phương pháp giải cơ bản nhất.
+        </div>
+
+        <!-- I. CÁC BƯỚC GIẢI CHÍNH -->
+        <div class="box-content">
+            <h3 class="section-title">I. CÁC BƯỚC GIẢI CHÍNH</h3>
+            <ol class="list-decimal list-inside space-y-3 mt-4 text-justify">
+                <li><strong>Chọn vật khảo sát chuyển động.</strong> Biểu diễn các lực tác dụng lên vật, trong đó làm rõ phương, chiều và điểm đặt của từng lực.</li>
+                <li><strong>Chọn hai trục vuông góc Ox và Oy;</strong> trong đó trục Ox cùng hướng với chuyển động của vật hay cùng hướng với lực kéo khi vật đứng yên. Phân tích các lực theo hai trục này. Áp dụng định luật 2 Newton theo hai trục toạ độ Ox và Oy.
+                    <div class="formula-box font-medium">
+                        \[ \begin{cases} Ox: F_{x} = F_{1x} + F_{2x} + ... = m.a \quad (1) \\ Oy: F_{y} = F_{1y} + F_{2y} + ... = 0 \quad (2) \end{cases} \]
+                    </div>
+                </li>
+                <li><strong>Giải hệ phương trình (1) và (2)</strong> để tìm gia tốc hay tìm lực, tuỳ từng bài toán.</li>
+            </ol>
+        </div>
+
+        <!-- II. CÁC LOẠI BÀI TOÁN -->
+        <div class="box-content">
+            <h3 class="section-title">II. CÁC LOẠI BÀI TOÁN</h3>
+            
+            <!-- Mục 1 -->
+            <div class="mt-4">
+                <h4 class="font-bold text-lg mb-2">1. Bài toán xác định gia tốc của vật khi biết lực tác dụng vào vật</h4>
+                
+                <div class="question-box">
+                    <strong>Ví dụ:</strong> Một người đẩy một thùng hàng, khối lượng 50 kg, trượt trên sàn nhà. Lực đẩy có phương nằm ngang với độ lớn là 180 N. Tính gia tốc của thùng hàng, biết hệ số ma sát trượt giữa thùng hàng và sàn nhà là 0,25. Lấy \( g = 9,8 \text{ m/s}^2 \).
+                </div>
+                
+                <button onclick="toggleAnswer('vd1')" class="bg-primary hover:bg-blue-800 text-white font-bold py-2 px-4 rounded text-sm mb-2 transition duration-300">Xem lời giải</button>
+                
+                <div id="vd1" class="answer-box text-gray-800">
+                    <p><strong>Giải:</strong></p>
+                    <div class="flex justify-center my-4 space-x-4">
+                        <img src="h1.png" alt="Hình 20.1" class="max-w-full h-auto border rounded shadow-sm" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiPkhpbmggMjAuMTwvdGV4dD48L3N2Zz4='">
+                    </div>
+                    <p>Thùng hàng chịu tác dụng của bốn lực: trọng lực \( \vec{P} \), lực đẩy \( \vec{F} \), phản lực \( \vec{N} \) và lực ma sát trượt \( \vec{F}_{ms} \) của sàn.</p>
+                    <p>Coi thùng hàng như một chất điểm. Áp dụng định luật 2 Newton cho chuyển động của vật theo hai trục Ox, Oy:</p>
+                    <div class="formula-box">
+                        \[ \begin{cases} Ox: F_x = F - F_{ms} = m.a_x = m.a \quad (1) \\ Oy: F_y = N - P = 0 \quad (2) \end{cases} \]
+                        \[ F_{ms} = \mu.N \quad (3) \]
+                    </div>
+                    <p>Giải hệ phương trình:</p>
+                    <p>Từ (2) \( \Rightarrow N = P = m.g = 50 \times 9,8 = 490 \text{ N} \)</p>
+                    <p>\( F_{ms} = \mu.N = 0,25 \times 490 = 122,5 \text{ N} \)</p>
+                    <p>\( a = \frac{F - F_{ms}}{m} = \frac{180 - 122,5}{50} = 1,15 \text{ m/s}^2 \)</p>
+                    <p><strong>Kết luận:</strong> Thùng hàng trượt với gia tốc \( a = 1,15 \text{ m/s}^2 \) cùng chiều với trục Ox.</p>
+                </div>
+            </div>
+
+            <!-- Mục 2 -->
+            <div class="mt-8">
+                <h4 class="font-bold text-lg mb-2">2. Bài toán xác định lực tác dụng vào vật khi biết gia tốc</h4>
+                
+                <!-- Ví dụ 1 -->
+                <div class="question-box mt-4">
+                    <strong>Ví dụ 1:</strong> Một người dùng dây buộc để kéo một thùng gỗ theo phương nằm ngang bằng một lực \( \vec{F} \). Khối lượng của thùng là 35 kg. Hệ số ma sát giữa sàn và đáy thùng là 0,3. Lấy \( g = 9,8 \text{ m/s}^2 \). Tính độ lớn của lực kéo trong hai trường hợp:<br>
+                    a) Thùng trượt với gia tốc \( 0,2 \text{ m/s}^2 \).<br>
+                    b) Thùng trượt đều.
+                </div>
+                <button onclick="toggleAnswer('vd2')" class="bg-primary hover:bg-blue-800 text-white font-bold py-2 px-4 rounded text-sm mb-2 transition duration-300">Xem lời giải</button>
+                
+                <div id="vd2" class="answer-box text-gray-800">
+                    <p><strong>Giải:</strong></p>
+                    <div class="flex flex-col md:flex-row justify-center my-4 space-y-4 md:space-y-0 md:space-x-4">
+                        <img src="h2.png" alt="Hình 20.2" class="max-w-full h-auto border rounded shadow-sm" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiPkhpbmggMjAuMjwvdGV4dD48L3N2Zz4='">
+                        <img src="h3.png" alt="Hình 20.3" class="max-w-full h-auto border rounded shadow-sm" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiPkhpbmggMjAuMzwvdGV4dD48L3N2Zz4='">
+                    </div>
+                    <p>Thùng chịu tác dụng của bốn lực: trọng lực \( \vec{P} = m.\vec{g} \), lực kéo \( \vec{F} \), phản lực \( \vec{N} \) và lực ma sát trượt \( \vec{F}_{ms} \) của mặt sàn.</p>
+                    <p>Áp dụng định luật 2 Newton cho các lực thành phần theo các phương Ox, Oy:</p>
+                    <div class="formula-box">
+                        \[ \begin{cases} Ox: F_x = F - F_{ms} = m.a_x = m.a \quad (1) \\ Oy: F_y = N - P = 0 \quad (2) \end{cases} \]
+                        \[ F_{ms} = \mu.N \]
+                    </div>
+                    <p>Từ (2) \( \Rightarrow N = m.g \Rightarrow F_{ms} = \mu.m.g \)</p>
+                    <p>Thay vào (1), ta được: \( F = m.a + \mu.m.g = m(a + \mu.g) \)</p>
+                    <p><strong>a) Thùng trượt với gia tốc \( a = 0,2 \text{ m/s}^2 \):</strong></p>
+                    <p>\( F = 35 \times (0,2 + 0,3 \times 9,8) = 109,9 \text{ N} \)</p>
+                    <p><strong>b) Thùng trượt đều (\( a = 0 \)):</strong></p>
+                    <p>\( F = \mu.m.g = 0,3 \times 35 \times 9,8 = 102,9 \text{ N} \)</p>
+                </div>
+
+                <!-- Ví dụ 2 -->
+                <div class="question-box mt-6">
+                    <strong>Ví dụ 2:</strong> Một chiếc hộp gỗ được thả trượt không vận tốc ban đầu từ đầu trên của một tấm gỗ dài \( L = 2 \text{ m} \). Tấm gỗ đặt nghiêng \( 30^\circ \) so với phương ngang. Hệ số ma sát giữa đáy hộp và mặt gỗ là 0,2. Lấy \( g = 9,8 \text{ m/s}^2 \). Hỏi sau bao lâu thì hộp trượt xuống đến đầu dưới của tấm gỗ?
+                </div>
+                <button onclick="toggleAnswer('vd3')" class="bg-primary hover:bg-blue-800 text-white font-bold py-2 px-4 rounded text-sm mb-2 transition duration-300">Xem lời giải</button>
+                
+                <div id="vd3" class="answer-box text-gray-800">
+                    <p><strong>Giải:</strong></p>
+                    <div class="flex justify-center my-4">
+                        <img src="h4.png" alt="Hình 20.4" class="max-w-full h-auto border rounded shadow-sm" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMTUwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiPkhpbmggMjAuNDwvdGV4dD48L3N2Zz4='">
+                    </div>
+                    <p>Hộp (coi là chất điểm) chịu tác dụng của ba lực: trọng lực \( \vec{P} \), phản lực \( \vec{N} \) và lực ma sát trượt \( \vec{F}_{ms} \).</p>
+                    <p>Phân tích trọng lực \( \vec{P} \) thành hai lực thành phần \( \vec{P}_x, \vec{P}_y \) và áp dụng định luật 2 Newton theo hai trục Ox, Oy:</p>
+                    <div class="formula-box">
+                        \[ \begin{cases} Ox: F_x = m.g.\sin\alpha - F_{ms} = m.a_x = m.a \quad (1) \\ Oy: F_y = N - m.g.\cos\alpha = 0 \quad (2) \end{cases} \]
+                        \[ F_{ms} = \mu.N \]
+                    </div>
+                    <p>Giải hệ phương trình: \( a = g(\sin\alpha - \mu\cos\alpha) \)</p>
+                    <p>Thay số: \( a = 9,8 \times (\sin 30^\circ - 0,2 \times \cos 30^\circ) \approx 3,2 \text{ m/s}^2 \)</p>
+                    <p>Áp dụng công thức quãng đường:</p>
+                    <p>\( L = \frac{1}{2}a.t^2 \Rightarrow t = \sqrt{\frac{2L}{a}} = \sqrt{\frac{2 \times 2}{3,2}} \approx 1,1 \text{ s} \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LƯU Ý -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg p-5 shadow-sm my-6">
+            <h4 class="font-bold text-yellow-800 uppercase mb-2">📌 Lưu ý</h4>
+            <p class="text-yellow-900 text-sm">
+                - Trục Ox luôn chọn cùng chiều với chiều chuyển động của vật để gia tốc \( a > 0 \). <br>
+                - Khi vật chuyển động đều (không đổi vận tốc), gia tốc \( a = 0 \), hệ quả là tổng các lực tác dụng lên vật bằng 0. <br>
+                - Cần phân tích đúng và đủ các lực tác dụng (Trọng lực, phản lực, ma sát, lực kéo/đẩy).
+            </p>
+        </div>
+
+        <!-- III. BÀI TẬP TỰ GIẢI -->
+        <div class="box-content">
+            <h3 class="section-title">III. BÀI TẬP TỰ GIẢI</h3>
+            
+            <div class="space-y-6 mt-4">
+                <!-- Bài 1 -->
+                <div>
+                    <div class="question-box">
+                        <strong>Bài 1:</strong> Người ta đẩy một cái thùng có khối lượng 55 kg theo phương ngang với lực 220 N làm thùng chuyển động trên mặt phẳng ngang. Hệ số ma sát trượt giữa thùng và mặt phẳng là 0,35. Tính gia tốc của thùng. Lấy \( g = 9,8 \text{ m/s}^2 \).
+                    </div>
+                    <button onclick="toggleAnswer('bt1')" class="bg-primary hover:bg-blue-800 text-white font-bold py-1 px-3 rounded text-sm mb-2 transition duration-300">Xem lời giải</button>
+                    <div id="bt1" class="answer-box">
+                        <p><strong>Giải:</strong></p>
+                        <p>Theo định luật II Newton chiếu lên phương ngang (Ox) và phương thẳng đứng (Oy):</p>
+                        <p>\( N = P = m.g \)</p>
+                        <p>\( F - F_{ms} = m.a \Rightarrow F - \mu.m.g = m.a \)</p>
+                        <p>\( a = \frac{F - \mu.m.g}{m} = \frac{220 - 0,35 \times 55 \times 9,8}{55} \approx 0,57 \text{ m/s}^2 \)</p>
+                    </div>
+                </div>
+
+                <!-- Bài 2 -->
+                <div>
+                    <div class="question-box">
+                        <strong>Bài 2:</strong> Một quyển sách đặt trên mặt bàn nghiêng và được thả cho trượt xuống. Cho biết góc nghiêng \( \alpha = 30^\circ \) so với phương ngang và hệ số ma sát giữa quyển sách và mặt bàn là \( \mu = 0,3 \). Lấy \( g = 9,8 \text{ m/s}^2 \). Tính gia tốc của quyển sách và quãng đường đi được của nó sau 2 s.
+                    </div>
+                    <button onclick="toggleAnswer('bt2')" class="bg-primary hover:bg-blue-800 text-white font-bold py-1 px-3 rounded text-sm mb-2 transition duration-300">Xem lời giải</button>
+                    <div id="bt2" class="answer-box">
+                        <p><strong>Giải:</strong></p>
+                        <p>Gia tốc của vật trượt trên mặt phẳng nghiêng (tương tự Ví dụ 2):</p>
+                        <p>\( a = g(\sin\alpha - \mu\cos\alpha) = 9,8 \times (\sin 30^\circ - 0,3 \times \cos 30^\circ) \approx 2,35 \text{ m/s}^2 \)</p>
+                        <p>Quãng đường đi được sau 2s:</p>
+                        <p>\( s = \frac{1}{2}a.t^2 = \frac{1}{2} \times 2,35 \times 2^2 = 4,7 \text{ m} \)</p>
+                    </div>
+                </div>
+
+                <!-- Bài 3 -->
+                <div>
+                    <div class="question-box">
+                        <strong>Bài 3:</strong> Một học sinh dùng dây kéo một thùng sách nặng 10 kg chuyển động trên mặt sàn nằm ngang. Dây nghiêng một góc chếch lên trên \( 30^\circ \) so với phương ngang. Hệ số ma sát trượt giữa đáy thùng và mặt sàn là \( \mu = 0,2 \). Lấy \( g = 9,8 \text{ m/s}^2 \). Hãy xác định độ lớn của lực kéo để thùng sách chuyển động thẳng đều.
+                    </div>
+                    <button onclick="toggleAnswer('bt3')" class="bg-primary hover:bg-blue-800 text-white font-bold py-1 px-3 rounded text-sm mb-2 transition duration-300">Xem lời giải</button>
+                    <div id="bt3" class="answer-box">
+                        <p><strong>Giải:</strong></p>
+                        <p>Thùng chuyển động thẳng đều nên gia tốc \( a = 0 \).</p>
+                        <p>Chiếu pt định luật II Newton lên 2 trục:</p>
+                        <p>Oy: \( N + F.\sin 30^\circ - P = 0 \Rightarrow N = m.g - F.\sin 30^\circ \)</p>
+                        <p>Ox: \( F.\cos 30^\circ - F_{ms} = 0 \Rightarrow F.\cos 30^\circ - \mu.N = 0 \)</p>
+                        <p>\( \Rightarrow F.\cos 30^\circ - \mu(m.g - F.\sin 30^\circ) = 0 \)</p>
+                        <p>\( \Rightarrow F(\cos 30^\circ + \mu.\sin 30^\circ) = \mu.m.g \)</p>
+                        <p>\( F = \frac{\mu.m.g}{\cos 30^\circ + \mu.\sin 30^\circ} = \frac{0,2 \times 10 \times 9,8}{\cos 30^\circ + 0,2 \times \sin 30^\circ} \approx 20,3 \text{ N} \)</p>
+                    </div>
+                </div>
+
+                <!-- Bài 4 -->
+                <div>
+                    <div class="question-box">
+                        <strong>Bài 4:</strong> Hai vật có khối lượng lần lượt là \( m_1 = 5 \text{ kg} \) và \( m_2 = 10 \text{ kg} \) được nối với nhau bằng một sợi dây không dãn và được đặt trên một mặt sàn nằm ngang. Kéo vật 1 bằng một lực \( \vec{F} \) nằm ngang có độ lớn \( F = 45 \text{ N} \). Hệ số ma sát giữa mỗi vật và mặt sàn là \( \mu = 0,2 \). Lấy \( g = 9,8 \text{ m/s}^2 \). Tính gia tốc của mỗi vật và lực căng của dây nối.
+                    </div>
+                    <button onclick="toggleAnswer('bt4')" class="bg-primary hover:bg-blue-800 text-white font-bold py-1 px-3 rounded text-sm mb-2 transition duration-300">Xem lời giải</button>
+                    <div id="bt4" class="answer-box">
+                        <p><strong>Giải:</strong></p>
+                        <p>Coi hệ 2 vật là 1 vật có khối lượng \( m = m_1 + m_2 = 15 \text{ kg} \).</p>
+                        <p>Gia tốc của hệ: \( a = \frac{F - F_{ms\_he}}{m} = \frac{F - \mu(m_1+m_2)g}{m_1+m_2} = \frac{45 - 0,2 \times 15 \times 9,8}{15} \approx 1,04 \text{ m/s}^2 \)</p>
+                        <p>Xét riêng vật 2 (bị kéo bởi lực căng dây T):</p>
+                        <p>\( T - F_{ms2} = m_2.a \Rightarrow T - \mu.m_2.g = m_2.a \)</p>
+                        <p>\( T = m_2(a + \mu.g) = 10 \times (1,04 + 0,2 \times 9,8) \approx 30 \text{ N} \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BÀI TẬP CỦNG CỐ -->
+        <div class="box-content bg-blue-50">
+            <h3 class="section-title text-center block w-full border-b-0 mb-0">CỦNG CỐ BÀI HỌC</h3>
+        </div>
+
+        <!-- Trắc nghiệm -->
+        <div class="box-content border border-gray-200">
+            <h4 class="font-bold text-lg mb-4 text-primary">A. BÀI TẬP TRẮC NGHIỆM</h4>
+            <form id="quizForm" class="space-y-6">
+                <!-- Q1 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold mb-2">Câu 1: Khi giải bài toán động lực học, việc chọn trục tọa độ Ox thường được ưu tiên như thế nào?</p>
+                    <label class="block cursor-pointer"><input type="radio" name="q1" value="A" class="mr-2"> A. Cùng hướng với lực ma sát.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q1" value="B" class="mr-2"> B. Cùng hướng chuyển động của vật.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q1" value="C" class="mr-2"> C. Vuông góc với mặt phẳng nghiêng.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q1" value="D" class="mr-2"> D. Ngược hướng trọng lực.</label>
+                </div>
+                <!-- Q2 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold mb-2">Câu 2: Nếu một vật chuyển động trên mặt phẳng ngang, chiếu phương trình định luật II Newton lên trục Oy (vuông góc với hướng chuyển động) ta được:</p>
+                    <label class="block cursor-pointer"><input type="radio" name="q2" value="A" class="mr-2"> A. \( N + P = m.a \)</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q2" value="B" class="mr-2"> B. \( N - P = m.a \)</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q2" value="C" class="mr-2"> C. \( N - P = 0 \)</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q2" value="D" class="mr-2"> D. \( F - F_{ms} = 0 \)</label>
+                </div>
+                <!-- Q3 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold mb-2">Câu 3: Độ lớn của lực ma sát trượt phụ thuộc vào yếu tố nào?</p>
+                    <label class="block cursor-pointer"><input type="radio" name="q3" value="A" class="mr-2"> A. Diện tích mặt tiếp xúc.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q3" value="B" class="mr-2"> B. Tốc độ chuyển động của vật.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q3" value="C" class="mr-2"> C. Bản chất và tình trạng mặt tiếp xúc, cùng độ lớn áp lực.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q3" value="D" class="mr-2"> D. Khối lượng và thể tích của vật.</label>
+                </div>
+                <!-- Q4 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold mb-2">Câu 4: Một vật khối lượng 2 kg đang chịu lực kéo 10 N theo phương ngang. Lực ma sát cản trở chuyển động là 2 N. Gia tốc của vật là:</p>
+                    <label class="block cursor-pointer"><input type="radio" name="q4" value="A" class="mr-2"> A. \( 6 \text{ m/s}^2 \)</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q4" value="B" class="mr-2"> B. \( 4 \text{ m/s}^2 \)</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q4" value="C" class="mr-2"> C. \( 5 \text{ m/s}^2 \)</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q4" value="D" class="mr-2"> D. \( 8 \text{ m/s}^2 \)</label>
+                </div>
+                <!-- Q5 -->
+                <div>
+                    <p class="font-semibold mb-2">Câu 5: Khi một vật trượt thẳng đều trên mặt phẳng, tổng hợp lực tác dụng lên vật bằng bao nhiêu?</p>
+                    <label class="block cursor-pointer"><input type="radio" name="q5" value="A" class="mr-2"> A. Bằng trọng lượng của vật.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q5" value="B" class="mr-2"> B. Khác 0 và cùng chiều chuyển động.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q5" value="C" class="mr-2"> C. Lớn hơn lực ma sát.</label>
+                    <label class="block cursor-pointer"><input type="radio" name="q5" value="D" class="mr-2"> D. Bằng 0.</label>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button type="button" onclick="checkQuiz()" class="bg-primary hover:bg-blue-900 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-transform transform hover:scale-105">NỘP BÀI</button>
+                </div>
+            </form>
+
+            <!-- Kết quả Quiz -->
+            <div id="quizResult" class="mt-6 p-4 rounded-lg hidden border">
+                <h4 id="scoreText" class="text-xl font-bold mb-4 text-center"></h4>
+                <div id="quizExplanations" class="space-y-3 text-sm">
+                    <!-- Đáp án chi tiết render bằng JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Vận dụng tính toán -->
+        <div class="box-content border border-gray-200">
+            <h4 class="font-bold text-lg mb-4 text-primary">B. BÀI TẬP VẬN DỤNG TÍNH TOÁN</h4>
+            
+            <div class="space-y-6">
+                <!-- Vận dụng 1 -->
+                <div>
+                    <div class="question-box border-l-4 border-green-600 bg-green-50">
+                        <strong>Câu 1:</strong> Một xe tải khối lượng 2 tấn bắt đầu hãm phanh trượt trên đường ngang. Hệ số ma sát giữa bánh xe và mặt đường là 0,4. Lấy \( g = 10 \text{ m/s}^2 \). Tính gia tốc hãm phanh của xe.
+                    </div>
+                    <button onclick="toggleAnswer('vd_tinh1')" class="bg-green-700 hover:bg-green-800 text-white font-bold py-1 px-3 rounded text-sm transition">Xem lời giải</button>
+                    <div id="vd_tinh1" class="answer-box">
+                        <p><strong>Giải:</strong></p>
+                        <p>Khối lượng \( m = 2 \text{ tấn} = 2000 \text{ kg} \). Xe hãm phanh nên lực kéo \( F = 0 \).</p>
+                        <p>Chiếu lên Ox: \( -F_{ms} = m.a \Rightarrow -\mu.N = m.a \)</p>
+                        <p>Chiếu lên Oy: \( N - P = 0 \Rightarrow N = m.g \)</p>
+                        <p>\( \Rightarrow -\mu.m.g = m.a \Rightarrow a = -\mu.g = -0,4 \times 10 = -4 \text{ m/s}^2 \)</p>
+                        <p>Gia tốc hãm phanh có độ lớn là \( 4 \text{ m/s}^2 \), dấu trừ thể hiện tính chất chuyển động chậm dần.</p>
+                    </div>
+                </div>
+
+                <!-- Vận dụng 2 -->
+                <div>
+                    <div class="question-box border-l-4 border-green-600 bg-green-50">
+                        <strong>Câu 2:</strong> Vật 5 kg trượt xuống một dốc nghiêng \( 45^\circ \) không ma sát. Tính gia tốc của vật. Lấy \( g = 9,8 \text{ m/s}^2 \).
+                    </div>
+                    <button onclick="toggleAnswer('vd_tinh2')" class="bg-green-700 hover:bg-green-800 text-white font-bold py-1 px-3 rounded text-sm transition">Xem lời giải</button>
+                    <div id="vd_tinh2" class="answer-box">
+                        <p><strong>Giải:</strong></p>
+                        <p>Không có lực ma sát (\( \mu = 0 \)), gia tốc trượt xuống dốc chỉ phụ thuộc thành phần trọng lực theo phương song song mặt phẳng nghiêng.</p>
+                        <p>\( P_x = m.a \Rightarrow m.g.\sin\alpha = m.a \)</p>
+                        <p>\( a = g.\sin\alpha = 9,8 \times \sin 45^\circ \approx 9,8 \times 0,707 = 6,93 \text{ m/s}^2 \)</p>
+                    </div>
+                </div>
+
+                <!-- Vận dụng 3 -->
+                <div>
+                    <div class="question-box border-l-4 border-green-600 bg-green-50">
+                        <strong>Câu 3:</strong> Kéo một vật 50 kg trên mặt sàn ngang bằng một lực hướng chếch lên một góc \( 60^\circ \) so với phương ngang. Biết hệ số ma sát là 0,1; gia tốc của vật là \( 0,5 \text{ m/s}^2 \); \( g = 10 \text{ m/s}^2 \). Tính lực kéo.
+                    </div>
+                    <button onclick="toggleAnswer('vd_tinh3')" class="bg-green-700 hover:bg-green-800 text-white font-bold py-1 px-3 rounded text-sm transition">Xem lời giải</button>
+                    <div id="vd_tinh3" class="answer-box">
+                        <p><strong>Giải:</strong></p>
+                        <p>Chiếu lên Oy: \( N + F.\sin 60^\circ - m.g = 0 \Rightarrow N = m.g - F.\sin 60^\circ \)</p>
+                        <p>Chiếu lên Ox: \( F.\cos 60^\circ - F_{ms} = m.a \)</p>
+                        <p>\( F.\cos 60^\circ - \mu(m.g - F.\sin 60^\circ) = m.a \)</p>
+                        <p>\( F(\cos 60^\circ + \mu.\sin 60^\circ) = m.a + \mu.m.g \)</p>
+                        <p>\( F(0,5 + 0,1 \times \frac{\sqrt{3}}{2}) = 50 \times 0,5 + 0,1 \times 50 \times 10 \)</p>
+                        <p>\( F(0,5 + 0,0866) = 25 + 50 = 75 \)</p>
+                        <p>\( F = \frac{75}{0,5866} \approx 127,8 \text{ N} \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script xử lý chức năng -->
+    <script>
+        // Hàm ẩn/hiện lời giải
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.style.display === "none" || el.style.display === "") {
+                el.style.display = "block";
+            } else {
+                el.style.display = "none";
+            }
+        }
+
+        // Dữ liệu đáp án Quiz
+        const quizAnswers = {
+            q1: { ans: "B", detail: "Trục Ox luôn được ưu tiên chọn cùng hướng với chiều chuyển động để gia tốc a có giá trị dương, thuận tiện cho tính toán." },
+            q2: { ans: "C", detail: "Trên trục Oy (vuông góc phương chuyển động ngang), vật không có gia tốc nên tổng hợp lực bằng 0. Suy ra N - P = 0." },
+            q3: { ans: "C", detail: "Công thức Fms = µ.N, do đó lực ma sát trượt phụ thuộc vào hệ số ma sát (bản chất, tình trạng mặt tiếp xúc) và áp lực N." },
+            q4: { ans: "B", detail: "Áp dụng: F - Fms = m.a => 10 - 2 = 2.a => a = 8/2 = 4 m/s²." },
+            q5: { ans: "D", detail: "Chuyển động thẳng đều nghĩa là gia tốc a = 0. Theo định luật 2 Newton, tổng lực F = m.a = 0." }
+        };
+
+        // Hàm kiểm tra bài Quiz
+        function checkQuiz() {
+            let score = 0;
+            const total = Object.keys(quizAnswers).length;
+            const form = document.getElementById('quizForm');
+            let explanationHTML = '<h5 class="font-bold border-b pb-2 mb-2 text-gray-700">ĐÁP ÁN VÀ HƯỚNG DẪN CHI TIẾT:</h5>';
+
+            for (let i = 1; i <= total; i++) {
+                const qName = 'q' + i;
+                const selected = form.elements[qName].value;
+                const correct = quizAnswers[qName].ans;
+                const detail = quizAnswers[qName].detail;
+
+                if (selected === correct) {
+                    score++;
+                    explanationHTML += `<p class="mb-2"><span class="font-bold text-green-600">Câu ${i}: ĐÚNG.</span> Đáp án ${correct}. ${detail}</p>`;
+                } else {
+                    let userAns = selected ? selected : "Chưa chọn";
+                    explanationHTML += `<p class="mb-2"><span class="font-bold text-red-500">Câu ${i}: SAI (Bạn chọn ${userAns}).</span> Đáp án đúng là <strong>${correct}</strong>. ${detail}</p>`;
+                }
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            const scoreText = document.getElementById('scoreText');
+            const explanationsDiv = document.getElementById('quizExplanations');
+
+            // Hiển thị kết quả
+            resultDiv.style.display = 'block';
+            explanationsDiv.innerHTML = explanationHTML;
+
+            // Xử lý màu sắc điểm số
+            if (score === total) {
+                resultDiv.className = "mt-6 p-5 rounded-lg border-2 border-green-500 bg-green-50";
+                scoreText.innerHTML = `Tuyệt vời! Bạn đạt điểm tuyệt đối: <span class="text-green-600 text-2xl">${score}/${total}</span>`;
+            } else {
+                resultDiv.className = "mt-6 p-5 rounded-lg border-2 border-red-400 bg-red-50";
+                scoreText.innerHTML = `Bạn đạt được: <span class="text-red-600 text-2xl">${score}/${total}</span>. Hãy xem lại hướng dẫn bên dưới nhé!`;
+            }
+            
+            // Re-render MathJax if there are math formulas in JS injected HTML
+            MathJax.typesetPromise([explanationsDiv]);
+        }
+    </script>
+</body>
+</html>

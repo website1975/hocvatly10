@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 24: Công suất - Chương IV: Năng lượng, Công, Công suất</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#000080',
+                        navylight: '#1e1e9c',
+                        graylight: '#f4f7f9',
+                    },
+                    borderRadius: {
+                        '12px': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- MathJax for formula rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['\\[', '\\]'], ['$$', '$$']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="bg-[#f4f7f9] text-gray-800 font-sans leading-relaxed">
+
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        
+        <!-- Header: Chương và Tên bài đóng cùng 1 khung, bo tròn 12px -->
+        <header class="bg-gradient-to-r from-navy to-navylight text-white p-6 rounded-12px shadow-lg mb-8 text-center">
+            <div class="text-sm uppercase tracking-wider font-semibold opacity-90">Chương IV: NĂNG LƯỢNG – CÔNG, CÔNG SUẤT</div>
+            <div class="h-[1px] bg-white/30 my-3"></div>
+            <h1 class="text-3xl font-extrabold tracking-tight">BÀI 24: CÔNG SUẤT</h1>
+        </header>
+
+        <!-- Lời dẫn nhập (Intro Box) có đóng khung -->
+        <div class="bg-white border border-gray-300 rounded-12px p-5 shadow-sm mb-8">
+            <div class="flex items-start space-x-4">
+                <div class="bg-blue-100 text-navy p-3 rounded-full flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                </div>
+                <div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 border-b border-gray-100 pb-4">
+                        <div class="italic text-gray-600 bg-gray-50 p-3 rounded border-l-4 border-yellow-400">
+			"Tớ thực hiện công nhanh hơn cậu vì tớ leo lên cao hơn cậu."<br>
+                        "Chưa chắc đâu vì cậu leo trước tớ."
+                        </div>
+                        <div class="italic text-gray-600 bg-gray-50 p-3 rounded border-l-4 border-blue-400">
+
+				<img src="h0.png"></img>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic font-medium">
+                        Để đánh giá việc thực hiện công của người hay thiết bị sinh công, người ta không chỉ quan tâm đến độ lớn của công thực hiện được mà còn quan tâm đến việc công này được thực hiện nhanh hay chậm.
+                    </p>
+                    <p class="text-navy font-semibold mt-3">
+                        Theo em, làm thế nào để xác định được sự nhanh chậm của việc thực hiện công?
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MỤC I -->
+        <section class="bg-white rounded-12px p-6 shadow-md mb-8">
+            <h2 class="text-xl font-bold text-navy border-b-4 border-navy pb-2 mb-4 uppercase">I. KHÁI NIỆM CÔNG SUẤT</h2>
+            
+            <p class="mb-4 text-justify">
+                Hai anh công nhân dùng ròng rọc để kéo xô vữa lên các tầng cao của một công trình xây dựng. Dựa vào bảng số liệu dưới đây, hãy xác định xem ai là người thực hiện công nhanh hơn. Lấy \( g = 10 \text{ m/s}^2 \).
+            </p>
+
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full text-center border-collapse border border-[#cbd5e0]">
+                    <thead>
+                        <tr class="bg-[#e2e8f0]">
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Công nhân</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Khối lượng xô vữa: \(m\) (kg)</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Độ cao công trình: \(h\) (m)</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Công thực hiện: \(A\) (J)</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Thời gian thực hiện: \(t\) (s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border border-[#cbd5e0] p-2 font-medium">Công nhân 1</td>
+                            <td class="border border-[#cbd5e0] p-2">\(m_1 = 20 \text{ kg}\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(h_1 = 10 \text{ m}\)</td>
+                            <td class="border border-[#cbd5e0] p-2 text-red-600 font-medium">\(A_1 = ?\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(t_1 = 10 \text{ s}\)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border border-[#cbd5e0] p-2 font-medium">Công nhân 2</td>
+                            <td class="border border-[#cbd5e0] p-2">\(m_2 = 21 \text{ kg}\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(h_2 = 11 \text{ m}\)</td>
+                            <td class="border border-[#cbd5e0] p-2 text-red-600 font-medium">\(A_2 = ?\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(t_2 = 20 \text{ s}\)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-xs text-gray-500 italic mt-1 text-right">Bảng 24.1: Bảng số liệu thực hiện công</p>
+            </div>
+
+            <!-- Câu hỏi tương tác -->
+            <div class="bg-[#edf2f7] border-l-4 border-navy p-4 rounded-r mb-4">
+                <span class="font-bold text-navy block mb-1">? Câu hỏi:</span>
+                <p class="text-gray-700">Tính công \(A_1\), \(A_2\) của mỗi công nhân và xác định ai thực hiện công nhanh hơn?</p>
+                <button onclick="toggleAnswer('ans-i')" class="mt-2 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">
+                    Xem lời giải
+                </button>
+                <div id="ans-i" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700 transition-all duration-300">
+                    <p class="font-semibold mb-2 text-green-800">Trả lời:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Công thực hiện của Công nhân 1: <br>
+                            \(A_1 = P_1 \cdot h_1 = m_1 \cdot g \cdot h_1 = 20 \cdot 10 \cdot 10 = 2000 \text{ J}\).
+                        </li>
+                        <li>Công thực hiện của Công nhân 2: <br>
+                            \(A_2 = P_2 \cdot h_2 = m_2 \cdot g \cdot h_2 = 21 \cdot 10 \cdot 11 = 2310 \text{ J}\).
+                        </li>
+                        <li>So sánh tốc độ thực hiện công (lượng công thực hiện trong 1 giây):
+                            <ul class="list-circle pl-5 mt-1">
+                                <li>Công nhân 1 thực hiện được: \(\frac{A_1}{t_1} = \frac{2000}{10} = 200 \text{ J/s}\).</li>
+                                <li>Công nhân 2 thực hiện được: \(\frac{A_2}{t_2} = \frac{2310}{20} = 115,5 \text{ J/s}\).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="mt-2 font-semibold text-navy">Kết luận: Công nhân 1 là người thực hiện công nhanh hơn vì trong mỗi giây anh ấy sinh ra công lớn hơn (200 J so với 115,5 J).</p>
+                </div>
+            </div>
+
+            <!-- Định nghĩa Công suất đóng khung -->
+            <div class="bg-blue-50 border-2 border-navy/20 rounded-lg p-5 mt-6">
+                <h3 class="font-bold text-navy text-lg mb-2">Định nghĩa</h3>
+                <p class="text-gray-800 italic leading-relaxed">
+                    <strong>Đại lượng đặc trưng cho khả năng thực hiện công nhanh hay chậm</strong> của người hoặc thiết bị sinh công, được gọi là <strong>công suất</strong> hay <strong>tốc độ sinh công</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- MỤC II -->
+        <section class="bg-white rounded-12px p-6 shadow-md mb-8">
+            <h2 class="text-xl font-bold text-navy border-b-4 border-navy pb-2 mb-4 uppercase">II. CÔNG THỨC TÍNH CÔNG SUẤT</h2>
+            
+            <p class="mb-4">
+                Nếu trong thời gian \(t\), công thực hiện được là \(A\) thì tốc độ sinh công, tức công suất được tính bởi công thức:
+            </p>
+
+            <!-- Công thức đóng khung -->
+            <div class="bg-blue-50 border-2 border-navy rounded-lg p-4 text-center my-6">
+                <span class="text-gray-500 block text-xs uppercase tracking-wider font-semibold">Công thức tính công suất</span>
+                <div class="text-2xl font-bold text-navy my-2">
+                    \[ \mathscr{P} = \frac{A}{t} \]
+                </div>
+                <p class="text-xs text-gray-600 mt-1">(Ký hiệu trong SGK đôi khi dùng \(\vec{\mathscr{P}}\) hoặc \(\mathscr{P}\) để biểu diễn công suất)</p>
+            </div>
+
+            <p class="mb-4">Trong đó:</p>
+            <ul class="list-disc pl-6 mb-4 space-y-2">
+                <li>\(A\) là công thực hiện (đơn vị: Jun - \(\text{J}\)).</li>
+                <li>\(t\) là thời gian thực hiện công (đơn vị: giây - \(\text{s}\)).</li>
+                <li>\(\mathscr{P}\) là công suất (đơn vị: Oát - \(\text{W}\)).</li>
+            </ul>
+
+            <div class="bg-gray-50 border border-gray-300 rounded p-4 mb-6">
+                <p class="font-bold mb-2">Các đơn vị của công suất:</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-center">
+                    <div class="bg-white p-2 border border-gray-200 rounded shadow-sm">
+                        \(1 \text{ W} = \frac{1 \text{ J}}{1 \text{ s}}\)
+                    </div>
+                    <div class="bg-white p-2 border border-gray-200 rounded shadow-sm">
+                        \(1 \text{ kW} = 10^3 \text{ W}\)
+                    </div>
+                    <div class="bg-white p-2 border border-gray-200 rounded shadow-sm">
+                        \(1 \text{ MW} = 10^6 \text{ W}\)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lưu ý quan trọng -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded mb-6">
+                <strong class="text-amber-800 block mb-1">⚠️ LƯU Ý QUAN TRỌNG:</strong>
+                <p class="text-amber-950">
+                    <strong>Kilôoát giờ (\(\text{kWh}\))</strong> không phải là đơn vị của công suất mà là <strong>đơn vị của công (điện năng tiêu thụ)</strong>.
+                    <br>
+                    \(1 \text{ kWh}\) là công của một thiết bị có công suất \(1 \text{ kW}\) hoạt động liên tục trong thời gian \(1\) giờ:
+                    \[ 1 \text{ kWh} = 1000 \text{ W} \times 3600 \text{ s} = 3\,600\,000 \text{ J} = 3,6 \text{ MJ} \]
+                </p>
+            </div>
+
+            <!-- Câu hỏi hoạt động trong mục II -->
+            <div class="bg-[#edf2f7] border-l-4 border-navy p-4 rounded-r mb-4">
+                <span class="font-bold text-navy block mb-1">? Câu hỏi liên hệ (Trang 96):</span>
+                <p class="text-gray-700">
+                    Coi công suất trung bình của trái tim là \(3 \text{ W}\).
+                    <br><strong>a)</strong> Trong một ngày - đêm trung bình trái tim thực hiện một công là bao nhiêu?
+                    <br><strong>b)</strong> Nếu một người sống \(70\) tuổi thì công của trái tim thực hiện là bao nhiêu? Một ô tô tải muốn thực hiện được công này phải thực hiện trong thời gian bao lâu? Coi công suất của xe ô tô tải là \(3 \cdot 10^5 \text{ W}\).
+                </p>
+                <button onclick="toggleAnswer('ans-ii-heart')" class="mt-2 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">
+                    Xem lời giải chi tiết
+                </button>
+                <div id="ans-ii-heart" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                    <p class="font-semibold text-green-800 mb-2">Lời giải:</p>
+                    <p class="mb-2"><strong>a) Công của trái tim trong một ngày - đêm (\(24\) giờ):</strong></p>
+                    <p class="pl-4 mb-3">
+                        Thời gian \(t_1 = 24 \text{ giờ} = 24 \cdot 3600 \text{ s} = 86\,400 \text{ s}\).
+                        <br>Công thực hiện:
+                        \[ A_1 = \mathscr{P} \cdot t_1 = 3 \cdot 86\,400 = 259\,200 \text{ J} \]
+                    </p>
+                    <p class="mb-2"><strong>b) Công của trái tim trong \(70\) năm:</strong></p>
+                    <p class="pl-4 mb-3">
+                        Thời gian \(t_2 = 70 \text{ năm} = 70 \cdot 365 \cdot 86\,400 \text{ s} \approx 2,2075 \cdot 10^9 \text{ s}\) (bỏ qua năm nhuận).
+                        <br>Công thực hiện trong đời người:
+                        \[ A_2 = \mathscr{P} \cdot t_2 = 3 \cdot 2,2075 \cdot 10^9 \approx 6,6225 \cdot 10^9 \text{ J} \]
+                    </p>
+                    <p class="mb-2"><strong>Thời gian hoạt động cần thiết của ô tô tải:</strong></p>
+                    <p class="pl-4">
+                        Công suất ô tô tải: \(\mathscr{P}_{\text{ôtô}} = 3 \cdot 10^5 \text{ W}\).
+                        <br>Thời gian cần thiết để ô tô tải thực hiện cùng công suất đó:
+                        \[ t_{\text{ôtô}} = \frac{A_2}{\mathscr{P}_{\text{ôtô}}} = \frac{6,6225 \cdot 10^9}{3 \cdot 10^5} \approx 22\,075 \text{ s} \approx 6,13 \text{ giờ} \]
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MỤC III -->
+        <section class="bg-white rounded-12px p-6 shadow-md mb-8">
+            <h2 class="text-xl font-bold text-navy border-b-4 border-navy pb-2 mb-4 uppercase">III. LIÊN HỆ GIỮA CÔNG SUẤT VỚI LỰC VÀ TỐC ĐỘ</h2>
+            
+            <p class="mb-4">
+                Khi vật chuyển động cùng hướng với lực tác dụng và lực không đổi, mối liên hệ giữa công suất, lực phát động và tốc độ được xác định như sau:
+            </p>
+
+            <div class="bg-blue-50 border-2 border-navy rounded-lg p-4 text-center my-4">
+                <span class="text-gray-500 block text-xs uppercase tracking-wider font-semibold">Công thức liên hệ</span>
+                <div class="text-2xl font-bold text-navy my-2">
+                    \[ \mathscr{P} = \frac{A}{t} = \frac{F \cdot s}{t} = F \cdot v \]
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div class="p-4 border border-blue-200 bg-blue-50/50 rounded">
+                    <h4 class="font-bold text-navy mb-2">Công suất trung bình</h4>
+                    <p class="text-sm">Nếu \(v\) là tốc độ trung bình của vật thì công suất trung bình là:</p>
+                    <p class="font-bold text-center text-lg mt-2">\[ \mathscr{P}_{\text{tb}} = F \cdot v_{\text{tb}} \]</p>
+                </div>
+                <div class="p-4 border border-purple-200 bg-purple-50 rounded">
+                    <h4 class="font-bold text-purple-900 mb-2">Công suất tức thời</h4>
+                    <p class="text-sm">Nếu \(v_t\) là tốc độ tức thời của vật thì công suất tức thời là:</p>
+                    <p class="font-bold text-center text-lg mt-2">\[ \mathscr{P}_t = F \cdot v_t \]</p>
+                </div>
+            </div>
+
+            <!-- Bài tập ví dụ trong SGK -->
+            <div class="bg-gray-50 border border-gray-300 rounded-lg p-5 mt-6">
+                <h3 class="font-bold text-navy border-b pb-2 mb-3">Bài tập ví dụ (SGK trang 97):</h3>
+                <p class="italic text-gray-700 mb-3">
+                    Một người kéo một thùng nước \(15 \text{ kg}\) từ giếng sâu \(8 \text{ m}\) lên trong \(10 \text{ s}\). Hãy tính công suất của người kéo. Biết thùng nước chuyển động đều và lấy \(g = 10 \text{ m/s}^2\).
+                </p>
+                <div class="bg-white p-4 rounded border border-gray-200">
+                    <p class="font-bold text-green-700 mb-2">Tóm tắt và hướng dẫn giải:</p>
+                    <p>Vì vật chuyển động thẳng đều nên lực kéo cân bằng với trọng lượng của vật:</p>
+                    \[ F = P = m \cdot g = 15 \cdot 10 = 150 \text{ N} \]
+                    <p class="mt-2">Tốc độ kéo đều của vật:</p>
+                    \[ v = \frac{s}{t} = \frac{8}{10} = 0,8 \text{ m/s} \]
+                    <p class="mt-2">Công suất của người kéo:</p>
+                    \[ \mathscr{P} = F \cdot v = 150 \cdot 0,8 = 120 \text{ W} \]
+                </div>
+            </div>
+
+            <!-- Phần hình ảnh minh họa xe đạp thể thao và hộp số xe máy -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="text-center bg-gray-50 p-4 border rounded-12px shadow-sm">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center rounded mb-2 overflow-hidden border">
+                        <img src="h1.png" alt="Líp xe đạp thể thao" onerror="this.onerror=null; this.outerHTML='<div class=\'text-gray-500 font-semibold p-4\'>[Hình 24.1: Líp xe đạp thể thao]</div>'" class="object-contain h-full w-full">
+                    </div>
+                    <span class="text-sm font-semibold text-gray-700">Hình 24.1. Líp xe đạp thể thao</span>
+                </div>
+                <div class="text-center bg-gray-50 p-4 border rounded-12px shadow-sm">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center rounded mb-2 overflow-hidden border">
+                        <img src="h2.png" alt="Hộp số xe máy" onerror="this.onerror=null; this.outerHTML='<div class=\'text-gray-500 font-semibold p-4\'>[Hình 24.2: Hộp số xe máy]</div>'" class="object-contain h-full w-full">
+                    </div>
+                    <span class="text-sm font-semibold text-gray-700">Hình 24.2. Hộp số xe máy</span>
+                </div>
+            </div>
+
+            <!-- Câu hỏi SGK Mục III -->
+            <div class="space-y-4">
+                <div class="bg-[#edf2f7] border-l-4 border-navy p-4 rounded-r">
+                    <span class="font-bold text-navy block mb-1">? Câu 1: Giải thích tác dụng líp nhiều tầng</span>
+                    <p class="text-gray-700">Hãy giải thích tác dụng của líp nhiều tầng trong xe đạp thể thao (Hình 24.1).</p>
+                    <button onclick="toggleAnswer('ans-lip')" class="mt-2 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">Xem giải thích</button>
+                    <div id="ans-lip" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                        <p class="font-semibold text-green-800 mb-1">Giải thích:</p>
+                        <p>Với cùng một công suất hoạt động của chân đạp người (\(\mathscr{P} = F \cdot v\)), nếu thay đổi bán kính líp (lực kéo và tốc độ thay đổi):</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>Khi lên dốc cần lực lớn (\(F\) tăng), ta chuyển xích sang líp lớn (bán kính lớn) để tăng mô-men quay lực kéo, lúc này tốc độ đi \(v\) sẽ chậm lại.</li>
+                            <li>Khi đi đường bằng phẳng cần tốc độ lớn (\(v\) tăng), ta chuyển xích sang líp nhỏ để tăng tốc độ quay của bánh sau, khi đó lực cản nhỏ nên không cần lực tác dụng quá lớn.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-[#edf2f7] border-l-4 border-navy p-4 rounded-r">
+                    <span class="font-bold text-navy block mb-1">? Câu 2: Giải thích hộp số xe máy</span>
+                    <p class="text-gray-700">Hãy giải thích tại sao khi đi xe máy trên những đoạn đường dốc hoặc có ma sát lớn ta thường đi ở số nhỏ.</p>
+                    <button onclick="toggleAnswer('ans-hoso')" class="mt-2 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">Xem giải thích</button>
+                    <div id="ans-hoso" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                        <p class="font-semibold text-green-800 mb-1">Giải thích:</p>
+                        <p>Công suất phát động của động cơ xe máy có giới hạn tối đa (\(\mathscr{P} = F \cdot v\)).</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>Khi lên dốc cao hoặc đi qua vùng cát bùn lầy lội (ma sát rất lớn), xe cần một lực kéo phát động \(F\) cực kỳ lớn để thắng trọng lực và lực cản.</li>
+                            <li>Từ hệ thức \(\mathscr{P} = F \cdot v \Rightarrow F = \frac{\mathscr{P}}{v}\). Để có lực kéo \(F\) cực đại thì vận tốc \(v\) của xe phải giảm nhỏ. Do đó ta phải về số nhỏ (số 1, số 2) để động cơ truyền mô-men kéo lớn nhất cho bánh xe phát động.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-[#edf2f7] border-l-4 border-navy p-4 rounded-r">
+                    <span class="font-bold text-navy block mb-1">? Câu 3: Tính công suất trung bình thang máy</span>
+                    <p class="text-gray-700">
+                        Động cơ của một thang máy tác dụng lực kéo \(20\,000 \text{ N}\) để thang máy chuyển động thẳng lên trên trong \(10 \text{ s}\) và quãng đường đi được tương ứng là \(18 \text{ m}\). Công suất trung bình của động cơ là:
+                        <br><strong class="mr-4">A. \(36 \text{ kW}\).</strong> <strong class="mr-4">B. \(3,6 \text{ kW}\).</strong> <strong class="mr-4">C. \(11 \text{ kW}\).</strong> <strong>D. \(1,1 \text{ kW}\).</strong>
+                    </p>
+                    <button onclick="toggleAnswer('ans-thangmay')" class="mt-2 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">Xem đáp án</button>
+                    <div id="ans-thangmay" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                        <p class="font-semibold text-green-800 mb-1">Đáp án đúng: A. \(36 \text{ kW}\)</p>
+                        <p class="font-semibold text-green-800 mb-1">Lời giải chi tiết:</p>
+                        <p>Công của động cơ thực hiện kéo thang máy:</p>
+                        \[ A = F \cdot s = 20\,000 \cdot 18 = 360\,000 \text{ J} \]
+                        <p class="mt-2">Công suất trung bình của động cơ:</p>
+                        \[ \mathscr{P} = \frac{A}{t} = \frac{360\,000}{10} = 36\,000 \text{ W} = 36 \text{ kW} \]
+                    </div>
+                </div>
+
+                <div class="bg-[#edf2f7] border-l-4 border-navy p-4 rounded-r">
+                    <span class="font-bold text-navy block mb-1">? Câu 4: Tính công suất ô tô lên dốc</span>
+                    <p class="text-gray-700">
+                        Một ô tô khối lượng \(1 \text{ tấn}\) đang hoạt động với công suất \(5 \text{ kW}\) và chuyển động thẳng đều với vận tốc \(54 \text{ km/h}\) trên đường nằm ngang thì lên dốc. Hỏi động cơ ô tô phải hoạt động với công suất bằng bao nhiêu để có thể lên dốc với tốc độ như cũ? Biết hệ số ma sát giữa bánh xe và mặt đường không đổi, dốc nghiêng góc \(2,3^\circ\) so với mặt nằm ngang và \(g = 10 \text{ m/s}^2\).
+                    </p>
+                    <button onclick="toggleAnswer('ans-otodoc')" class="mt-2 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">Xem lời giải chi tiết</button>
+                    <div id="ans-otodoc" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                        <p class="font-semibold text-green-800 mb-1">Lời giải chi tiết:</p>
+                        <p class="mb-2">Đổi đơn vị: <br>
+                            \(m = 1 \text{ tấn} = 1000 \text{ kg}\) <br>
+                            \(\mathscr{P}_1 = 5 \text{ kW} = 5000 \text{ W}\) <br>
+                            \(v = 54 \text{ km/h} = 15 \text{ m/s}\)
+                        </p>
+                        <p class="mb-2"><strong>1. Trên đường ngang thẳng đều:</strong></p>
+                        <p class="pl-4">
+                            Lực phát động của động cơ bằng lực ma sát:
+                            \[ F_1 = F_{\text{ms}} = \frac{\mathscr{P}_1}{v} = \frac{5000}{15} = \frac{1000}{3} \approx 333,3 \text{ N} \]
+                        </p>
+                        <p class="mb-2"><strong>2. Khi lên dốc thẳng đều với tốc độ cũ:</strong></p>
+                        <p class="pl-4">
+                            Ngoài lực ma sát không đổi (do hệ số ma sát và áp lực thay đổi rất ít, coi góc nghiêng nhỏ \(\cos 2,3^\circ \approx 1\)), động cơ còn phải thắng thêm thành phần song song của trọng lực kéo xe tụt xuống dốc là:
+                            \[ F_x = P \cdot \sin \alpha = m \cdot g \cdot \sin 2,3^\circ = 1000 \cdot 10 \cdot \sin 2,3^\circ \approx 10\,000 \cdot 0,0401 = 401 \text{ N} \]
+                            Lực phát động mới cần có:
+                            \[ F_2 = F_{\text{ms}} + P \cdot \sin \alpha = 333,3 + 401 = 734,3 \text{ N} \]
+                            Công suất mới của động cơ để duy trì vận tốc như cũ:
+                            \[ \mathscr{P}_2 = F_2 \cdot v = 734,3 \cdot 15 \approx 11\,014,5 \text{ W} \approx 11 \text{ kW} \]
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOẠT ĐỘNG THỰC HÀNH -->
+        <section class="bg-white rounded-12px p-6 shadow-md mb-8">
+            <h2 class="text-xl font-bold text-navy border-b-4 border-navy pb-2 mb-4 flex items-center uppercase">
+                <svg class="w-6 h-6 mr-2 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0V12m-3 .5a1.5 1.5 0 00-3 0v2.5a6 6 0 006 6h1a6 6 0 006-6v-1.5m-6 1.5V12m0 0a1.5 1.5 0 113 0v3.5m0-3.5a1.5 1.5 0 013 0V15"></path></svg>
+                HOẠT ĐỘNG: THI XEM AI CÓ CÔNG SUẤT LỚN HƠN
+            </h2>
+            
+            <p class="mb-4">
+                Hoạt động thảo luận nhóm thiết lập kế hoạch đo công suất của bản thân khi leo cầu thang gác.
+            </p>
+
+            <div class="bg-[#edf2f7] border-l-4 border-navy p-4 rounded-r mb-6">
+                <span class="font-bold text-navy block mb-1">Nhiệm vụ thảo luận:</span>
+                <p class="text-gray-700">
+                    1. Hãy nêu tên dụng cụ cần dùng và cách tiến hành việc đo thời gian lên cầu thang.
+                    <br>2. Viết kế hoạch hoạt động xác định công suất của 5 người có trọng lượng khác nhau.
+                </p>
+                <button onclick="toggleAnswer('ans-practice')" class="mt-3 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1.5 px-4 rounded shadow transition">
+                    Xem gợi ý phương án thực hành
+                </button>
+                <div id="ans-practice" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                    <p class="font-bold text-green-800 mb-2">Phương án tiến hành đo đạc:</p>
+                    <ul class="list-decimal pl-5 space-y-2">
+                        <li><strong>Dụng cụ cần dùng:</strong>
+                            <ul class="list-disc pl-5 mt-1">
+                                <li>Cân bàn (để đo khối lượng cơ thể \(m \Rightarrow\) Trọng lượng \(P = mg\)).</li>
+                                <li>Thước dây hoặc thước mét (để đo độ cao \(h\) của bậc thang gác).</li>
+                                <li>Đồng hồ bấm giây (đo thời gian leo thang \(t\)).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Các bước tiến hành:</strong>
+                            <ul class="list-disc pl-5 mt-1">
+                                <li>Bước 1: Cân khối lượng \(m\) từng học sinh, tính trọng lượng \(P = mg\).</li>
+                                <li>Bước 2: Đo độ cao một bậc thang \(h_0\), đếm số bậc thang \(N \Rightarrow\) Độ cao toàn bộ cầu thang \(h = N \cdot h_0\).</li>
+                                <li>Bước 3: Từng học sinh lần lượt chạy/đi nhanh từ chân thang lên đỉnh, người trong nhóm bấm đồng hồ để xác định thời gian thực hiện \(t\).</li>
+                                <li>Bước 4: Tính công thực hiện chống lại trọng lực: \(A = P \cdot h\).</li>
+                                <li>Bước 5: Tính công suất sinh ra: \(\mathscr{P} = \frac{A}{t}\).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-center border-collapse border border-[#cbd5e0]">
+                    <thead>
+                        <tr class="bg-[#e2e8f0]">
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Tên người</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Trọng lượng \(P\) (N)</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Độ cao \(h\) (m)</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Công \(A\) (J)</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Thời gian \(t\) (s)</th>
+                            <th class="border border-[#cbd5e0] p-2 font-semibold">Công suất \(\mathscr{P}\) (W)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-[#cbd5e0] p-2 font-medium">Học sinh A</td>
+                            <td class="border border-[#cbd5e0] p-2">\(P_1 = ...\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(h = ...\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(A_1 = ...\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(t_1 = ...\)</td>
+                            <td class="border border-[#cbd5e0] p-2 font-semibold text-navy">\(\mathscr{P}_1 = ...\)</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-[#cbd5e0] p-2 font-medium">Học sinh B</td>
+                            <td class="border border-[#cbd5e0] p-2">\(P_2 = ...\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(h = ...\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(A_2 = ...\)</td>
+                            <td class="border border-[#cbd5e0] p-2">\(t_2 = ...\)</td>
+                            <td class="border border-[#cbd5e0] p-2 font-semibold text-navy">\(\mathscr{P}_2 = ...\)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-xs text-gray-500 italic mt-1 text-right">Bảng 24.2: Mẫu bảng ghi kết quả thực nghiệm</p>
+            </div>
+        </section>
+
+        <!-- EM ĐÃ HỌC, EM CÓ THỂ -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Em đã học -->
+            <div class="bg-[#f0fff4] border border-green-300 rounded-12px p-5 shadow-sm">
+                <h3 class="font-bold text-green-800 text-lg mb-2 flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100-2H7a1 1 0 100-2H7zm3 0a1 1 0 100-2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path></svg>
+                    KIẾN THỨC CỐT LÕI
+                </h3>
+                <ul class="list-disc pl-5 space-y-2 text-gray-700 text-sm">
+                    <li>Công suất đặc trưng cho tốc độ sinh công, đo bằng công sinh ra trong một giây: <br>
+                        <span class="font-bold text-navy text-base">\( \mathscr{P} = \frac{A}{t} \)</span>
+                    </li>
+                    <li>Mối liên hệ giữa công suất, lực và tốc độ chuyển động: <br>
+                        <span class="font-bold text-navy text-base">\( \mathscr{P} = F \cdot v \)</span>
+                    </li>
+                    <li>Công suất trung bình: \(\mathscr{P}_{\text{tb}} = F \cdot v_{\text{tb}}\)</li>
+                    <li>Công suất tức thời: \(\mathscr{P}_t = F \cdot v_t\)</li>
+                </ul>
+            </div>
+
+            <!-- Em có thể -->
+            <div class="bg-blue-50 border border-blue-300 rounded-12px p-5 shadow-sm">
+                <h3 class="font-bold text-blue-800 text-lg mb-2 flex items-center">
+                    <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
+                    NĂNG LỰC ĐẠT ĐƯỢC
+                </h3>
+                <ul class="list-disc pl-5 space-y-2 text-gray-700 text-sm">
+                    <li>Tính được công suất của các quá trình sinh công thực tế trong đời sống và kỹ thuật.</li>
+                    <li>Vận dụng khái niệm công suất và hệ thức liên hệ để giải thích nguyên lý hoạt động của một số thiết bị máy móc truyền lực (xe đạp thể thao, hộp số động cơ ô tô, xe máy...).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 5 BÀI TẬP TRẮC NGHIỆM CỦNG CỐ -->
+        <section class="bg-white rounded-12px p-6 shadow-md mb-8">
+            <h2 class="text-xl font-bold text-navy border-b-4 border-navy pb-2 mb-6 uppercase flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                BÀI TẬP TRẮC NGHIỆM CỦNG CỐ
+            </h2>
+
+            <form id="quizForm" onsubmit="event.preventDefault(); checkQuiz();" class="space-y-6">
+                <!-- Câu 1 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold text-gray-800 mb-2">Câu 1: Đại lượng nào sau đây đặc trưng cho tốc độ sinh công của lực?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q1" value="A" class="form-radio text-navy">
+                            <span>A. Công cơ học.</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q1" value="B" class="form-radio text-navy">
+                            <span>B. Động năng.</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q1" value="C" class="form-radio text-navy">
+                            <span>C. Công suất.</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q1" value="D" class="form-radio text-navy">
+                            <span>D. Thế năng.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Câu 2 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold text-gray-800 mb-2">Câu 2: Đơn vị nào sau đây KHÔNG phải là đơn vị của công suất?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q2" value="A" class="form-radio text-navy">
+                            <span>A. \( \text{W} \)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q2" value="B" class="form-radio text-navy">
+                            <span>B. \( \text{HP} \) (Mã lực)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q2" value="C" class="form-radio text-navy">
+                            <span>C. \( \text{J/s} \)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q2" value="D" class="form-radio text-navy">
+                            <span>D. \( \text{kWh} \)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Câu 3 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold text-gray-800 mb-2">Câu 3: Động cơ của một xe máy sinh công \( 200\,000 \text{ J} \) trong thời gian \( 20 \text{ s} \). Công suất trung bình của động cơ này là:</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q3" value="A" class="form-radio text-navy">
+                            <span>A. \( 10\,000 \text{ W} \)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q3" value="B" class="form-radio text-navy">
+                            <span>B. \( 4 \text{ MW} \)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q3" value="C" class="form-radio text-navy">
+                            <span>C. \( 2 \text{ kW} \)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q3" value="D" class="form-radio text-navy">
+                            <span>D. \( 4\,000 \text{ W} \)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Câu 4 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold text-gray-800 mb-2">Câu 4: Một vật chuyển động thẳng đều dưới tác dụng của một lực phát động \( F \) không đổi theo phương chuyển động với tốc độ \( v \). Công suất tức thời của lực được biểu diễn bằng biểu thức:</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q4" value="A" class="form-radio text-navy">
+                            <span>A. \( \mathscr{P} = \frac{F}{v} \)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q4" value="B" class="form-radio text-navy">
+                            <span>B. \( \mathscr{P} = F \cdot v \)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q4" value="C" class="form-radio text-navy">
+                            <span>C. \( \mathscr{P} = \frac{v}{F} \)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q4" value="D" class="form-radio text-navy">
+                            <span>D. \( \mathscr{P} = F \cdot v^2 \)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Câu 5 -->
+                <div class="border-b pb-4">
+                    <p class="font-semibold text-gray-800 mb-2">Câu 5: Tại sao khi đi xe đạp lên dốc ta phải chuyển sang đi dĩa nhỏ hoặc líp lớn hơn?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q5" value="A" class="form-radio text-navy">
+                            <span>A. Để giảm lực cản của không khí tác dụng vào xe đạp.</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q5" value="B" class="form-radio text-navy">
+                            <span>B. Để tăng tốc độ quay của bánh xe sau của xe đạp.</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q5" value="C" class="form-radio text-navy">
+                            <span>C. Để tăng lực kéo xe bằng cách giảm tốc độ của xe nhằm đáp ứng công suất hữu ích của người đạp.</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="q5" value="D" class="form-radio text-navy">
+                            <span>D. Nhằm mục đích tăng tối đa công cơ học do con người thực hiện.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center pt-4">
+                    <button type="submit" class="bg-navy hover:bg-navylight text-white font-bold py-2.5 px-8 rounded shadow-lg transition">
+                        NỘP BÀI KHẢO SÁT
+                    </button>
+                </div>
+            </form>
+
+            <!-- Quiz Result Container -->
+            <div id="quizResult" class="hidden mt-6 p-6 rounded-lg transition-all duration-300"></div>
+        </section>
+
+        <!-- 3 BÀI TẬP VẬN DỤNG TÍNH TOÁN -->
+        <section class="bg-white rounded-12px p-6 shadow-md mb-8">
+            <h2 class="text-xl font-bold text-navy border-b-4 border-navy pb-2 mb-6 uppercase">BÀI TẬP VẬN DỤNG TỰ LUẬN</h2>
+            
+            <div class="space-y-6">
+                <!-- Bài 1 -->
+                <div class="bg-gray-50 border border-gray-200 p-5 rounded-lg">
+                    <span class="font-bold text-navy text-sm block mb-1">BÀI TẬP 1:</span>
+                    <p class="text-gray-800">
+                        Một cần cẩu nâng đều một thùng hàng có khối lượng \( 1,5 \text{ tấn} \) lên cao thẳng đứng một khoảng cách \( 12 \text{ m} \) trong khoảng thời gian \( 15 \text{ s} \). Cho \( g = 10 \text{ m/s}^2 \). Hãy tính công suất trung bình của động cơ cần cẩu đó.
+                    </p>
+                    <button onclick="toggleAnswer('app-ex1')" class="mt-3 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">
+                        Xem lời giải chi tiết
+                    </button>
+                    <div id="app-ex1" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                        <p class="font-semibold text-green-800 mb-2">Lời giải:</p>
+                        <p>Đổi đơn vị: \(m = 1,5 \text{ tấn} = 1500 \text{ kg}\).</p>
+                        <p class="mt-1">Do thùng hàng chuyển động nâng lên đều, lực kéo tác dụng của cần cẩu có độ lớn đúng bằng trọng lượng thùng hàng:</p>
+                        \[ F = P = m \cdot g = 1500 \cdot 10 = 15\,000 \text{ N} \]
+                        <p class="mt-2">Công cơ học mà cần cẩu đã thực hiện được là:</p>
+                        \[ A = F \cdot s = 15\,000 \cdot 12 = 180\,000 \text{ J} \]
+                        <p class="mt-2">Công suất trung bình hoạt động của cần cẩu:</p>
+                        \[ \mathscr{P} = \frac{A}{t} = \frac{180\,000}{15} = 12\,000 \text{ W} = 12 \text{ kW} \]
+                        <p class="mt-1 text-navy font-bold">Đáp số: \(12 \text{ kW}\)</p>
+                    </div>
+                </div>
+
+                <!-- Bài 2 -->
+                <div class="bg-gray-50 border border-gray-200 p-5 rounded-lg">
+                    <span class="font-bold text-navy text-sm block mb-1">BÀI TẬP 2:</span>
+                    <p class="text-gray-800">
+                        Một chiếc ô tô chạy trên đường nằm ngang phẳng với tốc độ không đổi \( 72 \text{ km/h} \). Biết động cơ xe hoạt động với công suất phát động là \( 40 \text{ kW} \). Hãy tính lực cản trung bình của mặt đường và không khí tác dụng trực tiếp lên chuyển động của chiếc ô tô này.
+                    </p>
+                    <button onclick="toggleAnswer('app-ex2')" class="mt-3 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">
+                        Xem lời giải chi tiết
+                    </button>
+                    <div id="app-ex2" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                        <p class="font-semibold text-green-800 mb-2">Lời giải:</p>
+                        <p>Đổi các đại lượng tương ứng về đơn vị chuẩn:</p>
+                        \[ v = 72 \text{ km/h} = \frac{72}{3,6} = 20 \text{ m/s} \]
+                        \[ \mathscr{P} = 40 \text{ kW} = 40\,000 \text{ W} \]
+                        <p class="mt-2">Ta áp dụng hệ thức liên hệ trực tiếp giữa công suất, lực phát động và tốc độ:</p>
+                        \[ \mathscr{P} = F_{\text{k}} \cdot v \Rightarrow F_{\text{k}} = \frac{\mathscr{P}}{v} = \frac{40\,000}{20} = 2000 \text{ N} \]
+                        <p class="mt-2">Vì xe di chuyển thẳng đều ổn định trên mặt đường ngang nên lực phát động của xe luôn triệt tiêu lực cản của môi trường:</p>
+                        \[ F_{\text{cản}} = F_{\text{k}} = 2000 \text{ N} \]
+                        <p class="mt-1 text-navy font-bold">Đáp số: \(2000 \text{ N}\)</p>
+                    </div>
+                </div>
+
+                <!-- Bài 3 -->
+                <div class="bg-gray-50 border border-gray-200 p-5 rounded-lg">
+                    <span class="font-bold text-navy text-sm block mb-1">BÀI TẬP 3:</span>
+                    <p class="text-gray-800">
+                        Một động cơ điện kéo một vật nặng di chuyển trên mặt ngang không ma sát bằng sợi dây nối qua ròng rọc. Lực kéo phát động tác dụng theo phương chuyển động thay đổi theo thời gian tuân theo hàm số \( F(t) = 10 \cdot t + 50 \text{ (N)} \). Biết tại thời điểm \( t = 3 \text{ s} \), vật đạt tốc độ tức thời \( v = 2 \text{ m/s} \). Xác định công suất tức thời của động cơ điện vào đúng thời điểm đó.
+                    </p>
+                    <button onclick="toggleAnswer('app-ex3')" class="mt-3 text-sm bg-navy hover:bg-navylight text-white font-semibold py-1 px-3 rounded shadow transition">
+                        Xem lời giải chi tiết
+                    </button>
+                    <div id="app-ex3" class="hidden mt-3 p-4 bg-green-50 border border-green-200 rounded text-gray-700">
+                        <p class="font-semibold text-green-800 mb-2">Lời giải:</p>
+                        <p>Xác định lực phát động tức thời của động cơ điện tại thời điểm \( t = 3 \text{ s} \):</p>
+                        \[ F(3) = 10 \cdot 3 + 50 = 80 \text{ N} \]
+                        <p class="mt-2">Công suất tức thời của động cơ điện được tính bằng công thức:</p>
+                        \[ \mathscr{P}_t = F(t) \cdot v(t) \]
+                        <p class="mt-2">Thay các giá trị \( F = 80 \text{ N} \) và \( v = 2 \text{ m/s} \) vào, ta thu được:</p>
+                        \[ \mathscr{P}_t = 80 \cdot 2 = 160 \text{ W} \]
+                        <p class="mt-1 text-navy font-bold">Đáp số: \(160 \text{ W}\)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Toggle function to show/hide answers
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Quiz check logic
+        function checkQuiz() {
+            const correctAnswers = {
+                q1: 'C',
+                q2: 'D',
+                q3: 'A',
+                q4: 'B',
+                q5: 'C'
+            };
+
+            const explanations = {
+                q1: 'Công suất đặc trưng cho tốc độ thực hiện công nhanh hay chậm của người hoặc thiết bị sinh công.',
+                q2: 'kWh là đơn vị đo của công (điện năng tiêu thụ), không phải là đơn vị của công suất. W, HP và J/s đều là đơn vị công suất.',
+                q3: '\\(\\mathscr{P} = \\frac{A}{t} = \\frac{200\\,000}{20} = 10\\,000\\text{ W}\\).',
+                q4: '\\(\\mathscr{P} = F \\cdot v\\) là hệ thức liên hệ trực tiếp của công suất tức thời với lực và vận tốc.',
+                q5: 'Sử dụng dĩa nhỏ hoặc líp lớn giúp tăng lực kéo (mô-men xoắn lớn) của bánh xe sau để dễ vượt dốc bằng cách giữ tốc độ xe ở mức thấp phù hợp.'
+            };
+
+            let score = 0;
+            let total = 5;
+            let resultHtml = '';
+
+            for (let i = 1; i <= total; i++) {
+                const checkedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                const questionDiv = document.querySelector(`input[name="q${i}"]`)?.closest('.border-b');
+                
+                if (checkedOption) {
+                    const userVal = checkedOption.value;
+                    const correctVal = correctAnswers[`q${i}`];
+                    
+                    if (userVal === correctVal) {
+                        score++;
+                        resultHtml += `<p class="text-green-700 font-semibold">✔️ Câu ${i}: Đúng! (Đáp án: ${correctVal})</p>`;
+                    } else {
+                        resultHtml += `<p class="text-red-700 font-semibold">❌ Câu ${i}: Sai! (Đáp án đúng: ${correctVal}. Bạn chọn: ${userVal})</p>`;
+                    }
+                    resultHtml += `<p class="text-xs text-gray-600 mb-3 italic">Giải thích: ${explanations[`q${i}`]}</p>`;
+                } else {
+                    resultHtml += `<p class="text-amber-700 font-semibold">⚠️ Câu ${i}: Chưa chọn đáp án! (Đáp án đúng: ${correctAnswers[`q${i}`]})</p>`;
+                }
+            }
+
+            const resultContainer = document.getElementById('quizResult');
+            resultContainer.classList.remove('hidden');
+
+            if (score === total) {
+                resultContainer.className = "mt-6 p-6 rounded-lg bg-green-50 border border-green-400 text-green-900";
+                resultContainer.innerHTML = `<h3 class="text-xl font-bold mb-2">🎉 Hoàn hảo! Bạn đạt điểm số tuyệt đối: ${score}/${total}</h3>` + resultHtml;
+            } else {
+                resultContainer.className = "mt-6 p-6 rounded-lg bg-red-50 border border-red-400 text-red-900";
+                resultContainer.innerHTML = `<h3 class="text-xl font-bold mb-2">Bạn đạt điểm số: ${score}/${total}</h3><p class="text-sm mb-4">Hãy xem lại phần giải thích chi tiết bên dưới để ôn tập kỹ hơn:</p>` + resultHtml;
+            }
+
+            // Re-render math syntax inside results if any
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise([resultContainer]);
+            }
+        }
+    </script>
+</body>
+</html>

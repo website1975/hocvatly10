@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 23: Năng lượng. Công cơ học</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+        }
+        .bg-main-blue { background-color: #000080; }
+        .text-main-blue { color: #000080; }
+        .border-main-blue { border-color: #000080; }
+        
+        .section-title {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 1.5rem;
+            border-bottom: 4px solid #000080;
+            display: inline-block;
+            padding-bottom: 4px;
+            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .content-box {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1.5rem;
+        }
+
+        .formula-box {
+            background-color: #ebf8fa;
+            border: 2px solid #000080;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .question-box {
+            background-color: #edf2f7;
+            border-left: 4px solid #000080;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .answer-box {
+            background-color: #c6f6d5;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            display: none;
+            border-left: 4px solid #38a169;
+        }
+
+        .em-co-biet-box {
+            background-color: #fffaf0;
+            border: 2px dashed #ed8936;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .luu-y-box {
+            background-color: #fff5f5;
+            border: 2px solid #e53e3e;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            background-color: #000080;
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn:hover { background-color: #00004d; }
+
+        .table-container table {
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .table-container th, .table-container td {
+            border: 1px solid #cbd5e0;
+            padding: 0.75rem;
+        }
+        .table-container th {
+            background-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+
+        <div class="bg-main-blue rounded-[12px] p-6 mb-8 shadow-md">
+            <h2 class="text-white text-center text-xl font-bold uppercase pb-4 border-b border-white/30 tracking-wider">Chương IV: Năng Lượng - Công, Công Suất</h2>
+            <h1 class="text-white text-center text-3xl md:text-4xl font-bold uppercase pt-4 tracking-wide">Bài 23: Năng lượng. Công cơ học</h1>
+        </div>
+
+        <div class="content-box border border-gray-300">
+            <div class="flex flex-col items-center mb-4">
+                <img src="h0.png" alt="Các động tác nâng tạ" class="max-w-full rounded shadow mb-4" onerror="this.outerHTML='<div class=\'w-full h-32 bg-gray-200 flex items-center justify-center rounded mb-4 text-gray-500\'>[Hình ảnh: Các động tác nâng tạ (1), (2), (3), (4)]</div>'">
+            </div>
+            <p class="italic text-gray-700 text-lg text-center">
+                "Trong các động tác nâng tạ từ vị trí (1) sang (2), từ (2) sang (3), từ (3) sang (4) ở hình trên: Có những quá trình truyền và chuyển hoá năng lượng nào? Động tác nào có thực hiện công, không thực hiện công?"
+            </p>
+        </div>
+
+        <div class="content-box">
+            <h2 class="section-title text-main-blue">I. NĂNG LƯỢNG</h2>
+            
+            <p class="mb-3">Ở trường THCS các em đã biết: Mọi hiện tượng xảy ra trong tự nhiên đều cần có năng lượng dưới các dạng khác nhau như: cơ năng, hoá năng, nhiệt năng, điện năng, năng lượng ánh sáng, năng lượng âm thanh, năng lượng nguyên tử. Năng lượng có thể chuyển hoá từ dạng này sang dạng khác hoặc truyền từ vật này sang vật khác.</p>
+
+            <div class="formula-box text-main-blue">
+                <h3 class="uppercase mb-2">Định luật bảo toàn năng lượng</h3>
+                Năng lượng không tự sinh ra hoặc tự mất đi mà chỉ chuyển hoá từ dạng này sang dạng khác hoặc truyền từ vật này sang vật khác.
+            </div>
+
+            <div class="mt-6 mb-4 font-bold flex items-center text-main-blue">
+                <span class="text-2xl mr-2">❓</span> CÂU HỎI & THẢO LUẬN
+            </div>
+
+            <div class="question-box">
+                <p>1. Khi đun nước bằng ấm điện thì có những quá trình truyền và chuyển hoá năng lượng nào xảy ra? </p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-q1')">Xem câu trả lời</button>
+            </div>
+            <div id="ans-q1" class="answer-box">
+                <p><strong>Trả lời:</strong> Điện năng được chuyển hoá thành nhiệt năng làm nóng mâm nhiệt của ấm điện. Nhiệt năng này sau đó truyền vào nước, làm nhiệt độ của nước tăng lên.</p>
+            </div>
+
+            <div class="question-box">
+                <p>2. Khi xoa hai tay vào nhau cho nóng thì có những quá trình truyền và chuyển hoá năng lượng nào xảy ra? </p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-q2')">Xem câu trả lời</button>
+            </div>
+            <div id="ans-q2" class="answer-box">
+                <p><strong>Trả lời:</strong> Cơ năng (động năng của tay do chuyển động xoa vào nhau) đã chuyển hóa thành nhiệt năng do ma sát giữa hai lòng bàn tay, làm tay nóng lên.</p>
+            </div>
+
+            <div class="question-box">
+                <p>3. Một quả bóng cao su được ném từ độ cao \(h\) xuống đất cứng và bị nảy lên. Sau mỗi lần nảy lên, độ cao giảm dần (cơ năng giảm). Điều đó có trái với định luật bảo toàn năng lượng không? Tại sao?</p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-q3')">Xem câu trả lời</button>
+            </div>
+            <div id="ans-q3" class="answer-box">
+                <p><strong>Trả lời:</strong> Không trái với định luật bảo toàn năng lượng. Quả bóng không đạt được độ cao như cũ vì một phần cơ năng đã chuyển hóa thành nhiệt năng (do ma sát với không khí và va chạm với mặt đất) và năng lượng âm thanh.</p>
+            </div>
+
+            <div class="question-box">
+                <p>4. Có sự truyền và chuyển hoá năng lượng nào trong quá trình bắn pháo hoa? </p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-q4')">Xem câu trả lời</button>
+            </div>
+            <div id="ans-q4" class="answer-box">
+                <p><strong>Trả lời:</strong> Hóa năng của thuốc súng được chuyển hóa thành động năng (đẩy pháo hoa bay lên), nhiệt năng, quang năng (ánh sáng) và âm năng (tiếng nổ).</p>
+            </div>
+
+            <div class="em-co-biet-box mt-6">
+                <h3 class="font-bold text-orange-600 mb-2">💡 EM CÓ BIẾT?</h3>
+                <p>Có thể phân năng lượng thành hai loại là động năng (năng lượng của vật do chuyển động mà có) và thế năng (năng lượng lưu trữ của vật).</p>
+                <ul class="list-disc pl-5 mt-2">
+                    <li>Nhiệt năng là năng lượng chuyển động hỗn loạn của các phân tử.</li>
+                    <li>Điện năng là năng lượng của chuyển động có hướng của các điện tích dưới tác dụng của điện trường.</li>
+                    <li>Năng lượng vật có khi ở một độ cao so với mặt đất là thế năng trọng trường.</li>
+                </ul>
+            </div>
+
+            <h3 class="font-bold text-lg mt-6">Thí nghiệm của Joule về sự truyền, chuyển hoá và bảo toàn năng lượng</h3>
+            <p>Thí nghiệm mang tính lịch sử được James Joule thực hiện vào những năm 1844 - 1854. Khi cho vật nặng chuyển động đi xuống, trục quay và cánh quạt quay theo. Ma sát làm nước nóng lên. Cơ năng của vật nặng giảm đi bao nhiêu thì nhiệt năng của nước tăng lên bấy nhiêu.</p>
+            
+            <div class="my-4">
+                <img src="h1.png" alt="Sơ đồ thí nghiệm Joule" class="mx-auto rounded shadow" onerror="this.outerHTML='<div class=\'w-full h-48 bg-gray-200 flex items-center justify-center rounded text-gray-500\'>[Hình 23.1: Sơ đồ thí nghiệm Joule minh hoạ định luật bảo toàn năng lượng]</div>'">
+            </div>
+
+            <div class="question-box mt-6 bg-blue-50 border-l-4 border-blue-500">
+                <p class="font-bold">👉 HOẠT ĐỘNG THẢO LUẬN:</p>
+                <p>Hãy tìm thêm ví dụ minh hoạ cho các quá trình chuyển hoá năng lượng sau đây:</p>
+                <p>a) Điện năng chuyển hoá thành nhiệt năng.<br>
+                   b) Nhiệt năng chuyển hoá thành điện năng. <br>
+                   c) Quang năng chuyển hoá thành điện năng. <br>
+                   d) Quang năng chuyển hoá thành hoá năng. </p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-hd1')">Xem gợi ý</button>
+            </div>
+            <div id="ans-hd1" class="answer-box">
+                <p><strong>Gợi ý:</strong></p>
+                <ul class="list-disc pl-5">
+                    <li>a) Bàn là điện, lò sưởi điện, bếp hồng ngoại.</li>
+                    <li>b) Cặp nhiệt điện, nhà máy nhiệt điện.</li>
+                    <li>c) Pin mặt trời.</li>
+                    <li>d) Quá trình quang hợp của cây xanh.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h2 class="section-title text-main-blue">II. CÔNG CƠ HỌC</h2>
+
+            <h3 class="font-bold text-xl mb-2 mt-4 text-main-blue">1. Thực hiện công</h3>
+            <p>Năng lượng có thể truyền từ vật này sang vật khác. Ví dụ: Khi đẩy cuốn sách, tay ta tác dụng lực làm nó chuyển từ đứng yên \( (v=0; W_đ=0) \) sang chuyển động nhanh dần. Sách nhận được năng lượng từ tay truyền sang.</p>
+            <center><img src="h2.png"></img></center>
+            <div class="formula-box mt-4 mb-6 text-main-blue">
+                Việc truyền năng lượng cho vật bằng cách tác dụng lực lên vật làm vật thay đổi trạng thái chuyển động được gọi là <strong>thực hiện công cơ học</strong> (gọi tắt là thực hiện công).
+            </div>
+
+            <div class="question-box">
+                <p>👉 Trao đổi với bạn để chứng minh rằng trong các ví dụ mô tả ở Hình 23.3 có sự truyền năng lượng bằng cách thực hiện công: </p>
+                <p>a) Động cơ điện đưa vật nặng lên cao. <br>b) Hỗn hợp xăng bị đốt cháy đẩy pittông. </p>
+		<center><img src="h3.png"></img></center>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-hd2')">Xem lời giải</button>
+            </div>
+            <div id="ans-hd2" class="answer-box">
+                <p><strong>Lời giải:</strong></p>
+                <p>a) Động cơ tác dụng lực kéo làm vật chuyển động từ dưới lên (thay đổi trạng thái chuyển động), tức là động cơ đã thực hiện công truyền năng lượng cho vật.</p>
+                <p>b) Khí cháy dãn nở tác dụng lực đẩy lên pittông làm pittông chuyển động, tức là chất khí đã thực hiện công truyền năng lượng cho pittông.</p>
+            </div>
+
+            <div class="question-box mt-4">
+                <p>❓ Khi cho một miếng đồng tiếp xúc với ngọn lửa thì ngọn lửa truyền năng lượng làm miếng đồng nóng lên. Quá trình này có phải là thực hiện công không? Tại sao?</p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-q5')">Xem câu trả lời</button>
+            </div>
+            <div id="ans-q5" class="answer-box">
+                <p><strong>Trả lời:</strong> Không phải là thực hiện công. Quá trình này là quá trình <strong>truyền nhiệt</strong> (truyền nhiệt năng trực tiếp do chênh lệch nhiệt độ) chứ không phải dùng lực tác dụng làm thay đổi trạng thái chuyển động vĩ mô của miếng đồng.</p>
+            </div>
+
+            <h3 class="font-bold text-xl mb-2 mt-8 text-main-blue">2. Công thức tính công</h3>
+
+            
+            <h4 class="font-bold mt-4">a) Khi lực không đổi và cùng hướng với chuyển động</h4>
+		<center><img src="h4.png"></img></center>		
+            <div class="formula-box">
+                \[ A = F \cdot s \]
+                <div class="text-sm font-normal mt-2 text-left px-8">
+                    Trong đó: <br>
+                    - \( A \): công của lực \( \vec{F} \), đơn vị là jun (J). \( 1\text{ J} = 1\text{ N} \cdot 1\text{ m} \) <br>
+                    - \( F \): cường độ lực tác dụng (N)<br>
+                    - \( s \): quãng đường đi được (m) <br>
+                    *(Khi lực cùng hướng chuyển động, độ dịch chuyển \( d = s \), nên cũng có thể viết \( A = F \cdot d \))
+                </div>
+            </div>
+
+            <h4 class="font-bold mt-6">b) Khi lực không đổi và không cùng phương với chuyển động </h4>
+		<center><img src="h5.png"></img></center>
+            <p>Lực đẩy \( \vec{F} \) làm với hướng chuyển động một góc \( \alpha \) bất kì. Chỉ có thành phần lực \( \vec{F}_s \) cùng hướng chuyển động mới làm vật chuyển động, nên:</p>
+            <div class="formula-box">
+                \[ A = F_s \cdot s = (F \cdot \cos\alpha) \cdot s = F \cdot s \cdot \cos\alpha \]
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Giá trị của góc \( \alpha \)</th>
+                            <th>Đặc điểm của Lực và Công</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>\( 0 \le \alpha < 90^\circ \)</td>
+                            <td>Lực sinh <strong>công phát động</strong> \( (A > 0) \). Lực cùng chiều với chiều chuyển động. </td>
+                        </tr>
+                        <tr>
+                            <td>\( \alpha = 90^\circ \)</td>
+                            <td>Lực vuông góc phương chuyển động, <strong>không sinh công</strong> \( (A = 0) \).</td>
+                        </tr>
+                        <tr>
+                            <td>\( 90^\circ < \alpha \le 180^\circ \)</td>
+                            <td>Lực sinh <strong>công cản</strong> \( (A < 0) \). Lực cản trở chuyển động của vật.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="luu-y-box mt-4">
+                <h3 class="font-bold text-red-600 mb-2">📌 LƯU Ý</h3>
+                Công cơ học là một đại lượng vô hướng, có thể mang giá trị dương, âm hoặc bằng không phụ thuộc vào góc hợp bởi véc-tơ lực và véc-tơ độ dịch chuyển.
+            </div>
+
+            <h3 class="font-bold text-xl mb-2 mt-8 text-main-blue">3. Bài tập ví dụ </h3>
+
+            <div class="question-box border border-gray-300">
+                <p><strong>Ví dụ 1:</strong> Khi rửa gầm xe ô tô, người ta sử dụng máy nâng để nâng ô tô lên độ cao \( h = 160\text{ cm} \) so với mặt sàn. Cho biết khối lượng ô tô là \( m = 1,5\text{ tấn} \) và \( g = 10\text{ m/s}^2 \). Tính công tối thiểu mà máy nâng đã thực hiện. </p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-vd1')">Xem giải chi tiết</button>
+            </div>
+            <div id="ans-vd1" class="answer-box">
+                <p><strong>Giải:</strong></p>
+                <p>Để nâng được ô tô lên thì máy nâng phải tác dụng vào ô tô lực tối thiểu bằng trọng lượng ô tô: </p>
+                <p>\( F_{min} = P = m \cdot g = 1,5 \cdot 10^3 \cdot 10 = 1,5 \cdot 10^4\text{ N} \) </p>
+                <p>Đổi: \( h = 160\text{ cm} = 1,6\text{ m} \).</p>
+                <p>Công tối thiểu mà máy nâng đã thực hiện là: </p>
+                <p>\( A = P \cdot h = 1,5 \cdot 10^4 \cdot 1,6 = 24000\text{ J} = 24\text{ kJ} \)</p>
+            </div>
+
+            <div class="question-box border border-gray-300">
+                <p><strong>Ví dụ 2:</strong> Một bạn học sinh khối lượng 50 kg đi lên một cầu thang gồm 20 bậc, mỗi bậc cao 15 cm. Tính công tối thiểu mà bạn ấy phải thực hiện. Coi lực nâng là không đổi, lấy \( g = 10\text{ m/s}^2 \). </p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-vd2')">Xem giải chi tiết</button>
+            </div>
+            <div id="ans-vd2" class="answer-box">
+                <p><strong>Giải:</strong></p>
+                <p>Lực nâng tối thiểu bằng trọng lượng: \( F_{min} = P = m \cdot g \)</p>
+                <p>Tổng chiều cao bạn học sinh di chuyển được theo phương thẳng đứng là: <br>\( h = 20 \cdot 0,15 = 3\text{ m} \).</p>
+                <p>Công tối thiểu bạn ấy phải thực hiện là:</p>
+                <p>\( A_{min} = m \cdot g \cdot h = 50 \cdot 10 \cdot 3 = 1500\text{ J} \) </p>
+            </div>
+
+        </div>
+
+        <div class="content-box bg-gray-50 border-t-4 border-main-blue">
+            <h2 class="text-2xl font-bold text-main-blue mb-4">LUYỆN TẬP VÀ CỦNG CỐ</h2>
+
+            <h3 class="font-bold text-lg mb-4 text-orange-600">A. Trắc nghiệm (Chọn đáp án đúng nhất)</h3>
+            <form id="quiz-form" class="space-y-6">
+                <div>
+                    <p class="font-bold mb-2">Câu 1: Công cơ học được thực hiện khi nào?</p>
+                    <label class="block"><input type="radio" name="q1" value="A"> A. Khi có lực tác dụng vào vật.</label>
+                    <label class="block"><input type="radio" name="q1" value="B"> B. Khi vật chuyển động.</label>
+                    <label class="block"><input type="radio" name="q1" value="C"> C. Khi có lực tác dụng lên vật làm vật thay đổi trạng thái chuyển động.</label>
+                    <label class="block"><input type="radio" name="q1" value="D"> D. Khi vật có khối lượng lớn.</label>
+                </div>
+                <div>
+                    <p class="font-bold mb-2">Câu 2: Công thức tính công của một lực \( \vec{F} \) hợp với phương chuyển động một góc \( \alpha \) là:</p>
+                    <label class="block"><input type="radio" name="q2" value="A"> A. \( A = F \cdot s \)</label>
+                    <label class="block"><input type="radio" name="q2" value="B"> B. \( A = F \cdot s \cdot \sin\alpha \)</label>
+                    <label class="block"><input type="radio" name="q2" value="C"> C. \( A = F \cdot s \cdot \tan\alpha \)</label>
+                    <label class="block"><input type="radio" name="q2" value="D"> D. \( A = F \cdot s \cdot \cos\alpha \)</label>
+                </div>
+                <div>
+                    <p class="font-bold mb-2">Câu 3: Đơn vị của công cơ học là:</p>
+                    <label class="block"><input type="radio" name="q3" value="A"> A. Niutơn (N)</label>
+                    <label class="block"><input type="radio" name="q3" value="B"> B. Jun (J)</label>
+                    <label class="block"><input type="radio" name="q3" value="C"> C. Oát (W)</label>
+                    <label class="block"><input type="radio" name="q3" value="D"> D. Mét trên giây (m/s)</label>
+                </div>
+                <div>
+                    <p class="font-bold mb-2">Câu 4: Trường hợp nào sau đây lực không sinh công?</p>
+                    <label class="block"><input type="radio" name="q4" value="A"> A. Lực cùng phương với hướng chuyển động.</label>
+                    <label class="block"><input type="radio" name="q4" value="B"> B. Lực vuông góc với phương chuyển động (\( \alpha = 90^\circ \)).</label>
+                    <label class="block"><input type="radio" name="q4" value="C"> C. Lực hợp với phương chuyển động góc nhọn.</label>
+                    <label class="block"><input type="radio" name="q4" value="D"> D. Lực hợp với phương chuyển động góc tù.</label>
+                </div>
+                <div>
+                    <p class="font-bold mb-2">Câu 5: Khi góc \( \alpha \) thõa mãn \( 90^\circ < \alpha \le 180^\circ \), công của lực có đặc điểm gì?</p>
+                    <label class="block"><input type="radio" name="q5" value="A"> A. Bằng 0</label>
+                    <label class="block"><input type="radio" name="q5" value="B"> B. Không xác định được</label>
+                    <label class="block"><input type="radio" name="q5" value="C"> C. Là công cản (\( A < 0 \))</label>
+                    <label class="block"><input type="radio" name="q5" value="D"> D. Là công phát động (\( A > 0 \))</label>
+                </div>
+
+                <button type="button" class="btn" onclick="checkQuiz()">NỘP BÀI TRẮC NGHIỆM</button>
+            </form>
+
+            <div id="quiz-result" class="mt-4 p-4 rounded hidden"></div>
+
+            <hr class="my-8 border-gray-300">
+
+            <h3 class="font-bold text-lg mb-4 text-orange-600">B. Bài tập vận dụng</h3>
+
+            <div class="question-box border border-gray-300">
+                <p><strong>Bài 1:</strong> Một người kéo một thùng gỗ trượt trên sàn nhà bằng một sợi dây hợp với phương ngang một góc \( 60^\circ \). Lực tác dụng lên dây bằng 150 N. Tính công của lực kéo khi thùng trượt đi được quãng đường 10 m.</p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-bt1')">Xem giải chi tiết</button>
+            </div>
+            <div id="ans-bt1" class="answer-box">
+                <p><strong>Lời giải:</strong></p>
+                <p>Áp dụng công thức tính công: \( A = F \cdot s \cdot \cos\alpha \)</p>
+                <p>Thay số vào ta có: \( A = 150 \cdot 10 \cdot \cos(60^\circ) = 1500 \cdot 0,5 = 750\text{ (J)} \).</p>
+                <p><strong>Đáp số:</strong> 750 J.</p>
+            </div>
+
+            <div class="question-box border border-gray-300">
+                <p><strong>Bài 2:</strong> Một cần cẩu nâng một khối hàng có khối lượng 2 tấn lên cao 5 m theo phương thẳng đứng. Lấy \( g = 10\text{ m/s}^2 \). Lực nâng của cần cẩu sinh công là bao nhiêu?</p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-bt2')">Xem giải chi tiết</button>
+            </div>
+            <div id="ans-bt2" class="answer-box">
+                <p><strong>Lời giải:</strong></p>
+                <p>Khối lượng khối hàng: \( m = 2\text{ tấn} = 2000\text{ kg} \).</p>
+                <p>Để nâng vật lên đều, cần cẩu phải tác dụng lực nâng tối thiểu bằng trọng lượng của vật: \( F = P = m \cdot g = 2000 \cdot 10 = 20000\text{ N} \).</p>
+                <p>Vì lực kéo cùng hướng chuyển động thẳng đứng nên góc \( \alpha = 0^\circ \).</p>
+                <p>Công của lực nâng là: \( A = F \cdot s \cdot \cos(0^\circ) = 20000 \cdot 5 \cdot 1 = 100000\text{ (J)} = 100\text{ (kJ)} \).</p>
+                <p><strong>Đáp số:</strong> 100 kJ.</p>
+            </div>
+
+            <div class="question-box border border-gray-300">
+                <p><strong>Bài 3:</strong> Một động cơ thực hiện công để đẩy một xe đẩy hàng trên đoạn đường dài 25 m. Lực đẩy có cùng phương, cùng chiều chuyển động và có độ lớn là 400 N. Tính công của động cơ xe.</p>
+                <button class="btn mt-2" onclick="toggleAnswer('ans-bt3')">Xem giải chi tiết</button>
+            </div>
+            <div id="ans-bt3" class="answer-box">
+                <p><strong>Lời giải:</strong></p>
+                <p>Vì lực cùng phương, cùng chiều với hướng chuyển động nên ta dùng công thức: \( A = F \cdot s \).</p>
+                <p>Thay số vào ta có: \( A = 400 \cdot 25 = 10000\text{ (J)} \).</p>
+                <p><strong>Đáp số:</strong> 10 kJ.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Hàm Toggle hiển thị đáp án
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.style.display === "none" || el.style.display === "") {
+                el.style.display = "block";
+                // Lấy lại nút bấm để đổi text
+                const btn = document.querySelector(`button[onclick="toggleAnswer('${id}')"]`);
+                if(btn) btn.innerText = "Ẩn lời giải";
+            } else {
+                el.style.display = "none";
+                const btn = document.querySelector(`button[onclick="toggleAnswer('${id}')"]`);
+                if(btn) {
+                    if(id.startsWith('ans-q')) btn.innerText = "Xem câu trả lời";
+                    else if(id.startsWith('ans-hd')) btn.innerText = "Xem gợi ý/lời giải";
+                    else btn.innerText = "Xem giải chi tiết";
+                }
+            }
+        }
+
+        // Hàm kiểm tra bài trắc nghiệm
+        function checkQuiz() {
+            const answers = {
+                q1: 'C',
+                q2: 'D',
+                q3: 'B',
+                q4: 'B',
+                q5: 'C'
+            };
+
+            const explanations = {
+                q1: 'Công cơ học được thực hiện khi có lực tác dụng lên vật và lực đó sinh công làm vật dịch chuyển, thay đổi trạng thái.',
+                q2: 'Công thức tổng quát tính công của lực F hợp với hướng dịch chuyển một góc α là A = F.s.cosα.',
+                q3: 'Đơn vị chuẩn của công cơ học và năng lượng là Jun (J).',
+                q4: 'Khi lực vuông góc với phương chuyển động (α = 90°), cos(90°) = 0 dẫn đến A = 0. Lực không sinh công.',
+                q5: 'Khi góc tù (90° < α ≤ 180°), cos(α) < 0, công có giá trị âm (A < 0) gọi là công cản.'
+            };
+
+            let score = 0;
+            const form = document.getElementById('quiz-form');
+            const resultDiv = document.getElementById('quiz-result');
+            let resultHTML = '<h4 class="font-bold mb-2">Kết quả chi tiết:</h4><ul class="space-y-2">';
+
+            for (let q in answers) {
+                const selectedOption = form.querySelector(`input[name="${q}"]:checked`);
+                const userAns = selectedOption ? selectedOption.value : null;
+
+                if (userAns === answers[q]) {
+                    score++;
+                    resultHTML += `<li class="text-green-700"><strong>Câu ${q.replace('q', '')}: Đúng.</strong> Đáp án ${answers[q]}. ${explanations[q]}</li>`;
+                } else {
+                    let userText = userAns ? `Bạn chọn ${userAns}` : "Chưa chọn";
+                    resultHTML += `<li class="text-red-600"><strong>Câu ${q.replace('q', '')}: Sai (${userText}).</strong> Đáp án đúng là ${answers[q]}. <br><em>Giải thích:</em> ${explanations[q]}</li>`;
+                }
+            }
+
+            resultHTML += '</ul>';
+            
+            resultDiv.style.display = "block";
+            
+            if (score === 5) {
+                resultDiv.className = "mt-4 p-4 rounded bg-green-100 border-2 border-green-500";
+                resultDiv.innerHTML = `<h3 class="text-xl font-bold text-green-700 mb-2">Tuyệt vời! Bạn đã trả lời đúng ${score}/5 câu! 🎉</h3>` + resultHTML;
+            } else {
+                resultDiv.className = "mt-4 p-4 rounded bg-red-50 border-2 border-red-400";
+                resultDiv.innerHTML = `<h3 class="text-xl font-bold text-red-600 mb-2">Bạn trả lời đúng ${score}/5 câu. Hãy xem lại kiến thức nhé!</h3>` + resultHTML;
+            }
+
+            // Gọi MathJax render lại phần nội dung động (nếu cần)
+            if (window.MathJax) {
+                window.MathJax.typesetPromise();
+            }
+        }
+    </script>
+</body>
+</html>

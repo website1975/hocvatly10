@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 22 - Thực hành: Tổng hợp lực</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for formula formatting (Latex style) -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header-bg {
+            background-color: #000080;
+        }
+        .text-primary-color {
+            color: #000080;
+        }
+        .border-primary-color {
+            border-color: #000080;
+        }
+        .bg-primary-light {
+            background-color: #edf2f7;
+        }
+    </style>
+</head>
+<body class="p-3 md:p-8 text-gray-800">
+
+    <div class="max-w-4xl mx-auto">
+        
+        <!-- HEADER BLOCK -->
+        <div class="header-bg text-white rounded-xl shadow-md p-6 mb-6 text-center">
+            <h2 class="text-sm md:text-lg font-semibold tracking-widest opacity-90 uppercase">
+                Chương IV: NĂNG LƯỢNG – CÔNG, CÔNG SUẤT
+            </h2>
+            <div class="my-3 border-t border-blue-400 opacity-50"></div>
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-wide uppercase">
+                BÀI 22: THỰC HÀNH: TỔNG HỢP LỰC
+            </h1>
+        </div>
+
+        <!-- INTRO BOX / LỜI DẪN -->
+        <div class="bg-white border border-gray-300 rounded-xl p-5 mb-6 shadow-sm">
+            <p class="italic text-gray-700 text-center text-lg">
+                "Hai lực \(\vec{F}_{1}\) và \(\vec{F}_{2}\) tác dụng lên một vật. Làm thế nào xác định hợp lực của hai lực này bằng dụng cụ thí nghiệm?"
+            </p>
+        </div>
+
+        <!-- SECTION I: TỔNG HỢP HAI LỰC ĐỒNG QUY -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold text-primary-color border-b-4 border-primary-color pb-2 mb-4 uppercase">
+                I. TỔNG HỢP HAI LỰC ĐỒNG QUY
+            </h2>
+
+            <!-- 1. Dụng cụ thí nghiệm -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">1. Dụng cụ thí nghiệm (Hình 22.1)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                            <li>Bảng thép <strong>(1)</strong>.</li>
+                            <li>Hai lực kế ống 5 N, có đế nam châm <strong>(2)</strong>.</li>
+                            <li>Thước đo góc có độ chia nhỏ nhất \(1^\circ\) được in trên tấm mica trong suốt <strong>(3)</strong>.</li>
+                            <li>Một đế nam châm có móc để buộc dây cao su <strong>(4)</strong>.</li>
+                            <li>Dây chỉ bền và một dây cao su <strong>(5)</strong>.</li>
+                            <li>Giá đỡ có trục \(\phi\) 10 mm, cắm lên đế ba chân <strong>(6)</strong>.</li>
+                            <li>Bút dùng để đánh dấu.</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-3 bg-gray-50">
+                        <img src="h1.png" alt="Bộ thí nghiệm tổng hợp hai lực đồng quy" class="max-h-48 rounded object-contain mb-2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="hidden text-gray-500 text-xs italic text-center">[Hình 22.1 - Bộ thí nghiệm tổng hợp hai lực đồng quy]</div>
+                        <span class="text-xs text-gray-500 font-medium text-center">Hình 22.1. Bộ thí nghiệm tổng hợp hai lực đồng quy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Thiết kế phương án thí nghiệm -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">2. Thiết kế phương án thí nghiệm</h3>
+                <p class="text-sm text-gray-700 mb-3 bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                    <strong>Nhiệm vụ:</strong> Xác định lực tổng hợp của hai lực đồng quy.<br>
+                    <strong>Cách bố trí ban đầu:</strong> Gắn đế nam châm lên bảng thép, móc sợi dây cao su vào đế nam châm, đặt hai lực kế lên bảng thép và móc hai lực kế vào đầu còn lại của dây cao su. Dịch chuyển hai lực kế để kéo sợi dây cao su làm dây dãn ra một khoảng.
+                </p>
+
+                <!-- Thảo luận câu hỏi -->
+                <div class="space-y-4">
+                    <!-- Câu hỏi 1 -->
+                    <div class="border-l-4 border-blue-800 bg-primary-light p-4 rounded-r-lg">
+                        <span class="font-bold text-blue-900">Câu hỏi thảo luận 1:</span>
+                        <p class="text-sm text-gray-800 mt-1">Làm thế nào để hai lực \(\vec{F}_{1}\) và \(\vec{F}_{2}\) đồng quy?</p>
+                        <button onclick="toggleAnswer('tl-dongquy-1')" class="mt-2 bg-[#000080] hover:bg-blue-900 text-white text-xs font-bold py-1 px-3 rounded shadow transition">
+                            Xem câu trả lời
+                        </button>
+                        <div id="tl-dongquy-1" class="hidden mt-3 p-3 bg-green-50 text-green-900 text-sm rounded border border-green-200">
+                            <strong>Trả lời:</strong> Để hai lực \(\vec{F}_{1}\) và \(\vec{F}_{2}\) đồng quy, ta buộc hai sợi chỉ vào cùng một đầu của dây cao su (đầu còn lại móc vào 2 lực kế). Điểm nút buộc chung chính là điểm đồng quy của hai lực kéo thành phần do hai lực kế tác dụng lên dây cao su qua các sợi chỉ.
+                        </div>
+                    </div>
+
+                    <!-- Câu hỏi 2 -->
+                    <div class="border-l-4 border-blue-800 bg-primary-light p-4 rounded-r-lg">
+                        <span class="font-bold text-blue-900">Câu hỏi thảo luận 2:</span>
+                        <p class="text-sm text-gray-800 mt-1">Làm thế nào thay thế tác dụng của hai lực \(\vec{F}_{1}\) và \(\vec{F}_{2}\) bằng một lực \(\vec{F}\) mà dây cao su vẫn dãn một đoạn và hướng như ban đầu?</p>
+                        <button onclick="toggleAnswer('tl-dongquy-2')" class="mt-2 bg-[#000080] hover:bg-blue-900 text-white text-xs font-bold py-1 px-3 rounded shadow transition">
+                            Xem câu trả lời
+                        </button>
+                        <div id="tl-dongquy-2" class="hidden mt-3 p-3 bg-green-50 text-green-900 text-sm rounded border border-green-200">
+                            <strong>Trả lời:</strong> 
+                            <ul class="list-decimal list-inside space-y-1">
+                                <li>Dùng bút đánh dấu vị trí nút buộc chung (vị trí đồng quy \(A_1\)) khi đang chịu tác dụng đồng thời của hai lực \(\vec{F}_1\) và \(\vec{F}_2\).</li>
+                                <li>Tháo bỏ một lực kế, chỉ dùng một lực kế móc trực tiếp vào nút buộc.</li>
+                                <li>Kéo lực kế duy nhất này dọc theo hướng sao cho nút buộc dịch chuyển về đúng vị trí \(A_1\) đã đánh dấu. Giá trị đo được trên lực kế lúc này chính là hợp lực thực nghiệm \(F_{tn}\).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Câu hỏi 3 -->
+                    <div class="border-l-4 border-blue-800 bg-primary-light p-4 rounded-r-lg">
+                        <span class="font-bold text-blue-900">Câu hỏi thảo luận 3:</span>
+                        <p class="text-sm text-gray-800 mt-1">Làm thế nào xác định lực tổng hợp của hai lực \(\vec{F}_{1}\) và \(\vec{F}_{2}\)?</p>
+                        <button onclick="toggleAnswer('tl-dongquy-3')" class="mt-2 bg-[#000080] hover:bg-blue-900 text-white text-xs font-bold py-1 px-3 rounded shadow transition">
+                            Xem câu trả lời
+                        </button>
+                        <div id="tl-dongquy-3" class="hidden mt-3 p-3 bg-green-50 text-green-900 text-sm rounded border border-green-200">
+                            <strong>Trả lời:</strong> Ta thực hiện so sánh lực tổng hợp xác định qua thực nghiệm \(F_{tn}\) (ở câu hỏi 2) với giá trị lý thuyết thu được qua việc vẽ hình và tính toán theo quy tắc hình bình hành (định lý hàm cosin):
+                            <div class="my-2 p-2 bg-white rounded font-mono text-center">
+                                \(F_{lt} = \sqrt{F_1^2 + F_2^2 + 2F_1F_2\cos\alpha}\)
+                            </div>
+                            Trong đó \(\alpha\) là góc hợp bởi phương của hai lực \(\vec{F}_1\) và \(\vec{F}_2\) đo được từ thước đo góc mica.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Tiến hành thí nghiệm -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">3. Tiến hành thí nghiệm</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="flex flex-col items-center justify-center border border-gray-200 rounded-lg p-3 bg-gray-50">
+                        <img src="h2.png" alt="Thí nghiệm tổng hợp hai lực đồng quy tác dụng hai lực kế" class="max-h-48 rounded object-contain mb-2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="hidden text-gray-500 text-xs italic text-center">[Hình 22.2a - Thí nghiệm với hai lực kế]</div>
+                        <span class="text-xs text-gray-500 text-center">Hình 22.2a. Bố trí đo hai lực thành phần \(F_1, F_2\) và góc \(\alpha\)</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center border border-gray-200 rounded-lg p-3 bg-gray-50">
+                        <img src="h3.png" alt="Thí nghiệm tổng hợp hai lực đồng quy tác dụng một lực kế" class="max-h-48 rounded object-contain mb-2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="hidden text-gray-500 text-xs italic text-center">[Hình 22.2b - Thí nghiệm với một lực kế]</div>
+                        <span class="text-xs text-gray-500 text-center">Hình 22.2b. Bố trí đo lực tổng hợp thực nghiệm \(F_{tn}\)</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-3 text-sm">
+                    <p class="font-semibold text-primary-color">Các bước tiến hành chi tiết:</p>
+                    <ol class="list-decimal list-inside space-y-1 text-gray-700">
+                        <li>Đặt bảng thép lên giá đỡ. Gắn đế nam châm có móc buộc sợi dây cao su vào móc. Buộc sợi chỉ bền vào đầu dây cao su. Móc hai lực kế vào hai đầu sợi chỉ còn lại và gắn lên bảng thép.</li>
+                        <li>Gắn thước đo góc mica lên bảng bằng nam châm (Hình 22.2a).</li>
+                        <li>Di chuyển hai lực kế sao cho dây cao su và chỉ song song với mặt bảng, tâm O của thước đo góc trùng với giao điểm đầu dây (nút chỉ).</li>
+                        <li>Đánh dấu điểm vị trí nút chỉ \(A_1\), vạch các phương của lực \(\vec{F}_1, \vec{F}_2\) lên bảng.</li>
+                        <li>Ghi nhận giá trị \(F_1, F_2\) và góc \(\alpha\) vào bảng số liệu.</li>
+                        <li>Lặp lại các phép đo 3 lần để lấy trung bình.</li>
+                        <li>Tháo một lực kế, móc lực kế còn lại kéo dây chỉ sao cho nút chỉ trùng lại đúng điểm \(A_1\) đã đánh dấu (Hình 22.2b). Ghi lại giá trị lực tổng hợp thực nghiệm \(F_{tn}\).</li>
+                        <li>Tính toán lực tổng hợp lý thuyết \(F_{lt}\) để so sánh đối chiếu.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Lưu ý quan trọng -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg text-sm text-yellow-900 mb-6">
+                <strong>LƯU Ý:</strong> Khi di chuyển các lực kế hoặc điều chỉnh lực, luôn phải đảm bảo các đoạn sợi chỉ và dây cao su nằm song song và sát với mặt phẳng của thước đo góc, tránh các lực ma sát không đáng có hoặc hiện tượng kéo lệch góc trong không gian 3 chiều.
+            </div>
+
+            <!-- 4. Kết quả thí nghiệm -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">4. Kết quả thí nghiệm (Mẫu tham khảo)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-center border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border border-gray-300 p-2">Lần đo</th>
+                                <th class="border border-gray-300 p-2">\(F_{1}\) (N)</th>
+                                <th class="border border-gray-300 p-2">\(F_{2}\) (N)</th>
+                                <th class="border border-gray-300 p-2">Góc \(\alpha\) (độ)</th>
+                                <th class="border border-gray-300 p-2">\(F_{tn}\) (N)</th>
+                                <th class="border border-gray-300 p-2">\(F_{lt}\) (N)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 p-2 font-medium">1</td>
+                                <td class="border border-gray-300 p-2">2,0</td>
+                                <td class="border border-gray-300 p-2">3,0</td>
+                                <td class="border border-gray-300 p-2">\(60^\circ\)</td>
+                                <td class="border border-gray-300 p-2">4,3</td>
+                                <td class="border border-gray-300 p-2">4,36</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 font-medium">2</td>
+                                <td class="border border-gray-300 p-2">2,0</td>
+                                <td class="border border-gray-300 p-2">3,0</td>
+                                <td class="border border-gray-300 p-2">\(90^\circ\)</td>
+                                <td class="border border-gray-300 p-2">3,5</td>
+                                <td class="border border-gray-300 p-2">3,61</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 font-medium">3</td>
+                                <td class="border border-gray-300 p-2">2,0</td>
+                                <td class="border border-gray-300 p-2">3,0</td>
+                                <td class="border border-gray-300 p-2">\(120^\circ\)</td>
+                                <td class="border border-gray-300 p-2">2,6</td>
+                                <td class="border border-gray-300 p-2">2,65</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg text-sm border border-blue-100">
+                    <p class="font-semibold text-blue-900 mb-1">Xử lý kết quả thí nghiệm mẫu:</p>
+                    <p class="text-gray-700">
+                        Sai số giữa kết quả lý thuyết và thực nghiệm thường dao động nhỏ (khoảng 2% - 5%) chủ yếu do ma sát của sợi chỉ với mặt thước, sai số dụng cụ lực kế và thao tác đọc góc bằng mắt thường. Kết quả thực nghiệm hoàn toàn chứng minh tính đúng đắn của quy tắc hình bình hành.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECTION II: TỔNG HỢP HAI LỰC SONG SONG -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold text-primary-color border-b-4 border-primary-color pb-2 mb-4 uppercase">
+                II. TỔNG HỢP HAI LỰC SONG SONG
+            </h2>
+
+            <!-- 1. Dụng cụ thí nghiệm -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">1. Dụng cụ thí nghiệm (Hình 22.3)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                            <li>Bảng thép <strong>(1)</strong>.</li>
+                            <li>Hai lò xo xoắn chịu được lực tối đa 5 N <strong>(2)</strong>.</li>
+                            <li>Thanh treo nhẹ, cứng dài 400 mm có chia thước, 3 con trượt có móc treo <strong>(3)</strong>.</li>
+                            <li>Các quả nặng đồng đều nhau, khối lượng mỗi quả \(50\text{ g}\) <strong>(4)</strong>.</li>
+                            <li>Hai đế nam châm để định vị lò xo <strong>(5)</strong>.</li>
+                            <li>Giá đỡ có trục \(\phi\) 10 mm và đế ba chân <strong>(6)</strong>.</li>
+                            <li>Bút dùng để đánh dấu.</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-3 bg-gray-50">
+                        <img src="h4.png" alt="Bộ thí nghiệm tổng hợp hai lực song song" class="max-h-48 rounded object-contain mb-2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="hidden text-gray-500 text-xs italic text-center">[Hình 22.3 - Bộ thí nghiệm tổng hợp hai lực song song]</div>
+                        <span class="text-xs text-gray-500 font-medium text-center">Hình 22.3. Bộ thí nghiệm tổng hợp hai lực song song cùng chiều</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Thiết kế phương án thí nghiệm -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">2. Thiết kế phương án thí nghiệm</h3>
+                <p class="text-sm text-gray-700 mb-3 bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                    <strong>Nhiệm vụ:</strong> Xác định lực tổng hợp của hai lực song song cùng chiều.<br>
+                    <strong>Thao tác ban đầu:</strong> Treo thanh kim loại lên 2 lò xo được định vị trên bảng sắt bằng các nam châm. Treo các quả nặng khác nhau vào hai đầu thanh tại điểm A và B, khiến các lò xo dãn ra làm dịch chuyển vị trí của thanh kim loại.
+                </p>
+
+                <!-- Thảo luận câu hỏi phần lực song song -->
+                <div class="space-y-4">
+                    <!-- Câu hỏi 1 -->
+                    <div class="border-l-4 border-blue-800 bg-primary-light p-4 rounded-r-lg">
+                        <span class="font-bold text-blue-900">Câu hỏi thảo luận 1:</span>
+                        <p class="text-sm text-gray-800 mt-1">Làm thế nào thay thế hai lực \(\vec{F}_{1}\) và \(\vec{F}_{2}\) bằng một lực \(\vec{F}\) mà thanh vẫn ở vị trí như ban đầu?</p>
+                        <button onclick="toggleAnswer('tl-songsong-1')" class="mt-2 bg-[#000080] hover:bg-blue-900 text-white text-xs font-bold py-1 px-3 rounded shadow transition">
+                            Xem câu trả lời
+                        </button>
+                        <div id="tl-songsong-1" class="hidden mt-3 p-3 bg-green-50 text-green-900 text-sm rounded border border-green-200">
+                            <strong>Trả lời:</strong> 
+                            Ta ghi nhận vị trí thăng bằng của thanh khi chịu tác dụng của 2 nhóm quả nặng treo tại A và B (bằng cách dùng bút lông vẽ lại đường mép thanh trên bảng thép). Sau đó, tháo toàn bộ các quả nặng ở 2 vị trí đó ra và dồn tất cả chúng lại treo chung vào 1 con trượt duy nhất ở giữa thanh. Ta di chuyển vị trí của con trượt này (điểm O) dọc theo thanh cho đến khi thanh kim loại trùng khít với nét vẽ đánh dấu ban đầu.
+                        </div>
+                    </div>
+
+                    <!-- Câu hỏi 2 -->
+                    <div class="border-l-4 border-blue-800 bg-primary-light p-4 rounded-r-lg">
+                        <span class="font-bold text-blue-900">Câu hỏi thảo luận 2:</span>
+                        <p class="text-sm text-gray-800 mt-1">Làm thế nào để hai lực \(\vec{F}\) và \(\vec{F}_{3}\) song song?</p>
+                        <button onclick="toggleAnswer('tl-songsong-2')" class="mt-2 bg-[#000080] hover:bg-blue-900 text-white text-xs font-bold py-1 px-3 rounded shadow transition">
+                            Xem câu trả lời
+                        </button>
+                        <div id="tl-songsong-2" class="hidden mt-3 p-3 bg-green-50 text-green-900 text-sm rounded border border-green-200">
+                            <strong>Trả lời:</strong> Do các quả nặng chịu tác dụng của trọng lực luôn hướng thẳng đứng xuống dưới theo phương dây treo, nên lực kéo tổng hợp \(\vec{F}\) (do trọng lượng tổng các quả nặng tạo thành) và lực chống lại lực đàn hồi lò xo đều có phương thẳng đứng, tạo thành hệ lực song song cùng chiều một cách tự nhiên.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Tiến hành thí nghiệm -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">3. Tiến hành thí nghiệm</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="flex flex-col items-center justify-center border border-gray-200 rounded-lg p-3 bg-gray-50">
+                        <img src="h5.png" alt="Thí nghiệm treo quả nặng ở hai bên" class="max-h-48 rounded object-contain mb-2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="hidden text-gray-500 text-xs italic text-center">[Hình 22.4a - Treo quả nặng ở hai đầu A, B]</div>
+                        <span class="text-xs text-gray-500 text-center">Hình 22.4a. Đo lực thành phần bằng cách treo quả nặng tại hai điểm A và B</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center border border-gray-200 rounded-lg p-3 bg-gray-50">
+                        <img src="h6.png" alt="Thí nghiệm gộp quả nặng tại vị trí thăng bằng O" class="max-h-48 rounded object-contain mb-2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="hidden text-gray-500 text-xs italic text-center">[Hình 22.4b - Treo gộp quả nặng tại O]</div>
+                        <span class="text-xs text-gray-500 text-center">Hình 22.4b. Xác định vị trí điểm đặt O của lực tổng hợp</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-sm text-gray-700 space-y-2">
+                    <p class="font-semibold text-primary-color">Các bước thí nghiệm cụ thể:</p>
+                    <ul class="list-decimal list-inside space-y-1">
+                        <li>Gắn nam châm lên bảng, treo thanh bằng hai lò xo như trên.</li>
+                        <li>Treo các quả nặng khác nhau ở hai con trượt nằm ở hai bên thanh (điểm A, B). Ghi nhận trọng lượng \(F_1, F_2\) tương ứng.</li>
+                        <li>Dùng bút lông vẽ nét trùng khít với vị trí của thanh kim loại lên bảng thép. Đo khoảng cách đoạn \(AB\).</li>
+                        <li>Tháo toàn bộ số quả nặng đó ra rồi móc gộp chung lại vào một con trượt duy nhất trên thanh.</li>
+                        <li>Dịch chuyển con trượt này dọc thanh đến khi mép thanh trùng lại đúng đường vẽ mực ban đầu. Ghi nhận vị trí đặt điểm \(O\).</li>
+                        <li>Đo khoảng cách từ \(O\) đến \(A\) thu được giá trị thực nghiệm \(OA_{tn}\).</li>
+                        <li>Tính toán khoảng cách lý thuyết \(OA_{lt}\) dựa vào công thức đòn bẩy:
+                            <div class="my-2 p-2 bg-white rounded font-mono text-center">
+                                \(\frac{F_1}{F_2} = \frac{d_2}{d_1} = \frac{OB}{OA} \implies OA_{lt} = \frac{F_2 \cdot AB}{F_1 + F_2}\)
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Lưu ý bổ sung -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg text-sm text-yellow-900 mb-6">
+                <strong>LƯU Ý THỰC HÀNH:</strong> Nên chọn số lượng quả nặng ở hai bên khác nhau rõ rệt (ví dụ: bên trái 3 quả, bên phải 1 quả) để điểm O bị lệch hẳn sang một bên, giúp cho việc nhận xét mối liên hệ về tỉ lệ khoảng cách dọn dẹp và dễ thực hiện đo đạc, tính toán so sánh hơn.
+            </div>
+
+            <!-- 4. Kết quả thí nghiệm -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">4. Kết quả thí nghiệm (Mẫu tham khảo)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-center border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border border-gray-300 p-2">Lần đo</th>
+                                <th class="border border-gray-300 p-2">\(F_{1}\) (N)</th>
+                                <th class="border border-gray-300 p-2">\(F_{2}\) (N)</th>
+                                <th class="border border-gray-300 p-2">\(AB\) (cm)</th>
+                                <th class="border border-gray-300 p-2">\(F\) (N)</th>
+                                <th class="border border-gray-300 p-2">\(OA_{tn}\) (cm)</th>
+                                <th class="border border-gray-300 p-2">\(OA_{lt}\) (cm)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 p-2 font-medium">1</td>
+                                <td class="border border-gray-300 p-2">1,5</td>
+                                <td class="border border-gray-300 p-2">0,5</td>
+                                <td class="border border-gray-300 p-2">24,0</td>
+                                <td class="border border-gray-300 p-2">2,0</td>
+                                <td class="border border-gray-300 p-2">5,9</td>
+                                <td class="border border-gray-300 p-2">6,0</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 font-medium">2</td>
+                                <td class="border border-gray-300 p-2">1,0</td>
+                                <td class="border border-gray-300 p-2">1,0</td>
+                                <td class="border border-gray-300 p-2">24,0</td>
+                                <td class="border border-gray-300 p-2">2,0</td>
+                                <td class="border border-gray-300 p-2">11,8</td>
+                                <td class="border border-gray-300 p-2">12,0</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 font-medium">3</td>
+                                <td class="border border-gray-300 p-2">1,0</td>
+                                <td class="border border-gray-300 p-2">1,5</td>
+                                <td class="border border-gray-300 p-2">20,0</td>
+                                <td class="border border-gray-300 p-2">2,5</td>
+                                <td class="border border-gray-300 p-2">11,9</td>
+                                <td class="border border-gray-300 p-2">12,0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg text-sm border border-blue-100">
+                    <p class="font-semibold text-blue-900 mb-1">Xử lý kết quả thí nghiệm mẫu:</p>
+                    <p class="text-gray-700">
+                        Sai số khoảng cách giữa tính toán lý thuyết và đo đạc thực tế dao động rất nhỏ trong giới hạn cho phép (\(< 2\text{ mm}\)), do đó nghiệm lại hoàn hảo quy tắc chia trong của hai lực song song cùng chiều:
+                        \[\frac{F_1}{F_2} = \frac{d_2}{d_1}\]
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EM ĐÃ HỌC, EM CÓ THỂ, EM CÓ BIẾT -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            
+            <!-- EM ĐÃ HỌC -->
+            <div class="bg-green-50 border border-green-300 rounded-xl p-5 shadow-sm">
+                <h3 class="text-lg font-bold text-green-800 mb-2 uppercase">✓ EM ĐÃ HỌC</h3>
+                <p class="text-sm text-green-900 leading-relaxed">
+                    Biết cách tiến hành và tự lắp ráp bố trí hệ thống thí nghiệm để tổng hợp hai lực đồng quy cũng như tổng hợp hai lực song song cùng chiều. Từ đó thực nghiệm kiểm chứng và khắc sâu bản chất các quy tắc hợp lực trong cơ học.
+                </p>
+            </div>
+
+            <!-- EM CÓ THỂ -->
+            <div class="bg-purple-50 border border-purple-300 rounded-xl p-5 shadow-sm">
+                <h3 class="text-lg font-bold text-purple-800 mb-2 uppercase">💡 EM CÓ THỂ</h3>
+                <p class="text-sm text-purple-900 mb-2">
+                    Chế tạo một chiếc cân thăng bằng cực kỳ đơn giản bằng các vật liệu dễ kiếm tại nhà như hình dưới:
+                </p>
+                <ul class="list-decimal list-inside text-xs text-purple-950 space-y-1 mb-3">
+                    <li>Một thanh thước gỗ dẹt có sẵn các vạch chia độ dài.</li>
+                    <li>Một chai nước rỗng loại 500 mL làm quả cân chuẩn.</li>
+                    <li>Các đoạn dây treo chỉ bền chắc.</li>
+                    <li>Vật cần cân khối lượng bất kỳ để đối chiếu.</li>
+                </ul>
+                <div class="flex flex-col items-center justify-center border border-purple-200 bg-white rounded p-2">
+                    <img src="h7.png" alt="Thiết kế chế tạo chiếc cân đơn giản" class="max-h-24 rounded object-contain mb-1" onerror="this.style.display='none';">
+                    <span class="text-[10px] text-gray-500">Hình 22.5. Sơ đồ chế tạo cân đòn bẩy đơn giản</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EM CÓ BIẾT -->
+        <div class="bg-pink-50 border border-pink-300 rounded-xl p-5 mb-6 shadow-sm">
+            <h3 class="text-lg font-bold text-pink-800 mb-2 uppercase">🔍 EM CÓ BIẾT?</h3>
+            <p class="text-sm text-pink-900 leading-relaxed">
+                <strong>Đòn bẩy</strong> là một trong những loại máy cơ đơn giản được con người ứng dụng sớm nhất và rộng rãi nhất từ thời cổ đại cho đến nay. Bản chất hoạt động của đòn bẩy chính là dựa trên quy tắc cân bằng lực và quy tắc tổng hợp hai lực song song ngược chiều/cùng chiều. Các ví dụ điển hình có thể thấy ngay trong đời sống hàng ngày: chiếc xà beng để cậy đất đá, chiếc bập bênh ở công viên, hay chiếc đòn gánh truyền thống giúp san sẻ sức nặng một cách thông minh của người dân lao động Việt Nam.
+            </p>
+        </div>
+
+
+        <!-- TRẮC NGHIỆM CỦNG CỐ -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold text-primary-color border-b-4 border-primary-color pb-2 mb-6 uppercase">
+                III. BÀI TẬP TRẮC NGHIỆM CỦNG CỐ (5 CÂU)
+            </h2>
+
+            <form id="quizForm" class="space-y-6">
+                
+                <!-- Câu 1 -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-950 mb-3">Câu 1. Quy tắc hình bình hành được dùng để xác định lực tổng hợp của:</p>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q1" value="A" class="form-radio h-4 w-4 text-blue-600">
+                            <span>A. Hai lực song song cùng chiều.</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q1" value="B" class="form-radio h-4 w-4 text-blue-600">
+                            <span>B. Hai lực song song ngược chiều.</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q1" value="C" class="form-radio h-4 w-4 text-blue-600">
+                            <span>C. Hai lực đồng quy tác dụng lên cùng một vật.</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q1" value="D" class="form-radio h-4 w-4 text-blue-600">
+                            <span>D. Hai lực bất kỳ không cùng tác dụng lên một vật.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Câu 2 -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-950 mb-3">Câu 2. Độ lớn của hợp lực \(F\) của hai lực thành phần đồng quy \(F_1\) và \(F_2\) bất kì có hướng tạo với nhau góc \(\alpha\) được tính bằng biểu thức:</p>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q2" value="A" class="form-radio h-4 w-4 text-blue-600">
+                            <span>A. \(F = \sqrt{F_1^2 + F_2^2 - 2F_1F_2\cos\alpha}\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q2" value="B" class="form-radio h-4 w-4 text-blue-600">
+                            <span>B. \(F = \sqrt{F_1^2 + F_2^2 + 2F_1F_2\cos\alpha}\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q2" value="C" class="form-radio h-4 w-4 text-blue-600">
+                            <span>C. \(F = F_1 + F_2 + 2F_1F_2\cos\alpha\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q2" value="D" class="form-radio h-4 w-4 text-blue-600">
+                            <span>D. \(F = F_1^2 + F_2^2 + 2F_1F_2\sin\alpha\)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Câu 3 -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-950 mb-3">Câu 3. Hai lực song song cùng chiều có độ lớn lần lượt là \(F_1 = 6\text{ N}\) và \(F_2 = 10\text{ N}\). Độ lớn của hợp lực \(F\) bằng bao nhiêu?</p>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q3" value="A" class="form-radio h-4 w-4 text-blue-600">
+                            <span>A. \(4\text{ N}\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q3" value="B" class="form-radio h-4 w-4 text-blue-600">
+                            <span>B. \(16\text{ N}\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q3" value="C" class="form-radio h-4 w-4 text-blue-600">
+                            <span>C. \(8\text{ N}\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q3" value="D" class="form-radio h-4 w-4 text-blue-600">
+                            <span>D. \(14\text{ N}\)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Câu 4 -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-950 mb-3">Câu 4. Trong thí nghiệm tổng hợp hai lực song song cùng chiều, điểm đặt O của lực tổng hợp được xác định qua công thức tỉ lệ nào sau đây?</p>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q4" value="A" class="form-radio h-4 w-4 text-blue-600">
+                            <span>A. \(\frac{F_1}{F_2} = \frac{OB}{OA}\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q4" value="B" class="form-radio h-4 w-4 text-blue-600">
+                            <span>B. \(\frac{F_1}{F_2} = \frac{OA}{OB}\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q4" value="C" class="form-radio h-4 w-4 text-blue-600">
+                            <span>C. \(F_1 \cdot OB = F_2 \cdot OA\)</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q4" value="D" class="form-radio h-4 w-4 text-blue-600">
+                            <span>D. \(\frac{F_1}{F_1+F_2} = \frac{OB}{AB}\)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Câu 5 -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-gray-950 mb-3">Câu 5. Mục đích của việc đánh dấu điểm nút thắt chỉ \(A_1\) và vẽ lại mép thước thẳng lên bảng sắt bằng bút lông là:</p>
+                    <div class="space-y-2 text-sm">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q5" value="A" class="form-radio h-4 w-4 text-blue-600">
+                            <span>A. Trang trí cho hệ thống thí nghiệm đẹp mắt hơn.</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q5" value="B" class="form-radio h-4 w-4 text-blue-600">
+                            <span>B. Giữ cho lò xo không bị dãn quá giới hạn đàn hồi.</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q5" value="C" class="form-radio h-4 w-4 text-blue-600">
+                            <span>C. Lưu lại trạng thái biến dạng cơ học ban đầu để tìm ra lực tương đương thay thế chính xác.</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="q5" value="D" class="form-radio h-4 w-4 text-blue-600">
+                            <span>D. Giúp đo đạc góc lệch của lực được nhanh hơn mà không cần lắp thước đo góc mica.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="button" onclick="checkQuiz()" class="bg-[#000080] hover:bg-blue-900 text-white font-bold py-2.5 px-6 rounded-lg shadow-md transition duration-200">
+                        NỘP BÀI KIỂM TRA
+                    </button>
+                </div>
+            </form>
+
+            <!-- Result text display box -->
+            <div id="quizResult" class="hidden mt-6 p-4 rounded-lg border text-sm font-semibold"></div>
+
+        </div>
+
+
+        <!-- BÀI TẬP VẬN DỤNG TÍNH TOÁN -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold text-primary-color border-b-4 border-primary-color pb-2 mb-6 uppercase">
+                IV. BÀI TẬP VẬN DỤNG TỰ LUẬN CÓ LỜI GIẢI CHI TIẾT
+            </h2>
+
+            <div class="space-y-6">
+                
+                <!-- Bài 1 -->
+                <div class="border-l-4 border-blue-800 bg-primary-light p-4 rounded-r-lg">
+                    <p class="font-bold text-gray-900">Bài tập 1:</p>
+                    <p class="text-sm text-gray-800 mt-1">
+                        Một vật chịu tác dụng của hai lực đồng quy đồng phẳng có độ lớn lần lượt là \(F_1 = 30\text{ N}\) và \(F_2 = 40\text{ N}\). Biết góc hợp giữa hai lực là \(\alpha = 90^\circ\). Tính độ lớn của hợp lực tác dụng lên vật.
+                    </p>
+                    <button onclick="toggleAnswer('sol-1')" class="mt-3 bg-[#000080] hover:bg-blue-900 text-white text-xs font-bold py-1.5 px-4 rounded shadow transition">
+                        Xem lời giải chi tiết
+                    </button>
+                    <div id="sol-1" class="hidden mt-4 p-4 bg-green-50 text-green-900 text-sm rounded border border-green-200 leading-relaxed">
+                        <strong>Lời giải chi tiết:</strong><br>
+                        Áp dụng biểu thức tổng quát xác định độ lớn hợp lực của hai lực đồng quy:
+                        \[F = \sqrt{F_1^2 + F_2^2 + 2F_1F_2\cos\alpha}\]
+                        Do hai lực vuông góc với nhau (\(\alpha = 90^\circ\)), ta có \(\cos 90^\circ = 0\).<br>
+                        Biểu thức thu gọn thành định lý Pytago:
+                        \[F = \sqrt{F_1^2 + F_2^2} = \sqrt{30^2 + 40^2} = \sqrt{900 + 1600} = \sqrt{2500} = 50\text{ N}\]
+                        <strong>Kết luận:</strong> Độ lớn hợp lực tác dụng lên vật là <strong>\(50\text{ N}\)</strong>.
+                    </div>
+                </div>
+
+                <!-- Bài 2 -->
+                <div class="border-l-4 border-blue-800 bg-primary-light p-4 rounded-r-lg">
+                    <p class="font-bold text-gray-900">Bài tập 2:</p>
+                    <p class="text-sm text-gray-800 mt-1">
+                        Một tấm ván gỗ nhẹ, cứng bắc ngang làm chiếc bập bênh cho hai em bé. Bé A nặng \(30\text{ kg}\) ngồi tại một đầu ván, cách điểm tựa trục quay \(O\) một đoạn \(1,2\text{ m}\). Bé B phải ngồi cách điểm tựa bao nhiêu để bập bênh ở trạng thái thăng bằng nằm ngang? Biết khối lượng của bé B là \(20\text{ kg}\) và lấy \(g = 10\text{ m/s}^2\).
+                    </p>
+                    <button onclick="toggleAnswer('sol-2')" class="mt-3 bg-[#000080] hover:bg-blue-900 text-white text-xs font-bold py-1.5 px-4 rounded shadow transition">
+                        Xem lời giải chi tiết
+                    </button>
+                    <div id="sol-2" class="hidden mt-4 p-4 bg-green-50 text-green-900 text-sm rounded border border-green-200 leading-relaxed">
+                        <strong>Lời giải chi tiết:</strong><br>
+                        Gọi \(F_1, F_2\) lần lượt là trọng lực do bé A và bé B tác dụng lên tấm ván gỗ:<br>
+                        - Lực \(F_1 = P_A = m_A \cdot g = 30 \cdot 10 = 300\text{ N}\).<br>
+                        - Lực \(F_2 = P_B = m_B \cdot g = 20 \cdot 10 = 200\text{ N}\).<br><br>
+                        Để bập bênh nằm thăng bằng nằm ngang, vị trí trục quay \(O\) đóng vai trò là điểm đặt lực tổng hợp của hai lực song song cùng chiều \(F_1\) và \(F_2\). Theo quy tắc chia trong:<br>
+                        \[\frac{F_1}{F_2} = \frac{d_2}{d_1} \implies \frac{300}{200} = \frac{d_2}{1,2}\]
+                        Rút ra khoảng cách \(d_2\) từ vị trí của bé B tới điểm tựa \(O\):<br>
+                        \[d_2 = 1,2 \cdot \frac{300}{200} = 1,8\text{ m}\]
+                        <strong>Kết luận:</strong> Em bé B phải ngồi cách điểm tựa một khoảng là <strong>\(1,8\text{ m}\)</strong>.
+                    </div>
+                </div>
+
+                <!-- Bài 3 -->
+                <div class="border-l-4 border-blue-800 bg-primary-light p-4 rounded-r-lg">
+                    <p class="font-bold text-gray-900">Bài tập 3:</p>
+                    <p class="text-sm text-gray-800 mt-1">
+                        Hai người khiêng một vật nặng khối lượng \(50\text{ kg}\) bằng một đòn gánh nhẹ dài \(1,5\text{ m}\). Điểm treo vật cách vai người thứ nhất một khoảng \(0,6\text{ m}\). Hãy tính xem vai của mỗi người phải chịu một lực tác dụng bằng bao nhiêu? Lấy \(g = 10\text{ m/s}^2\).
+                    </p>
+                    <button onclick="toggleAnswer('sol-3')" class="mt-3 bg-[#000080] hover:bg-blue-900 text-white text-xs font-bold py-1.5 px-4 rounded shadow transition">
+                        Xem lời giải chi tiết
+                    </button>
+                    <div id="sol-3" class="hidden mt-4 p-4 bg-green-50 text-green-900 text-sm rounded border border-green-200 leading-relaxed">
+                        <strong>Lời giải chi tiết:</strong><br>
+                        Trọng lượng của vật nặng được treo vào đòn gánh:<br>
+                        \[P = m \cdot g = 50 \cdot 10 = 500\text{ N}\]
+                        Theo quy tắc hợp lực hai lực song song cùng chiều, lực gánh từ vai hai người (\(F_1\) và \(F_2\)) tác dụng vào đòn gánh có tổng bằng trọng lượng của vật:<br>
+                        \[F_1 + F_2 = P = 500\text{ N} \quad (1)\]
+                        Khoảng cách từ vai người thứ nhất đến điểm treo vật: \(d_1 = 0,6\text{ m}\).<br>
+                        Khoảng cách từ vai người thứ hai đến điểm treo vật: \(d_2 = 1,5 - 0,6 = 0,9\text{ m}\).<br>
+                        Áp dụng hệ thức tỉ lệ nghịch:<br>
+                        \[\frac{F_1}{F_2} = \frac{d_2}{d_1} = \frac{0,9}{0,6} = 1,5 \implies F_1 = 1,5 \cdot F_2 \quad (2)\]
+                        Thay (2) vào (1) ta được:<br>
+                        \[1,5 \cdot F_2 + F_2 = 500 \implies 2,5 \cdot F_2 = 500 \implies F_2 = 200\text{ N}\]<br>
+                        Từ đó tính được \(F_1\):<br>
+                        \[F_1 = 500 - 200 = 300\text{ N}\]<br>
+                        <strong>Kết luận:</strong> Vai người thứ nhất chịu lực tác dụng là <strong>\(300\text{ N}\)</strong>, vai người thứ hai chịu lực tác dụng là <strong>\(200\text{ N}\)</strong>.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT FUNCTIONS -->
+    <script>
+        // Toggle function to show or hide details
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Quiz check logic
+        function checkQuiz() {
+            // Correct answers list
+            const answers = {
+                q1: 'C',
+                q2: 'B',
+                q3: 'B',
+                q4: 'A',
+                q5: 'C'
+            };
+
+            const form = document.getElementById('quizForm');
+            const resultBox = document.getElementById('quizResult');
+            let score = 0;
+            let total = 5;
+            let feedbackHTML = "";
+
+            // Evaluate responses
+            for (let i = 1; i <= total; i++) {
+                const checkedOption = form.querySelector(`input[name="q${i}"]:checked`);
+                const userAns = checkedOption ? checkedOption.value : null;
+                const correctAns = answers[`q${i}`];
+
+                if (userAns === correctAns) {
+                    score++;
+                    feedbackHTML += `<p class="text-green-700 mb-1">✓ Câu ${i}: Đúng! Bạn chọn ${userAns}.</p>`;
+                } else {
+                    feedbackHTML += `<p class="text-red-600 mb-1">✗ Câu ${i}: Sai! Bạn chọn ${userAns ? userAns : "chưa chọn"}. Đáp án đúng là <strong>${correctAns}</strong>.</p>`;
+                }
+            }
+
+            // Explanations for each quiz question
+            const explanations = {
+                1: "Quy tắc hình bình hành được dùng để tìm hợp lực của 2 lực đồng quy cùng tác dụng vào 1 chất điểm.",
+                2: "Công thức tổng quát tính độ lớn hợp lực của hai lực đồng quy tạo với nhau một góc alpha bất kỳ là \\(F = \\sqrt{F_1^2 + F_2^2 + 2F_1F_2\\cos\\alpha}\\).",
+                3: "Hợp lực của 2 lực song song cùng chiều có độ lớn bằng tổng độ lớn của chúng: \\(F = F_1 + F_2 = 6 + 10 = 16\\text{ N}\\).",
+                4: "Quy tắc chia trong của hai lực song song cùng chiều quy định tỉ lệ nghịch giữa độ lớn lực thành phần và khoảng cách đến điểm đặt hợp lực: \\(\\frac{F_1}{F_2} = \\frac{OB}{OA}\\).",
+                5: "Việc đánh dấu đóng vai trò lưu giữ hình học biến dạng ban đầu để sau đó có thể so sánh lực duy nhất thay thế mà vẫn giữ nguyên biến dạng trạng thái của hệ thống."
+            };
+
+            feedbackHTML += `<div class="mt-4 p-3 bg-gray-100 rounded text-gray-800 border-t border-gray-300">`;
+            feedbackHTML += `<h4 class="font-bold mb-2 text-primary-color text-base">Hướng dẫn giải chi tiết trắc nghiệm:</h4>`;
+            for (let i = 1; i <= total; i++) {
+                feedbackHTML += `<p class="mb-1.5 text-xs"><strong>Giải thích Câu ${i}:</strong> ${explanations[i]}</p>`;
+            }
+            feedbackHTML += `</div>`;
+
+            // Display result
+            resultBox.classList.remove('hidden');
+            if (score === total) {
+                resultBox.className = "mt-6 p-4 rounded-lg border bg-green-50 border-green-300 text-green-900 text-sm";
+                resultBox.innerHTML = `<h3 class="text-lg font-bold mb-2">🎉 Kết quả tuyệt vời: ${score}/${total} điểm!</h3>` + feedbackHTML;
+            } else {
+                resultBox.className = "mt-6 p-4 rounded-lg border bg-red-50 border-red-200 text-red-900 text-sm";
+                resultBox.innerHTML = `<h3 class="text-lg font-bold mb-2">Cố gắng lên: ${score}/${total} điểm.</h3>` + feedbackHTML;
+            }
+
+            // Retrigger MathJax to render latex in generated HTML content
+            if (window.MathJax) {
+                MathJax.typesetPromise([resultBox]);
+            }
+        }
+    </script>
+</body>
+</html>

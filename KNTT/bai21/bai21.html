@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Học: Moment Lực - Cân Bằng Của Vật Rắn</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#000080',
+                        lightbg: '#f4f7f9',
+                        boxlight: '#edf2f7',
+                        ansbg: '#d1fae5', /* xanh lá nhạt */
+                    },
+                    fontFamily: {
+                        sans: ['"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '12px': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- MathJax for rendering math formulas -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body { background-color: #f4f7f9; }
+        .section-header {
+            color: #000080;
+            border-bottom: 4px solid #000080;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto space-y-8">
+
+        <!-- Header -->
+        <div class="bg-navy text-white rounded-12px shadow-md p-6 text-center">
+            <h1 class="text-1xl md:text-2xl font-bold uppercase mb-4">CHƯƠNG IV: NĂNG LƯỢNG – CÔNG, CÔNG SUẤT</h1>
+            <div class="border-t border-white opacity-50 w-3/4 mx-auto my-4"></div>
+            <h2 class="text-2xl md:text-1xl font-bold uppercase mt-4">Bài 21: MOMENT LỰC. CÂN BẰNG CỦA VẬT RẮN</h2>
+        </div>
+
+        <!-- Lời dẫn -->
+        <div class="bg-white border border-black rounded-12px shadow-md p-5 italic text-lg text-gray-700">
+            Nếu dùng tay để siết chặt một đai ốc thì việc đó rất khó, tuy nhiên với dụng cụ thích hợp như cờ lê thì việc siết chặt đai ốc trở nên dễ dàng. Tác dụng của dụng cụ này thay đổi thế nào nếu ta tăng độ lớn của lực hoặc sử dụng cờ lê dài hơn?
+        </div>
+
+        <!-- I. MOMENT LỰC -->
+        <div class="bg-white rounded-12px shadow-md p-6">
+            <h3 class="section-header">I. MOMENT LỰC</h3>
+            
+            <h4 class="font-bold text-lg mb-2 text-navy">1. Tác dụng làm quay của lực</h4>
+            <p class="mb-4">Ở lớp 8 các em đã học trong môn KHTN về tác dụng làm quay của lực. Muốn mô tả chính xác tác dụng của búa khi dùng để nhổ đinh, ta phải đưa vào khái niệm mới là cánh tay đòn của lực.</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded mb-4">
+                <strong>Định nghĩa:</strong> Cánh tay đòn của lực là khoảng cách từ trục quay đến giá của lực, kí hiệu là \( d \).
+            </div>
+
+            <div class="my-4 text-center">
+                <img src="h1.png" alt="Dùng búa nhổ đinh" class="mx-auto rounded border border-gray-200 max-h-64 object-contain mb-2">
+                <p class="text-sm italic text-gray-500">Hình 21.1. Dùng búa nhổ đinh</p>
+            </div>
+
+            <!-- Question Box 1 -->
+            <div class="bg-boxlight border-l-4 border-navy p-4 rounded mb-2">
+                <div class="flex items-start gap-2">
+                    <span class="text-xl">❓</span>
+                    <div>
+                        <p>1. Mô tả thao tác dùng búa để nhổ đinh.</p>
+                        <p>2. Lực \( \vec{F} \) nên đặt vào đâu trên cán búa để nhổ đinh được dễ dàng? Khi đó cánh tay đòn (\( d \)) của lực lớn hay nhỏ?</p>
+                        <p>3. Tác dụng làm quay của lực phụ thuộc những yếu tố nào?</p>
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleAnswer('ans-1', this)" class="bg-navy hover:bg-blue-800 text-white font-bold py-1.5 px-4 rounded text-sm mb-4 transition">Xem câu trả lời</button>
+            <div id="ans-1" class="hidden bg-ansbg p-4 rounded mb-4 border border-green-300">
+                <p><strong>Hướng dẫn:</strong></p>
+                <p>1. Một tay cầm cán búa, đặt đầu búa (điểm tì) làm điểm tựa trên mặt bàn/gỗ, móc đinh vào khe búa rồi tác dụng lực kéo cán búa về phía sau.</p>
+                <p>2. Lực \( \vec{F} \) nên đặt ở cuối cán búa (xa đầu búa nhất). Khi đó cánh tay đòn (\( d \)) của lực là lớn nhất.</p>
+                <p>3. Phụ thuộc vào độ lớn của lực tác dụng và khoảng cách từ trục quay đến giá của lực (cánh tay đòn).</p>
+            </div>
+
+            <h4 class="font-bold text-lg mt-6 mb-2 text-navy">2. Moment lực</h4>
+            <p class="mb-4">Ví dụ trên cho phép ta lấy tích \( F.d \) làm đại lượng đặc trưng cho tác dụng làm quay của lực và gọi là moment lực, kí hiệu là \( M \).</p>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded mb-4 shadow-sm">
+                <p><strong>Định nghĩa:</strong> Moment lực đối với trục quay là đại lượng đặc trưng cho tác dụng làm quay của lực và được đo bằng tích của lực với cánh tay đòn của nó.</p>
+                <p class="text-center font-bold text-xl my-2 text-navy">$$ M = F.d $$</p>
+                <p><em>Đơn vị của moment lực là niutơn mét (N.m).</em></p>
+            </div>
+
+            <div class="my-4 text-center">
+                <img src="h2.png" alt="Chiếc thước mảnh OA" class="mx-auto rounded border border-gray-200 max-h-48 object-contain mb-2">
+                <p class="text-sm italic text-gray-500">Hình 21.2. Thước mảnh có thể quay quanh trục O</p>
+            </div>
+
+            <!-- Question Box 2 -->
+            <div class="bg-boxlight border-l-4 border-navy p-4 rounded mb-2">
+                <div class="flex items-start gap-2">
+                    <span class="text-xl">❓</span>
+                    <div>
+                        <p>1. Trong các tình huống ở Hình 21.2a, b, thước OA quay theo chiều kim đồng hồ hay ngược chiều kim đồng hồ?</p>
+                        <p>2. Tính moment lực ứng với mỗi tình huống trong Hình 21.2.</p>
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleAnswer('ans-2', this)" class="bg-navy hover:bg-blue-800 text-white font-bold py-1.5 px-4 rounded text-sm transition">Xem câu trả lời</button>
+            <div id="ans-2" class="hidden bg-ansbg p-4 rounded mt-2 border border-green-300">
+                <p><strong>Hướng dẫn:</strong></p>
+                <p>1. Cả hai trường hợp lực đều kéo đầu A xuống dưới so với trục quay O nằm bên trái, nên thước quay <strong>cùng chiều kim đồng hồ</strong>.</p>
+                <p>2. - Ở hình a: \( d = 50 \text{ cm} = 0,5 \text{ m} \). Lực \( F = 4 \text{ N} \). Moment \( M_a = 4 \times 0,5 = 2 \text{ N.m} \).</p>
+                <p> - Ở hình b: Tương tự tính d dựa vào phương vuông góc (nếu có chi tiết hơn trên hình), hoặc áp dụng đúng khoảng cách tương ứng.</p>
+            </div>
+        </div>
+
+        <!-- II. QUY TẮC MOMENT LỰC -->
+        <div class="bg-white rounded-12px shadow-md p-6">
+            <h3 class="section-header">II. QUY TẮC MOMENT LỰC</h3>
+            
+            <h4 class="font-bold text-lg mb-2 text-navy">1. Thí nghiệm</h4>
+            <p class="mb-4">Dùng một đĩa tròn có trục quay đi qua tâm O... Tác dụng vào đĩa những lực \( \vec{F}_1 \) và \( \vec{F}_2 \) sao cho đĩa đứng yên. Khi đó moment của lực \( \vec{F}_1 \) đã cân bằng với moment của lực \( \vec{F}_2 \).</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded mb-4 text-center font-bold text-lg text-navy">
+                $$ F_1.d_1 = F_2.d_2 $$
+            </div>
+
+            <div class="my-4 text-center">
+                <img src="h3.png" alt="Thí nghiệm đĩa tròn" class="mx-auto rounded border border-gray-200 max-h-64 object-contain mb-2">
+                <p class="text-sm italic text-gray-500">Hình 21.3</p>
+            </div>
+
+            <!-- Question Box 3 -->
+            <div class="bg-boxlight border-l-4 border-navy p-4 rounded mb-2">
+                <div class="flex items-start gap-2">
+                    <span class="text-xl">❓</span>
+                    <div>
+                        <p>1. Nếu bỏ lực \( \vec{F}_1 \) thì đĩa quay theo chiều nào?</p>
+                        <p>2. Nếu bỏ lực \( \vec{F}_2 \) thì đĩa quay theo chiều nào?</p>
+                        <p>3. Khi đĩa cân bằng lập tích \( F_1.d_1 \) và \( F_2.d_2 \) rồi so sánh.</p>
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleAnswer('ans-3', this)" class="bg-navy hover:bg-blue-800 text-white font-bold py-1.5 px-4 rounded text-sm mb-4 transition">Xem câu trả lời</button>
+            <div id="ans-3" class="hidden bg-ansbg p-4 rounded mb-4 border border-green-300">
+                <p><strong>Hướng dẫn:</strong></p>
+                <p>1. Nếu bỏ \( \vec{F}_1 \), dưới tác dụng của \( \vec{F}_2 \), đĩa sẽ quay ngược chiều kim đồng hồ.</p>
+                <p>2. Nếu bỏ \( \vec{F}_2 \), dưới tác dụng của \( \vec{F}_1 \), đĩa sẽ quay cùng chiều kim đồng hồ.</p>
+                <p>3. Khi đĩa cân bằng, tích \( F_1.d_1 \) bằng với tích \( F_2.d_2 \).</p>
+            </div>
+
+            <h4 class="font-bold text-lg mt-6 mb-2 text-navy">2. Quy tắc moment lực</h4>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded mb-4 shadow-sm">
+                <p class="mb-2"><strong>Phát biểu:</strong> Muốn cho một vật có trục quay cố định ở trạng thái cân bằng, thì tổng các moment lực có xu hướng làm vật quay theo chiều kim đồng hồ phải bằng tổng các moment lực có xu hướng làm vật quay ngược chiều kim đồng hồ.</p>
+                <p>Nếu chọn một chiều quay làm chiều dương thì điều kiện cân bằng của vật có trục quay cố định là: <strong>Tổng các moment lực tác dụng lên vật (đối với một điểm bất kì) bằng 0.</strong></p>
+            </div>
+
+            <div class="my-4 text-center">
+                <img src="h4.png" alt="Cân bằng bập bênh" class="mx-auto rounded border border-gray-200 max-h-48 object-contain mb-2">
+                <p class="text-sm italic text-gray-500">Hình 21.4. Chiếc bập bênh</p>
+            </div>
+
+            <!-- Activity Box -->
+            <div class="bg-boxlight border-l-4 border-navy p-4 rounded mb-2">
+                <div class="flex items-start gap-2">
+                    <span class="text-xl">👇</span>
+                    <div>
+                        <p>a) Sử dụng kiến thức về moment lực giải thích vì sao chiếc bập bênh đứng cân bằng.</p>
+                        <p>b) Cho biết người chị có trọng lượng \( P_2 = 300\text{ N} \), khoảng cách \( d_2 = 1\text{ m} \), người em có trọng lượng \( P_1 = 200\text{ N} \). Hỏi khoảng cách \( d_1 \) phải bằng bao nhiêu để bập bênh cân bằng?</p>
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleAnswer('ans-4', this)" class="bg-navy hover:bg-blue-800 text-white font-bold py-1.5 px-4 rounded text-sm transition">Xem hướng giải quyết</button>
+            <div id="ans-4" class="hidden bg-ansbg p-4 rounded mt-2 border border-green-300">
+                <p><strong>Giải:</strong></p>
+                <p>a) Bập bênh cân bằng vì moment lực do trọng lượng người chị tạo ra (làm quay cùng chiều kim đồng hồ) cân bằng với moment lực do trọng lượng người em tạo ra (làm quay ngược chiều).</p>
+                <p>b) Áp dụng quy tắc moment: \( P_1.d_1 = P_2.d_2 \)</p>
+                <p>=> \( 200 \times d_1 = 300 \times 1 \)</p>
+                <p>=> \( d_1 = 1,5 \text{ m} \)</p>
+            </div>
+        </div>
+
+        <!-- III. NGẪU LỰC -->
+        <div class="bg-white rounded-12px shadow-md p-6">
+            <h3 class="section-header">III. NGẪU LỰC</h3>
+            
+            <h4 class="font-bold text-lg mb-2 text-navy">1. Ngẫu lực là gì?</h4>
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded mb-4">
+                <p><strong>Định nghĩa:</strong> Ngẫu lực là hệ hai lực song song, ngược chiều, có độ lớn bằng nhau và cùng đặt vào một vật.</p>
+                <p><em>Tác dụng: Ngẫu lực tác dụng lên một vật chỉ làm cho vật quay chứ không tịnh tiến.</em></p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-center gap-4 my-4">
+                <div class="text-center">
+                    <img src="h5a.png" alt="Vặn vòi nước" class="mx-auto rounded border border-gray-200 max-h-40 object-contain mb-2">
+                    <p class="text-sm italic text-gray-500">Hình 21.5a. Vặn vòi nước</p>
+                </div>
+                <div class="text-center">
+                    <img src="h5b.png" alt="Tay lái ô tô" class="mx-auto rounded border border-gray-200 max-h-40 object-contain mb-2">
+                    <p class="text-sm italic text-gray-500">Hình 21.5b. Vô lăng ô tô</p>
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg mt-6 mb-2 text-navy">2. Moment của ngẫu lực</h4>
+            <p class="mb-4">Vì hai lực \( \vec{F}_1 \) và \( \vec{F}_2 \) đều làm cho vật quay theo một chiều nên moment của ngẫu lực M được xác định:</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded mb-4 shadow-sm text-center">
+                <p class="font-bold text-xl text-navy">$$ M = F_1.d_1 + F_2.d_2 = F.d $$</p>
+                <p class="text-sm text-gray-700 mt-2">Trong đó \( F \) là độ lớn của mỗi lực, \( d \) là khoảng cách giữa hai giá của lực (gọi là cánh tay đòn của ngẫu lực).</p>
+            </div>
+
+            <div class="my-4 text-center">
+                <img src="h6.png" alt="Khoảng cách ngẫu lực" class="mx-auto rounded border border-gray-200 max-h-48 object-contain mb-2">
+                <p class="text-sm italic text-gray-500">Hình 21.6</p>
+            </div>
+        </div>
+
+        <!-- IV. ĐIỀU KIỆN CÂN BẰNG TỔNG QUÁT CỦA VẬT RẮN -->
+        <div class="bg-white rounded-12px shadow-md p-6">
+            <h3 class="section-header">IV. ĐIỀU KIỆN CÂN BẰNG TỔNG QUÁT CỦA VẬT RẮN</h3>
+
+            <!-- Activity Boxes for Intro -->
+            <div class="bg-boxlight border-l-4 border-navy p-4 rounded mb-4">
+                <div class="flex items-start gap-2 mb-2">
+                    <span class="text-xl">👇</span>
+                    <div>
+                        <p><strong>Hoạt động 1:</strong> Đặt một chiếc thước dài trên bàn. Cho một bạn nâng một đầu thước lên và giữ yên (Hình 21.7).</p>
+                        <ul class="list-disc ml-5 text-gray-700 mt-2">
+                            <li>Khi thay đổi lực nâng \( \vec{F} \) ta thấy thước quay quanh trục nào?</li>
+                            <li>Khi thước đứng yên có áp dụng quy tắc moment được không và áp dụng như thế nào?</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="my-2 text-center">
+                    <img src="h7.png" alt="Nâng thước" class="mx-auto rounded border border-gray-200 max-h-40 object-contain mb-2">
+                </div>
+            </div>
+
+            <div class="bg-boxlight border-l-4 border-navy p-4 rounded mb-4">
+                <div class="flex items-start gap-2 mb-2">
+                    <span class="text-xl">👇</span>
+                    <div>
+                        <p><strong>Hoạt động 2:</strong> Khi một vật không có điểm tựa cố định. Ví dụ thanh cứng tựa vào tường nhẵn (Hình 21.8). Có áp dụng được quy tắc moment không?</p>
+                        <p class="italic text-sm text-gray-600 mt-1">Gợi ý: Chọn đầu A của thanh để viết quy tắc moment.</p>
+                    </div>
+                </div>
+                <div class="my-2 text-center">
+                    <img src="h8.png" alt="Thanh tựa tường" class="mx-auto rounded border border-gray-200 max-h-64 object-contain mb-2">
+                </div>
+            </div>
+
+            <p class="mb-4">Ta đã biết, vật đứng yên thì trọng lực phải cân bằng với các lực khác tác dụng lên vật. Như vậy, điều kiện cân bằng tổng quát là:</p>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded mb-6 shadow-sm">
+                <h4 class="font-bold text-lg mb-2 text-navy">Điều kiện cân bằng của một vật rắn:</h4>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Tổng các lực tác dụng lên vật bằng 0. <span class="font-bold text-navy">(\( \Sigma \vec{F} = 0 \))</span></li>
+                    <li>Tổng các moment lực tác dụng lên vật đối với một điểm bất kì chọn làm trục quay bằng 0 (nếu chọn một chiều quay làm chiều dương). <span class="font-bold text-navy">(\( \Sigma M = 0 \))</span></li>
+                </ul>
+            </div>
+
+            <!-- Question Box 5 -->
+            <div class="bg-boxlight border-l-4 border-navy p-4 rounded mb-2">
+                <div class="flex items-start gap-2">
+                    <span class="text-xl">❓</span>
+                    <div>
+                        <p>Áp dụng điều kiện cân bằng tổng quát vào thanh cứng tựa tường (Hình 21.8).</p>
+                        <p>a) Viết điều kiện cân bằng thứ nhất.</p>
+                        <p>b) Viết điều kiện cân bằng thứ hai đối với trục quay A.</p>
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleAnswer('ans-5', this)" class="bg-navy hover:bg-blue-800 text-white font-bold py-1.5 px-4 rounded text-sm transition">Xem câu trả lời</button>
+            <div id="ans-5" class="hidden bg-ansbg p-4 rounded mt-2 border border-green-300">
+                <p><strong>Hướng dẫn:</strong></p>
+                <p>a) Điều kiện tổng lực: \( \vec{P} + \vec{N}_A + \vec{N}_B + \vec{F}_{msn} = \vec{0} \)</p>
+                <p>Chiếu lên phương Ox, Oy ta sẽ có các phương trình vô hướng.</p>
+                <p>b) Trục quay tại A. Các lực đi qua A (\( N_A, F_{msn} \)) có moment bằng 0. </p>
+                <p>Phương trình moment: \( M_{\vec{N}_B} = M_{\vec{P}} \)</p>
+                <p>Hay: \( N_B \times h = P \times \frac{d}{2} \)</p>
+            </div>
+        </div>
+
+        <!-- TỔNG KẾT & LƯU Ý -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- EM ĐÃ HỌC -->
+            <div class="bg-blue-100 border-l-4 border-blue-500 rounded-12px shadow-md p-5">
+                <h4 class="font-bold text-lg text-blue-800 mb-2">📌 EM ĐÃ HỌC</h4>
+                <ul class="list-disc ml-5 space-y-2 text-sm">
+                    <li>Moment lực đặc trưng cho tác dụng làm quay: \( M = F.d \). Đơn vị: N.m.</li>
+                    <li>Tác dụng của ngẫu lực lên vật chỉ làm quay vật. Moment: \( M = F.d \).</li>
+                    <li>Điều kiện cân bằng: Tổng các lực bằng 0 và tổng moment lực bằng 0.</li>
+                </ul>
+            </div>
+
+            <!-- EM CÓ THỂ & LƯU Ý -->
+            <div class="space-y-4">
+                <div class="bg-purple-100 border-l-4 border-purple-500 rounded-12px shadow-md p-5">
+                    <h4 class="font-bold text-lg text-purple-800 mb-2">💡 EM CÓ THỂ</h4>
+                    <p class="text-sm mb-2">Giải thích được sự cân bằng moment trong cấu trúc cánh tay người (Hình 21.9).</p>
+                    <div class="text-center">
+                        <img src="h9.png" alt="Cánh tay" class="mx-auto rounded border border-gray-200 max-h-32 object-contain bg-white">
+                    </div>
+                </div>
+
+                <div class="bg-red-50 border-l-4 border-red-500 rounded-12px shadow-md p-5">
+                    <h4 class="font-bold text-lg text-red-800 mb-2">⚠️ LƯU Ý</h4>
+                    <p class="text-sm">Khi áp dụng quy tắc moment, ta có thể chọn trục quay ở <strong>bất kỳ điểm nào</strong> trên vật. Tuy nhiên, để bài toán đơn giản, nên chọn trục quay đi qua điểm có nhiều lực tác dụng chưa biết nhất (để loại bỏ moment của các lực này).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHẦN BÀI TẬP VÀ TRẮC NGHIỆM -->
+        <div class="bg-white rounded-12px shadow-md p-6 mt-8">
+            <h3 class="text-2xl font-bold text-navy uppercase text-center mb-6">CỦNG CỐ & VẬN DỤNG</h3>
+            
+            <!-- TRẮC NGHIỆM -->
+            <h4 class="font-bold text-xl mb-4 border-b pb-2 text-gray-800">A. Bài tập trắc nghiệm</h4>
+            <div id="quiz-container" class="space-y-6">
+                
+                <!-- Q1 -->
+                <div class="quiz-question">
+                    <p class="font-semibold mb-2">Câu 1: Moment lực tác dụng lên vật là đại lượng đặc trưng cho:</p>
+                    <div class="space-y-1 pl-4">
+                        <label class="flex items-center"><input type="radio" name="q1" value="A" class="mr-2"> A. tác dụng làm quay của lực.</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="B" class="mr-2"> B. tác dụng làm tịnh tiến của lực.</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="C" class="mr-2"> C. khả năng sinh công của lực.</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="D" class="mr-2"> D. độ mạnh yếu của lực.</label>
+                    </div>
+                    <div class="quiz-explanation hidden mt-2 p-2 bg-gray-100 text-sm text-green-700 rounded">
+                        <strong>Giải thích:</strong> Đáp án A. Theo định nghĩa phần I.2 sách giáo khoa.
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="quiz-question">
+                    <p class="font-semibold mb-2">Câu 2: Biểu thức đúng tính moment lực \( M \) đối với trục quay là:</p>
+                    <div class="space-y-1 pl-4">
+                        <label class="flex items-center"><input type="radio" name="q2" value="A" class="mr-2"> A. \( M = \frac{F}{d} \)</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="B" class="mr-2"> B. \( M = \frac{d}{F} \)</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="C" class="mr-2"> C. \( M = F.d \)</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="D" class="mr-2"> D. \( M = F.d^2 \)</label>
+                    </div>
+                    <div class="quiz-explanation hidden mt-2 p-2 bg-gray-100 text-sm text-green-700 rounded">
+                        <strong>Giải thích:</strong> Đáp án C. Moment lực bằng tích của lực với cánh tay đòn.
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="quiz-question">
+                    <p class="font-semibold mb-2">Câu 3: Đơn vị của moment lực trong hệ SI là:</p>
+                    <div class="space-y-1 pl-4">
+                        <label class="flex items-center"><input type="radio" name="q3" value="A" class="mr-2"> A. N/m</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="B" class="mr-2"> B. N.m</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="C" class="mr-2"> C. J</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="D" class="mr-2"> D. W</label>
+                    </div>
+                    <div class="quiz-explanation hidden mt-2 p-2 bg-gray-100 text-sm text-green-700 rounded">
+                        <strong>Giải thích:</strong> Đáp án B. Đơn vị của moment lực là Niutơn mét (N.m).
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="quiz-question">
+                    <p class="font-semibold mb-2">Câu 4: Ngẫu lực là hệ gồm hai lực:</p>
+                    <div class="space-y-1 pl-4">
+                        <label class="flex items-center"><input type="radio" name="q4" value="A" class="mr-2"> A. song song, cùng chiều, cùng độ lớn.</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="B" class="mr-2"> B. cùng phương, ngược chiều, cùng độ lớn.</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="C" class="mr-2"> C. song song, ngược chiều, cùng độ lớn, tác dụng vào cùng 1 vật.</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="D" class="mr-2"> D. song song, ngược chiều, khác độ lớn.</label>
+                    </div>
+                    <div class="quiz-explanation hidden mt-2 p-2 bg-gray-100 text-sm text-green-700 rounded">
+                        <strong>Giải thích:</strong> Đáp án C. Đúng theo định nghĩa ngẫu lực ở phần III.1.
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="quiz-question">
+                    <p class="font-semibold mb-2">Câu 5: Một vật rắn đứng yên cân bằng khi:</p>
+                    <div class="space-y-1 pl-4">
+                        <label class="flex items-center"><input type="radio" name="q5" value="A" class="mr-2"> A. Chỉ cần tổng các lực bằng 0.</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="B" class="mr-2"> B. Chỉ cần tổng các moment bằng 0.</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="C" class="mr-2"> C. Tổng các lực bằng 0 và tổng các moment lực bằng 0.</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="D" class="mr-2"> D. Trọng tâm của vật ở vị trí thấp nhất.</label>
+                    </div>
+                    <div class="quiz-explanation hidden mt-2 p-2 bg-gray-100 text-sm text-green-700 rounded">
+                        <strong>Giải thích:</strong> Đáp án C. Đây là điều kiện cân bằng tổng quát của vật rắn (Phần IV).
+                    </div>
+                </div>
+
+                <div class="mt-4 pb-6 border-b">
+                    <button onclick="checkQuiz()" class="bg-navy hover:bg-gray-800 text-white font-bold py-2 px-6 rounded-lg text-lg w-full md:w-auto shadow-md transition">NỘP BÀI TRẮC NGHIỆM</button>
+                    <div id="quiz-result" class="mt-4 text-xl font-bold text-center"></div>
+                </div>
+            </div>
+
+            <!-- BÀI TẬP TÍNH TOÁN -->
+            <h4 class="font-bold text-xl mb-4 mt-6 border-b pb-2 text-gray-800">B. Bài tập vận dụng tính toán</h4>
+            
+            <div class="space-y-6">
+                <!-- Vận dụng 1 -->
+                <div class="border rounded-lg p-4 bg-gray-50">
+                    <p class="font-semibold mb-2">Bài 1: Một thanh AB nhẹ dài 2m có trục quay tại O (với OA = 0,5m). Treo vào đầu A vật m1 = 6kg. Hỏi phải treo vào đầu B vật m2 có khối lượng bao nhiêu để thanh cân bằng nằm ngang? (Lấy g = 10 m/s²).</p>
+                    <button onclick="toggleAnswer('sol-1', this)" class="bg-navy hover:bg-blue-800 text-white text-sm font-bold py-1.5 px-4 rounded mt-2">Xem chi tiết giải</button>
+                    <div id="sol-1" class="hidden mt-4 p-4 bg-white border border-gray-300 rounded text-gray-800">
+                        <p><strong>Lời giải:</strong></p>
+                        <p>Chiều dài thanh \( AB = 2\text{m} \), \( OA = 0,5\text{m} \) \(\Rightarrow OB = AB - OA = 2 - 0,5 = 1,5\text{m}\).</p>
+                        <p>Trọng lượng vật tại A: \( P_1 = m_1.g = 6 \times 10 = 60\text{N} \).</p>
+                        <p>Áp dụng quy tắc moment đối với trục quay O:</p>
+                        <p>$$ M_A = M_B \Rightarrow P_1.OA = P_2.OB $$</p>
+                        <p>$$ \Rightarrow 60 \times 0,5 = P_2 \times 1,5 $$</p>
+                        <p>$$ \Rightarrow 30 = 1,5.P_2 \Rightarrow P_2 = 20\text{N} $$</p>
+                        <p>Khối lượng vật cần treo ở B là: \( m_2 = \frac{P_2}{g} = \frac{20}{10} = 2\text{kg} \).</p>
+                    </div>
+                </div>
+
+                <!-- Vận dụng 2 -->
+                <div class="border rounded-lg p-4 bg-gray-50">
+                    <p class="font-semibold mb-2">Bài 2: Một người dùng cờ lê dài 25 cm để vặn đai ốc. Người đó tác dụng một lực F = 80N vuông góc với cán cờ lê ở điểm cách đầu cờ lê 20 cm. Tính moment lực tác dụng lên đai ốc.</p>
+                    <button onclick="toggleAnswer('sol-2', this)" class="bg-navy hover:bg-blue-800 text-white text-sm font-bold py-1.5 px-4 rounded mt-2">Xem chi tiết giải</button>
+                    <div id="sol-2" class="hidden mt-4 p-4 bg-white border border-gray-300 rounded text-gray-800">
+                        <p><strong>Lời giải:</strong></p>
+                        <p>Lực tác dụng vuông góc với cán cờ lê, nên cánh tay đòn chính là khoảng cách từ điểm đặt lực đến trục quay (đai ốc).</p>
+                        <p>Theo đề, lực đặt tại điểm cách đầu (đai ốc) một đoạn \( d = 20\text{ cm} = 0,2\text{ m} \).</p>
+                        <p>Độ lớn của lực: \( F = 80\text{ N} \).</p>
+                        <p>Moment lực tạo ra là: </p>
+                        <p>$$ M = F.d = 80 \times 0,2 = 16 \text{ N.m} $$</p>
+                    </div>
+                </div>
+
+                <!-- Vận dụng 3 -->
+                <div class="border rounded-lg p-4 bg-gray-50">
+                    <p class="font-semibold mb-2">Bài 3: Tài xế tác dụng ngẫu lực vào vô lăng ô tô. Biết đường kính vô lăng là 40 cm, mỗi lực trong ngẫu lực có độ lớn 15 N. Tính moment của ngẫu lực đó.</p>
+                    <button onclick="toggleAnswer('sol-3', this)" class="bg-navy hover:bg-blue-800 text-white text-sm font-bold py-1.5 px-4 rounded mt-2">Xem chi tiết giải</button>
+                    <div id="sol-3" class="hidden mt-4 p-4 bg-white border border-gray-300 rounded text-gray-800">
+                        <p><strong>Lời giải:</strong></p>
+                        <p>Khoảng cách giữa hai giá của lực trong ngẫu lực (cánh tay đòn của ngẫu lực) chính là đường kính của vô lăng.</p>
+                        <p>\( d = 40\text{ cm} = 0,4\text{ m} \)</p>
+                        <p>Độ lớn mỗi lực: \( F = 15\text{ N} \)</p>
+                        <p>Áp dụng công thức tính moment ngẫu lực:</p>
+                        <p>$$ M = F.d = 15 \times 0,4 = 6 \text{ N.m} $$</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // Hàm ẩn/hiện lời giải
+        function toggleAnswer(id, btnElement) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                btnElement.innerText = "Ẩn lời giải";
+                btnElement.classList.replace('bg-navy', 'bg-gray-600');
+            } else {
+                el.classList.add('hidden');
+                btnElement.innerText = btnElement.innerText.includes('câu trả lời') ? "Xem câu trả lời" : 
+                                      (btnElement.innerText.includes('hướng giải quyết') ? "Xem hướng giải quyết" : "Xem chi tiết giải");
+                btnElement.classList.replace('bg-gray-600', 'bg-navy');
+            }
+        }
+
+        // Hàm kiểm tra đáp án Trắc nghiệm
+        function checkQuiz() {
+            const answers = {
+                q1: 'A',
+                q2: 'C',
+                q3: 'B',
+                q4: 'C',
+                q5: 'C'
+            };
+            
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (let q in answers) {
+                const selected = document.querySelector(`input[name="${q}"]:checked`);
+                if (selected) {
+                    if (selected.value === answers[q]) {
+                        score++;
+                    }
+                } else {
+                    allAnswered = false;
+                }
+            }
+
+            const resultDiv = document.getElementById('quiz-result');
+            
+            if (!allAnswered) {
+                resultDiv.innerHTML = `<span class="text-yellow-600">⚠️ Vui lòng trả lời tất cả các câu hỏi trước khi nộp bài!</span>`;
+                return;
+            }
+
+            if (score === total) {
+                resultDiv.innerHTML = `<span class="text-blue-600">🎉 Tuyệt vời! Bạn đã làm đúng ${score}/${total} câu.</span>`;
+            } else {
+                resultDiv.innerHTML = `<span class="text-red-600">Tiếc quá! Bạn làm đúng ${score}/${total} câu. Hãy xem lại giải thích bên dưới nhé.</span>`;
+            }
+
+            // Hiện tất cả phần giải thích
+            const explanations = document.querySelectorAll('.quiz-explanation');
+            explanations.forEach(el => {
+                el.classList.remove('hidden');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 25: Động năng, Thế năng</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+        }
+        .text-main { color: #000080; }
+        .bg-main { background-color: #000080; }
+        .border-main { border-color: #000080; }
+        .section-title {
+            border-bottom: 3px solid #000080;
+            display: inline-block;
+            padding-bottom: 4px;
+            margin-bottom: 16px;
+        }
+    </style>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="p-4 md:p-8 text-gray-800">
+
+    <div class="max-w-4xl mx-auto">
+
+        <!-- Header -->
+        <div class="bg-main text-white rounded-[12px] p-6 shadow-md mb-6">
+            <h2 class="text-lg text-center uppercase tracking-wide">Chương IV: NĂNG LƯỢNG – CÔNG, CÔNG SUẤT</h2>
+            <hr class="border-t border-white/40 my-3 w-3/4 mx-auto">
+            <h1 class="text-2xl font-bold text-center uppercase">Bài 25: ĐỘNG NĂNG, THẾ NĂNG</h1>
+        </div>
+
+        <!-- Lời dẫn -->
+        <div class="bg-white border border-gray-800 rounded-[12px] p-5 shadow-md mb-8 italic text-lg text-gray-700 flex gap-5 items-center">
+            <div class="flex-1">Hãy mô tả hoạt động của tàu lượn. Tại sao khi tàu lượn ở vị trí cao nhất của đường ray thì tốc độ của nó lại chậm nhất và ngược lại?</div>
+	    <div class="flex-1"><img src="h0.png" class="w-full h-auto"></img></div>
+        </div>
+
+        <!-- I. ĐỘNG NĂNG -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+            <h2 class="text-xl font-bold uppercase text-main section-title">I. ĐỘNG NĂNG</h2>
+            
+            <h3 class="text-lg font-semibold mb-3">1. Khái niệm động năng</h3>
+            <p class="mb-3">Chúng ta đã biết động năng của một vật là năng lượng mà vật có được do chuyển động.</p>
+            
+            <!-- Khung định nghĩa/Công thức -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4 rounded-r-lg">
+                <p>Một vật có khối lượng \( m \) đang chuyển động với tốc độ \( v \) thì động năng là:</p>
+                <div class="text-center text-xl font-bold my-2">
+                    \[ W_d = \frac{1}{2} m \cdot v^2 \] <span class="text-sm font-normal">(25.1)</span>
+                </div>
+                <p>Trong hệ đơn vị SI, đơn vị động năng là jun (J).</p>
+            </div>
+
+            <p class="mb-4">Qua các ví dụ về năng lượng sóng, chuyển động của thiên thạch, chuyển động của mũi tên trong phần câu hỏi bên, ta thấy vật đang chuyển động có khả năng thực hiện công. Ta nói rằng vật đó mang năng lượng dưới dạng động năng.</p>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="text-center">
+                    <img src="h1.png" alt="Sóng thần" class="mx-auto rounded border border-gray-300 max-h-48">
+                    <p class="text-sm mt-2 italic">Hình 25.1. Sóng thần</p>
+                </div>
+                <div class="text-center">
+                    <img src="h2.png" alt="Thiên thạch" class="mx-auto rounded border border-gray-300 max-h-48">
+                    <p class="text-sm mt-2 italic">Hình 25.2. Hố lõm do thiên thạch gây ra</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi 1 -->
+            <div class="bg-[#edf2f7] border-l-4 border-main p-4 rounded-r-lg mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-main text-white font-bold rounded-full w-6 h-6 flex items-center justify-center">?</span>
+                    <h4 class="font-bold">Câu hỏi thảo luận</h4>
+                </div>
+                <ul class="list-decimal ml-6 space-y-2 mb-3">
+                    <li>Năng lượng của các con sóng trong Hình 25.1 tồn tại dưới dạng nào? Tại sao sóng thần lại có sức tàn phá mạnh hơn rất nhiều so với sóng thông thường? Tại sao sóng thần chỉ gây ra sự tàn phá khi xô vào vật cản?</li>
+                    <li>Khi đang bay, năng lượng của thiên thạch tồn tại dưới dạng nào? Tại sao năng lượng của thiên thạch lại rất lớn so với năng lượng của các vật thường gặp? Khi va vào Trái Đất (Hình 25.2), năng lượng của thiên thạch được chuyển hoá thành những dạng năng lượng nào?</li>
+                    <li>Khi sóng đổ vào bờ nó sinh công và có thể xô đổ các vật trên bờ. Tuy nhiên, với vận động viên lướt sóng thì không bị ảnh hưởng. Tại sao?</li>
+                    <li>Một mũi tên nặng 48 g đang chuyển động với tốc độ \( 10 \text{ m/s} \). Tìm động năng của mũi tên.</li>
+                </ul>
+                <button onclick="toggleAnswer('ans1')" class="bg-main hover:bg-blue-900 text-white font-semibold py-1 px-4 rounded text-sm transition">Xem gợi ý trả lời</button>
+                <div id="ans1" class="hidden bg-green-100 border border-green-300 p-4 rounded-lg mt-3 text-sm">
+                    <p><strong>1.</strong> Tồn tại dưới dạng động năng. Sóng thần có tốc độ và khối lượng nước di chuyển khổng lồ nên động năng rất lớn. Chỉ tàn phá khi xô vào vật cản vì khi đó động năng chuyển hóa thành công cơ học phá hủy vật.</p>
+                    <p><strong>2.</strong> Dưới dạng động năng. Năng lượng thiên thạch cực lớn vì tốc độ bay của nó rất cao. Khi va vào Trái Đất, động năng chuyển hóa thành nhiệt năng (tạo hố sâu, bốc cháy) và cơ năng phá hủy.</p>
+                    <p><strong>3.</strong> Vận động viên lướt sóng di chuyển cùng chiều và tốc độ xấp xỉ sóng, nên vận tốc tương đối bằng 0, không chịu lực tác động lớn.</p>
+                    <p><strong>4.</strong> Động năng mũi tên: \( W_d = \frac{1}{2} \cdot 0.048 \cdot 10^2 = 2.4 \text{ J} \).</p>
+                </div>
+            </div>
+
+            <!-- Bài tập ví dụ 1 -->
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
+                <h4 class="font-bold text-main mb-2">Bài tập ví dụ 1:</h4>
+                <p>Một vận động viên quần vợt thực hiện cú giao bóng kỉ lục, quả bóng đạt tới tốc độ \( 196 \text{ km/h} \). Biết khối lượng quả bóng là 60 g. Tính động năng của quả bóng.</p>
+                <button onclick="toggleAnswer('ex1')" class="mt-2 bg-main hover:bg-blue-900 text-white font-semibold py-1 px-4 rounded text-sm transition">Xem giải chi tiết</button>
+                <div id="ex1" class="hidden bg-white border border-gray-300 p-4 rounded-lg mt-3">
+                    <p><strong>Giải:</strong></p>
+                    <p>Động năng của quả bóng được tính theo công thức: \( W_d = \frac{1}{2} m \cdot v^2 \)</p>
+                    <p>Thay số:</p>
+                    <p>\[ W_d = \frac{1}{2} \cdot 0,06 \cdot \left( 196 \cdot 1000 \cdot \frac{1}{3600} \right)^2 \approx 89 \text{ J} \]</p>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-semibold mb-3">2. Liên hệ giữa động năng và công của lực</h3>
+            <p class="mb-2">Xét một vật khối lượng \( m \) chuyển động thẳng biến đổi đều với gia tốc \( a \) từ trạng thái đứng yên dưới tác dụng của lực không đổi \( F \). Sau khi đi được quãng đường \( s \), vật đạt tốc độ \( v \) thì: \( v^2 = 2 \cdot a \cdot s \).</p>
+            <p class="mb-3">Vì \( a = \frac{F}{m} \) nên \( v^2 = \frac{2 \cdot F \cdot s}{m} \) và:</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4 rounded-r-lg">
+                <div class="text-center text-xl font-bold my-2">
+                    \[ \frac{1}{2} m \cdot v^2 = F \cdot s \Rightarrow W_d = A \] <span class="text-sm font-normal">(25.2)</span>
+                </div>
+                <p class="font-semibold text-center">Như vậy, nếu ban đầu vật đứng yên thì động năng của vật có giá trị bằng công của lực tác dụng lên vật.</p>
+            </div>
+
+            <!-- Câu hỏi 2 -->
+            <div class="bg-[#edf2f7] border-l-4 border-main p-4 rounded-r-lg mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-main text-white font-bold rounded-full w-6 h-6 flex items-center justify-center">?</span>
+                    <h4 class="font-bold">Câu hỏi</h4>
+                </div>
+                <ul class="list-decimal ml-6 space-y-2 mb-3">
+                    <li>Thả một quả bóng từ độ cao \( h \) xuống sàn nhà. Động năng của quả bóng được chuyển hoá thành những dạng năng lượng nào ngay khi quả bóng chạm vào sàn nhà?</li>
+                    <li>Một vật có khối lượng 10 kg đang chuyển động với tốc độ \( 5 \text{ km/h} \) trên mặt bàn nằm ngang. Do có ma sát, vật chuyển động chậm dần đều và đi được 1 m thì dừng lại. Tính hệ số ma sát giữa vật và mặt bàn. Lấy gia tốc trọng trường \( g = 9,8 \text{ m/s}^2 \).</li>
+                </ul>
+                <button onclick="toggleAnswer('ans2')" class="bg-main hover:bg-blue-900 text-white font-semibold py-1 px-4 rounded text-sm transition">Xem hướng dẫn</button>
+                <div id="ans2" class="hidden bg-green-100 border border-green-300 p-4 rounded-lg mt-3 text-sm">
+                    <p><strong>1.</strong> Khi chạm sàn, động năng của quả bóng chuyển hóa một phần thành năng lượng biến dạng đàn hồi, nhiệt năng và âm thanh.</p>
+                    <p><strong>2.</strong> Tốc độ đầu: \( v_0 = 5 \text{ km/h} = \frac{25}{18} \text{ m/s} \). Độ biến thiên động năng bằng công lực cản (ma sát):<br>
+                    \( 0 - \frac{1}{2} m v_0^2 = A_{ms} = - \mu m g s \)<br>
+                    \( \Rightarrow \mu = \frac{v_0^2}{2gs} = \frac{(\frac{25}{18})^2}{2 \cdot 9.8 \cdot 1} \approx 0.098 \)</p>
+                </div>
+            </div>
+
+            <!-- Em có biết: Máy đóng cọc -->
+            <div class="bg-blue-100 border border-blue-400 p-5 rounded-xl mb-4">
+                <h4 class="font-bold text-blue-800 text-lg mb-2 border-b border-blue-300 pb-2">KẾT NỐI TRI THỨC VỚI CUỘC SỐNG</h4>
+                <div class="flex flex-col md:flex-row gap-4 items-start mt-3">
+                    <div class="w-full md:w-1/3 text-center">
+                        <img src="h3.png" alt="Máy đóng cọc" class="mx-auto rounded border border-gray-400 max-h-48">
+                        <p class="text-sm mt-2 italic">Hình 25.3. Máy đóng cọc</p>
+                    </div>
+                    <div class="w-full md:w-2/3">
+                        <p class="mb-2">Máy đóng cọc hoạt động như sau: Búa máy được nâng lên đến một độ cao nhất định rồi thả cho rơi xuống cọc cần đóng.</p>
+                        <ol class="list-decimal ml-5 space-y-1">
+                            <li>Khi búa đang ở một độ cao nhất định thì năng lượng của nó tồn tại dưới dạng nào? Năng lượng đó do đâu mà có?</li>
+                            <li>Trong quá trình rơi, năng lượng của búa chuyển từ dạng nào sang dạng nào?</li>
+                            <li>Khi chạm vào đầu cọc thì búa sinh công để làm gì?</li>
+                        </ol>
+                        <button onclick="toggleAnswer('emcobiet1')" class="mt-3 bg-blue-600 hover:bg-blue-800 text-white font-semibold py-1 px-4 rounded text-sm transition">Xem lời giải</button>
+                    </div>
+                </div>
+                <div id="emcobiet1" class="hidden bg-white p-3 rounded mt-3 border border-blue-200 text-sm">
+                    1. Dạng thế năng trọng trường. Có được do động cơ thực hiện công nâng búa lên cao.<br>
+                    2. Chuyển hóa từ thế năng sang động năng.<br>
+                    3. Búa sinh công để thắng lực cản của đất, đẩy cọc cắm sâu vào đất.
+                </div>
+            </div>
+        </div>
+
+        <!-- II. THẾ NĂNG -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+            <h2 class="text-xl font-bold uppercase text-main section-title">II. THẾ NĂNG</h2>
+            
+            <h3 class="text-lg font-semibold mb-3">1. Khái niệm thế năng trọng trường</h3>
+            <p class="mb-3">Chúng ta đã biết một vật đặt ở độ cao \( h \) so với mặt đất thì lưu trữ năng lượng dưới dạng thế năng. Vì thế năng này liên quan đến trọng lực nên được gọi là thế năng trọng trường (thường được gọi tắt là thế năng), với độ lớn được tính bằng công thức:</p>
+            
+            <!-- Khung định nghĩa/Công thức -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4 rounded-r-lg">
+                <div class="text-center text-xl font-bold my-2">
+                    \[ W_t = P \cdot h = m \cdot g \cdot h \]
+                </div>
+                <p>Đơn vị thế năng trọng trường là jun (J).</p>
+            </div>
+
+            <div class="bg-red-50 border border-red-200 text-red-800 p-3 rounded-lg mb-4 text-sm flex items-start gap-2">
+                <span class="font-bold text-red-600">! Lưu ý:</span>
+                <p>Độ lớn của thế năng trọng trường phụ thuộc vào việc chọn mốc tính độ cao. Thường người ta tính độ cao của các vật so với mặt đất được coi là có độ cao bằng 0.</p>
+            </div>
+
+            <!-- Câu hỏi Giá sách -->
+            <div class="bg-[#edf2f7] border-l-4 border-main p-4 rounded-r-lg mb-4 flex flex-col md:flex-row gap-4 items-center">
+                <div class="w-full md:w-2/3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-main text-white font-bold rounded-full w-6 h-6 flex items-center justify-center">?</span>
+                        <h4 class="font-bold">Câu hỏi</h4>
+                    </div>
+                    <p class="mb-2">Hình 25.5 mô tả một cuốn sách được đặt trên giá sách. Hãy so sánh thế năng của cuốn sách trong hai trường hợp: gốc thế năng là sàn nhà và gốc thế năng là mặt bàn.</p>
+                    <button onclick="toggleAnswer('ans3')" class="bg-main hover:bg-blue-900 text-white font-semibold py-1 px-4 rounded text-sm transition">Xem hướng dẫn</button>
+                </div>
+                <div class="w-full md:w-1/3 text-center">
+                    <img src="h4.png" alt="Giá sách" class="mx-auto rounded border border-gray-300 max-h-40">
+                    <p class="text-sm mt-2 italic">Hình 25.5</p>
+                </div>
+            </div>
+            <div id="ans3" class="hidden bg-green-100 border border-green-300 p-4 rounded-lg mb-4 text-sm">
+                Nếu chọn sàn nhà làm gốc, thế năng của sách lớn hơn (vì \( h \) so với sàn lớn hơn \( h \) so với bàn). Nếu chọn mặt bàn làm gốc, thế năng nhỏ hơn. Điều này minh họa thế năng phụ thuộc vào việc chọn gốc.
+            </div>
+
+            <!-- Bài tập ví dụ 2 -->
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
+                <h4 class="font-bold text-main mb-2">Bài tập ví dụ 2:</h4>
+                <p>Máy đóng cọc có đầu búa nặng 0,5 tấn, được nâng lên độ cao 10 m so với mặt đất. Tính thế năng của đầu búa. Lấy \( g = 9,8 \text{ m/s}^2 \).</p>
+                <button onclick="toggleAnswer('ex2')" class="mt-2 bg-main hover:bg-blue-900 text-white font-semibold py-1 px-4 rounded text-sm transition">Xem giải chi tiết</button>
+                <div id="ex2" class="hidden bg-white border border-gray-300 p-4 rounded-lg mt-3">
+                    <p><strong>Giải:</strong></p>
+                    <p>Thế năng của đầu búa được tính theo công thức:</p>
+                    <p>\[ W_t = m \cdot g \cdot h = 500 \cdot 9,8 \cdot 10 = 49\,000 \text{ J} = 49 \text{ kJ} \]</p>
+                </div>
+            </div>
+
+            <!-- Em có biết: Thế năng đàn hồi -->
+            <div class="bg-green-50 border border-green-400 p-5 rounded-xl mb-6">
+                <h4 class="font-bold text-green-800 text-lg mb-2 border-b border-green-300 pb-2">EM CÓ BIẾT?</h4>
+                <div class="flex flex-col md:flex-row gap-4 items-center mt-3">
+                    <div class="w-full md:w-2/3">
+                        <p class="mb-2">Ngoài thế năng trọng trường còn có nhiều loại thế năng khác. Khi giương cung thì cánh cung bị biến dạng đàn hồi. Nếu người đó buông tay thì mũi tên sẽ bị dây cung đẩy đi xa.</p>
+                        <p>Điều này chứng tỏ khi giương cung thì cánh cung bị biến dạng đã có năng lượng dự trữ để thực hiện công đẩy mũi tên đi. Năng lượng dự trữ này được gọi là <strong>thế năng đàn hồi</strong>.</p>
+                    </div>
+                    <div class="w-full md:w-1/3 text-center">
+                        <img src="h5.png" alt="Người bắn cung" class="mx-auto rounded border border-gray-400 max-h-40">
+                        <p class="text-sm mt-2 italic">Hình 25.4</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-semibold mb-3">2. Liên hệ giữa thế năng và công của lực thế</h3>
+            <p class="mb-3">Vì độ cao \( h \) phụ thuộc vào vị trí được chọn làm mốc nên thế năng cũng phụ thuộc vào vị trí được chọn làm mốc.</p>
+            <p class="mb-3">Trong trọng trường, hiệu thế năng giữa hai điểm chỉ phụ thuộc vào chênh lệch độ cao theo phương thẳng đứng mà không phụ thuộc vào khoảng cách giữa hai điểm.</p>
+            <p class="mb-3">Muốn đưa một vật có khối lượng \( m \) từ mặt đất lên một độ cao \( h \), ta phải tác dụng vào vật lực nâng \( F \) có độ lớn tối thiểu bằng trọng lượng \( P \) của vật. Công mà lực nâng \( F \) thực hiện là:</p>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4 rounded-r-lg text-center text-xl font-bold">
+                \[ A = F \cdot s = P \cdot h = m \cdot g \cdot h = W_t \]
+            </div>
+
+            <p class="mb-3 font-semibold text-main">Vậy thế năng của vật ở độ cao h có độ lớn bằng công của lực dùng để nâng đều vật lên độ cao này.</p>
+            <p class="mb-4">Công trong trường hợp này được gọi là <strong>công của lực thế</strong>, nó không phụ thuộc vào độ lớn quãng đường đi được mà chỉ phụ thuộc vào sự chênh lệch độ cao của vị trí đầu và vị trí cuối.</p>
+
+            <!-- Câu hỏi Cuối phần II -->
+            <div class="bg-[#edf2f7] border-l-4 border-main p-4 rounded-r-lg mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-main text-white font-bold rounded-full w-6 h-6 flex items-center justify-center">?</span>
+                    <h4 class="font-bold">Câu hỏi tính toán</h4>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-3">
+                    <div>
+                        <p class="mb-2"><strong>1.</strong> Một chiếc cần cẩu xây dựng cẩu một khối vật liệu nặng 500 kg từ vị trí A ở mặt đất đến vị trí B của một tòa nhà cao tầng (Hình 25.6). Lấy \( g = 9,8 \text{ m/s}^2 \). Tính thế năng của khối vật liệu tại B và công mà cần cẩu đã thực hiện.</p>
+                        <p><strong>2.</strong> Hãy chứng minh có thể dùng một mặt phẳng nghiêng để đưa một vật lên cao với một lực nhỏ hơn trọng lượng của vật (Hình 25.7). Coi ma sát không đáng kể.</p>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <img src="h6.png" alt="Cần cẩu" class="rounded border border-gray-300 max-h-32 object-contain mx-auto">
+                        <p class="text-xs text-center italic">Hình 25.6</p>
+                        <img src="h7.png" alt="Mặt phẳng nghiêng" class="rounded border border-gray-300 max-h-24 object-contain mx-auto">
+                        <p class="text-xs text-center italic">Hình 25.7</p>
+                    </div>
+                </div>
+                <button onclick="toggleAnswer('ans4')" class="bg-main hover:bg-blue-900 text-white font-semibold py-1 px-4 rounded text-sm transition">Xem hướng dẫn</button>
+                <div id="ans4" class="hidden bg-green-100 border border-green-300 p-4 rounded-lg mt-3 text-sm">
+                    <p><strong>1.</strong> Dựa vào sơ đồ, độ cao của B so với mặt đất (A) là 40m. Thế năng tại B: \( W_t = mgh = 500 \cdot 9.8 \cdot 40 = 196\,000 \text{ J} \). Công mà cần cẩu thực hiện nâng đều vật đúng bằng độ biến thiên thế năng: \( A = W_t = 196\,000 \text{ J} \).</p>
+                    <p><strong>2.</strong> Theo định luật bảo toàn công (không ma sát), công kéo vật trên mặt phẳng nghiêng bằng công nâng thẳng đứng: \( F \cdot l = P \cdot h \Rightarrow F = P \cdot \frac{h}{l} \). Vì chiều dài mặt phẳng nghiêng \( l > h \) nên \( \frac{h}{l} < 1 \Rightarrow F < P \). Vậy lực kéo nhỏ hơn trọng lượng.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TỔNG KẾT -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <!-- EM ĐÃ HỌC -->
+            <div class="bg-purple-50 border-2 border-purple-300 rounded-[12px] p-5 shadow-sm">
+                <h3 class="font-bold text-purple-800 text-lg mb-3 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    EM ĐÃ HỌC
+                </h3>
+                <ul class="list-disc ml-5 space-y-2 text-sm">
+                    <li><strong>Động năng</strong> là năng lượng mà vật có được do chuyển động: \( W_d = \frac{1}{2}mv^2 \) có giá trị bằng công của lực làm cho vật chuyển động từ trạng thái đứng yên đến khi đạt được tốc độ đó.</li>
+                    <li><strong>Thế năng</strong> của vật trong trường trọng lực là năng lượng lưu trữ trong vật do độ cao của vật so với gốc thế năng: \( W_t = mgh \), có giá trị bằng công của lực để đưa vật từ gốc thế năng đến độ cao đó.</li>
+                </ul>
+            </div>
+
+            <!-- EM CÓ THỂ -->
+            <div class="bg-orange-50 border-2 border-orange-300 rounded-[12px] p-5 shadow-sm">
+                <h3 class="font-bold text-orange-800 text-lg mb-3 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    EM CÓ THỂ
+                </h3>
+                <p class="text-sm">Giải thích được hoạt động của máy đóng cọc dựa trên sự chuyển hoá động năng và thế năng của vật.</p>
+            </div>
+        </div>
+
+        <hr class="border-t-2 border-gray-300 my-8">
+
+        <!-- BÀI TẬP CỦNG CỐ -->
+        <div class="bg-white rounded-[12px] shadow-md p-6 mb-8 border-t-4 border-main">
+            <h2 class="text-2xl font-bold uppercase text-main mb-6 text-center">LUYỆN TẬP VÀ VẬN DỤNG</h2>
+            
+            <!-- Trắc nghiệm -->
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="bg-main text-white px-3 py-1 rounded">A</span> TRẮC NGHIỆM</h3>
+            <form id="quizForm" class="space-y-6 mb-6">
+                <!-- Q1 -->
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 1: Đơn vị của động năng và thế năng trong hệ SI là gì?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q1" value="A" class="mr-2"> A. Niutơn (N)</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="B" class="mr-2"> B. Oát (W)</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="C" class="mr-2"> C. Jun (J)</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="D" class="mr-2"> D. Mét trên giây (m/s)</label>
+                    </div>
+                    <div id="exp-q1" class="hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded border border-green-200">Giải thích: Năng lượng (động năng, thế năng) có đơn vị chuẩn là Jun (J).</div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 2: Công thức tính động năng của một vật khối lượng \(m\) đang chuyển động với vận tốc \(v\) là:</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q2" value="A" class="mr-2"> A. \( W_d = m \cdot v \)</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="B" class="mr-2"> B. \( W_d = \frac{1}{2} m \cdot v^2 \)</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="C" class="mr-2"> C. \( W_d = m \cdot v^2 \)</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="D" class="mr-2"> D. \( W_d = 2m \cdot v^2 \)</label>
+                    </div>
+                    <div id="exp-q2" class="hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded border border-green-200">Giải thích: Theo SGK định nghĩa, công thức chuẩn là \( W_d = \frac{1}{2}mv^2 \).</div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 3: Thế năng trọng trường của một vật không phụ thuộc vào yếu tố nào sau đây?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q3" value="A" class="mr-2"> A. Khối lượng của vật</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="B" class="mr-2"> B. Gia tốc trọng trường</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="C" class="mr-2"> C. Vận tốc của vật</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="D" class="mr-2"> D. Vị trí được chọn làm mốc thế năng</label>
+                    </div>
+                    <div id="exp-q3" class="hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded border border-green-200">Giải thích: \( W_t = mgh \). Thế năng trọng trường chỉ phụ thuộc m, g, h (vị trí mốc). Vận tốc liên quan đến động năng.</div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 4: Một vật có khối lượng 2 kg đang chuyển động thẳng đều với vận tốc 3 m/s. Động năng của vật là:</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q4" value="A" class="mr-2"> A. 3 J</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="B" class="mr-2"> B. 6 J</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="C" class="mr-2"> C. 9 J</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="D" class="mr-2"> D. 18 J</label>
+                    </div>
+                    <div id="exp-q4" class="hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded border border-green-200">Giải thích: \( W_d = \frac{1}{2} \cdot m \cdot v^2 = \frac{1}{2} \cdot 2 \cdot 3^2 = 9 \text{ J} \).</div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="font-semibold mb-2">Câu 5: Vật khối lượng 1 kg được thả rơi từ độ cao 5 m. Lấy \( g = 10 \text{ m/s}^2 \). Mốc thế năng tại mặt đất. Thế năng ban đầu của vật là:</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q5" value="A" class="mr-2"> A. 5 J</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="B" class="mr-2"> B. 50 J</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="C" class="mr-2"> C. 25 J</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="D" class="mr-2"> D. 10 J</label>
+                    </div>
+                    <div id="exp-q5" class="hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded border border-green-200">Giải thích: \( W_t = mgh = 1 \cdot 10 \cdot 5 = 50 \text{ J} \).</div>
+                </div>
+
+                <div class="text-center mt-6">
+                    <button type="button" onclick="checkQuiz()" class="bg-main hover:bg-blue-900 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition transform hover:scale-105">NỘP BÀI TRẮC NGHIỆM</button>
+                </div>
+                <div id="quizResult" class="text-center text-xl font-bold mt-4 hidden"></div>
+            </form>
+
+            <hr class="border-t border-gray-200 my-8">
+
+            <!-- Tự luận -->
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="bg-main text-white px-3 py-1 rounded">B</span> TỰ LUẬN TÍNH TOÁN</h3>
+            
+            <div class="space-y-6">
+                <!-- Bài 1 -->
+                <div class="border border-gray-300 p-5 rounded-lg">
+                    <p class="font-semibold mb-2">Bài 1:</p>
+                    <p class="mb-3">Một ô tô khối lượng 1000 kg đang chạy với vận tốc 10 m/s thì người lái xe đạp ga tăng tốc. Sau khi đi được 50 m, xe đạt vận tốc 20 m/s. Tính độ biến thiên động năng của ô tô và suy ra công của lực kéo động cơ (bỏ qua ma sát).</p>
+                    <button onclick="toggleAnswer('tl1')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 rounded text-sm transition border border-gray-400">Xem giải chi tiết</button>
+                    <div id="tl1" class="hidden mt-4 p-4 bg-white border border-gray-200 rounded shadow-inner">
+                        <p><strong>Giải:</strong></p>
+                        <p>Động năng lúc đầu: \( W_{d1} = \frac{1}{2}mv_1^2 = \frac{1}{2} \cdot 1000 \cdot 10^2 = 50\,000 \text{ J} \)</p>
+                        <p>Động năng lúc sau: \( W_{d2} = \frac{1}{2}mv_2^2 = \frac{1}{2} \cdot 1000 \cdot 20^2 = 200\,000 \text{ J} \)</p>
+                        <p>Độ biến thiên động năng: \( \Delta W_d = W_{d2} - W_{d1} = 200\,000 - 50\,000 = 150\,000 \text{ J} \)</p>
+                        <p>Áp dụng định lý động năng, công của lực kéo bằng độ biến thiên động năng (do ma sát = 0):<br>
+                        \( A = \Delta W_d = 150\,000 \text{ J} \)</p>
+                    </div>
+                </div>
+
+                <!-- Bài 2 -->
+                <div class="border border-gray-300 p-5 rounded-lg">
+                    <p class="font-semibold mb-2">Bài 2:</p>
+                    <p class="mb-3">Một vật nặng 500 g được thả rơi tự do từ đỉnh một tháp cao 20 m so với mặt đất. Lấy \( g = 10 \text{ m/s}^2 \). Chọn mặt đất làm mốc thế năng. Tính thế năng của vật tại vị trí bắt đầu rơi và khi rơi được nửa quãng đường.</p>
+                    <button onclick="toggleAnswer('tl2')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 rounded text-sm transition border border-gray-400">Xem giải chi tiết</button>
+                    <div id="tl2" class="hidden mt-4 p-4 bg-white border border-gray-200 rounded shadow-inner">
+                        <p><strong>Giải:</strong></p>
+                        <p>Khối lượng vật: \( m = 500 \text{ g} = 0,5 \text{ kg} \).</p>
+                        <p>Tại đỉnh tháp (\( h_1 = 20 \text{ m} \)):<br>
+                        Thế năng: \( W_{t1} = mgh_1 = 0,5 \cdot 10 \cdot 20 = 100 \text{ J} \).</p>
+                        <p>Khi rơi được nửa quãng đường (độ cao so với đất lúc này là \( h_2 = 10 \text{ m} \)):<br>
+                        Thế năng: \( W_{t2} = mgh_2 = 0,5 \cdot 10 \cdot 10 = 50 \text{ J} \).</p>
+                    </div>
+                </div>
+
+                <!-- Bài 3 -->
+                <div class="border border-gray-300 p-5 rounded-lg">
+                    <p class="font-semibold mb-2">Bài 3:</p>
+                    <p class="mb-3">Để đưa một kiện hàng nặng 200 kg lên tầng 4 của một tòa nhà có độ cao 15 m so với mặt đất, người ta dùng một thang máy. Lấy \( g = 9,8 \text{ m/s}^2 \). Bỏ qua ma sát. Tính công tối thiểu của động cơ thang máy để thực hiện việc này.</p>
+                    <button onclick="toggleAnswer('tl3')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 rounded text-sm transition border border-gray-400">Xem giải chi tiết</button>
+                    <div id="tl3" class="hidden mt-4 p-4 bg-white border border-gray-200 rounded shadow-inner">
+                        <p><strong>Giải:</strong></p>
+                        <p>Để nâng vật lên cao, lực nâng của thang máy tối thiểu phải bằng trọng lượng của vật: \( F = P = mg \).</p>
+                        <p>Công tối thiểu động cơ phải thực hiện đúng bằng độ tăng thế năng của kiện hàng:<br>
+                        \( A = W_t = mgh = 200 \cdot 9,8 \cdot 15 = 29\,400 \text{ J} \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Hàm ẩn hiện nội dung
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                // Gọi lại MathJax nếu bên trong có công thức toán vừa được hiển thị (để an toàn)
+                if (window.MathJax) {
+                    MathJax.typesetPromise([el]);
+                }
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra trắc nghiệm
+        function checkQuiz() {
+            const answers = {
+                q1: 'C',
+                q2: 'B',
+                q3: 'C',
+                q4: 'C',
+                q5: 'B'
+            };
+            
+            let score = 0;
+            const total = Object.keys(answers).length;
+            
+            for (let q in answers) {
+                // Lấy đáp án người dùng chọn
+                const selected = document.querySelector(`input[name="${q}"]:checked`);
+                const expDiv = document.getElementById(`exp-${q}`);
+                
+                // Hiển thị khung giải thích
+                expDiv.classList.remove('hidden');
+                
+                if (selected && selected.value === answers[q]) {
+                    score++;
+                    expDiv.classList.replace('text-red-700', 'text-green-700');
+                    expDiv.classList.replace('bg-red-50', 'bg-green-50');
+                    expDiv.classList.replace('border-red-200', 'border-green-200');
+                    expDiv.innerHTML = "<strong>Đúng!</strong> " + expDiv.innerHTML.replace("<strong>Đúng!</strong> ", "").replace("<strong>Sai!</strong> ", "");
+                } else {
+                    expDiv.classList.replace('text-green-700', 'text-red-700');
+                    expDiv.classList.replace('bg-green-50', 'bg-red-50');
+                    expDiv.classList.replace('border-green-200', 'border-red-200');
+                    expDiv.innerHTML = `<strong>Sai! Đáp án đúng là ${answers[q]}.</strong> ` + expDiv.innerHTML.replace("<strong>Đúng!</strong> ", "").replace(/<strong>Sai!.*?<\/strong> /, "");
+                }
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.classList.remove('hidden');
+            
+            if (score === total) {
+                resultDiv.innerHTML = `Chúc mừng! Bạn đã trả lời đúng ${score}/${total} câu. Xuất sắc!`;
+                resultDiv.className = "text-center text-xl font-bold mt-6 text-green-600 bg-green-100 p-4 rounded-lg border-2 border-green-400";
+            } else {
+                resultDiv.innerHTML = `Bạn trả lời đúng ${score}/${total} câu. Hãy xem lại lý thuyết và các giải thích bên trên nhé!`;
+                resultDiv.className = "text-center text-xl font-bold mt-6 text-red-600 bg-red-100 p-4 rounded-lg border-2 border-red-400";
+            }
+            
+            // Re-render math in explanations just in case
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+    </script>
+</body>
+</html>

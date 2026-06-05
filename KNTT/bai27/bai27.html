@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 27: Hiệu Suất</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+        }
+        .text-main { color: #000080; }
+        .bg-main { background-color: #000080; }
+        .border-main { border-color: #000080; }
+        .box-shadow-custom { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .rounded-12px { border-radius: 12px; }
+        
+        /* Table styling overrides */
+        table, th, td { border: 1px solid #cbd5e0; border-collapse: collapse; }
+        th { background-color: #e2e8f0; }
+    </style>
+</head>
+<body class="text-gray-800 pb-20">
+
+    <div class="max-w-4xl mx-auto mt-8 px-4">
+        
+        <!-- HEADER -->
+        <div class="bg-main text-white rounded-12px box-shadow-custom p-6 mb-8 text-center">
+            <h2 class="text-xl font-bold uppercase mb-2">Chương IV: Năng Lượng – Công, Công Suất</h2>
+            <hr class="border-t border-white/40 w-2/3 mx-auto my-3">
+            <h1 class="text-3xl font-bold uppercase mt-2">Bài 27: Hiệu Suất</h1>
+        </div>
+
+        <!-- LỜI DẪN -->
+        <div class="border border-gray-400 bg-white p-5 rounded-12px box-shadow-custom mb-8 italic text-lg text-center">
+            Theo em thì có thể có bao nhiêu phần trăm động năng của thác nước được nhà máy thuỷ điện chuyển hoá thành điện năng?
+            <div class="mt-4 flex justify-center">
+                <img src="h1.png" alt="Đập nước của nhà máy thuỷ điện" class="rounded-lg shadow-sm max-w-[300px] border">
+            </div>
+            <p class="text-sm text-gray-500 mt-2 not-italic">Đập nước của nhà máy thuỷ điện</p>
+        </div>
+
+        <!-- MỤC I -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold uppercase text-main border-b-4 border-main inline-block pb-1 mb-6">I. Năng lượng có ích và năng lượng hao phí</h2>
+            
+            <div class="bg-white p-6 rounded-12px box-shadow-custom mb-6">
+                <p class="mb-4">Chúng ta đã biết khi năng lượng được chuyển từ dạng này sang dạng khác, từ vật này sang vật khác, thì luôn có một phần bị hao phí.</p>
+                
+                <div class="flex justify-center mb-4">
+                    <img src="h2.png" alt="Sơ đồ năng lượng" class="rounded-lg shadow-sm max-w-[400px]">
+                </div>
+                <p class="text-sm text-center text-gray-500 mb-4">Hình 27.1. Sơ đồ năng lượng toàn phần, có ích và hao phí</p>
+
+                <p class="mb-4">Trong các động cơ nhiệt thông thường có khoảng từ 60% đến 70% năng lượng bị hao phí, trong các động cơ điện năng lượng hao phí thấp hơn, chỉ vào khoảng 10%, nhưng trong các pin mặt trời thì ngược lại, chỉ có khoảng 10% năng lượng của ánh sáng mặt trời được chuyển hoá thành điện năng, còn lại là năng lượng hao phí.</p>
+            </div>
+
+            <!-- Hoạt động thảo luận -->
+            <div class="bg-[#edf2f7] border-l-4 border-main rounded-r-12px p-5 mb-4 box-shadow-custom">
+                <div class="flex items-center gap-2 font-bold text-main mb-3">
+                    <span class="text-xl">✍️</span> Hãy thảo luận về các vấn đề sau:
+                </div>
+                <ul class="list-decimal pl-5 mb-4 space-y-2">
+                    <li>Xác định năng lượng có ích và năng lượng hao phí trong thể thao.</li>
+                    <li>Nếu chơi thể thao trong thời tiết lạnh thì nhiệt năng mà cơ thể toả ra có được xem là năng lượng có ích không? Vì sao?</li>
+                </ul>
+                <button onclick="toggleAnswer('tl1')" class="bg-main text-white px-4 py-2 rounded shadow hover:bg-blue-800 transition">Xem gợi ý</button>
+                <div id="tl1" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>1. Trong thể thao:</strong><br>
+                    - Năng lượng có ích: Là phần cơ năng (động năng, thế năng) giúp cơ thể vận động, di chuyển, thực hiện các động tác thể thao.<br>
+                    - Năng lượng hao phí: Là phần nhiệt năng cơ thể toả ra môi trường xung quanh, làm cơ thể nóng lên và đổ mồ hôi.</p>
+                    <p class="mt-2"><strong>2. Trong thời tiết lạnh:</strong><br>
+                    - Nhiệt năng mà cơ thể toả ra <strong>không</strong> được xem là năng lượng có ích (xét về mặt cơ học của việc tập luyện). Vì mục đích chính của việc chơi thể thao là chuyển hoá năng lượng sinh học thành cơ năng để vận động. Dù nhiệt lượng đó giúp sưởi ấm cơ thể trong thời tiết lạnh, nhưng đối với "mục đích vận động", nó vẫn là phần năng lượng bị hao phí.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MỤC II -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold uppercase text-main border-b-4 border-main inline-block pb-1 mb-6">II. Hiệu suất</h2>
+            
+            <div class="bg-white p-6 rounded-12px box-shadow-custom mb-6">
+                <p class="mb-4">Để đánh giá tỉ lệ giữa năng lượng có ích và năng lượng toàn phần, người ta dùng khái niệm hiệu suất.</p>
+                
+                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg text-center font-bold text-lg mb-4">
+                    \( \text{Hiệu suất} = \frac{\text{Năng lượng có ích}}{\text{Năng lượng toàn phần}} \)
+                </div>
+                
+                <p class="mb-2">Hoặc:</p>
+                
+                <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg text-center font-bold text-lg mb-4">
+                    \( H = \frac{W_{ci}}{W_{tp}} . 100\% \quad (27.1) \) <br><br>
+                    \( H = \frac{\mathcal{P}_{ci}}{\mathcal{P}_{tp}} . 100\% \)
+                </div>
+                <p class="mb-4 text-center">Với \( \mathcal{P}_{ci} \) là công suất có ích, \( \mathcal{P}_{tp} \) là công suất toàn phần.</p>
+
+                <p class="mb-4">Từ công thức tính hiệu suất chung ở trên người ta có thể viết công thức tính hiệu suất cho từng trường hợp cụ thể. Ví dụ, hiệu suất của động cơ nhiệt được viết dưới dạng:</p>
+
+                <div class="bg-green-50 border border-green-200 p-4 rounded-lg text-center font-bold text-lg mb-4">
+                    \( H = \frac{A}{Q} . 100\% \quad (27.2) \)
+                </div>
+                <p class="text-sm">Trong đó, \(A\) là công cơ học mà động cơ thực hiện được, \(Q\) là nhiệt lượng mà động cơ nhận được từ nhiên liệu bị đốt cháy.</p>
+            </div>
+
+            <!-- Bảng -->
+            <div class="bg-white p-4 rounded-12px box-shadow-custom mb-6 overflow-x-auto">
+                <p class="font-bold text-center mb-2">Bảng 27.1. Hiệu suất của một số thiết bị điện</p>
+                <table class="w-full text-center table-auto">
+                    <thead>
+                        <tr>
+                            <th class="p-2">Thiết bị</th>
+                            <th class="p-2">Năng lượng đầu vào</th>
+                            <th class="p-2">Năng lượng đầu ra có ích</th>
+                            <th class="p-2">Hiệu suất</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Máy phát điện</td><td>Điện năng</td><td>Cơ năng</td><td>96%</td></tr>
+                        <tr><td>Tuabin nước</td><td>Cơ năng</td><td>Cơ năng</td><td>90%</td></tr>
+                        <tr><td>Máy hơi nước</td><td>Nhiệt năng</td><td>Cơ năng</td><td>15%</td></tr>
+                        <tr><td>Động cơ xăng</td><td>Hoá năng</td><td>Cơ năng</td><td>35%</td></tr>
+                        <tr><td>Tuabin hơi nước</td><td>Nhiệt năng</td><td>Cơ năng</td><td>28%</td></tr>
+                        <tr><td>Động cơ điện</td><td>Điện năng</td><td>Cơ năng</td><td>96%</td></tr>
+                        <tr><td>Đèn dây tóc</td><td>Điện năng</td><td>Quang năng</td><td>7%</td></tr>
+                        <tr><td>Đèn LED</td><td>Điện năng</td><td>Quang năng</td><td>95%</td></tr>
+                        <tr><td>Bếp điện</td><td>Điện năng</td><td>Nhiệt năng</td><td>90%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Câu hỏi (?) 1, 2 -->
+            <div class="bg-[#edf2f7] border-l-4 border-main rounded-r-12px p-5 mb-6 box-shadow-custom">
+                <div class="flex items-center gap-2 font-bold text-main mb-3">
+                    <span class="text-xl">❓</span> Trả lời các câu hỏi sau:
+                </div>
+                <div class="mb-4">
+                    <strong>1. Trong động cơ ô tô chạy bằng xăng và trong quạt điện:</strong><br>
+                    a) Có những sự chuyển hoá năng lượng nào?<br>
+                    b) Trong số những dạng năng lượng tạo thành, dạng năng lượng nào là có ích, dạng năng lượng nào là hao phí?
+                </div>
+                <div class="mb-4">
+                    <strong>2. Xác định năng lượng có ích và năng lượng hao phí trong các trường hợp dưới đây:</strong><br>
+                    a) Acquy khi nạp điện.<br>
+                    b) Acquy khi phóng điện.<br>
+                    c) Sử dụng ròng rọc để kéo vật nặng lên cao.<br>
+                    d) Bếp từ khi đang hoạt động.
+                </div>
+                <button onclick="toggleAnswer('tl2')" class="bg-main text-white px-4 py-2 rounded shadow hover:bg-blue-800 transition">Xem lời giải</button>
+                <div id="tl2" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Câu 1:</strong><br>
+                    - Động cơ ô tô: a) Hoá năng chuyển hoá thành Cơ năng và Nhiệt năng. b) Có ích: Cơ năng; Hao phí: Nhiệt năng.<br>
+                    - Quạt điện: a) Điện năng chuyển hoá thành Cơ năng và Nhiệt năng. b) Có ích: Cơ năng; Hao phí: Nhiệt năng.</p>
+                    <p class="mt-2"><strong>Câu 2:</strong><br>
+                    a) Acquy nạp điện: Điện năng (vào) -> <strong>Hoá năng (có ích)</strong> + Nhiệt năng (hao phí).<br>
+                    b) Acquy phóng điện: Hoá năng (vào) -> <strong>Điện năng (có ích)</strong> + Nhiệt năng (hao phí).<br>
+                    c) Kéo ròng rọc: Công kéo (vào) -> <strong>Thế năng của vật (công có ích)</strong> + Công ma sát toả nhiệt (hao phí).<br>
+                    d) Bếp từ: Điện năng (vào) -> <strong>Nhiệt năng đun nóng nồi/nước (có ích)</strong> + Nhiệt năng toả ra môi trường xung quanh (hao phí).</p>
+                </div>
+            </div>
+
+            <!-- Bài tập ví dụ -->
+            <div class="bg-white p-6 rounded-12px box-shadow-custom mb-6 border border-gray-200">
+                <h3 class="font-bold text-lg mb-2">Bài tập ví dụ:</h3>
+                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <div class="flex-1">
+                        <p>Một em bé nặng 20 kg chơi cầu trượt từ trạng thái đứng yên ở đỉnh cầu trượt dài 4 m, nghiêng góc \( 40^\circ \) so với phương nằm ngang (Hình 27.2). Khi đến chân cầu trượt, tốc độ của em bé này là 3,2 m/s. Lấy gia tốc trọng trường là \( 10 \, m/s^2 \).</p>
+                        <p>a) Tính độ lớn lực ma sát tác dụng vào em bé này.</p>
+                        <p>b) Tính hiệu suất của quá trình chuyển thế năng thành động năng của em bé này.</p>
+                    </div>
+                    <div class="w-full md:w-1/3 flex justify-center items-center">
+                        <img src="h3.png" alt="Hình 27.2. Cầu trượt" class="max-w-[200px] border shadow">
+                    </div>
+                </div>
+                <button onclick="toggleAnswer('vd1')" class="bg-main text-white px-4 py-2 rounded shadow hover:bg-blue-800 transition">Xem giải chi tiết</button>
+                <div id="vd1" class="hidden mt-4 bg-gray-50 p-4 rounded border border-gray-300 text-sm">
+                    <p class="font-bold">Giải:</p>
+                    <p><strong>a) Độ lớn lực ma sát</strong></p>
+                    <p>Độ cao của đỉnh cầu trượt so với mặt đất: \( h = \ell \sin\alpha = 4 \sin 40^\circ \approx 2,57 \, m \)</p>
+                    <p>Do có ma sát nên khi trượt, một phần thế năng của em bé được chuyển hoá thành động năng, một phần thắng công cản \( A \) của lực ma sát:</p>
+                    <p>\( m.g.h = \frac{m.v^2}{2} + A \Rightarrow A = m.g.h - \frac{m.v^2}{2} \approx 411,6 \, J \)</p>
+                    <p>Độ lớn công cản của lực ma sát: \( A = F.\ell \)</p>
+                    <p>Ta có độ lớn lực ma sát: \( F = \frac{A}{\ell} = \frac{411,6}{4} \approx 102,9 \, N \).</p>
+                    <p class="mt-2"><strong>b) Hiệu suất</strong></p>
+                    <p>Năng lượng toàn phần bằng thế năng của em bé ở đỉnh cầu trượt: \( W_{tp} = m.g.h = 514 \, J \)</p>
+                    <p>Năng lượng hao phí bằng độ lớn công của lực ma sát nên năng lượng có ích là: \( W_{ci} = W_{tp} - A = 514 - 411,6 = 102,4 \, J \) (cũng chính là động năng lúc chạm đất \( \frac{mv^2}{2} \)).</p>
+                    <p>Hiệu suất của quá trình biến đổi thế năng thành động năng:</p>
+                    <p>\( H = \frac{W_{ci}}{W_{tp}} . 100\% = \frac{102,4}{514} . 100\% \approx 20\% \).</p>
+                </div>
+            </div>
+
+            <!-- Câu hỏi cuối bài -->
+            <div class="bg-[#edf2f7] border-l-4 border-main rounded-r-12px p-5 mb-6 box-shadow-custom">
+                <div class="flex items-center gap-2 font-bold text-main mb-3">
+                    <span class="text-xl">❓</span> Vận dụng & Suy luận:
+                </div>
+                <div class="mb-4">
+                    <strong>1. Phân tích sự tiêu hao năng lượng ở động cơ đốt trong dùng trong ô tô (Hình 27.3).</strong>
+                    <div class="flex justify-center mt-2 mb-2">
+                        <img src="h4.png" alt="Hình 27.3. Sơ đồ phân bố năng lượng ô tô" class="rounded max-w-sm border shadow">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <strong>2. Hiệu suất của nhà máy điện dùng năng lượng mặt trời không bằng \(\frac{1}{3}\) hiệu suất của nhà máy nhiệt điện. Tại sao người ta vẫn khuyến khích xây dựng nhà máy điện dùng năng lượng mặt trời?</strong>
+                </div>
+                <div class="mb-4">
+                    <strong>3. Một ô tô chuyển động với vận tốc 54 km/h có thể đi được đoạn đường dài bao nhiêu khi tiêu thụ hết 60 lít xăng? Biết động cơ của ô tô có công suất 45 kW; hiệu suất 25%; 1 kg xăng đốt cháy hoàn toàn toả ra nhiệt lượng bằng \(46.10^6 \, J/kg\) và khối lượng riêng của xăng là \(700 \, kg/m^3\).</strong>
+                </div>
+                <button onclick="toggleAnswer('tl3')" class="bg-main text-white px-4 py-2 rounded shadow hover:bg-blue-800 transition">Xem lời giải</button>
+                <div id="tl3" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300">
+                    <p><strong>Câu 1:</strong> Theo sơ đồ, tổng năng lượng đầu vào là 100%. Năng lượng có ích truyền đến các bánh xe chỉ chiếm 30% (hoặc 41% tuỳ sơ đồ cụ thể, theo hình minh hoạ phần trăm bị chia rẽ). Hao phí bao gồm: Khí thải (24%), Bức xạ nhiệt ra ngoài (5%), Truyền cho hệ thống làm mát...</p>
+                    <p class="mt-2"><strong>Câu 2:</strong> Tuy hiệu suất thấp nhưng người ta vẫn khuyến khích xây dựng vì năng lượng mặt trời là nguồn năng lượng tái tạo, miễn phí, vô tận. Hơn nữa, nó không phát thải khí nhà kính hay ô nhiễm môi trường như nhà máy nhiệt điện (đốt than, khí).</p>
+                    <p class="mt-2"><strong>Câu 3:</strong><br>
+                    - V = 60 lít = \(0,06 \, m^3\). Khối lượng xăng: \(m = D.V = 700 \times 0,06 = 42 \, kg\).<br>
+                    - Nhiệt lượng toả ra (Năng lượng toàn phần): \(Q = m.q = 42 \times 46.10^6 = 1932.10^6 \, J\).<br>
+                    - Công có ích động cơ sinh ra: \(A_{ci} = H \times Q = 0,25 \times 1932.10^6 = 483.10^6 \, J\).<br>
+                    - Vận tốc: \(v = 54 \, km/h = 15 \, m/s\). Công suất: \(\mathcal{P} = 45 \, kW = 45000 \, W\).<br>
+                    - Thời gian xe chạy: \(t = \frac{A_{ci}}{\mathcal{P}} = \frac{483.10^6}{45000} \approx 10733,3 \, s\).<br>
+                    - Quãng đường đi được: \(S = v.t = 15 \times 10733,3 = 161000 \, m = 161 \, km\).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TỔNG KẾT & MỞ RỘNG -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <!-- Em đã học -->
+            <div class="bg-blue-100 border border-blue-300 p-5 rounded-12px box-shadow-custom">
+                <h3 class="font-bold text-lg text-blue-800 mb-2 border-b border-blue-300 pb-1">📚 EM ĐÃ HỌC</h3>
+                <ul class="list-disc pl-5 text-blue-900 space-y-2">
+                    <li>Luôn tồn tại năng lượng hao phí trong các quá trình chuyển hoá năng lượng.</li>
+                    <li>Hiệu suất được định nghĩa theo công thức:<br>
+                    \( H = \frac{W_{ci}}{W_{tp}} . 100\% = \frac{\mathcal{P}_{ci}}{\mathcal{P}_{tp}} . 100\% \)</li>
+                </ul>
+            </div>
+            
+            <!-- Em có thể -->
+            <div class="bg-orange-100 border border-orange-300 p-5 rounded-12px box-shadow-custom">
+                <h3 class="font-bold text-lg text-orange-800 mb-2 border-b border-orange-300 pb-1">💡 EM CÓ THỂ</h3>
+                <ul class="list-disc pl-5 text-orange-900 space-y-2">
+                    <li>Vận dụng khái niệm hiệu suất để tính được phần năng lượng có ích và phần năng lượng hao phí trong quá trình hoạt động của các thiết bị phổ biến trong đời sống và kĩ thuật.</li>
+                    <li>Tìm phương án giảm năng lượng hao phí khi sử dụng các thiết bị điện trong gia đình hoặc động cơ ô tô, xe máy.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Lưu ý -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-12px box-shadow-custom mb-10">
+            <h3 class="font-bold text-red-700 mb-1">⚠️ LƯU Ý</h3>
+            <p class="text-red-900">Hiệu suất luôn nhỏ hơn hoặc bằng 100% (\(H \le 100\%\)). Không có một máy móc nào hoạt động mà không có năng lượng hao phí (Không có động cơ vĩnh cửu loại 1).</p>
+        </div>
+
+        <hr class="border-t-2 border-gray-300 my-10">
+
+        <!-- BÀI TẬP TRẮC NGHIỆM -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold uppercase text-main border-b-4 border-main inline-block pb-1 mb-6">III. Bài tập trắc nghiệm củng cố</h2>
+            
+            <div class="bg-white p-6 rounded-12px box-shadow-custom">
+                <form id="quizForm" class="space-y-6">
+                    <!-- Q1 -->
+                    <div class="quiz-question" data-correct="A">
+                        <p class="font-bold mb-2">Câu 1: Hiệu suất của một máy là gì?</p>
+                        <div class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q1" value="A"> A. Là tỉ số giữa năng lượng có ích và năng lượng toàn phần.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q1" value="B"> B. Là tỉ số giữa năng lượng hao phí và năng lượng toàn phần.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q1" value="C"> C. Là tích của năng lượng có ích và năng lượng toàn phần.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q1" value="D"> D. Là hiệu giữa năng lượng toàn phần và năng lượng có ích.</label>
+                        </div>
+                        <div class="quiz-explanation hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded">
+                            <strong>Giải thích:</strong> Đáp án A. Theo định nghĩa \( H = \frac{W_{ci}}{W_{tp}} . 100\% \).
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="quiz-question" data-correct="B">
+                        <p class="font-bold mb-2">Câu 2: Đâu là công thức tính hiệu suất đúng?</p>
+                        <div class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q2" value="A"> A. \( H = \frac{W_{tp}}{W_{ci}} \)</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q2" value="B"> B. \( H = \frac{\mathcal{P}_{ci}}{\mathcal{P}_{tp}} . 100\% \)</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q2" value="C"> C. \( H = \frac{W_{hp}}{W_{tp}} . 100\% \)</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q2" value="D"> D. \( H = W_{tp} - W_{ci} \)</label>
+                        </div>
+                        <div class="quiz-explanation hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded">
+                            <strong>Giải thích:</strong> Đáp án B. Hiệu suất có thể tính bằng tỉ số công hoặc tỉ số công suất.
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="quiz-question" data-correct="C">
+                        <p class="font-bold mb-2">Câu 3: Một động cơ có công suất tiêu thụ là 1000W, trong đó công suất cơ học sinh ra là 800W. Hiệu suất của động cơ là:</p>
+                        <div class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q3" value="A"> A. 20%</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q3" value="B"> B. 125%</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q3" value="C"> C. 80%</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q3" value="D"> D. 800%</label>
+                        </div>
+                        <div class="quiz-explanation hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded">
+                            <strong>Giải thích:</strong> Đáp án C. \( H = \frac{800}{1000} . 100\% = 80\% \).
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="quiz-question" data-correct="D">
+                        <p class="font-bold mb-2">Câu 4: Năng lượng hao phí thường xuất hiện dưới dạng nào nhiều nhất trong các động cơ cơ học?</p>
+                        <div class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q4" value="A"> A. Điện năng</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q4" value="B"> B. Quang năng</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q4" value="C"> C. Hoá năng</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q4" value="D"> D. Nhiệt năng</label>
+                        </div>
+                        <div class="quiz-explanation hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded">
+                            <strong>Giải thích:</strong> Đáp án D. Trong các máy móc cơ học, ma sát sinh ra nhiệt năng toả ra môi trường, đây là dạng hao phí phổ biến nhất.
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="quiz-question" data-correct="C">
+                        <p class="font-bold mb-2">Câu 5: Phát biểu nào sau đây là SAI về hiệu suất?</p>
+                        <div class="space-y-1">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q5" value="A"> A. Hiệu suất đặc trưng cho mức độ sử dụng hữu ích của năng lượng.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q5" value="B"> B. Hiệu suất luôn có giá trị nhỏ hơn hoặc bằng 1 (hoặc 100%).</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q5" value="C"> C. Có thể chế tạo được một động cơ có hiệu suất lớn hơn 100%.</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="q5" value="D"> D. Năng lượng toàn phần bằng tổng năng lượng có ích và năng lượng hao phí.</label>
+                        </div>
+                        <div class="quiz-explanation hidden mt-2 text-sm text-green-700 bg-green-50 p-2 rounded">
+                            <strong>Giải thích:</strong> Đáp án C. Theo định luật bảo toàn năng lượng, năng lượng sinh ra tối đa bằng năng lượng cung cấp nên \( H \le 100\% \), không thể lớn hơn.
+                        </div>
+                    </div>
+                    
+                    <button type="button" onclick="checkQuiz()" class="bg-main text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:bg-blue-800 transition block w-full mt-4">NỘP BÀI</button>
+                    
+                    <div id="quizResult" class="hidden mt-4 text-center text-lg font-bold p-4 rounded-lg"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- BÀI TẬP VẬN DỤNG -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold uppercase text-main border-b-4 border-main inline-block pb-1 mb-6">IV. Bài tập vận dụng tính toán</h2>
+            
+            <div class="space-y-6">
+                <!-- Bài 1 -->
+                <div class="bg-[#edf2f7] border-l-4 border-main p-5 rounded-r-12px box-shadow-custom">
+                    <p class="font-bold mb-2">Bài 1: Một cần cẩu nâng một vật khối lượng 500 kg lên cao 10 m trong thời gian 20 giây. Công suất tiêu thụ điện của động cơ cần cẩu là 3000 W. Lấy \( g = 10 \, m/s^2 \). Tính hiệu suất của cần cẩu.</p>
+                    <button onclick="toggleAnswer('bt1')" class="bg-main text-white px-4 py-1 mt-2 text-sm rounded shadow hover:bg-blue-800 transition">Xem lời giải</button>
+                    <div id="bt1" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300 text-sm">
+                        <p><strong>Giải:</strong></p>
+                        <p>Công có ích để nâng vật lên cao: <br>
+                        \( A_{ci} = P.h = m.g.h = 500 \times 10 \times 10 = 50\,000 \, J \).</p>
+                        <p>Điện năng tiêu thụ (Công toàn phần) trong thời gian 20s: <br>
+                        \( A_{tp} = \mathcal{P}.t = 3000 \times 20 = 60\,000 \, J \).</p>
+                        <p>Hiệu suất của cần cẩu: <br>
+                        \( H = \frac{A_{ci}}{A_{tp}} . 100\% = \frac{50\,000}{60\,000} . 100\% \approx 83,33\% \).</p>
+                    </div>
+                </div>
+
+                <!-- Bài 2 -->
+                <div class="bg-[#edf2f7] border-l-4 border-main p-5 rounded-r-12px box-shadow-custom">
+                    <p class="font-bold mb-2">Bài 2: Một ấm điện đun sôi 2 lít nước từ nhiệt độ \( 20^\circ C \) mất 10 phút. Biết nhiệt dung riêng của nước là \( 4200 \, J/kg.K \), hiệu suất của ấm là 80%. Tính công suất toả nhiệt của ấm điện.</p>
+                    <button onclick="toggleAnswer('bt2')" class="bg-main text-white px-4 py-1 mt-2 text-sm rounded shadow hover:bg-blue-800 transition">Xem lời giải</button>
+                    <div id="bt2" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300 text-sm">
+                        <p><strong>Giải:</strong></p>
+                        <p>Khối lượng của 2 lít nước là \( m = 2 \, kg \).</p>
+                        <p>Nhiệt lượng cần cung cấp để nước sôi (Năng lượng có ích): <br>
+                        \( Q_{ci} = m.c.\Delta t = 2 \times 4200 \times (100 - 20) = 672\,000 \, J \).</p>
+                        <p>Nhiệt lượng ấm toả ra (Năng lượng toàn phần): <br>
+                        \( H = \frac{Q_{ci}}{Q_{tp}} \Rightarrow Q_{tp} = \frac{Q_{ci}}{H} = \frac{672\,000}{0,8} = 840\,000 \, J \).</p>
+                        <p>Thời gian đun \( t = 10 \text{ phút} = 600 \, s \).</p>
+                        <p>Công suất toả nhiệt của ấm: <br>
+                        \( \mathcal{P} = \frac{Q_{tp}}{t} = \frac{840\,000}{600} = 1400 \, W \).</p>
+                    </div>
+                </div>
+
+                <!-- Bài 3 -->
+                <div class="bg-[#edf2f7] border-l-4 border-main p-5 rounded-r-12px box-shadow-custom">
+                    <p class="font-bold mb-2">Bài 3: Một máy bơm nước có hiệu suất 75% tiêu thụ công suất điện 1,5 kW. Hỏi trong 1 giờ máy bơm này bơm được bao nhiêu mét khối nước lên bồn nước cao 15 m? Lấy \( g = 10 \, m/s^2 \), khối lượng riêng của nước là \( 1000 \, kg/m^3 \).</p>
+                    <button onclick="toggleAnswer('bt3')" class="bg-main text-white px-4 py-1 mt-2 text-sm rounded shadow hover:bg-blue-800 transition">Xem lời giải</button>
+                    <div id="bt3" class="hidden mt-4 bg-green-100 p-4 rounded text-green-900 border border-green-300 text-sm">
+                        <p><strong>Giải:</strong></p>
+                        <p>Công suất tiêu thụ \( \mathcal{P}_{tp} = 1,5 \, kW = 1500 \, W \). Thời gian \( t = 1 \, \text{giờ} = 3600 \, s \).</p>
+                        <p>Điện năng tiêu thụ (Công toàn phần): <br>
+                        \( A_{tp} = \mathcal{P}_{tp} \times t = 1500 \times 3600 = 5\,400\,000 \, J \).</p>
+                        <p>Công có ích máy sinh ra: <br>
+                        \( A_{ci} = H \times A_{tp} = 0,75 \times 5\,400\,000 = 4\,050\,000 \, J \).</p>
+                        <p>Công này dùng để nâng khối lượng nước \( m \) lên độ cao \( h \): <br>
+                        \( A_{ci} = m.g.h \Rightarrow m = \frac{A_{ci}}{g.h} = \frac{4\,050\,000}{10 \times 15} = 27\,000 \, kg \).</p>
+                        <p>Thể tích nước bơm được: <br>
+                        \( V = \frac{m}{D} = \frac{27\,000}{1000} = 27 \, m^3 \).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // Hàm ẩn hiện lời giải
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra trắc nghiệm
+        function checkQuiz() {
+            let score = 0;
+            const total = 5;
+            const questions = document.querySelectorAll('.quiz-question');
+            
+            questions.forEach((q, index) => {
+                const correctAns = q.getAttribute('data-correct');
+                const selected = q.querySelector(`input[name="q${index + 1}"]:checked`);
+                
+                // Hiển thị giải thích
+                const explanation = q.querySelector('.quiz-explanation');
+                explanation.classList.remove('hidden');
+
+                if (selected && selected.value === correctAns) {
+                    score++;
+                }
+            });
+
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.classList.remove('hidden');
+            
+            if (score === total) {
+                resultDiv.className = 'mt-4 text-center text-lg font-bold p-4 rounded-lg bg-green-100 text-green-800 border border-green-400 block';
+                resultDiv.innerHTML = `Tuyệt vời! Bạn đã trả lời đúng ${score}/${total} câu.`;
+            } else {
+                resultDiv.className = 'mt-4 text-center text-lg font-bold p-4 rounded-lg bg-red-100 text-red-800 border border-red-400 block';
+                resultDiv.innerHTML = `Bạn đã trả lời đúng ${score}/${total} câu. Hãy xem lại giải thích bên trên nhé!`;
+            }
+        }
+    </script>
+</body>
+</html>

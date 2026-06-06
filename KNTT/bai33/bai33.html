@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 33: Biến Dạng Của Vật Rắn</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax Configuration (No polyfill as requested) -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+        }
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* Custom styles based on requirements */
+        .content-box {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .section-title {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #1a202c;
+            border-bottom: 4px solid #0f172a; /* Xanh đen */
+            display: inline-block;
+            padding-bottom: 4px;
+            margin-bottom: 16px;
+            margin-top: 16px;
+        }
+        .def-box {
+            background-color: #e6ffe6;
+            border: 2px solid #33FF33;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            font-weight: 500;
+        }
+        .q-box {
+            background-color: #edf2f7; /* Xanh nhạt */
+            border-left: 5px solid #1e3a8a; /* Xanh dương đậm */
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 8px;
+        }
+        .a-box {
+            background-color: #dcfce7; /* Xanh lá nhạt */
+            padding: 16px;
+            margin-top: 12px;
+            border-radius: 8px;
+            display: none; /* Ẩn mặc định */
+            border-left: 5px solid #22c55e;
+        }
+        .btn-toggle {
+            background-color: #33FF33;
+            color: #000;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #22c55e;
+            transition: all 0.2s;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        .btn-toggle:hover {
+            background-color: #22c55e;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #e2e8f0;
+        }
+        .img-placeholder {
+            text-align: center;
+            margin: 16px 0;
+        }
+        .img-placeholder img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin: 0 auto;
+        }
+        .note-box {
+            background-color: #fef9c3; /* Vàng nhạt */
+            border-left: 5px solid #eab308;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .em-da-hoc {
+            background-color: #e0f2fe;
+            border: 2px dashed #0284c7;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 24px;
+        }
+        .em-co-the {
+            background-color: #f3e8ff;
+            border: 2px dashed #9333ea;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <!-- Header Bài Học -->
+    <div class="content-box !p-0 overflow-hidden">
+        <div style="background-color: #66FF99; color: #000;" class="text-center p-3 font-normal text-sm">
+            CHƯƠNG VII: CHUYỂN ĐỘNG TRÒN ĐỀU
+        </div>
+        <hr style="border-color: #33FF33; border-width: 2px;">
+        <div style="background-color: #33FF33; color: #000;" class="text-center p-5 font-bold text-2xl uppercase">
+            BÀI 33: BIẾN DẠNG CỦA VẬT RẮN
+        </div>
+    </div>
+
+    <!-- Lời dẫn -->
+    <div class="content-box border-2 border-black !shadow-none !bg-white flex ">
+        <div class="flex-1">
+        <p class="italic text-center text-gray-800 text-lg">
+            "Bungee là một trò chơi mạo hiểm được nhiều người yêu thích. Em có biết trò chơi này được thực hiện dựa trên hiện tượng vật lí nào không?"
+        </p>
+        </div>
+        <div class="flex-1">
+            <center><img src="h0.png" class="w-45 h-45"></img></center>
+        </div>
+    </div
+
+    <!-- MỤC I -->
+    <div class="content-box">
+        <h2 class="section-title">I. BIẾN DẠNG ĐÀN HỒI. BIẾN DẠNG KÉO VÀ BIẾN DẠNG NÉN</h2>
+        
+        <p>Khi không có ngoại lực tác dụng, vật rắn có kích thước và hình dạng xác định.</p>
+        
+        <div class="def-box">
+            Khi có ngoại lực tác dụng, vật rắn thay đổi hình dạng và kích thước, ta nói vật rắn bị <strong>biến dạng</strong>.
+        </div>
+
+        <div class="img-placeholder">
+            <img src="h1.png" alt="Hình 33.1: Các thí nghiệm về biến dạng">
+            <p class="italic text-sm mt-2 text-gray-600">Hình 33.1</p>
+        </div>
+
+        <!-- Hoạt động 1 -->
+        <div class="q-box">
+            <div class="font-bold flex items-center mb-2">
+                <span class="mr-2">👋</span> HOẠT ĐỘNG
+            </div>
+            <p>Hãy làm các thí nghiệm về biến dạng sau đây:</p>
+            <ul class="list-disc ml-6 mb-3">
+                <li>Ép quả bóng cao su vào bức tường (Hình 33.1a).</li>
+                <li>Nén lò xo dọc theo trục của nó (Hình 33.1b).</li>
+                <li>Kéo hai đầu lò xo dọc theo trục của nó (Hình 33.1c).</li>
+                <li>Kéo cho vòng dây cao su dãn ra (Hình 33.1d).</li>
+            </ul>
+            <p><strong>1.</strong> Trong mỗi thí nghiệm trên, em hãy cho biết: Lực nào làm vật biến dạng? Biến dạng nào là biến dạng kéo? Biến dạng nào là biến dạng nén? Mức độ biến dạng phụ thuộc vào yếu tố nào?</p>
+            <p><strong>2.</strong> Trong thí nghiệm với lò xo và vòng dây cao su, nếu lực kéo quá lớn thì khi thôi tác dụng lực, chúng có trở về hình dạng, kích thước ban đầu được không?</p>
+            
+            <button class="btn-toggle" onclick="toggleAnswer('ans-hd1')">Xem gợi ý giải quyết</button>
+            
+            <div id="ans-hd1" class="a-box">
+                <p><strong>1.</strong> Lực tác dụng của tay ta (ngoại lực) làm các vật bị biến dạng.<br>
+                - Biến dạng nén: Ép quả bóng, nén lò xo.<br>
+                - Biến dạng kéo: Kéo hai đầu lò xo, kéo vòng dây cao su.<br>
+                - Mức độ biến dạng phụ thuộc vào độ lớn của ngoại lực.</p>
+                <p><strong>2.</strong> Nếu lực kéo quá lớn (vượt quá giới hạn đàn hồi), khi thôi tác dụng lực, lò xo và dây cao su không thể trở về hình dạng và kích thước ban đầu (bị biến dạng dẻo/hỏng).</p>
+            </div>
+        </div>
+
+        <p>Như vậy, khi có tác dụng của ngoại lực, vật rắn sẽ bị biến dạng. Mức độ biến dạng phụ thuộc vào độ lớn của ngoại lực.</p>
+
+        <div class="def-box">
+            Khi không còn tác dụng của ngoại lực, nếu vật rắn lấy lại được hình dạng và kích thước ban đầu thì biến dạng của vật là <strong>biến dạng đàn hồi</strong>.<br><br>
+            Giới hạn mà trong đó vật rắn còn giữ được tính đàn hồi được gọi là <strong>giới hạn đàn hồi</strong> của vật rắn.
+        </div>
+
+        <div class="img-placeholder">
+            <img src="h2.png" alt="Hình 33.2: Một số hình dạng của vật rắn">
+            <p class="italic text-sm mt-2 text-gray-600">Hình 33.2: Sự biến dạng nén và kéo</p>
+        </div>
+
+        <div class="def-box">
+            - Khi vật chịu tác dụng của cặp lực nén ngược chiều nhau, vuông góc với bề mặt của vật và hướng vào phía trong vật, ta có <strong>biến dạng nén</strong>.<br>
+            - Khi vật chịu tác dụng của cặp lực kéo ngược chiều nhau, vuông góc với bề mặt của vật và hướng ra phía ngoài vật, ta có <strong>biến dạng kéo</strong>.
+        </div>
+
+        <!-- Câu hỏi mục I -->
+        <div class="q-box">
+            <div class="font-bold flex items-center mb-2">
+                <span class="mr-2">❓</span> CÂU HỎI
+            </div>
+            <p><strong>1.</strong> Em hãy cho biết loại biến dạng trong mỗi trường hợp sau: a) Cột chịu lực trong toà nhà. b) Cánh cung khi kéo dây cung.</p>
+            <p><strong>2.</strong> Tìm thêm ví dụ về biến dạng nén và biến dạng kéo trong đời sống.</p>
+            
+            <button class="btn-toggle" onclick="toggleAnswer('ans-q1')">Xem câu trả lời</button>
+            
+            <div id="ans-q1" class="a-box">
+                <p><strong>1.</strong> <br>
+                a) Cột chịu lực trong toà nhà: Biến dạng nén (chịu sức nặng từ trên đè xuống).<br>
+                b) Cánh cung khi kéo dây: Biến dạng uốn/kéo (tùy bộ phận, dây cung bị biến dạng kéo).</p>
+                <p><strong>2. Ví dụ thêm:</strong><br>
+                - Biến dạng nén: Đệm mút khi ta ngồi lên, nhíp ô tô khi chở nặng.<br>
+                - Biến dạng kéo: Dây cáp cần cẩu khi nâng hàng, dây thun buộc tóc khi bị kéo căng.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MỤC II -->
+    <div class="content-box">
+        <h2 class="section-title">II. LỰC ĐÀN HỒI. ĐỊNH LUẬT HOOKE</h2>
+        
+        <h3 class="font-bold text-lg mt-4 mb-2">1. Lực đàn hồi của lò xo</h3>
+        <p>Khi ta nén hoặc kéo hai đầu lò xo, tay ta cũng chịu tác dụng các lực từ phía lò xo. Các lực này ngược chiều với lực tay tác dụng vào lò xo và được gọi là <strong>lực đàn hồi của lò xo</strong>.</p>
+        
+        <div class="def-box text-center">
+            Lực đàn hồi của lò xo chống lại nguyên nhân làm nó biến dạng và có xu hướng đưa nó về hình dạng và kích thước ban đầu.
+        </div>
+
+        <div class="q-box">
+            <div class="font-bold flex items-center mb-2">
+                <span class="mr-2">👋</span> HOẠT ĐỘNG
+            </div>
+            <p>Với các dụng cụ sau đây: giá đỡ thí nghiệm; các lò xo; hộp quả cân; thước đo.<br>
+            Thiết kế và thực hiện phương án thí nghiệm tìm mối quan hệ giữa độ lớn của lực đàn hồi và độ biến dạng của lò xo. Hãy thể hiện kết quả trên đồ thị về sự phụ thuộc của lực đàn hồi vào độ biến dạng của lò xo.</p>
+            
+            <button class="btn-toggle" onclick="toggleAnswer('ans-hd2')">Xem hướng giải quyết</button>
+            
+            <div id="ans-hd2" class="a-box">
+                <p><strong>Thiết kế thí nghiệm:</strong><br>
+                1. Treo lò xo thẳng đứng vào giá đỡ. Đo chiều dài ban đầu \( l_0 \).<br>
+                2. Lần lượt móc các quả cân đã biết trước trọng lượng \( P \) vào đầu dưới lò xo. (Lúc cân bằng \( F_{dh} = P \)).<br>
+                3. Đo chiều dài \( l \) tương ứng của lò xo khi treo quả cân. Tính độ biến dạng \( \Delta l = l - l_0 \).<br>
+                4. Ghi bảng số liệu và vẽ đồ thị biểu diễn trục tung là \( F_{dh} \), trục hoành là \( \Delta l \).</p>
+            </div>
+        </div>
+
+        <h3 class="font-bold text-lg mt-6 mb-2">2. Định luật Hooke</h3>
+        <div class="img-placeholder">
+            <img src="h3.png" alt="Hình 33.3: Đồ thị lực đàn hồi">
+            <p class="italic text-sm mt-2 text-gray-600">Hình 33.3: Đồ thị biểu diễn sự phụ thuộc lực đàn hồi vào độ dãn của lò xo</p>
+        </div>
+
+        <p>Đoạn OA trên đồ thị cho biết sự phụ thuộc độ lớn của lực đàn hồi \( F_{dh} \) vào độ biến dạng \( \Delta l \) là tuyến tính, ta có thể viết sự phụ thuộc này bằng biểu thức toán học:</p>
+        
+        <div class="def-box text-center font-bold text-xl">
+            \( F_{dh} = k|\Delta l| \) &nbsp;&nbsp;&nbsp; (33.1)
+        </div>
+
+        <div class="def-box">
+            <strong>Định luật Hooke:</strong> Trong giới hạn đàn hồi, độ lớn lực đàn hồi của lò xo tỉ lệ thuận với độ biến dạng của lò xo.
+        </div>
+
+        <p>Trong biểu thức trên, \( k \) là một hằng số với một lò xo xác định, được gọi là <strong>hệ số đàn hồi</strong> hay <strong>độ cứng</strong> của lò xo, phụ thuộc vào kích thước, hình dạng và vật liệu của lò xo. Trong hệ SI, \( k \) có đơn vị là <strong>N/m</strong>.</p>
+        <p>Nếu khi biến dạng chiều dài lò xo bằng \( l \) và chiều dài ban đầu bằng \( l_0 \) thì độ biến dạng \( \Delta l = l - l_0 \), ta có thể viết: \( F_{dh} = k|l - l_0| \).</p>
+
+        <div class="note-box">
+            <strong>Lưu ý:</strong> Phần đồ thị ngoài đoạn thẳng OA ứng với lực đặt vào vượt quá giới hạn đàn hồi của lò xo. Khi đó lực đàn hồi không còn tỉ lệ thuận với độ biến dạng nữa. Nếu treo vật nặng có khối lượng quá lớn, tính đàn hồi của lò xo sẽ bị phá huỷ.
+        </div>
+
+        <!-- Bài tập ví dụ -->
+        <div class="q-box bg-white border-l-4 border-purple-600 shadow-sm">
+            <h3 class="font-bold text-purple-700 mb-2">BÀI TẬP VÍ DỤ</h3>
+            <p>Một lò xo bố trí theo phương thẳng đứng và có gắn vật nặng khối lượng \( 200 \text{ g} \). Khi vật treo ở dưới (Hình 33.4a) thì lò xo dài \( 17 \text{ cm} \), khi vật đặt ở trên (Hình 33.4b) thì lò xo dài \( 13 \text{ cm} \). Lấy \( g = 10 \text{ m/s}^2 \) và bỏ qua trọng lượng của móc treo, giá đỡ vật nặng. Tính độ cứng của lò xo.</p>
+            <div class="img-placeholder">
+                <img src="h4.png" alt="Hình 33.4" style="max-width: 200px;">
+            </div>
+            <button class="btn-toggle bg-purple-200 border-purple-500 text-purple-900 hover:bg-purple-500 hover:text-white" onclick="toggleAnswer('ans-vd')">Xem giải chi tiết</button>
+            
+            <div id="ans-vd" class="a-box border-l-purple-500 bg-purple-50">
+                <p>Trong hai trường hợp, vật nặng chịu tác dụng của lực đàn hồi và trọng lực. Xét vật nặng ở vị trí cân bằng, ta có \( F_{dh} = P = mg \).</p>
+                <p>\( P = 0,2 \text{ kg} \times 10 \text{ m/s}^2 = 2 \text{ N} \).</p>
+                <p>- Khi vật treo ở dưới (lò xo dãn): \( k(l_1 - l_0) = mg \Rightarrow k(0,17 - l_0) = 2 \) &nbsp;&nbsp;(1)</p>
+                <p>- Khi vật đặt ở trên (lò xo nén): \( k(l_0 - l_2) = mg \Rightarrow k(l_0 - 0,13) = 2 \) &nbsp;&nbsp;(2)</p>
+                <p>Từ (1) và (2) suy ra: \( 0,17 - l_0 = l_0 - 0,13 \Rightarrow 2l_0 = 0,30 \Rightarrow l_0 = 0,15 \text{ m} \).</p>
+                <p>Thay \( l_0 \) vào (1) tính được: \( k = \frac{2}{0,17 - 0,15} = 100 \text{ N/m} \).</p>
+            </div>
+        </div>
+
+        <div class="img-placeholder">
+            <img src="h5.png" alt="Hình 33.5" style="max-width: 300px;">
+            <p class="italic text-sm mt-2 text-gray-600">Hình 33.5</p>
+        </div>
+
+        <div class="q-box">
+            <div class="font-bold flex items-center mb-2">
+                <span class="mr-2">❓</span> CÂU HỎI
+            </div>
+            <p><strong>1.</strong> Từ kết quả thu được trong hoạt động ở mục 1, hãy tính độ cứng của lò xo đã dùng làm thí nghiệm. Tại sao khối lượng lò xo cần rất nhỏ so với khối lượng của các vật nặng treo vào nó?</p>
+            <p><strong>2.</strong> Trên Hình 33.5 là đồ thị sự phụ thuộc của độ lớn lực đàn hồi F vào độ biến dạng \( \Delta l \) của 3 lò xo khác nhau A, B và C.</p>
+            <p>a) Lò xo nào có độ cứng lớn nhất?</p>
+            <p>b) Lò xo nào có độ cứng nhỏ nhất?</p>
+            <p>c) Lò xo nào không tuân theo định luật Hooke?</p>
+            
+            <button class="btn-toggle" onclick="toggleAnswer('ans-q2')">Xem câu trả lời</button>
+            
+            <div id="ans-q2" class="a-box">
+                <p><strong>1.</strong> (Phần tính độ cứng HS tự tính dựa trên số liệu thực tế).<br>
+                Khối lượng lò xo cần rất nhỏ để bỏ qua trọng lực của chính lò xo, giúp cho lực đàn hồi tác dụng lên vật cân bằng chính xác với trọng lượng quả nặng, nếu không độ dãn dọc theo lò xo sẽ không đều.</p>
+                <p><strong>2.</strong> Ta có độ dốc của đồ thị \( F - \Delta l \) chính là độ cứng \( k \) (vì \( k = \frac{F}{\Delta l} \)). Đường nào càng dốc thì \( k \) càng lớn.<br>
+                a) Lò xo C có độ cứng lớn nhất (đồ thị dốc nhất).<br>
+                b) Lò xo A có độ cứng nhỏ nhất (đồ thị ít dốc nhất trong đoạn thẳng).<br>
+                c) Đường cong của đồ thị A (phần sau) chứng tỏ lò xo A ở giai đoạn đó đã vượt quá giới hạn đàn hồi, không tuân theo định luật Hooke nữa.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TỔNG KẾT -->
+    <div class="content-box em-da-hoc">
+        <h3 class="font-bold text-blue-800 text-lg mb-2">📌 EM ĐÃ HỌC</h3>
+        <ul class="list-disc ml-6 text-blue-900">
+            <li>Biến dạng đàn hồi. Biến dạng kéo, biến dạng nén.</li>
+            <li>Đặc điểm biến dạng và độ cứng của lò xo.</li>
+            <li>Liên hệ giữa lực đàn hồi và độ biến dạng của lò xo, định luật Hooke: \( F = k|\Delta l| \).</li>
+        </ul>
+    </div>
+
+    <div class="content-box em-co-the">
+        <h3 class="font-bold text-purple-800 text-lg mb-2">💡 EM CÓ THỂ</h3>
+        <p class="text-purple-900">Giải thích được nguyên tắc hoạt động của bộ phận giảm xóc trong ô tô, xe máy. (Sử dụng các lò xo có độ cứng k lớn để hấp thụ lực va đập biến thành thế năng đàn hồi, giúp xe đi êm ái hơn trên đường xóc).</p>
+    </div>
+
+    <!-- PHẦN BÀI TẬP CỦNG CỐ -->
+    <div class="content-box">
+        <h2 class="section-title text-green-700 !border-green-700">LUYỆN TẬP VÀ CỦNG CỐ</h2>
+
+        <!-- Trắc nghiệm -->
+        <h3 class="font-bold text-lg mb-4 text-gray-800">A. Câu Hỏi Trắc Nghiệm</h3>
+        <div id="quiz-container" class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <!-- Câu 1 -->
+            <div class="mb-4">
+                <p class="font-bold mb-2">Câu 1: Vật rắn bị biến dạng đàn hồi là vật:</p>
+                <label class="block"><input type="radio" name="q1" value="A"> A. Có thể lấy lại hình dạng và kích thước ban đầu khi ngừng tác dụng lực.</label>
+                <label class="block"><input type="radio" name="q1" value="B"> B. Vẫn giữ nguyên hình dạng biến dạng khi ngừng tác dụng lực.</label>
+                <label class="block"><input type="radio" name="q1" value="C"> C. Bị gãy, vỡ khi chịu tác dụng lực.</label>
+                <label class="block"><input type="radio" name="q1" value="D"> D. Luôn luôn giữ hình dạng ban đầu dù bị tác dụng lực lớn thế nào.</label>
+            </div>
+            <!-- Câu 2 -->
+            <div class="mb-4">
+                <p class="font-bold mb-2">Câu 2: Hệ thức của định luật Hooke là:</p>
+                <label class="block"><input type="radio" name="q2" value="A"> A. \( F = k\Delta l \)</label>
+                <label class="block"><input type="radio" name="q2" value="B"> B. \( F = \frac{k}{|\Delta l|} \)</label>
+                <label class="block"><input type="radio" name="q2" value="C"> C. \( F_{dh} = k|\Delta l| \)</label>
+                <label class="block"><input type="radio" name="q2" value="D"> D. \( F_{dh} = m.g \)</label>
+            </div>
+            <!-- Câu 3 -->
+            <div class="mb-4">
+                <p class="font-bold mb-2">Câu 3: Đơn vị của độ cứng \( k \) trong hệ SI là:</p>
+                <label class="block"><input type="radio" name="q3" value="A"> A. N.m</label>
+                <label class="block"><input type="radio" name="q3" value="B"> B. N/m</label>
+                <label class="block"><input type="radio" name="q3" value="C"> C. N/m²</label>
+                <label class="block"><input type="radio" name="q3" value="D"> D. Kg/m</label>
+            </div>
+            <!-- Câu 4 -->
+            <div class="mb-4">
+                <p class="font-bold mb-2">Câu 4: Giới hạn đàn hồi là:</p>
+                <label class="block"><input type="radio" name="q4" value="A"> A. Giới hạn mà lực đàn hồi đạt cực đại.</label>
+                <label class="block"><input type="radio" name="q4" value="B"> B. Giới hạn lực tác dụng mà vật còn giữ được tính đàn hồi.</label>
+                <label class="block"><input type="radio" name="q4" value="C"> C. Chiều dài cực đại của lò xo.</label>
+                <label class="block"><input type="radio" name="q4" value="D"> D. Khối lượng lớn nhất có thể treo vào lò xo.</label>
+            </div>
+            <!-- Câu 5 -->
+            <div class="mb-4">
+                <p class="font-bold mb-2">Câu 5: Lực đàn hồi xuất hiện nhằm mục đích gì?</p>
+                <label class="block"><input type="radio" name="q5" value="A"> A. Làm vật bị biến dạng thêm.</label>
+                <label class="block"><input type="radio" name="q5" value="B"> B. Giữ vật đứng yên.</label>
+                <label class="block"><input type="radio" name="q5" value="C"> C. Cân bằng với trọng lực mọi lúc.</label>
+                <label class="block"><input type="radio" name="q5" value="D"> D. Chống lại sự biến dạng, đưa vật về hình dạng ban đầu.</label>
+            </div>
+            
+            <button onclick="checkQuiz()" class="bg-[#0f172a] text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-800 transition">NỘP BÀI</button>
+            
+            <div id="quiz-result" class="mt-4 hidden p-4 rounded-lg font-bold"></div>
+        </div>
+
+        <!-- Tự luận -->
+        <h3 class="font-bold text-lg mt-8 mb-4 text-gray-800">B. Bài Tập Vận Dụng</h3>
+        
+        <!-- BT 1 -->
+        <div class="q-box bg-white border border-gray-300">
+            <p><strong>Bài 1:</strong> Một lò xo có độ cứng \( k = 50 \text{ N/m} \). Tính độ lớn lực đàn hồi của lò xo khi nó bị kéo dãn một đoạn \( \Delta l = 4 \text{ cm} \).</p>
+            <button class="btn-toggle" onclick="toggleAnswer('ans-bt1')">Xem lời giải</button>
+            <div id="ans-bt1" class="a-box">
+                <p><strong>Giải:</strong></p>
+                <p>Đổi \( \Delta l = 4 \text{ cm} = 0,04 \text{ m} \).</p>
+                <p>Áp dụng định luật Hooke: \( F_{dh} = k|\Delta l| \)</p>
+                <p>\( F_{dh} = 50 \times 0,04 = 2 \text{ N} \).</p>
+                <p>Vậy lực đàn hồi là \( 2 \text{ N} \).</p>
+            </div>
+        </div>
+
+        <!-- BT 2 -->
+        <div class="q-box bg-white border border-gray-300">
+            <p><strong>Bài 2:</strong> Treo thẳng đứng một lò xo. Khi treo vật có khối lượng \( m = 100 \text{ g} \) thì lò xo dãn ra \( 2 \text{ cm} \). Cho \( g = 10 \text{ m/s}^2 \). Tính độ cứng của lò xo.</p>
+            <button class="btn-toggle" onclick="toggleAnswer('ans-bt2')">Xem lời giải</button>
+            <div id="ans-bt2" class="a-box">
+                <p><strong>Giải:</strong></p>
+                <p>Khi vật ở vị trí cân bằng, lực đàn hồi cân bằng với trọng lực: \( F_{dh} = P \)</p>
+                <p>\( \Rightarrow k|\Delta l| = m.g \)</p>
+                <p>Đổi \( m = 100 \text{ g} = 0,1 \text{ kg} \) ; \( \Delta l = 2 \text{ cm} = 0,02 \text{ m} \).</p>
+                <p>\( k \times 0,02 = 0,1 \times 10 \Rightarrow 0,02k = 1 \Rightarrow k = \frac{1}{0,02} = 50 \text{ (N/m)} \).</p>
+            </div>
+        </div>
+
+        <!-- BT 3 -->
+        <div class="q-box bg-white border border-gray-300">
+            <p><strong>Bài 3:</strong> Một lò xo có chiều dài tự nhiên \( l_0 = 20 \text{ cm} \). Khi treo vật \( m_1 = 200 \text{ g} \) thì chiều dài lò xo là \( l_1 = 24 \text{ cm} \). Hỏi nếu treo thêm vật \( m_2 = 100 \text{ g} \) (tổng khối lượng là \( 300 \text{ g} \)) thì chiều dài lò xo là bao nhiêu? Lấy \( g = 10 \text{ m/s}^2 \).</p>
+            <button class="btn-toggle" onclick="toggleAnswer('ans-bt3')">Xem lời giải</button>
+            <div id="ans-bt3" class="a-box">
+                <p><strong>Giải:</strong></p>
+                <p><strong>Trường hợp 1:</strong> \( P_1 = F_{dh1} \Rightarrow m_1.g = k(l_1 - l_0) \)</p>
+                <p>\( 0,2 \times 10 = k(0,24 - 0,20) \Rightarrow 2 = k \times 0,04 \Rightarrow k = 50 \text{ N/m} \).</p>
+                <p><strong>Trường hợp 2:</strong> Treo vật \( M = m_1 + m_2 = 300 \text{ g} = 0,3 \text{ kg} \).</p>
+                <p>\( P_M = F_{dh2} \Rightarrow M.g = k(l_2 - l_0) \)</p>
+                <p>\( 0,3 \times 10 = 50 \times (l_2 - 0,20) \Rightarrow 3 = 50(l_2 - 0,20) \)</p>
+                <p>\( l_2 - 0,20 = \frac{3}{50} = 0,06 \text{ m} \Rightarrow l_2 = 0,26 \text{ m} = 26 \text{ cm} \).</p>
+                <p>Vậy chiều dài lò xo lúc này là \( 26 \text{ cm} \).</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Hàm ẩn/hiện đáp án
+    function toggleAnswer(id) {
+        const element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+
+    // Hàm kiểm tra trắc nghiệm
+    function checkQuiz() {
+        const answers = {
+            q1: "A",
+            q2: "C",
+            q3: "B",
+            q4: "B",
+            q5: "D"
+        };
+        
+        let score = 0;
+        const total = 5;
+        let resultHTML = "<ul>";
+
+        for (let key in answers) {
+            const selected = document.querySelector(`input[name="${key}"]:checked`);
+            if (selected) {
+                if (selected.value === answers[key]) {
+                    score++;
+                    resultHTML += `<li class='text-green-600'>Câu ${key.replace('q','')}: Đúng (Đáp án ${answers[key]})</li>`;
+                } else {
+                    resultHTML += `<li class='text-red-500'>Câu ${key.replace('q','')}: Sai. (Đáp án đúng là ${answers[key]})</li>`;
+                }
+            } else {
+                resultHTML += `<li class='text-orange-500'>Câu ${key.replace('q','')}: Chưa chọn đáp án.</li>`;
+            }
+        }
+        
+        resultHTML += "</ul>";
+        
+        const resultDiv = document.getElementById("quiz-result");
+        resultDiv.style.display = "block";
+        
+        if (score === total) {
+            resultDiv.className = "mt-4 p-4 rounded-lg font-bold bg-green-100 border border-green-400 text-green-700";
+            resultDiv.innerHTML = `<p class="text-xl mb-2">Chúc mừng! Bạn đã trả lời đúng ${score}/${total} câu.</p>` + resultHTML;
+        } else {
+            resultDiv.className = "mt-4 p-4 rounded-lg font-bold bg-red-50 border border-red-300 text-gray-800";
+            resultDiv.innerHTML = `<p class="text-xl mb-2 text-red-600">Bạn đã đúng ${score}/${total} câu. Hãy xem lại các câu sai nhé!</p>` + resultHTML;
+            
+            // Giải thích thêm
+            resultDiv.innerHTML += `
+                <div class="mt-4 text-sm font-normal text-gray-700 border-t pt-2 border-gray-300">
+                    <strong>Hướng dẫn nhanh:</strong><br>
+                    C1: Biến dạng đàn hồi phục hồi hình dạng cũ.<br>
+                    C2: Định luật Hooke: \( F_{dh} = k|\\Delta l| \).<br>
+                    C3: Đơn vị là N/m.<br>
+                    C4: Giới hạn đàn hồi là giới hạn ngoại lực tối đa.<br>
+                    C5: Lực đàn hồi luôn chống lại sự biến dạng.
+                </div>
+            `;
+            // Cập nhật lại MathJax cho phần giải thích vừa chèn vào
+            MathJax.typesetPromise([resultDiv]);
+        }
+    }
+</script>
+
+</body>
+</html>

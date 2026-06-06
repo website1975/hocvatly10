@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 34: Khối lượng riêng. Áp suất chất lỏng</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <style>
+        body {
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .section-header {
+            color: #1a202c;
+            border-bottom: 4px solid #1e3a8a; /* Dark blue underline */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            margin-top: 2.5rem;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        table, th, td {
+            border: 1px solid #cbd5e0;
+        }
+        th {
+            background-color: #e2e8f0;
+            padding: 0.75rem;
+            font-weight: bold;
+        }
+        td {
+            padding: 0.75rem;
+        }
+        /* Custom image placeholder styling */
+        .img-placeholder {
+            display: block;
+            margin: 1.5rem auto;
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: #e2e8f0;
+            text-align: center;
+            padding: 1.5rem;
+            color: #718096;
+            font-style: italic;
+            border: 1px dashed #a0aec0;
+        }
+        .img-placeholder img {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 0.5rem auto;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased p-4 md:p-8">
+
+<div class="max-w-4xl mx-auto">
+
+    <!-- Header Chương và Bài -->
+    <div class="rounded-[12px] shadow-md overflow-hidden mb-8">
+        <div class="bg-[#66FF99] p-4 text-center font-medium text-sm md:text-base text-green-900 uppercase">
+            CHƯƠNG VII: BIẾN DẠNG CỦA VẬT RẮN, ÁP SUẤT CHẤT LỎNG
+        </div>
+        <div class="border-t border-green-600"></div>
+        <div class="bg-[#33FF33] p-5 text-center font-bold text-xl md:text-2xl text-green-900 uppercase">
+            BÀI 34: KHỐI LƯỢNG RIÊNG. ÁP SUẤT CHẤT LỎNG
+        </div>
+    </div>
+
+    <!-- Lời dẫn -->
+    <div class="border border-black bg-white p-5 rounded-[12px] shadow-md mb-8 text-center italic text-lg text-gray-700">
+        Khối lượng riêng của một chất lỏng và áp suất của chất lỏng có mối quan hệ như thế nào?
+    </div>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 md:p-8 mb-8">
+        
+        <!-- =================== MỤC I =================== -->
+        <h2 class="section-header text-2xl">I. KHỐI LƯỢNG RIÊNG</h2>
+        
+        <div class="mb-4">
+            <p>Khối lượng riêng của một chất là khối lượng của một đơn vị thể tích chất đó:</p>
+            <div class="bg-blue-50 border-2 border-blue-200 rounded-[12px] p-4 my-4 text-center shadow-sm">
+                <p class="font-bold text-lg mb-2 text-blue-900">Khối lượng riêng = Khối lượng / Thể tích</p>
+                <p class="font-bold text-2xl text-blue-800">\( \rho = \frac{m}{V} \)</p>
+                <p class="text-sm mt-2 text-gray-600">(34.1)</p>
+            </div>
+            <p>Đơn vị của khối lượng riêng trong hệ SI là \( kg/m^3 \). Người ta cũng dùng đơn vị khối lượng riêng là \( g/cm^3 \).</p>
+            <div class="bg-yellow-50 p-3 text-center font-bold rounded-[8px] mt-3 border border-yellow-300 text-yellow-800">
+                \( 1 \text{ } g/cm^3 = 1000 \text{ } kg/m^3 \)
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div>
+                <p class="font-bold text-sm text-center text-blue-900">Bảng 34.1. Khối lượng riêng của một số chất ở điều kiện bình thường</p>
+                <table>
+                    <tr><th>Chất</th><th>\( \rho \text{ } (kg/m^3) \)</th></tr>
+                    <tr><td>Chì</td><td>11 300</td></tr>
+                    <tr><td>Đồng</td><td>8 900</td></tr>
+                    <tr><td>Thép</td><td>7 800</td></tr>
+                    <tr><td>Thủy ngân</td><td>13 500</td></tr>
+                    <tr><td>Nước</td><td>999</td></tr>
+                </table>
+            </div>
+            <div>
+                <p class="font-bold text-sm text-center text-blue-900">Bảng 34.2. Khối lượng riêng của nước ở các nhiệt độ khác nhau</p>
+                <table>
+                    <tr><th>Nhiệt độ</th><th>\( \rho \text{ } (kg/m^3) \)</th></tr>
+                    <tr><td>\( 20^\circ C \)</td><td>999</td></tr>
+                    <tr><td>\( 40^\circ C \)</td><td>992</td></tr>
+                    <tr><td>\( 60^\circ C \)</td><td>983</td></tr>
+                    <tr><td>\( 80^\circ C \)</td><td>972</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Question Box I.1 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-5 rounded-r-[12px] my-6 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-blue-800 font-bold text-2xl">❓</span>
+                <div class="flex-1">
+                    <p class="mb-3 font-semibold text-gray-800">1. Tại sao khối lượng riêng của một chất lại phụ thuộc vào nhiệt độ?</p>
+                    <p class="mb-4 font-semibold text-gray-800">2. Một hợp kim đồng và bạc có khối lượng riêng là \( 10,3 \text{ } g/cm^3 \). Tính khối lượng của bạc và đồng có trong 100 g hợp kim. Biết khối lượng riêng của đồng là \( 8,9 \text{ } g/cm^3 \), của bạc là \( 10,4 \text{ } g/cm^3 \).</p>
+                    <button onclick="toggleAnswer('ans_i_1')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem câu trả lời</button>
+                    
+                    <div id="ans_i_1" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300 text-gray-800">
+                        <p><strong>Câu 1:</strong> Khi nhiệt độ thay đổi, các chất thường co giãn (sự nở vì nhiệt) làm thể tích \( V \) của vật thay đổi. Vì khối lượng \( m \) của vật không đổi nên theo công thức \( \rho = m/V \), khi \( V \) thay đổi thì khối lượng riêng \( \rho \) sẽ thay đổi.</p>
+                        <hr class="my-3 border-green-300">
+                        <p><strong>Câu 2:</strong> Gọi \( m_1, V_1 \) là khối lượng, thể tích của đồng; \( m_2, V_2 \) là của bạc.</p>
+                        <p>Ta có tổng khối lượng: \( m_1 + m_2 = 100 \text{ (g)} \)  (1)</p>
+                        <p>Thể tích hợp kim: \( V = V_1 + V_2 \Rightarrow \frac{100}{10,3} = \frac{m_1}{8,9} + \frac{m_2}{10,4} \) (2)</p>
+                        <p>Từ (1) rút \( m_2 = 100 - m_1 \) thay vào (2) và giải hệ phương trình ta được:</p>
+                        <p>\( m_1 \approx 6,06 \text{ g} \) (Đồng) và \( m_2 \approx 93,94 \text{ g} \) (Bạc).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== MỤC II =================== -->
+        <h2 class="section-header text-2xl mt-10">II. ÁP LỰC VÀ ÁP SUẤT</h2>
+
+        <h3 class="font-bold text-xl mb-3 text-blue-900">1. Áp lực</h3>
+        
+        <p class="font-bold text-gray-800 mt-4 mb-2">a) Khái niệm áp lực</p>
+        <p>Một cuốn sách nằm yên trên mặt bàn nằm ngang chịu tác dụng của hai lực cân bằng là lực hút của Trái Đất và lực đẩy của mặt bàn.</p>
+        <p>Lực \( F_N \) ép lên mặt bàn theo phương vuông góc với mặt bàn, được gọi là <strong>áp lực</strong>.</p>
+        
+        <div class="img-placeholder">
+            <img src="h1.png" alt="Hình 34.1: (a) và (b) Áp lực của cuốn sách lên mặt bàn" onerror="this.style.display='none'">
+            <span class="block mt-2 font-semibold">Hình 34.1</span>
+        </div>
+
+        <p class="font-bold text-gray-800 mt-6 mb-2">b) Áp lực phụ thuộc những yếu tố nào?</p>
+        
+        <div class="img-placeholder">
+            <img src="h2.png" alt="Hình 34.2: Độ lún của cát" onerror="this.style.display='none'">
+            <span class="block mt-2 font-semibold">Hình 34.2. Thí nghiệm độ lún của khối kim loại trên cát</span>
+        </div>
+        
+        <!-- Activity Box II.1 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-5 rounded-r-[12px] my-6 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-blue-800 font-bold text-2xl">✍️</span>
+                <div class="flex-1">
+                    <p class="mb-4 font-semibold text-gray-800">Hãy dựa vào thí nghiệm vẽ ở Hình 34.2, cho biết độ lớn của áp lực phụ thuộc vào những yếu tố nào và phụ thuộc như thế nào.</p>
+                    <button onclick="toggleAnswer('act_ii_1')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem hướng giải quyết</button>
+                    <div id="act_ii_1" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300">
+                        <p>Qua thí nghiệm, ta thấy tác dụng của áp lực (thể hiện qua độ lún của cát) càng mạnh khi:</p>
+                        <ul class="list-disc ml-6 mt-2">
+                            <li><strong>Cường độ của áp lực càng lớn</strong> (đặt chồng 2 khối kim loại thì lún sâu hơn 1 khối).</li>
+                            <li><strong>Diện tích mặt bị ép càng nhỏ</strong> (đặt khối kim loại đứng sẽ lún sâu hơn đặt nằm ngang dù trọng lượng như nhau).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <div class="img-placeholder">
+                <img src="h3.png" alt="Hình 34.3: Em bé kéo xe đồ chơi" onerror="this.style.display='none'">
+                <span class="block mt-2 font-semibold">Hình 34.3</span>
+            </div>
+            <div class="img-placeholder">
+                <img src="h4.png" alt="Hình 34.4: Sách nằm trên mặt phẳng nghiêng" onerror="this.style.display='none'">
+                <span class="block mt-2 font-semibold">Hình 34.4</span>
+            </div>
+        </div>
+
+        <!-- Question Box II.2 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-5 rounded-r-[12px] my-6 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-blue-800 font-bold text-2xl">❓</span>
+                <div class="flex-1">
+                    <p class="mb-3 font-semibold text-gray-800">1. Trong Hình 34.3, lực nào sau đây là lực đàn hồi, lực ma sát, áp lực?</p>
+                    <ul class="list-[lower-alpha] ml-6 mb-3 text-gray-800">
+                        <li>Lực của chân em bé tác dụng lên sàn nhà.</li>
+                        <li>Lực của tay em bé kéo hộp đồ chơi.</li>
+                        <li>Lực của hộp đồ chơi tác dụng lên sàn nhà.</li>
+                    </ul>
+                    <p class="mb-4 font-semibold text-gray-800">2. Chứng minh rằng áp lực của cuốn sách tác dụng lên mặt bàn nằm nghiêng một góc \( \alpha \) (Hình 34.4) có độ lớn là: \( F_N = P \cos \alpha \).</p>
+                    <button onclick="toggleAnswer('ans_ii_1')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem câu trả lời</button>
+                    <div id="ans_ii_1" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300">
+                        <p><strong>Câu 1:</strong></p>
+                        <ul class="list-disc ml-6 mt-1 mb-2">
+                            <li><strong>Lực đàn hồi:</strong> Lực căng của sợi dây do tay em bé kéo hộp đồ chơi.</li>
+                            <li><strong>Lực ma sát:</strong> Lực xuất hiện giữa các bánh xe của hộp đồ chơi và mặt sàn, ngược chiều chuyển động.</li>
+                            <li><strong>Áp lực:</strong> Lực của chân em bé ép vuông góc lên sàn nhà và lực của hộp đồ chơi ép vuông góc lên sàn nhà.</li>
+                        </ul>
+                        <hr class="my-3 border-green-300">
+                        <p><strong>Câu 2:</strong> Phân tích trọng lực \( \vec{P} \) của cuốn sách thành 2 thành phần:</p>
+                        <ul class="list-disc ml-6 mt-1">
+                            <li>Thành phần \( \vec{P}_t \) song song với mặt phẳng nghiêng, có xu hướng kéo sách trượt xuống.</li>
+                            <li>Thành phần \( \vec{P}_n \) vuông góc với mặt phẳng nghiêng. Thành phần này ép sách vào mặt bàn gây ra áp lực \( \vec{F}_N \).</li>
+                        </ul>
+                        <p>Dựa vào hệ thức lượng trong tam giác vuông tạo bởi các vectơ lực, ta có góc giữa \( \vec{P} \) và \( \vec{P}_n \) chính là góc \( \alpha \). Do đó \( P_n = P \cos \alpha \).</p>
+                        <p>Vậy độ lớn áp lực là \( F_N = P_n = P \cos \alpha \).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="font-bold text-xl mb-3 text-blue-900 mt-10">2. Áp suất</h3>
+        <p>Do tác dụng của áp lực lên mặt bị ép càng mạnh khi cường độ của áp lực càng lớn và diện tích mặt bị ép càng nhỏ, nên để đặc trưng cho tác dụng của áp lực người ta dùng khái niệm <strong>áp suất</strong>, có độ lớn bằng áp lực chia cho diện tích bị ép.</p>
+        
+        <div class="bg-blue-50 border-2 border-blue-200 rounded-[12px] p-5 my-5 text-center shadow-sm">
+            <p class="font-bold text-lg mb-2 text-blue-900">Áp suất = Áp lực / Diện tích bị ép</p>
+            <p class="font-bold text-2xl text-blue-800">\( p = \frac{F_N}{S} \)</p>
+            <p class="text-sm mt-2 text-gray-600">(34.2)</p>
+        </div>
+        <p>Đơn vị của áp suất là \( N/m^2 \), có tên gọi là paxcan (Pa):</p>
+        <div class="bg-yellow-50 p-3 text-center font-bold rounded-[8px] mt-3 border border-yellow-300 text-yellow-800 w-1/2 mx-auto">
+            \( 1 \text{ Pa} = 1 \text{ } N/m^2 \)
+        </div>
+
+        <p class="font-bold text-sm text-center text-blue-900 mt-8">Bảng 34.3. Độ lớn của một số áp suất</p>
+        <table>
+            <tr><th>Áp suất tại một số vị trí</th><th>p (Pa)</th></tr>
+            <tr><td>Áp suất ở tâm Trái Đất</td><td>\( 4 \cdot 10^{11} \)</td></tr>
+            <tr><td>Áp suất của nước ở đáy biển sâu nhất</td><td>\( 1,1 \cdot 10^8 \)</td></tr>
+            <tr><td>Áp suất của không khí trong lốp ô tô</td><td>\( 4 \cdot 10^5 \)</td></tr>
+            <tr><td>Áp suất khí quyển ở độ cao mặt nước biển</td><td>\( 1 \cdot 10^5 \)</td></tr>
+        </table>
+
+        <!-- KẾT NỐI TRI THỨC -->
+        <div class="bg-[#edf2f7] border-l-4 border-yellow-500 p-5 rounded-r-[12px] my-8 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-yellow-600 font-bold text-2xl">🔗</span>
+                <div class="flex-1">
+                    <h4 class="font-bold text-yellow-700 uppercase mb-3 border-b border-yellow-300 pb-1">Kết nối tri thức</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="img-placeholder m-0 p-2">
+                            <img src="h5.png" alt="Hình 34.5: (a) Xe tăng, (b) Ô tô bị sa lầy" onerror="this.style.display='none'">
+                            <span class="block text-sm font-semibold mt-1">Hình 34.5</span>
+                        </div>
+                        <div class="img-placeholder m-0 p-2">
+                            <img src="h6.png" alt="Hình 34.6: Hai chiếc xẻng" onerror="this.style.display='none'">
+                            <span class="block text-sm font-semibold mt-1">Hình 34.6</span>
+                        </div>
+                    </div>
+
+                    <p class="mb-2 font-semibold text-gray-800">1. Tại sao xe tăng nặng hơn ô tô nhiều lần lại có thể chạy bình thường trên đất bùn (Hình 34.5a), còn ô tô bị lún bánh và sa lầy trên chính quãng đường này (Hình 34.5b)?</p>
+                    <p class="mb-2 font-semibold text-gray-800">2. Trong hai chiếc xẻng vẽ ở Hình 34.6, xẻng nào dùng để xén đất tốt hơn, xẻng nào dùng để xúc đất tốt hơn? Tại sao?</p>
+                    <p class="mb-4 font-semibold text-gray-800">3. Một người nặng 50 kg đứng trên mặt đất nằm ngang. Biết diện tích tiếp xúc của mỗi bàn chân với đất là \( 0,015 \text{ } m^2 \). Tính áp suất người đó tác dụng lên mặt đất khi:<br>a) Đứng cả hai chân.<br>b) Đứng một chân.</p>
+                    
+                    <button onclick="toggleAnswer('ans_ii_3')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem câu trả lời</button>
+                    
+                    <div id="ans_ii_3" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300">
+                        <p><strong>Câu 1:</strong> Xe tăng chạy bằng bản xích rất rộng nên diện tích tiếp xúc \( S \) với mặt đất rất lớn. Dù trọng lượng \( P \) của xe tăng rất lớn, nhưng do \( S \) lớn nên áp suất \( p = P/S \) truyền xuống mặt đất bùn nhỏ, giúp xe không bị lún. Ô tô dùng bánh xe có diện tích tiếp xúc nhỏ, nên áp suất gây ra lớn, dễ bị lún và sa lầy.</p>
+                        <hr class="my-3 border-green-300">
+                        <p><strong>Câu 2:</strong> 
+                            <br>- Xẻng đầu nhọn dùng để xén đất tốt hơn vì phần mũi nhọn có diện tích tiếp xúc rất nhỏ, khi ấn cùng một lực thì sẽ tạo ra áp suất rất lớn giúp lưỡi xẻng dễ dàng cắm sâu vào đất cứng.
+                            <br>- Xẻng đầu bằng (vuông) dùng để xúc đất tốt hơn vì diện tích bản xẻng lớn, múc được nhiều đất cùng lúc và giữ đất không bị rơi rớt hai bên.
+                        </p>
+                        <hr class="my-3 border-green-300">
+                        <p><strong>Câu 3:</strong> Trọng lượng của người (đóng vai trò áp lực): \( F_N = P = m \cdot g = 50 \cdot 9,8 = 490 \text{ N} \) (lấy \( g = 9,8 \text{ } m/s^2 \)).</p>
+                        <ul class="list-disc ml-6 mt-1">
+                            <li>a) Khi đứng 2 chân, diện tích tiếp xúc: \( S_2 = 2 \cdot 0,015 = 0,03 \text{ } m^2 \).<br>
+                                Áp suất: \( p_2 = \frac{F_N}{S_2} = \frac{490}{0,03} \approx 16333,3 \text{ Pa} \)</li>
+                            <li>b) Khi đứng 1 chân, diện tích tiếp xúc: \( S_1 = 0,015 \text{ } m^2 \).<br>
+                                Áp suất: \( p_1 = \frac{F_N}{S_1} = \frac{490}{0,015} \approx 32666,7 \text{ Pa} \) (gấp đôi khi đứng 2 chân)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== MỤC III =================== -->
+        <h2 class="section-header text-2xl mt-10">III. ÁP SUẤT CỦA CHẤT LỎNG</h2>
+
+        <h3 class="font-bold text-xl mb-3 text-blue-900">1. Sự tồn tại áp suất của chất lỏng</h3>
+        <p>Khi đặt vật rắn lên mặt bàn thì vật rắn tác dụng lên mặt bàn áp suất theo phương vuông góc với mặt bàn. Khi nhấn chìm một vật vào trong nước thì nước có gây áp suất lên vật không? Nếu có thì áp suất này có giống áp suất của vật rắn không?</p>
+        <p class="mt-2">Ai lặn xuống nước cũng dễ cảm thấy áp suất của nước tác dụng lên cơ thể mình, càng lặn sâu thì áp suất càng mạnh. Tuy nhiên, áp suất này có phải chỉ tác dụng theo một phương như áp suất của vật rắn không?</p>
+
+        <div class="img-placeholder max-w-lg">
+            <img src="h7.png" alt="Hình 34.7: (a) và (b) Thí nghiệm bình cầu có các lỗ nhỏ" onerror="this.style.display='none'">
+            <span class="block mt-2 font-semibold">Hình 34.7</span>
+        </div>
+
+        <!-- Question Box III.1 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-5 rounded-r-[12px] my-6 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-blue-800 font-bold text-2xl">✍️</span>
+                <div class="flex-1">
+                    <p class="mb-4 font-semibold text-gray-800">Hãy dựa vào thí nghiệm với một bình cầu có các lỗ nhỏ ở thành bình trong các Hình 34.7a và 34.7b để nói về sự tồn tại áp suất của chất lỏng và đặc điểm của áp suất này so với áp suất của vật rắn.</p>
+                    <button onclick="toggleAnswer('act_iii_1')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem hướng giải quyết</button>
+                    <div id="act_iii_1" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300">
+                        <p>Từ thí nghiệm, ta thấy khi ấn pit-tông (Hình a) hoặc nhúng bình vào nước (Hình b), nước phun ra khỏi các lỗ nhỏ theo mọi hướng vuông góc với thành bình.</p>
+                        <p class="mt-2">Điều này chứng tỏ: <strong>Chất lỏng gây ra áp suất theo mọi phương</strong> lên đáy bình, thành bình và các vật ở trong lòng nó. Khác với vật rắn chỉ gây ra áp suất theo một phương duy nhất là phương của lực ép (thường là hướng từ trên xuống do trọng lượng).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="font-bold text-xl mb-3 text-blue-900 mt-10">2. Công thức tính áp suất của chất lỏng</h3>
+        <p>Có thể xác định được công thức tính áp suất của chất lỏng dựa trên bài toán sau đây:</p>
+
+        <div class="flex flex-col md:flex-row gap-6 items-center my-6">
+            <div class="flex-1">
+                <!-- Activity Box III.2 -->
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-5 rounded-r-[12px] shadow-sm">
+                    <div class="flex items-start">
+                        <span class="mr-3 text-blue-800 font-bold text-2xl">✍️</span>
+                        <div class="flex-1">
+                            <p class="mb-4 font-semibold text-gray-800">Một khối chất lỏng đứng yên có khối lượng riêng \( \rho \), hình trụ diện tích đáy \( S \), chiều cao \( h \) (Hình 34.8). Hãy dùng công thức tính áp suất ở trên để chứng minh rằng áp suất của khối chất lỏng trên tác dụng lên đáy bình có độ lớn là \( p = \rho \cdot g \cdot h \)</p>
+                            <button onclick="toggleAnswer('act_iii_2')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem chứng minh</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3">
+                <div class="img-placeholder m-0 p-4">
+                    <img src="h8.png" alt="Hình 34.8: Khối chất lỏng hình trụ" onerror="this.style.display='none'">
+                    <span class="block mt-2 font-semibold">Hình 34.8</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Answer for III.2 -->
+        <div id="act_iii_2" class="hidden mb-6 bg-green-100 p-5 rounded-[8px] border border-green-300">
+            <p><strong>Chứng minh:</strong></p>
+            <ul class="list-disc ml-6 mt-2 space-y-2">
+                <li>Thể tích của khối chất lỏng hình trụ: \( V = S \cdot h \)</li>
+                <li>Khối lượng của khối chất lỏng: \( m = \rho \cdot V = \rho \cdot S \cdot h \)</li>
+                <li>Trọng lượng của khối chất lỏng (đóng vai trò là áp lực \( F_N \) đè lên đáy bình): <br> \( F_N = P = m \cdot g = \rho \cdot S \cdot h \cdot g \)</li>
+                <li>Áp suất khối chất lỏng tác dụng lên đáy bình: <br> \( p = \frac{F_N}{S} = \frac{\rho \cdot S \cdot h \cdot g}{S} = \rho \cdot g \cdot h \) (đpcm).</li>
+            </ul>
+        </div>
+
+        <div class="bg-blue-50 border-2 border-blue-200 rounded-[12px] p-5 my-6 shadow-sm">
+            <p class="text-gray-800 mb-2">Trên mặt thoáng của chất lỏng, còn có áp suất khí quyển \( p_a \). Áp suất này được chất lỏng truyền nguyên vẹn xuống đáy bình. Do đó, áp suất tổng cộng tại một điểm ở độ sâu \( h \) là:</p>
+            <p class="font-bold text-2xl text-blue-800 text-center my-3">\( p = p_a + \rho \cdot g \cdot h \)</p>
+            <p class="text-sm text-gray-700">Chất lỏng truyền áp suất theo mọi hướng nên áp suất mà ta tính được ở trên cũng là áp suất của chất lỏng tác dụng lên các điểm ở thành bình có khoảng cách tới mặt thoáng chất lỏng là \( h \).</p>
+        </div>
+
+        <!-- Question Box III.3 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-5 rounded-r-[12px] my-6 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-blue-800 font-bold text-2xl">❓</span>
+                <div class="flex-1">
+                    <p class="mb-4 font-semibold text-gray-800">Một khối hình lập phương có cạnh 0,30 m, khối lập phương chìm \( 2/3 \) trong nước. Biết khối lượng riêng của nước là \( 1000 \text{ } kg/m^3 \). Tính áp suất của nước tác dụng lên mặt dưới của khối lập phương và xác định phương, chiều, cường độ của lực gây ra bởi áp suất này.</p>
+                    <button onclick="toggleAnswer('ans_iii_2')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem câu trả lời</button>
+                    <div id="ans_iii_2" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300">
+                        <p>Độ sâu của mặt dưới khối lập phương so với mặt thoáng: <br> \( h = \frac{2}{3} \cdot \text{cạnh} = \frac{2}{3} \cdot 0,30 = 0,20 \text{ m} \).</p>
+                        <p>Áp suất của nước (chỉ tính áp suất cột chất lỏng) tác dụng lên mặt dưới: <br> \( p = \rho \cdot g \cdot h = 1000 \cdot 9,8 \cdot 0,20 = 1960 \text{ Pa} \).</p>
+                        <hr class="my-3 border-green-300">
+                        <p>Lực ép (Lực đẩy do áp suất gây ra) lên mặt dưới:</p>
+                        <ul class="list-disc ml-6 mt-1">
+                            <li><strong>Phương:</strong> Thẳng đứng (vuông góc với mặt dưới nằm ngang).</li>
+                            <li><strong>Chiều:</strong> Từ dưới hướng lên trên.</li>
+                            <li><strong>Cường độ:</strong> \( F = p \cdot S = 1960 \cdot (0,30 \cdot 0,30) = 176,4 \text{ N} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="img-placeholder">
+            <img src="h9.png" alt="Hình 34.9: Thí nghiệm nghiệm lại công thức tính áp suất" onerror="this.style.display='none'">
+            <span class="block mt-2 font-semibold">Hình 34.9. Thí nghiệm nghiệm lại công thức tính áp suất</span>
+        </div>
+
+        <!-- Activity Box III.4 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-5 rounded-r-[12px] my-6 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-blue-800 font-bold text-2xl">✍️</span>
+                <div class="flex-1">
+                    <p class="mb-4 font-semibold text-gray-800">Hãy tìm cách dựa vào các dụng cụ thí nghiệm vẽ ở Hình 34.9 để nghiệm lại công thức tính áp suất của chất lỏng: \( p = \rho \cdot g \cdot h \).</p>
+                    <button onclick="toggleAnswer('act_iii_3')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem hướng giải quyết</button>
+                    <div id="act_iii_3" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300">
+                        <p><strong>Cách tiến hành:</strong></p>
+                        <ol class="list-decimal ml-6 mt-2 space-y-1">
+                            <li>Dùng tay kéo căng sợi dây để đĩa nhựa tròn ép sát vào đáy ống thủy tinh.</li>
+                            <li>Nhúng phần đáy ống ngập vào trong nước ở một độ sâu \( h \) (đo bằng thước). Buông tay cầm sợi dây ra. Ta thấy đĩa nhựa không rơi xuống vì áp suất nước từ dưới đẩy lên giữ nó lại. Áp suất đẩy lên là \( p_{nuoc} = \rho_{nuoc} \cdot g \cdot h \).</li>
+                            <li>Dùng bình chia độ (chứa một chất lỏng khác đã biết khối lượng riêng, hoặc dùng chính nước có pha màu để dễ quan sát) đổ từ từ vào trong ống thủy tinh.</li>
+                            <li>Theo dõi, ngay khi đĩa nhựa bắt đầu tách rời khỏi ống và rơi xuống, ta dừng lại và đo chiều cao \( h' \) của cột chất lỏng đổ vào ống. Lúc này áp suất đẩy xuống của cột chất lỏng trong ống vừa bằng áp suất đẩy lên của nước bên ngoài: \( \rho_{trong} \cdot g \cdot h' = \rho_{nuoc} \cdot g \cdot h \).</li>
+                            <li>Biết các giá trị \( \rho \), đo được \( h \) và \( h' \), tính toán đối chiếu hai vế để nghiệm lại sự đúng đắn của công thức.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="font-bold text-xl mb-3 text-blue-900 mt-10">3. Phương trình cơ bản của chất lưu đứng yên</h3>
+        
+        <div class="flex flex-col md:flex-row gap-6 items-center my-6">
+            <div class="flex-1">
+                <p>Có thể dễ dàng tính được độ chênh lệch về áp suất của chất lưu giữa 2 điểm M và N có độ sâu \( h_1 \) và \( h_2 \) so với mặt thoáng của chất lưu đứng yên (Hình 34.10).</p>
+                <p class="mt-2">Vì \( p_N = p_a + \rho \cdot g \cdot h_1 \) và \( p_M = p_a + \rho \cdot g \cdot h_2 \)</p>
+                <p>nên \( p_N - p_M = \rho \cdot g \cdot (h_1 - h_2) \)</p>
+                <div class="bg-blue-50 border-2 border-blue-200 rounded-[12px] p-4 my-4 text-center shadow-sm">
+                    <p class="font-bold text-lg mb-2 text-blue-800">Phương trình cơ bản của chất lưu đứng yên</p>
+                    <p class="font-bold text-2xl text-blue-900">\( \Delta p = \rho \cdot g \cdot \Delta h \)</p>
+                    <p class="text-sm mt-2 text-gray-600">(34.3)</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3">
+                <div class="img-placeholder m-0 p-4">
+                    <img src="h10.png" alt="Hình 34.10: 2 điểm M, N trong chất lưu" onerror="this.style.display='none'">
+                    <span class="block mt-2 font-semibold">Hình 34.10</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Box III.4 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-5 rounded-r-[12px] my-6 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-blue-800 font-bold text-2xl">❓</span>
+                <div class="flex-1">
+                    <p class="mb-3 font-semibold text-gray-800">1. Tính độ chênh lệch áp suất của nước giữa 2 điểm thuộc 2 mặt phẳng nằm ngang cách nhau 20 cm.</p>
+                    <p class="mb-3 font-semibold text-gray-800">2. Hãy dùng phương trình cơ bản của chất lưu đứng yên để chứng minh rằng áp suất ở các điểm nằm trên cùng mặt phẳng nằm ngang trong chất lỏng thì bằng nhau.</p>
+                    <p class="mb-4 font-semibold text-gray-800">3. Hãy dùng phương trình cơ bản của chất lưu đứng yên để chứng minh định luật Archimedes đã học ở lớp 8 cho trường hợp vật hình hộp chữ nhật có chiều cao \( h \), làm bằng vật liệu có khối lượng riêng \( \rho \).</p>
+                    
+                    <button onclick="toggleAnswer('ans_iii_4')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem câu trả lời</button>
+                    
+                    <div id="ans_iii_4" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300">
+                        <p><strong>Câu 1:</strong> Độ chênh lệch độ sâu \( \Delta h = 20 \text{ cm} = 0,2 \text{ m} \). Khối lượng riêng của nước là \( \rho = 1000 \text{ } kg/m^3 \).</p>
+                        <p>Độ chênh lệch áp suất: \( \Delta p = \rho \cdot g \cdot \Delta h = 1000 \cdot 9,8 \cdot 0,2 = 1960 \text{ Pa} \).</p>
+                        <hr class="my-3 border-green-300">
+                        
+                        <p><strong>Câu 2:</strong> Các điểm nằm trên cùng một mặt phẳng nằm ngang trong chất lỏng có cùng độ sâu \( h \). Do đó chênh lệch độ sâu giữa hai điểm bất kỳ trên đó là \( \Delta h = 0 \).</p>
+                        <p>Thay vào phương trình cơ bản \( \Delta p = \rho \cdot g \cdot \Delta h = \rho \cdot g \cdot 0 = 0 \Rightarrow p_1 - p_2 = 0 \Rightarrow p_1 = p_2 \).</p>
+                        <p>Vậy áp suất tại các điểm này là bằng nhau.</p>
+                        <hr class="my-3 border-green-300">
+                        
+                        <p><strong>Câu 3: Chứng minh Lực đẩy Archimedes:</strong></p>
+                        <p>Xét khối hộp chữ nhật có chiều cao \( h \), diện tích đáy \( S \), chìm hoàn toàn trong chất lỏng có khối lượng riêng \( \rho_l \).</p>
+                        <ul class="list-disc ml-6 mt-1">
+                            <li>Mặt trên khối hộp ở độ sâu \( h_1 \) chịu áp suất đẩy xuống: \( p_1 \). Áp lực: \( F_1 = p_1 \cdot S \).</li>
+                            <li>Mặt dưới khối hộp ở độ sâu \( h_2 = h_1 + h \) chịu áp suất đẩy lên: \( p_2 \). Áp lực: \( F_2 = p_2 \cdot S \).</li>
+                            <li>Theo phương trình cơ bản, độ chênh áp suất: \( p_2 - p_1 = \rho_l \cdot g \cdot (h_2 - h_1) = \rho_l \cdot g \cdot h \).</li>
+                            <li>Hợp lực của áp lực chất lỏng tác dụng lên vật có hướng thẳng đứng lên trên (vì \( p_2 > p_1 \)). Độ lớn là: <br>
+                                \( F_A = F_2 - F_1 = p_2 \cdot S - p_1 \cdot S = (p_2 - p_1) \cdot S = (\rho_l \cdot g \cdot h) \cdot S \).
+                            </li>
+                            <li>Nhận thấy \( h \cdot S = V \) là thể tích vật chiếm chỗ trong chất lỏng. Suy ra \( F_A = \rho_l \cdot g \cdot V \). Đây chính là nội dung định luật Archimedes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOẠT ĐỘNG TRẢI NGHIỆM -->
+        <div class="bg-[#edf2f7] border-l-4 border-purple-500 p-5 rounded-r-[12px] my-8 shadow-sm">
+            <div class="flex items-start">
+                <span class="mr-3 text-purple-600 font-bold text-2xl">⚙️</span>
+                <div class="flex-1">
+                    <h4 class="font-bold text-purple-800 uppercase mb-3 border-b border-purple-300 pb-1">Hoạt động trải nghiệm</h4>
+                    <p class="mb-2 font-semibold text-gray-800">Hãy dùng các dụng cụ sau đây:</p>
+                    <ul class="list-disc ml-6 mb-3 text-gray-800 font-medium">
+                        <li>Một lực kế.</li>
+                        <li>Một quả nặng hình trụ có móc treo.</li>
+                        <li>Một bình chia độ đựng nước.</li>
+                    </ul>
+                    <p class="mb-4 font-semibold text-gray-800">Thiết kế phương án thí nghiệm minh họa cho phương trình cơ bản của chất lưu đứng yên.</p>
+                    
+                    <button onclick="toggleAnswer('act_iii_5')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm transition-colors uppercase">Xem phương án</button>
+                    
+                    <div id="act_iii_5" class="hidden mt-4 bg-green-100 p-4 rounded-[8px] border border-green-300">
+                        <p><strong>Phương án thí nghiệm:</strong> Ý tưởng là ta sẽ dùng lực kế để đo lực đẩy Archimedes (vốn sinh ra từ chênh lệch áp suất hai mặt trên dưới), sau đó so sánh với lý thuyết tính từ phương trình cơ bản.</p>
+                        <ol class="list-decimal ml-6 mt-2 space-y-1">
+                            <li><strong>Bước 1:</strong> Móc quả nặng hình trụ vào lực kế ở ngoài không khí. Đọc số chỉ của lực kế là \( P_1 \) (Trọng lượng của vật). Dùng thước đo chiều cao \( h \) và đường kính đáy của trụ để tính diện tích đáy \( S \).</li>
+                            <li><strong>Bước 2:</strong> Đổ nước vào bình chia độ tới một mức nhất định. Ghi nhận thể tích ban đầu \( V_1 \).</li>
+                            <li><strong>Bước 3:</strong> Nhúng ngập hoàn toàn quả nặng hình trụ vào trong nước (không chạm đáy/thành bình). Đọc số chỉ mới của lực kế là \( P_2 \). Lực đẩy Archimedes đo được bằng thực nghiệm là \( F_{A(\text{thực nghiệm})} = P_1 - P_2 \).</li>
+                            <li><strong>Bước 4 (Minh họa bằng PT cơ bản):</strong> 
+                                <br>Theo phương trình cơ bản, chênh lệch áp suất giữa mặt dưới và mặt trên khối trụ là \( \Delta p = \rho_{nuoc} \cdot g \cdot h \).
+                                <br>Lực đẩy do chênh lệch áp suất này gây ra là \( F_{A(\text{lý thuyết})} = \Delta p \cdot S = \rho_{nuoc} \cdot g \cdot h \cdot S = \rho_{nuoc} \cdot g \cdot V_{vat} \).
+                                <br>(Có thể tìm \( V_{vat} \) từ chênh lệch mực nước trong bình chia độ \( V_2 - V_1 \)).
+                            </li>
+                            <li>So sánh hai giá trị \( F_{A(\text{thực nghiệm})} \) và \( F_{A(\text{lý thuyết})} \) thấy chúng xấp xỉ bằng nhau, từ đó minh họa tính đúng đắn của sự chênh lệch áp suất sinh ra từ phương trình cơ bản chất lưu đứng yên.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CÁC MỤC LƯU Ý / THÔNG TIN BỔ SUNG -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        
+        <!-- Em Có Biết -->
+        <div class="bg-purple-50 border border-purple-300 rounded-[12px] shadow-sm p-6">
+            <h3 class="font-bold text-xl text-purple-800 mb-3 uppercase border-b-2 border-purple-300 pb-2">Em có biết?</h3>
+            <p class="text-sm text-gray-800 mb-4 leading-relaxed">
+                Phương trình cơ bản của thủy tĩnh học cho thấy sự chênh lệch của áp suất chất lỏng không phụ thuộc vào thể tích chất lỏng (tức lượng chất lỏng) mà chỉ phụ thuộc vào sự chênh lệch về độ sâu. Sự chênh lệch về áp suất với cùng một độ lớn trong một ống nước rất nhỏ, cũng giống như trong một hồ nước rộng, trong một đại dương.
+            </p>
+            <p class="text-sm text-gray-800 mb-4 leading-relaxed">
+                Chỉ cần đổ khoảng 1 lít nước vào đầy một ống thủy tinh cao khoảng 10 m là đủ để gây ra áp suất làm vỡ toang thùng gỗ đựng đầy nước ở dưới (Thí nghiệm thùng gỗ Tô-nô của Pascal - Hình 34.11).
+            </p>
+            <div class="img-placeholder bg-white border border-purple-200 mt-2 p-2">
+                <img src="h11.png" alt="Hình 34.11: Thí nghiệm thùng gỗ Tô-nô Pascal" onerror="this.style.display='none'">
+                <span class="block text-xs font-semibold mt-1">Hình 34.11</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-6">
+            <!-- Em Có Thể -->
+            <div class="bg-orange-50 border border-orange-300 rounded-[12px] shadow-sm p-6">
+                <h3 class="font-bold text-xl text-orange-800 mb-3 uppercase border-b-2 border-orange-300 pb-2">Em có thể</h3>
+                <p class="text-gray-800 font-medium">
+                    Giải thích được vì sao người thợ lặn muốn lặn sâu dưới biển phải được trang bị thiết bị lặn chuyên dụng.
+                </p>
+                <div class="mt-3 bg-white p-3 rounded border border-orange-200 text-sm italic">
+                    Gợi ý: Dựa vào công thức \( p = p_a + \rho g h \), lặn càng sâu (h lớn) thì áp suất nước đè lên cơ thể càng khủng khiếp, nếu không có bộ áo lặn bảo vệ chịu áp lực, cơ thể người sẽ bị ép nát.
+                </div>
+            </div>
+
+            <!-- Em Đã Học -->
+            <div class="bg-green-50 border border-green-400 rounded-[12px] shadow-sm p-6 flex-1">
+                <h3 class="font-bold text-xl text-green-800 mb-3 uppercase border-b-2 border-green-400 pb-2">Em đã học</h3>
+                <ul class="list-disc ml-5 space-y-2 text-gray-800 font-medium text-sm leading-relaxed">
+                    <li>Công thức tính khối lượng riêng: \( \rho = m/V \). Đơn vị: \( kg/m^3 \). <br> \( (1 \text{ } g/cm^3 = 1000 \text{ } kg/m^3) \)</li>
+                    <li>Công thức tính áp suất: \( p = \frac{F_N}{S} \) <br> trong đó \( F_N \) là áp lực vuông góc mặt bị ép, \( S \) là diện tích mặt bị ép. Đơn vị: \( Pa \) (\( 1 \text{ Pa} = 1 \text{ } N/m^2 \)).</li>
+                    <li>Công thức tính áp suất chất lỏng: \( p = p_a + \rho g h \), với \( h \) là độ sâu của chất lỏng.</li>
+                    <li>Phương trình cơ bản của chất lưu đứng yên: \( \Delta p = \rho g \Delta h \).</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PHẦN CỦNG CỐ & VẬN DỤNG -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 md:p-8 border-t-8 border-[#33FF33]">
+        <h2 class="text-2xl font-bold mb-6 text-center text-green-900 uppercase">BÀI TẬP CỦNG CỐ VÀ VẬN DỤNG</h2>
+
+        <!-- Trắc nghiệm -->
+        <h3 class="font-bold text-xl border-b-2 border-gray-300 pb-2 mb-4 text-blue-900 uppercase">A. Trắc nghiệm (5 Câu)</h3>
+        <form id="quizForm" class="space-y-6">
+            
+            <div class="quiz-item">
+                <p class="font-bold text-gray-800 mb-2">Câu 1: Đơn vị của áp suất trong hệ SI là gì?</p>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q1" value="A"> A. \( N/m \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q1" value="B"> B. \( Pa \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q1" value="C"> C. \( kg/m^3 \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q1" value="D"> D. \( N.m^2 \)</label>
+                <div id="exp1" class="hidden mt-2 p-3 bg-gray-100 rounded text-sm text-gray-700 border-l-4 transition-all"></div>
+            </div>
+
+            <div class="quiz-item">
+                <p class="font-bold text-gray-800 mb-2">Câu 2: Khối lượng riêng của nước ở \( 20^\circ C \) xấp xỉ bằng bao nhiêu?</p>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q2" value="A"> A. \( 100 \text{ } kg/m^3 \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q2" value="B"> B. \( 999 \text{ } kg/m^3 \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q2" value="C"> C. \( 13500 \text{ } kg/m^3 \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q2" value="D"> D. \( 8900 \text{ } kg/m^3 \)</label>
+                <div id="exp2" class="hidden mt-2 p-3 bg-gray-100 rounded text-sm text-gray-700 border-l-4 transition-all"></div>
+            </div>
+
+            <div class="quiz-item">
+                <p class="font-bold text-gray-800 mb-2">Câu 3: Áp lực là gì?</p>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q3" value="A"> A. Lực kéo song song với mặt tiếp xúc.</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q3" value="B"> B. Trọng lượng của một vật bất kỳ.</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q3" value="C"> C. Lực ép có phương vuông góc với mặt tiếp xúc.</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q3" value="D"> D. Lực ma sát giữa hai bề mặt.</label>
+                <div id="exp3" class="hidden mt-2 p-3 bg-gray-100 rounded text-sm text-gray-700 border-l-4 transition-all"></div>
+            </div>
+
+            <div class="quiz-item">
+                <p class="font-bold text-gray-800 mb-2">Câu 4: Áp suất chất lỏng tại một điểm KHÔNG phụ thuộc vào yếu tố nào sau đây?</p>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q4" value="A"> A. Khối lượng riêng của chất lỏng.</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q4" value="B"> B. Thể tích toàn bộ khối chất lỏng trong bình.</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q4" value="C"> C. Độ sâu của điểm đó so với mặt thoáng.</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q4" value="D"> D. Gia tốc trọng trường.</label>
+                <div id="exp4" class="hidden mt-2 p-3 bg-gray-100 rounded text-sm text-gray-700 border-l-4 transition-all"></div>
+            </div>
+
+            <div class="quiz-item">
+                <p class="font-bold text-gray-800 mb-2">Câu 5: Phương trình cơ bản của chất lưu đứng yên là:</p>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q5" value="A"> A. \( \Delta p = m.g.\Delta h \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q5" value="B"> B. \( \Delta p = \frac{\rho}{g.\Delta h} \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q5" value="C"> C. \( \Delta p = \rho.g.\Delta h \)</label>
+                <label class="block mb-1 cursor-pointer"><input type="radio" name="q5" value="D"> D. \( p = F_N / S \)</label>
+                <div id="exp5" class="hidden mt-2 p-3 bg-gray-100 rounded text-sm text-gray-700 border-l-4 transition-all"></div>
+            </div>
+
+            <button type="button" onclick="checkQuiz()" class="bg-[#1e3a8a] text-white font-bold py-3 px-8 rounded-[8px] hover:bg-blue-800 mt-4 shadow-lg transition-transform transform hover:scale-105">NỘP BÀI</button>
+            <p id="quizResult" class="text-xl font-bold mt-4"></p>
+        </form>
+
+        <!-- Tự luận tính toán -->
+        <h3 class="font-bold text-xl border-b-2 border-gray-300 pb-2 mt-10 mb-4 text-blue-900 uppercase">B. Bài tập vận dụng (3 Câu)</h3>
+        
+        <div class="mb-6 bg-gray-50 p-5 rounded-[12px] border border-gray-200">
+            <p class="font-bold mb-3 text-gray-800 text-lg">Bài 1:</p>
+            <p class="mb-4">Một thợ lặn xuống độ sâu 30 m so với mặt nước biển. Biết khối lượng riêng của nước biển là \( 1030 \text{ } kg/m^3 \) và gia tốc trọng trường \( g = 9,8 \text{ } m/s^2 \). Tính áp suất của nước biển tác dụng lên thợ lặn.</p>
+            <button onclick="toggleAnswer('vd1')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm uppercase transition-colors">Xem lời giải chi tiết</button>
+            <div id="vd1" class="hidden mt-4 bg-green-100 p-5 rounded-[8px] border border-green-300 text-gray-800">
+                <p>Áp dụng công thức tính áp suất chất lỏng: \( p = \rho \cdot g \cdot h \)</p>
+                <p>Thay số: \( p = 1030 \cdot 9,8 \cdot 30 = 302820 \text{ Pa} \)</p>
+                <p class="mt-2 font-bold text-green-800">Đáp số: Áp suất nước biển tác dụng lên thợ lặn là \( 302820 \text{ Pa} \) (hay xấp xỉ \( 3 \text{ atm} \)).</p>
+            </div>
+        </div>
+
+        <div class="mb-6 bg-gray-50 p-5 rounded-[12px] border border-gray-200">
+            <p class="font-bold mb-3 text-gray-800 text-lg">Bài 2:</p>
+            <p class="mb-4">Một khối thép đặc có dạng hình hộp chữ nhật, kích thước \( 10\text{cm} \times 20\text{cm} \times 50\text{cm} \). Đặt khối thép đứng thẳng trên mặt bàn ngang (mặt tiếp xúc là hình chữ nhật \( 10\text{cm} \times 20\text{cm} \)). Biết khối lượng riêng của thép là \( 7800 \text{ } kg/m^3 \). Tính áp suất khối thép tác dụng lên mặt bàn.</p>
+            <button onclick="toggleAnswer('vd2')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm uppercase transition-colors">Xem lời giải chi tiết</button>
+            <div id="vd2" class="hidden mt-4 bg-green-100 p-5 rounded-[8px] border border-green-300 text-gray-800">
+                <p>Đổi đơn vị: \( 10 \text{ cm} = 0,1 \text{ m} \); \( 20 \text{ cm} = 0,2 \text{ m} \); \( 50 \text{ cm} = 0,5 \text{ m} \).</p>
+                <p>Thể tích khối thép: \( V = 0,1 \cdot 0,2 \cdot 0,5 = 0,01 \text{ } m^3 \)</p>
+                <p>Khối lượng: \( m = \rho \cdot V = 7800 \cdot 0,01 = 78 \text{ kg} \)</p>
+                <p>Áp lực lên mặt bàn bằng trọng lượng: \( F_N = P = m \cdot g = 78 \cdot 9,8 = 764,4 \text{ N} \)</p>
+                <p>Diện tích mặt bị ép: \( S = 0,1 \cdot 0,2 = 0,02 \text{ } m^2 \)</p>
+                <p>Áp suất: \( p = \frac{F_N}{S} = \frac{764,4}{0,02} = 38220 \text{ Pa} \)</p>
+                <hr class="my-2 border-green-300">
+                <p class="text-sm italic">Cách khác ngắn gọn: Với khối hộp đồng chất thẳng đứng, áp suất đè lên đáy luôn là \( p = \rho g h_{cao} = 7800 \cdot 9,8 \cdot 0,5 = 38220 \text{ Pa} \).</p>
+                <p class="mt-2 font-bold text-green-800">Đáp số: \( 38220 \text{ Pa} \)</p>
+            </div>
+        </div>
+
+        <div class="mb-2 bg-gray-50 p-5 rounded-[12px] border border-gray-200">
+            <p class="font-bold mb-3 text-gray-800 text-lg">Bài 3:</p>
+            <p class="mb-4">Cần một lực bằng bao nhiêu để giữ một miếng bìa che kín một lỗ hổng tròn có bán kính 5 cm trên thành một tàu ngầm đang lặn ở độ sâu 50 m? (Bỏ qua áp suất không khí bên trong tàu).</p>
+            <button onclick="toggleAnswer('vd3')" class="bg-[#33FF33] text-green-900 px-5 py-2 rounded shadow hover:bg-green-400 font-bold text-sm uppercase transition-colors">Xem lời giải chi tiết</button>
+            <div id="vd3" class="hidden mt-4 bg-green-100 p-5 rounded-[8px] border border-green-300 text-gray-800">
+                <p>Diện tích lỗ hổng tròn: \( S = \pi \cdot r^2 = 3,14 \cdot (0,05)^2 = 0,00785 \text{ } m^2 \)</p>
+                <p>Áp suất nước ở độ sâu 50m (tính lực ép từ ngoài vào): \( p = \rho \cdot g \cdot h = 1030 \cdot 9,8 \cdot 50 = 504700 \text{ Pa} \)</p>
+                <p>Lực đẩy của nước lên miếng bìa (chính là độ lớn của lực ta cần giữ từ bên trong):</p>
+                <p>\( F = p \cdot S = 504700 \cdot 0,00785 \approx 3961,9 \text{ N} \)</p>
+                <p class="mt-2 font-bold text-green-800">Đáp số: \( \approx 3961,9 \text{ N} \)</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- JavaScript Controls -->
+<script>
+    // Hàm Toggle cho các nút xem lời giải
+    function toggleAnswer(id) {
+        const el = document.getElementById(id);
+        if (el.classList.contains('hidden')) {
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+    }
+
+    // Hàm kiểm tra trắc nghiệm
+    function checkQuiz() {
+        const answers = {
+            q1: 'B',
+            q2: 'B',
+            q3: 'C',
+            q4: 'B',
+            q5: 'C'
+        };
+
+        const explanations = {
+            q1: "Đáp án B. Đơn vị của áp suất là Paxcan (Pa), với \( 1 \text{ Pa} = 1 \text{ } N/m^2 \).",
+            q2: "Đáp án B. Dựa vào Bảng 34.2, khối lượng riêng của nước ở \( 20^\circ C \) là \( 999 \text{ } kg/m^3 \).",
+            q3: "Đáp án C. Áp lực là lực ép có phương vuông góc với mặt tiếp xúc (mặt bị ép).",
+            q4: "Đáp án B. Theo công thức \( p = p_a + \rho gh \), áp suất không phụ thuộc vào tổng thể tích nước chứa trong bình, mà chỉ phụ thuộc độ sâu điểm đó, KLR chất lỏng và gia tốc trọng trường.",
+            q5: "Đáp án C. Phương trình cơ bản của chất lưu đứng yên biểu diễn độ chênh áp suất: \( \Delta p = \rho g \Delta h \)."
+        };
+
+        let score = 0;
+        let total = Object.keys(answers).length;
+        const form = document.getElementById('quizForm');
+
+        for (let q in answers) {
+            let selected = form.elements[q].value;
+            let expDiv = document.getElementById('exp' + q.replace('q', ''));
+            expDiv.classList.remove('hidden', 'border-green-500', 'border-red-500', 'bg-green-100', 'bg-red-100');
+            
+            if (selected === answers[q]) {
+                score++;
+                expDiv.innerHTML = "<strong>✅ Đúng!</strong> " + explanations[q];
+                expDiv.classList.add('border-green-500', 'bg-green-100');
+            } else {
+                expDiv.innerHTML = "<strong>❌ Sai!</strong> " + explanations[q];
+                if (!selected) {
+                    expDiv.innerHTML = "<strong>⚠️ Bạn chưa chọn đáp án!</strong> " + explanations[q];
+                }
+                expDiv.classList.add('border-red-500', 'bg-red-100');
+            }
+        }
+
+        const resultDisplay = document.getElementById('quizResult');
+        resultDisplay.innerText = `Kết quả: Bạn đã làm đúng ${score}/${total} câu!`;
+        
+        if (score === total) {
+            resultDisplay.className = "text-xl font-bold mt-4 text-green-600 bg-green-100 inline-block p-2 rounded";
+        } else {
+            resultDisplay.className = "text-xl font-bold mt-4 text-red-600 bg-red-100 inline-block p-2 rounded";
+        }
+        
+        // Rerender MathJax cho phần giải thích
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typesetPromise();
+        }
+    }
+</script>
+
+</body>
+</html>

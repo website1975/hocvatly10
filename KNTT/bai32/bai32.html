@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 32: Lực Hướng Tâm Và Gia Tốc Hướng Tâm</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax for rendering math formulas -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+        }
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* Custom box shadow for a softer look */
+        .box-shadow-custom {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="text-gray-800 leading-relaxed">
+
+<div class="main-container space-y-8">
+
+    <!-- Header Chương và Bài -->
+    <div class="bg-[#330000] text-white rounded-[12px] p-6 text-center box-shadow-custom">
+        <h2 class="text-xl font-bold uppercase tracking-wider">Chương VI: Chuyển động tròn đều</h2>
+        <hr class="my-4 border-t-[1px] border-white/50 w-2/3 mx-auto">
+        <h1 class="text-3xl font-extrabold uppercase">Bài 32: Lực Hướng Tâm Và Gia Tốc Hướng Tâm</h1>
+    </div>
+
+    <!-- Lời dẫn -->
+    <div class="border border-gray-400 bg-white rounded-[12px] p-5 italic text-gray-700 box-shadow-custom text-lg">
+        Tại sao Trái Đất chuyển động quanh Mặt Trời? Tại sao trên những đoạn đường vòng thường phải hạn chế tốc độ của xe và mặt đường thường phải hơi nghiêng về phía tâm?
+    </div>
+
+    <!-- Mục I -->
+    <div class="bg-white rounded-[12px] p-6 box-shadow-custom">
+        <h2 class="text-2xl font-bold uppercase text-[#330000] border-b-4 border-blue-900 pb-2 mb-6">
+            I. LỰC HƯỚNG TÂM
+        </h2>
+        
+        <!-- Hoạt động -->
+        <div class="mb-6">
+            <p class="mb-2"><strong><span class="text-xl">✋</span> Hoạt động:</strong> Dùng một sợi dây nhẹ không dãn buộc vào một cái tẩy. Quay dây sao cho cái tẩy chuyển động tròn trong mặt phẳng nằm ngang có tâm là đầu dây mà tay giữ.</p>
+            <div class="text-center">
+                <img src="h1.png" alt="Hình 32.1" class="mx-auto my-4 max-w-full h-auto rounded border border-gray-200 shadow-sm">
+                <p class="italic text-sm text-gray-500">Hình 32.1</p>
+            </div>
+        </div>
+
+        <!-- Câu hỏi -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md mb-4">
+            <p class="font-bold mb-2">❓ Trả lời các câu hỏi sau:</p>
+            <ol class="list-decimal ml-5 space-y-2">
+                <li>Lực nào sau đây làm cái tẩy chuyển động tròn? (Trọng lực, lực cản không khí, hay lực căng dây?)</li>
+                <li>Nếu cái tẩy đang chuyển động mà ta buông tay ra thì hiện tượng gì xảy ra?</li>
+                <li>Lực nào duy trì chuyển động tròn của Trái Đất xung quanh Mặt Trời?</li>
+            </ol>
+            <button onclick="toggleAnswer('ans_i_1')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-4 text-sm font-semibold">Xem câu trả lời</button>
+        </div>
+        <div id="ans_i_1" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px] mb-6">
+            <ol class="list-decimal ml-5 space-y-2">
+                <li><strong>Lực căng dây</strong> hướng vào tâm quỹ đạo của cái tẩy làm nó chuyển động tròn.</li>
+                <li>Cái tẩy sẽ <strong>văng ra theo phương tiếp tuyến</strong> với quỹ đạo theo hướng vận tốc tại điểm đó.</li>
+                <li><strong>Lực hấp dẫn</strong> của Mặt Trời tác dụng lên Trái Đất duy trì chuyển động này.</li>
+            </ol>
+        </div>
+
+        <!-- Định nghĩa -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded-r-md my-6 shadow-sm">
+            <h3 class="font-bold text-yellow-800 mb-2">Định nghĩa</h3>
+            <p class="text-lg">Lực (hay hợp lực) tác dụng lên vật chuyển động tròn đều hướng vào tâm quỹ đạo gọi là <strong>lực hướng tâm</strong>.</p>
+        </div>
+
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md mb-4">
+            <p class="font-bold mb-2">❓ Tìm thêm ví dụ về lực hướng tâm.</p>
+            <button onclick="toggleAnswer('ans_i_2')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-2 text-sm font-semibold">Xem câu trả lời</button>
+        </div>
+        <div id="ans_i_2" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px]">
+            <p>- Lực ma sát nghỉ đóng vai trò lực hướng tâm khi ô tô đi vào khúc cua trên mặt đường phẳng.</p>
+            <p>- Lực tĩnh điện đóng vai trò lực hướng tâm giữ electron quay quanh hạt nhân nguyên tử.</p>
+        </div>
+    </div>
+
+    <!-- Mục II -->
+    <div class="bg-white rounded-[12px] p-6 box-shadow-custom">
+        <h2 class="text-2xl font-bold uppercase text-[#330000] border-b-4 border-blue-900 pb-2 mb-6">
+            II. GIA TỐC HƯỚNG TÂM
+        </h2>
+        
+        <p class="mb-4">Trong chuyển động tròn đều, lực hướng tâm gây gia tốc hướng vào tâm nên gia tốc này được gọi là <strong>gia tốc hướng tâm</strong>, kí hiệu là \(a_{ht}\).</p>
+
+        <!-- Công thức -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded-r-md my-4 shadow-sm text-center">
+            <h3 class="font-bold text-yellow-800 mb-2 text-left">Công thức</h3>
+            <p class="text-2xl">\( a_{ht} = \frac{v^2}{r} = \omega^2 r \)</p>
+        </div>
+
+        <!-- Em có biết (Chứng minh) -->
+        <div class="bg-purple-50 border border-purple-200 rounded-[12px] p-5 my-6">
+            <h3 class="font-bold text-purple-800 uppercase mb-3 border-b border-purple-200 pb-2">💡 Em có biết?</h3>
+            <p class="mb-2">Để tính độ lớn của gia tốc hướng tâm ta sử dụng công thức gia tốc: \( \vec{a} = \frac{\Delta\vec{v}}{\Delta t} \)</p>
+            <div class="text-center">
+                <img src="h2.png" alt="Hình 32.2" class="mx-auto my-4 max-w-full h-auto rounded border border-gray-200">
+                <p class="italic text-sm text-gray-500">Hình 32.2</p>
+            </div>
+            <p class="mb-2">Tam giác AOB và tam giác EAC là hai tam giác cân đồng dạng nên:</p>
+            <p class="text-center mb-2">\( \frac{\Delta v}{v} = \frac{AB}{r} \Rightarrow \frac{\Delta v}{v} = \frac{v \cdot \Delta t}{r} \)</p>
+            <p>Suy ra: \( a_{ht} = \frac{\Delta v}{\Delta t} = \frac{v^2}{r} \). Vì \( v = \omega \cdot r \) nên \( a_{ht} = \omega^2 \cdot r \)</p>
+        </div>
+
+        <!-- Bài tập Mục II -->
+        <h3 class="font-bold text-lg text-[#330000] mt-6 mb-3">Kết nối tri thức (Bài tập)</h3>
+        
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md mb-4">
+            <p><strong>Câu 1:</strong> Tính gia tốc hướng tâm của một vệ tinh nhân tạo chuyển động tròn đều quanh Trái Đất với bán kính quỹ đạo là \(7000 \text{ km}\) và tốc độ \(7,57 \text{ km/s}\).</p>
+            <button onclick="toggleAnswer('ans_ii_bt1')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-2 text-sm font-semibold">Xem lời giải chi tiết</button>
+        </div>
+        <div id="ans_ii_bt1" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px] mb-4">
+            <p>Đổi đơn vị: \(r = 7000 \text{ km} = 7 \cdot 10^6 \text{ m}\); \(v = 7,57 \text{ km/s} = 7570 \text{ m/s}\).</p>
+            <p>Áp dụng công thức: \( a_{ht} = \frac{v^2}{r} = \frac{7570^2}{7 \cdot 10^6} \approx 8,19 \text{ m/s}^2 \).</p>
+        </div>
+
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md mb-4">
+            <p><strong>Câu 2:</strong> Tính gia tốc hướng tâm của Mặt Trăng. Biết khoảng cách từ Mặt Trăng đến tâm Trái Đất là \(3,84 \cdot 10^8 \text{ m}\) và chu kì quay là \(27,2 \text{ ngày}\).</p>
+            <button onclick="toggleAnswer('ans_ii_bt2')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-2 text-sm font-semibold">Xem lời giải chi tiết</button>
+        </div>
+        <div id="ans_ii_bt2" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px] mb-4">
+            <p>Đổi chu kì: \(T = 27,2 \text{ ngày} = 27,2 \cdot 24 \cdot 3600 = 2350080 \text{ s}\).</p>
+            <p>Tốc độ góc: \( \omega = \frac{2\pi}{T} \approx 2,67 \cdot 10^{-6} \text{ rad/s} \).</p>
+            <p>Gia tốc hướng tâm: \( a_{ht} = \omega^2 \cdot r = (2,67 \cdot 10^{-6})^2 \cdot 3,84 \cdot 10^8 \approx 2,7 \cdot 10^{-3} \text{ m/s}^2 \).</p>
+        </div>
+
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md mb-4">
+            <p><strong>Câu 3:</strong> Kim phút của một chiếc đồng hồ dài \(8 \text{ cm}\). Tính gia tốc hướng tâm của đầu kim.</p>
+            <button onclick="toggleAnswer('ans_ii_bt3')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-2 text-sm font-semibold">Xem lời giải chi tiết</button>
+        </div>
+        <div id="ans_ii_bt3" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px] mb-4">
+            <p>Chu kì kim phút: \( T = 1 \text{ giờ} = 3600 \text{ s} \).</p>
+            <p>Bán kính \(r = 8 \text{ cm} = 0,08 \text{ m}\).</p>
+            <p>Gia tốc: \( a_{ht} = \omega^2 r = \left(\frac{2\pi}{T}\right)^2 \cdot r = \left(\frac{2\pi}{3600}\right)^2 \cdot 0,08 \approx 2,44 \cdot 10^{-7} \text{ m/s}^2 \).</p>
+        </div>
+    </div>
+
+    <!-- Mục III -->
+    <div class="bg-white rounded-[12px] p-6 box-shadow-custom">
+        <h2 class="text-2xl font-bold uppercase text-[#330000] border-b-4 border-blue-900 pb-2 mb-6">
+            III. CÔNG THỨC ĐỘ LỚN LỰC HƯỚNG TÂM
+        </h2>
+        
+        <!-- Công thức -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded-r-md my-4 shadow-sm text-center">
+            <h3 class="font-bold text-yellow-800 mb-2 text-left">Công thức định luật 2 Newton</h3>
+            <p class="text-2xl mb-2">\( F_{ht} = m \cdot a_{ht} = \frac{m \cdot v^2}{r} = m \cdot \omega^2 \cdot r \)</p>
+        </div>
+
+        <p class="mb-4"><strong>Ví dụ:</strong> Một vật nhỏ buộc vào đầu một sợi dây, nếu quay đều và nhanh, sợi dây gần như quay trong mặt phẳng nằm ngang (Hình 32.3). Nếu quay đều và chậm, sợi dây quét thành một mặt nón (Hình 32.4).</p>
+
+        <div class="flex flex-col md:flex-row justify-center gap-4 mb-6">
+            <div class="text-center">
+                <img src="h3.png" alt="Hình 32.3" class="mx-auto rounded border shadow-sm">
+                <p class="italic text-sm text-gray-500 mt-2">Hình 32.3</p>
+            </div>
+            <div class="text-center">
+                <img src="h4.png" alt="Hình 32.4" class="mx-auto rounded border shadow-sm">
+                <p class="italic text-sm text-gray-500 mt-2">Hình 32.4</p>
+            </div>
+        </div>
+
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md mb-4">
+            <p class="font-bold mb-2">❓ Vẽ hợp lực của lực căng dây \( \vec{T} \) và trọng lực \( \vec{P} \), từ đó xác định lực hướng tâm trong Hình 32.4.</p>
+            <button onclick="toggleAnswer('ans_iii_1')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-2 text-sm font-semibold">Xem lời giải chi tiết</button>
+        </div>
+        <div id="ans_iii_1" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px] mb-6">
+            <p>Hợp lực của lực căng dây \( \vec{T} \) và trọng lực \( \vec{P} \) là một lực có phương ngang, chiều hướng vào tâm O của quỹ đạo tròn. Hợp lực này chính là lực hướng tâm duy trì chuyển động tròn đều của vật: \( \vec{F}_{ht} = \vec{T} + \vec{P} \).</p>
+        </div>
+
+        <h3 class="font-bold text-lg text-[#330000] mt-6 mb-3">Bài tập áp dụng</h3>
+        
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md mb-4">
+            <p><strong>Câu 1:</strong> Trong trường hợp ở Hình 32.4, dây dài 0,75 m.</p>
+            <p>a) Bạn A nói: "Tốc độ quay càng lớn thì góc lệch của dây so với phương thẳng đứng càng lớn". Chứng minh.</p>
+            <p>b) Tính tần số quay để dây lệch góc \( \alpha = 60^\circ \) (\(g = 9,8 \text{ m/s}^2\)).</p>
+            <button onclick="toggleAnswer('ans_iii_bt1')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-2 text-sm font-semibold">Xem lời giải</button>
+        </div>
+        <div id="ans_iii_bt1" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px] mb-4">
+            <p><strong>a)</strong> Ta có \( \tan \alpha = \frac{F_{ht}}{P} = \frac{m\omega^2 r}{mg} = \frac{\omega^2 (l \sin \alpha)}{g} \Rightarrow \cos \alpha = \frac{g}{\omega^2 l} \).</p>
+            <p>Khi tốc độ góc \( \omega \) tăng \(\Rightarrow \cos \alpha\) giảm \(\Rightarrow\) góc \(\alpha\) tăng. Lời bạn A đúng.</p>
+            <p><strong>b)</strong> Thay số: \( \cos 60^\circ = \frac{9,8}{\omega^2 \cdot 0,75} \Rightarrow \omega \approx 5,11 \text{ rad/s} \).</p>
+            <p>Tần số: \( f = \frac{\omega}{2\pi} \approx 0,81 \text{ Hz} \).</p>
+        </div>
+
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md mb-4">
+            <p><strong>Câu 2:</strong> Hình 32.5 mô tả vệ tinh nhân tạo.</p>
+            <div class="text-center my-3"><img src="h5.png" alt="Hình 32.5" class="mx-auto rounded border"></div>
+            <p>a) Lực nào là lực hướng tâm?</p>
+            <p>b) Tính gia tốc hướng tâm của vệ tinh địa tĩnh (\(R = 6400 \text{ km}\), \(h = 35780 \text{ km}\)).</p>
+            <button onclick="toggleAnswer('ans_iii_bt2')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-2 text-sm font-semibold">Xem lời giải</button>
+        </div>
+        <div id="ans_iii_bt2" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px] mb-4">
+            <p><strong>a)</strong> Lực hấp dẫn của Trái Đất tác dụng lên vệ tinh đóng vai trò là lực hướng tâm.</p>
+            <p><strong>b)</strong> Vệ tinh địa tĩnh có chu kì bằng chu kì tự quay của TĐ: \( T = 24 \text{ h} = 86400 \text{ s} \).</p>
+            <p>Bán kính quỹ đạo: \( r = R + h = 6400 + 35780 = 42180 \text{ km} = 4,218 \cdot 10^7 \text{ m} \).</p>
+            <p>Gia tốc: \( a_{ht} = \left(\frac{2\pi}{T}\right)^2 r = \left(\frac{2\pi}{86400}\right)^2 \cdot 4,218 \cdot 10^7 \approx 0,22 \text{ m/s}^2 \).</p>
+        </div>
+
+        <!-- Kết nối với cuộc sống -->
+        <div class="bg-blue-50 border border-blue-200 rounded-[12px] p-5 my-6">
+            <h3 class="font-bold text-blue-800 uppercase mb-3 border-b border-blue-200 pb-2">🌍 Kết nối với cuộc sống</h3>
+            <p class="mb-2">Hình 32.6 mô tả ô tô chuyển động trên quỹ đạo tròn (a: mặt đường ngang, b: mặt đường nghiêng).</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4 mb-4">
+                <img src="h6.png" alt="Hình 32.6" class="max-h-48 rounded border shadow-sm">
+            </div>
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                <p><strong>Thảo luận:</strong></p>
+                <p>a) Lực nào là lực hướng tâm trong mỗi trường hợp?</p>
+                <p>b) Lí do đoạn đường cong phải làm mặt đường nghiêng?</p>
+                <p>c) Tại sao phải giảm tốc khi vào cung đường tròn?</p>
+                <button onclick="toggleAnswer('ans_kncs')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-3 text-sm font-semibold">Xem giải thích</button>
+            </div>
+            <div id="ans_kncs" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px]">
+                <p><strong>a)</strong> Đường ngang: Lực ma sát nghỉ. Đường nghiêng: Hợp lực của trọng lực và phản lực (có thể thêm lực ma sát).</p>
+                <p><strong>b)</strong> Tạo ra thành phần lực hướng tâm lớn hơn giúp xe ôm cua an toàn, không phụ thuộc quá nhiều vào ma sát (rất nguy hiểm khi trời mưa trơn trượt).</p>
+                <p><strong>c)</strong> Vì \( F_{ht} = m\frac{v^2}{r} \), nếu đi quá nhanh (\(v\) lớn), lực ma sát không đủ cung cấp lực hướng tâm, xe sẽ bị văng ra khỏi đường (hiện tượng trượt li tâm).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Em đã học / Em có thể / Em có biết -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Em đã học -->
+        <div class="bg-teal-50 border border-teal-300 rounded-[12px] p-5 box-shadow-custom md:col-span-2">
+            <h3 class="font-bold text-teal-800 uppercase mb-3 border-b border-teal-300 pb-2">📚 Em đã học</h3>
+            <ul class="list-disc ml-5 space-y-2">
+                <li>Gia tốc trong chuyển động tròn đều luôn hướng vào tâm và có độ lớn: \( a_{ht} = \frac{v^2}{r} = \omega^2 r \).</li>
+                <li>Lực (hay hợp lực) tác dụng vào vật gây ra gia tốc hướng tâm gọi là lực hướng tâm.</li>
+                <li>Biểu thức: \( F_{ht} = m \cdot a_{ht} = \frac{mv^2}{r} = m\omega^2 r \).</li>
+            </ul>
+        </div>
+
+        <!-- Em có thể -->
+        <div class="bg-orange-50 border border-orange-300 rounded-[12px] p-5 box-shadow-custom h-full">
+            <h3 class="font-bold text-orange-800 uppercase mb-3 border-b border-orange-300 pb-2">🚀 Em có thể</h3>
+            <ol class="list-decimal ml-5 space-y-3 mb-4">
+                <li>Giải thích lí do vì sao trong thực tế người ta chỉ làm cầu vồng lên chứ không làm cầu võng xuống?</li>
+                <li>Giải thích vì sao trong môn xiếc mô tô bay, diễn viên có thể đi mô tô trong thành lồng quay tròn mà không bị rơi.</li>
+            </ol>
+            <div class="text-center mb-4"><img src="h7.png" alt="Hình 32.7" class="mx-auto rounded max-h-32"></div>
+            <button onclick="toggleAnswer('ans_emcothe')" class="bg-[#330000] text-white px-4 py-2 rounded-[8px] hover:bg-red-900 transition mt-auto w-full text-sm font-semibold">Xem hướng giải quyết</button>
+            <div id="ans_emcothe" class="hidden bg-[#e6ffed] border border-[#b2f2bb] p-4 mt-2 rounded-[12px] text-sm">
+                <p>1. Cầu vồng lên: Áp lực xe lên cầu \( N = P - F_{ht} < P \). Cầu sẽ chịu lực ép nhỏ hơn trọng lượng xe, bền hơn. Cầu võng xuống \( N = P + F_{ht} > P \), dễ gãy sập.</p>
+                <p>2. Lực ma sát nghỉ cực đại tỉ lệ thuận với áp lực (phản lực N). Khi quay nhanh, phản lực \( N = F_{ht} = m\frac{v^2}{r} \) rất lớn, làm lực ma sát đủ lớn để cân bằng với trọng lượng của xe và người, giúp họ không bị rơi.</p>
+            </div>
+        </div>
+
+        <!-- Em có biết -->
+        <div class="bg-purple-50 border border-purple-300 rounded-[12px] p-5 box-shadow-custom h-full">
+            <h3 class="font-bold text-purple-800 uppercase mb-3 border-b border-purple-300 pb-2">💡 Em có biết: Chuyển động li tâm</h3>
+            <p class="mb-3">Một vật đặt trên mặt bàn quay. Nếu tăng tốc độ góc \( \omega \), lực ma sát nghỉ cực đại không đủ cung cấp lực hướng tâm \( F_{msn(max)} < m\omega^2 r \). Vật sẽ trượt ra xa tâm và văng ra ngoài. Đó là <strong>chuyển động li tâm</strong>.</p>
+            <div class="text-center mb-4"><img src="h8.png" alt="Hình 32.8" class="mx-auto rounded max-h-32"></div>
+            <div class="bg-white p-3 rounded border border-gray-200 mt-2">
+                <p class="font-bold text-sm">Câu hỏi: Giải thích tại sao thùng giặt quần áo có nhiều lỗ thủng?</p>
+                <button onclick="toggleAnswer('ans_litam')" class="text-blue-600 underline text-sm mt-1">Xem đáp án</button>
+                <p id="ans_litam" class="hidden text-sm mt-2 text-green-700">Khi vắt, lồng giặt quay rất nhanh. Lực liên kết giữa nước và quần áo không đủ làm lực hướng tâm, các giọt nước chuyển động li tâm, văng qua các lỗ thủng ra ngoài giúp quần áo khô ráo.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- BÀI TẬP CỦNG CỐ -->
+    <div class="bg-white rounded-[12px] p-6 box-shadow-custom mt-8">
+        <h2 class="text-2xl font-bold uppercase text-[#330000] border-b-4 border-[#330000] pb-2 mb-6">
+            BÀI TẬP TỔNG KẾT & CỦNG CỐ
+        </h2>
+
+        <!-- 3 Bài tập tự luận -->
+        <div class="mb-8 border border-gray-200 p-5 rounded-[12px] bg-gray-50">
+            <h3 class="text-xl font-bold text-blue-900 mb-4">A. Bài tập vận dụng tính toán</h3>
+            
+            <div class="mb-4">
+                <p class="font-bold">Bài 1:</p>
+                <p>Một vật khối lượng 0,5 kg chuyển động tròn đều với tốc độ 4 m/s trên quỹ đạo có bán kính 2 m. Tính gia tốc hướng tâm của vật.</p>
+                <button onclick="toggleAnswer('tl_bt1')" class="text-[#330000] font-semibold underline text-sm mt-2">Xem lời giải chi tiết</button>
+                <div id="tl_bt1" class="hidden bg-white p-3 border border-gray-300 rounded mt-2">
+                    <p>Áp dụng công thức tính gia tốc hướng tâm:</p>
+                    <p>\( a_{ht} = \frac{v^2}{r} = \frac{4^2}{2} = \frac{16}{2} = 8 \text{ m/s}^2 \)</p>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <p class="font-bold">Bài 2:</p>
+                <p>Một ô tô khối lượng 1,5 tấn chuyển động đều qua một cầu vượt (coi như cung tròn) với tốc độ 36 km/h. Bán kính cong của cầu là 50 m. Tính lực hướng tâm tác dụng lên xe.</p>
+                <button onclick="toggleAnswer('tl_bt2')" class="text-[#330000] font-semibold underline text-sm mt-2">Xem lời giải chi tiết</button>
+                <div id="tl_bt2" class="hidden bg-white p-3 border border-gray-300 rounded mt-2">
+                    <p>Đổi: \( m = 1,5 \text{ tấn} = 1500 \text{ kg} \); \( v = 36 \text{ km/h} = 10 \text{ m/s} \).</p>
+                    <p>Áp dụng công thức tính lực hướng tâm:</p>
+                    <p>\( F_{ht} = \frac{m \cdot v^2}{r} = \frac{1500 \cdot 10^2}{50} = \frac{1500 \cdot 100}{50} = 3000 \text{ N} \)</p>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <p class="font-bold">Bài 3:</p>
+                <p>Một vật chuyển động tròn đều có gia tốc hướng tâm là \( 10 \text{ m/s}^2 \), trên quỹ đạo bán kính \( 0,4 \text{ m} \). Tính tốc độ góc của vật đó.</p>
+                <button onclick="toggleAnswer('tl_bt3')" class="text-[#330000] font-semibold underline text-sm mt-2">Xem lời giải chi tiết</button>
+                <div id="tl_bt3" class="hidden bg-white p-3 border border-gray-300 rounded mt-2">
+                    <p>Từ công thức: \( a_{ht} = \omega^2 \cdot r \)</p>
+                    <p>\( \Rightarrow \omega = \sqrt{\frac{a_{ht}}{r}} = \sqrt{\frac{10}{0,4}} = \sqrt{25} = 5 \text{ rad/s} \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5 Bài tập trắc nghiệm -->
+        <div class="border border-[#330000] p-5 rounded-[12px]">
+            <h3 class="text-xl font-bold text-blue-900 mb-4">B. Trắc nghiệm nhanh</h3>
+            
+            <form id="quizForm" onsubmit="return false;" class="space-y-6">
+                <!-- Q1 -->
+                <div class="q-box">
+                    <p class="font-bold mb-2">Câu 1: Biểu thức nào sau đây tính gia tốc hướng tâm?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="A" class="mr-2"> A. \( a = v^2 \cdot r \)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="B" class="mr-2"> B. \( a = \frac{v}{r} \)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="C" class="mr-2"> C. \( a = \frac{v^2}{r} \)</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q1" value="D" class="mr-2"> D. \( a = \omega \cdot r \)</label>
+                    </div>
+                    <div id="exp_q1" class="hidden text-sm text-green-700 bg-green-50 p-2 mt-2 rounded border border-green-200">
+                        <strong>Đáp án C:</strong> Công thức chuẩn của gia tốc hướng tâm là \( a_{ht} = \frac{v^2}{r} \).
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="q-box">
+                    <p class="font-bold mb-2">Câu 2: Véctơ lực hướng tâm luôn có đặc điểm gì?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="A" class="mr-2"> A. Cùng hướng với véctơ vận tốc.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="B" class="mr-2"> B. Vuông góc với véctơ vận tốc và hướng vào tâm quỹ đạo.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="C" class="mr-2"> C. Ngược hướng với véctơ vận tốc.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q2" value="D" class="mr-2"> D. Tiếp tuyến với quỹ đạo tròn.</label>
+                    </div>
+                    <div id="exp_q2" class="hidden text-sm text-green-700 bg-green-50 p-2 mt-2 rounded border border-green-200">
+                        <strong>Đáp án B:</strong> Vận tốc tiếp tuyến với quỹ đạo, lực hướng tâm luôn hướng vào tâm nên chúng luôn vuông góc với nhau.
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="q-box">
+                    <p class="font-bold mb-2">Câu 3: Lực nào đóng vai trò là lực hướng tâm khi Trái Đất quay quanh Mặt Trời?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="A" class="mr-2"> A. Lực ma sát.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="B" class="mr-2"> B. Lực đàn hồi.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="C" class="mr-2"> C. Lực hấp dẫn.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q3" value="D" class="mr-2"> D. Lực điện từ.</label>
+                    </div>
+                    <div id="exp_q3" class="hidden text-sm text-green-700 bg-green-50 p-2 mt-2 rounded border border-green-200">
+                        <strong>Đáp án C:</strong> Lực hấp dẫn của Mặt Trời giữ Trái Đất trên quỹ đạo.
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="q-box">
+                    <p class="font-bold mb-2">Câu 4: Khi ô tô chạy vào khúc cua trên mặt đường phẳng ngang, lực nào đóng vai trò lực hướng tâm?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="A" class="mr-2"> A. Trọng lực.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="B" class="mr-2"> B. Lực ma sát nghỉ.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="C" class="mr-2"> C. Lực cản không khí.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q4" value="D" class="mr-2"> D. Phản lực của mặt đường.</label>
+                    </div>
+                    <div id="exp_q4" class="hidden text-sm text-green-700 bg-green-50 p-2 mt-2 rounded border border-green-200">
+                        <strong>Đáp án B:</strong> Lực ma sát nghỉ giữa lốp xe và mặt đường giúp xe không bị trượt và chuyển động cong.
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="q-box">
+                    <p class="font-bold mb-2">Câu 5: Hiện tượng li tâm xảy ra khi nào?</p>
+                    <div class="space-y-1 ml-4">
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="A" class="mr-2"> A. Khi lực hướng tâm lớn hơn lực giữ vật.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="B" class="mr-2"> B. Khi tốc độ quay quá chậm.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="C" class="mr-2"> C. Khi lực giữ vật (như ma sát) không đủ lớn để cung cấp lực hướng tâm cần thiết.</label>
+                        <label class="block cursor-pointer"><input type="radio" name="q5" value="D" class="mr-2"> D. Khi vật có khối lượng quá nhỏ.</label>
+                    </div>
+                    <div id="exp_q5" class="hidden text-sm text-green-700 bg-green-50 p-2 mt-2 rounded border border-green-200">
+                        <strong>Đáp án C:</strong> Khi lực cung cấp (vd ma sát cực đại) nhỏ hơn lực hướng tâm yêu cầu (\( m\omega^2r \)), vật sẽ bị văng ra xa tâm.
+                    </div>
+                </div>
+
+                <div class="text-center pt-4 border-t border-gray-300">
+                    <button onclick="checkQuiz()" class="bg-blue-900 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-800 transition text-lg shadow-md">NỘP BÀI</button>
+                    <div id="quizResult" class="mt-4 text-xl font-bold"></div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- JavaScript cho các tương tác -->
+<script>
+    // Hàm ẩn/hiện đáp án
+    function toggleAnswer(id) {
+        const element = document.getElementById(id);
+        if (element.classList.contains('hidden')) {
+            element.classList.remove('hidden');
+        } else {
+            element.classList.add('hidden');
+        }
+    }
+
+    // Hàm chấm điểm trắc nghiệm
+    function checkQuiz() {
+        const answers = {
+            q1: 'C',
+            q2: 'B',
+            q3: 'C',
+            q4: 'B',
+            q5: 'C'
+        };
+
+        let score = 0;
+        let total = Object.keys(answers).length;
+        let form = document.getElementById('quizForm');
+
+        for (let i = 1; i <= total; i++) {
+            let questionName = 'q' + i;
+            let selected = form.querySelector(`input[name="${questionName}"]:checked`);
+            
+            // Hiển thị giải thích
+            document.getElementById('exp_q' + i).classList.remove('hidden');
+
+            if (selected) {
+                if (selected.value === answers[questionName]) {
+                    score++;
+                    selected.parentElement.classList.add('text-green-600', 'font-bold');
+                } else {
+                    selected.parentElement.classList.add('text-red-600', 'font-bold', 'line-through');
+                }
+            }
+        }
+
+        const resultDiv = document.getElementById('quizResult');
+        resultDiv.innerHTML = `Bạn đạt điểm: ${score} / ${total}`;
+        
+        if (score === total) {
+            resultDiv.className = "mt-4 text-xl font-bold text-green-600";
+            resultDiv.innerHTML += " 🎉 Xuất sắc! Bạn đã đúng hết.";
+        } else {
+            resultDiv.className = "mt-4 text-xl font-bold text-red-600";
+            resultDiv.innerHTML += " 💡 Hãy xem lại các câu sai bên trên nhé.";
+        }
+    }
+</script>
+
+</body>
+</html>

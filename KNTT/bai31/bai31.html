@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển Động Tròn Đều</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    
+    <style>
+        body {
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 text-gray-800">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <div class="bg-[#330000] text-white rounded-[12px] p-6 text-center shadow-md">
+            <h2 class="text-xl uppercase font-semibold tracking-wider">Chương VI: CHUYỂN ĐỘNG TRÒN ĐỀU</h2>
+            <hr class="my-3 border-t border-white/40 w-2/3 mx-auto">
+            <h1 class="text-3xl uppercase font-bold">Bài 31: Động học của chuyển động tròn đều</h1>
+        </div>
+
+        <div class="border border-black bg-white italic p-5 shadow-md rounded-[12px]">
+            Khi xe mô tô đua vào khúc cua thì có những bộ phận nào của xe chuyển động tròn?
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h3 class="text-2xl font-bold uppercase border-b-4 border-[#001f3f] pb-2 mb-4 text-[#330000]">I. MÔ TẢ CHUYỂN ĐỘNG TRÒN</h3>
+            
+            <p class="mb-4">Trong cuộc sống hằng ngày ta gặp nhiều vật chuyển động tròn như: cánh quạt, kim đồng hồ, đu quay,...</p>
+            <p class="mb-4">Để xác định vị trí của vật chuyển động tròn ta có thể dựa vào quãng đường đi \( s \) (độ dài cung tròn) hoặc độ dịch chuyển góc \( \theta \) tính từ vị trí ban đầu.</p>
+
+            <div class="flex justify-center mb-4">
+                <img src="h1.png" alt="Hình 31.1. Quãng đường s và độ dịch chuyển góc" class="max-w-xs border border-gray-300 rounded shadow-sm">
+            </div>
+
+            <div class="bg-yellow-50 border border-yellow-300 rounded-md p-4 mb-4 shadow-sm text-center">
+                <p class="font-semibold text-yellow-800 mb-2">Mối quan hệ giữa độ dài cung với góc chắn tâm và bán kính:</p>
+                <div class="text-xl">\[ \theta = \frac{s}{r} \]</div>
+            </div>
+
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded-md">
+                <h4 class="font-bold text-red-800 mb-1">Lưu ý:</h4>
+                <p>Trong Vật lí, người ta thường dùng đơn vị góc là rađian (rad).</p>
+                <ul class="list-disc ml-5 mt-2">
+                    <li>Vật chuyển động 1 vòng: \( \theta = \frac{2\pi r}{r} = 2\pi \) (rad)</li>
+                    <li>Do đó: \( 360^\circ = 2\pi \) (rad) và \( 180^\circ = \pi \) (rad).</li>
+                </ul>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-[#001f3f] p-4 mb-4 rounded-md shadow-sm">
+                <p class="font-bold text-[#001f3f]">? Câu hỏi 1:</p>
+                <p class="mb-2">Chứng minh rằng một rađian là góc ở tâm chắn cung có độ dài bằng bán kính đường tròn.</p>
+                <button onclick="toggleAnswer('i_q1')" class="bg-[#330000] text-white px-4 py-2 rounded text-sm hover:bg-red-900 transition">Xem lời giải</button>
+                <div id="i_q1" class="hidden mt-3 p-3 bg-green-100 rounded text-gray-800 border border-green-300">
+                    Từ công thức \( \theta = \frac{s}{r} \). Nếu góc \( \theta = 1 \) rad, thì \( \frac{s}{r} = 1 \Rightarrow s = r \). Vậy góc 1 rad chắn cung có độ dài đúng bằng bán kính.
+                </div>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-[#001f3f] p-4 mb-4 rounded-md shadow-sm">
+                <p class="font-bold text-[#001f3f]">? Câu hỏi 2:</p>
+                <p class="mb-2">Tính quãng đường đi được khi vật chuyển động tròn có độ dịch chuyển góc 1 rad, biết bán kính đường tròn là 2 m.</p>
+                <button onclick="toggleAnswer('i_q2')" class="bg-[#330000] text-white px-4 py-2 rounded text-sm hover:bg-red-900 transition">Xem lời giải</button>
+                <div id="i_q2" class="hidden mt-3 p-3 bg-green-100 rounded text-gray-800 border border-green-300">
+                    Áp dụng công thức \( s = \theta \cdot r = 1 \cdot 2 = 2 \) (m). Quãng đường là 2 mét.
+                </div>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-[#001f3f] p-4 mb-4 rounded-md shadow-sm">
+                <p class="font-bold text-[#001f3f]">? Câu hỏi 3:</p>
+                <p class="mb-2">Xét chuyển động của kim giờ đồng hồ. Tìm độ dịch chuyển góc của nó (theo độ và rađian):</p>
+                <ul class="list-none ml-2 mb-2">
+                    <li>a) Trong mỗi giờ.</li>
+                    <li>b) Trong khoảng thời gian từ 12 giờ đến 15 giờ 30 phút.</li>
+                </ul>
+                <button onclick="toggleAnswer('i_q3')" class="bg-[#330000] text-white px-4 py-2 rounded text-sm hover:bg-red-900 transition">Xem lời giải</button>
+                <div id="i_q3" class="hidden mt-3 p-3 bg-green-100 rounded text-gray-800 border border-green-300">
+                    <p>Mặt đồng hồ được chia thành 12 giờ tương ứng với 360 độ (hay \(2\pi\) rad).</p>
+                    <p>a) Mỗi giờ kim đi được: \(360^\circ / 12 = 30^\circ\). Đổi ra rađian: \(30^\circ = \frac{\pi}{6}\) rad.</p>
+                    <p>b) Từ 12h đến 15h30 là 3.5 giờ. Góc quay là: \( 3.5 \times 30^\circ = 105^\circ \). Đổi ra rađian: \( 105 \times \frac{\pi}{180} = \frac{7\pi}{12} \) rad.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h3 class="text-2xl font-bold uppercase border-b-4 border-[#001f3f] pb-2 mb-4 text-[#330000]">II. CHUYỂN ĐỘNG TRÒN ĐỀU. TỐC ĐỘ VÀ TỐC ĐỘ GÓC</h3>
+            
+            <h4 class="text-xl font-bold mb-3 text-gray-700">1. Tốc độ</h4>
+            <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-4">
+                <p class="font-bold">Định nghĩa:</p>
+                <p>Chuyển động tròn đều là chuyển động theo quỹ đạo tròn có tốc độ không thay đổi:</p>
+                <div class="text-center text-lg mt-2">\[ v = \frac{s}{t} = \text{hằng số} \]</div>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-[#001f3f] p-4 mb-4 rounded-md shadow-sm">
+                <p class="font-bold text-[#001f3f]">? Hoạt động:</p>
+                <p class="mb-2">Dựa vào việc quan sát chuyển động của kim giây quay đều trong đồng hồ để:</p>
+                <ol class="list-decimal ml-5 mb-2">
+                    <li>So sánh tốc độ của các điểm khác nhau trên kim;</li>
+                    <li>So sánh độ dịch chuyển góc trong cùng khoảng thời gian của các điểm khác nhau trên kim.</li>
+                </ol>
+                <button onclick="toggleAnswer('ii_act1')" class="bg-[#330000] text-white px-4 py-2 rounded text-sm hover:bg-red-900 transition">Xem hướng giải quyết</button>
+                <div id="ii_act1" class="hidden mt-3 p-3 bg-green-100 rounded text-gray-800 border border-green-300">
+                    <p>1. Các điểm nằm xa tâm quay (gần đầu kim) quét những cung dài hơn trong cùng thời gian nên có <strong>tốc độ (\(v\)) lớn hơn</strong> các điểm ở gần tâm.</p>
+                    <p>2. Dù nằm ở vị trí nào trên kim, mọi điểm đều vạch ra cùng một góc ở tâm trong cùng một khoảng thời gian. Do đó <strong>độ dịch chuyển góc (\(\theta\)) là như nhau</strong>.</p>
+                </div>
+            </div>
+
+            <h4 class="text-xl font-bold mb-3 mt-6 text-gray-700">2. Tốc độ góc</h4>
+            <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-4">
+                <p>Tốc độ góc trong chuyển động tròn đều bằng độ dịch chuyển góc chia cho thời gian dịch chuyển. Đơn vị thường dùng: <strong>rad/s</strong>.</p>
+                <div class="text-center text-lg my-2">\[ \omega = \frac{\theta}{t} \]</div>
+                <p>Mối liên hệ giữa tốc độ dài và tốc độ góc:</p>
+                <div class="text-center text-lg my-2">\[ v = \omega \cdot r \]</div>
+            </div>
+
+            <div class="bg-[#fff3cd] border-l-4 border-yellow-500 rounded-[12px] p-5 my-6 shadow-md">
+                <h4 class="font-bold text-yellow-800 mb-2 uppercase tracking-wide">Em có biết?</h4>
+                <p>Ngoài tốc độ, tốc độ góc, trong chuyển động tròn đều người ta còn quan tâm đến các đại lượng như chu kì và tần số.</p>
+                <ul class="list-disc ml-5 mt-2 space-y-2">
+                    <li><strong>Chu kì (T):</strong> là thời gian để vật quay hết một vòng tròn.</li>
+                    <li><strong>Tần số (f):</strong> là số vòng vật đi được trong một giây. Đơn vị là héc (Hz).</li>
+                </ul>
+                <div class="bg-white rounded p-3 mt-3 text-center border border-yellow-200">
+                    \[ T = \frac{1}{f} = \frac{2\pi}{\omega} \]
+                </div>
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-[#001f3f] p-4 mb-4 rounded-md shadow-sm">
+                <p class="font-bold text-[#001f3f]">? Câu hỏi bài tập:</p>
+                <ol class="list-decimal ml-5 mb-2">
+                    <li>Hãy tính tốc độ góc của kim giờ và kim phút của đồng hồ.</li>
+                    <li>Roto trong một tổ máy của nhà máy thuỷ điện Hoà Bình quay 125 vòng mỗi phút. Hãy tính tốc độ góc của roto này theo đơn vị rad/s.</li>
+                </ol>
+                <button onclick="toggleAnswer('ii_q2')" class="bg-[#330000] text-white px-4 py-2 rounded text-sm hover:bg-red-900 transition">Xem lời giải</button>
+                <div id="ii_q2" class="hidden mt-3 p-3 bg-green-100 rounded text-gray-800 border border-green-300">
+                    <p><strong>1. Kim đồng hồ:</strong></p>
+                    <ul class="list-disc ml-5 mb-2">
+                        <li>Kim giờ quay 1 vòng (2\(\pi\) rad) hết 12h = 43200s. \(\Rightarrow \omega_h = \frac{2\pi}{43200} \approx 1.45 \times 10^{-4}\) rad/s.</li>
+                        <li>Kim phút quay 1 vòng hết 1h = 3600s. \(\Rightarrow \omega_m = \frac{2\pi}{3600} \approx 1.75 \times 10^{-3}\) rad/s.</li>
+                    </ul>
+                    <p><strong>2. Roto:</strong></p>
+                    <p>Tần số quay: \( f = \frac{125}{60} \) vòng/s. Tốc độ góc \( \omega = 2\pi f = 2\pi \cdot \frac{125}{60} \approx 13.09 \) rad/s.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h3 class="text-2xl font-bold uppercase border-b-4 border-[#001f3f] pb-2 mb-4 text-[#330000]">III. VẬN TỐC TRONG CHUYỂN ĐỘNG TRÒN ĐỀU</h3>
+            
+            <p class="mb-4">Ta đã biết trong chuyển động thẳng vận tốc tức thời tại một thời điểm cho bởi \( \vec{v}_t = \frac{\Delta \vec{d}}{\Delta t} \).</p>
+            <p class="mb-4">Khi \( \Delta t \) rất nhỏ, vectơ độ dịch chuyển \( \Delta \vec{d} \) sẽ tiến tới trùng với tiếp tuyến với đường tròn. Do đó, tại mỗi thời điểm vectơ vận tốc tức thời sẽ có phương trùng với tiếp tuyến của đường tròn.</p>
+
+            <div class="bg-green-50 border border-green-200 rounded p-4 mb-4 text-center">
+                <p class="font-bold text-green-900 text-lg">Trong chuyển động tròn đều, độ lớn của vận tốc tức thời không đổi nhưng hướng luôn thay đổi.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-4">
+                <img src="h2.png" alt="Hình 31.2" class="w-49 h-48 border border-gray-300 rounded shadow-sm">
+                <img src="h3.png" alt="Hình 31.3" class="w-48 h-48 border border-gray-300 rounded shadow-sm">
+            </div>
+
+            <div class="bg-[#edf2f7] border-l-4 border-[#001f3f] p-4 mb-4 rounded-md shadow-sm">
+                <p class="font-bold text-[#001f3f]">? Bài tập vận dụng:</p>
+                <ol class="list-decimal ml-5 mb-2 space-y-2">
+                    <li>Biết chiều dài kim phút và kim giây lần lượt là 4 cm và 5 cm. Tính tỉ số chu kì quay và tỉ số tốc độ của đầu kim.</li>
+                    <li>Một điểm xích đạo, bán kính R = 6400 km. Tính chu kì, tốc độ và tốc độ góc.</li>
+                    <li>Phân biệt tốc độ và vận tốc tức thời trong chuyển động tròn đều.</li>
+                    <li>Nêu mối quan hệ \(v, T, r\).</li>
+                    <li>Xe đồ chơi chạy \(v = 0.2\) m/s trên đường ray tròn tâm O đường kính AB. Xác định sự thay đổi vận tốc đi từ A đến B.</li>
+                </ol>
+                <button onclick="toggleAnswer('iii_ex1')" class="bg-[#330000] text-white px-4 py-2 rounded text-sm hover:bg-red-900 transition">Xem lời giải</button>
+                <div id="iii_ex1" class="hidden mt-3 p-3 bg-green-100 rounded text-gray-800 border border-green-300 text-sm space-y-2">
+                    <p><strong>1.</strong> \( T_{phut} = 3600 \) s, \( T_{giay} = 60 \) s. Tỉ số \( \frac{T_{phut}}{T_{giay}} = 60 \).<br>
+                    Vận tốc \( v = \frac{2\pi r}{T} \Rightarrow \frac{v_{phut}}{v_{giay}} = \frac{r_{phut}}{r_{giay}} \cdot \frac{T_{giay}}{T_{phut}} = \frac{4}{5} \cdot \frac{1}{60} = \frac{1}{75} \).</p>
+                    <p><strong>2.</strong> Trái đất quay 1 vòng/ngày \(\Rightarrow T = 24 \times 3600 = 86400\) s.<br>
+                    \(\omega = \frac{2\pi}{T} \approx 7.27 \times 10^{-5}\) rad/s.<br>
+                    \(v = \omega R = 7.27 \times 10^{-5} \times 6400000 \approx 465\) m/s.</p>
+                    <p><strong>3.</strong> Tốc độ là đại lượng vô hướng luôn không đổi (\(v = s/t\)), còn vận tốc tức thời là đại lượng vectơ có phương luôn thay đổi (tiếp tuyến quỹ đạo).</p>
+                    <p><strong>4.</strong> \( v = \frac{2\pi \cdot r}{T} \)</p>
+                    <p><strong>5.</strong> Từ A đến B là đi nửa vòng tròn. Độ lớn vận tốc luôn là 0.2 m/s nhưng hướng của vectơ vận tốc tại B bị đảo ngược (ngược chiều) so với tại A.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-[#e6fffa] border border-[#319795] rounded-[12px] p-5 shadow-md">
+                <h4 class="font-bold text-[#234e52] mb-2 uppercase">Em đã học</h4>
+                <ul class="list-disc ml-5 text-sm space-y-1 text-gray-700">
+                    <li>Chuyển động quỹ đạo tròn với tốc độ không đổi gọi là chuyển động tròn đều.</li>
+                    <li>Một rađian là góc ở tâm chắn cung có độ dài bằng bán kính.</li>
+                    <li>Công thức: \( v = \omega \cdot r \).</li>
+                    <li>Trong chuyển động tròn đều, độ lớn vận tốc không đổi nhưng hướng luôn thay đổi.</li>
+                </ul>
+            </div>
+            
+            <div class="bg-[#fff5f5] border border-[#e53e3e] rounded-[12px] p-5 shadow-md">
+                <h4 class="font-bold text-[#742a2a] mb-2 uppercase">Em có thể</h4>
+                <ul class="list-disc ml-5 text-sm space-y-1 text-gray-700">
+                    <li>Biểu diễn được độ dịch chuyển góc theo rađian.</li>
+                    <li>Vận dụng khái niệm tốc độ góc để giải được một số bài tập liên quan.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[12px] shadow-md p-6">
+            <h3 class="text-2xl font-bold uppercase border-b-4 border-[#001f3f] pb-2 mb-6 text-[#330000]">BÀI TẬP CỦNG CỐ</h3>
+            
+            <div class="mb-8">
+                <h4 class="text-xl font-bold mb-4 text-[#330000] border-l-4 border-[#330000] pl-2">I. Trắc nghiệm</h4>
+                <form id="quizForm" class="space-y-6">
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded">
+                        <p class="font-semibold mb-2">Câu 1: Biểu thức liên hệ giữa tốc độ dài \(v\), tốc độ góc \(\omega\) và bán kính \(r\) là:</p>
+                        <label class="block"><input type="radio" name="q1" value="A" class="mr-2"> A. \( v = \omega \cdot r \)</label>
+                        <label class="block"><input type="radio" name="q1" value="B" class="mr-2"> B. \( v = \frac{\omega}{r} \)</label>
+                        <label class="block"><input type="radio" name="q1" value="C" class="mr-2"> C. \( v = \frac{r}{\omega} \)</label>
+                        <label class="block"><input type="radio" name="q1" value="D" class="mr-2"> D. \( v = \omega^2 \cdot r \)</label>
+                        <div id="expl-q1" class="hidden">Vì \(v = \omega \cdot r\).</div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded">
+                        <p class="font-semibold mb-2">Câu 2: Đơn vị chuẩn của tốc độ góc là gì?</p>
+                        <label class="block"><input type="radio" name="q2" value="A" class="mr-2"> A. m/s</label>
+                        <label class="block"><input type="radio" name="q2" value="B" class="mr-2"> B. rad/s</label>
+                        <label class="block"><input type="radio" name="q2" value="C" class="mr-2"> C. vòng/phút</label>
+                        <label class="block"><input type="radio" name="q2" value="D" class="mr-2"> D. Hz</label>
+                        <div id="expl-q2" class="hidden">Tốc độ góc đo bằng radian trên giây (rad/s).</div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded">
+                        <p class="font-semibold mb-2">Câu 3: Chu kì \(T\) liên hệ với tần số \(f\) qua hệ thức nào?</p>
+                        <label class="block"><input type="radio" name="q3" value="A" class="mr-2"> A. \( T = f \)</label>
+                        <label class="block"><input type="radio" name="q3" value="B" class="mr-2"> B. \( T = \frac{1}{f} \)</label>
+                        <label class="block"><input type="radio" name="q3" value="C" class="mr-2"> C. \( T = 2\pi f \)</label>
+                        <label class="block"><input type="radio" name="q3" value="D" class="mr-2"> D. \( T = \frac{f}{2\pi} \)</label>
+                        <div id="expl-q3" class="hidden">Chu kì và tần số là nghịch đảo của nhau.</div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded">
+                        <p class="font-semibold mb-2">Câu 4: Độ dịch chuyển góc khi vật thực hiện đúng 1 vòng quay là:</p>
+                        <label class="block"><input type="radio" name="q4" value="A" class="mr-2"> A. \(\pi\) rad</label>
+                        <label class="block"><input type="radio" name="q4" value="B" class="mr-2"> B. \(2\pi\) rad</label>
+                        <label class="block"><input type="radio" name="q4" value="C" class="mr-2"> C. \(360^\circ\)</label>
+                        <label class="block"><input type="radio" name="q4" value="D" class="mr-2"> D. Cả B và C đều đúng</label>
+                        <div id="expl-q4" class="hidden">1 vòng quay tương ứng với 360 độ hoặc \(2\pi\) rad.</div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded">
+                        <p class="font-semibold mb-2">Câu 5: Vectơ vận tốc tức thời trong chuyển động tròn đều có đặc điểm:</p>
+                        <label class="block"><input type="radio" name="q5" value="A" class="mr-2"> A. Không thay đổi.</label>
+                        <label class="block"><input type="radio" name="q5" value="B" class="mr-2"> B. Độ lớn và hướng đều thay đổi liên tục.</label>
+                        <label class="block"><input type="radio" name="q5" value="C" class="mr-2"> C. Độ lớn không đổi, hướng luôn thay đổi.</label>
+                        <label class="block"><input type="radio" name="q5" value="D" class="mr-2"> D. Hướng không đổi, độ lớn thay đổi.</label>
+                        <div id="expl-q5" class="hidden">Vận tốc tức thời có phương tiếp tuyến nên hướng luôn thay đổi dù tốc độ độ lớn là hằng số.</div>
+                    </div>
+
+                    <button type="button" onclick="checkQuiz()" class="bg-[#330000] text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition shadow-md">NỘP BÀI</button>
+                </form>
+
+                <div id="quiz-result" class="hidden mt-6 p-5 border border-gray-300 rounded bg-white shadow-inner">
+                    </div>
+            </div>
+
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-[#330000] border-l-4 border-[#330000] pl-2">II. Bài tập vận dụng tính toán</h4>
+                
+                <div class="bg-[#edf2f7] border border-gray-300 p-4 mb-4 rounded">
+                    <p class="font-semibold mb-2">Bài 1: Một vật chuyển động tròn đều với tốc độ v = 10 m/s, trên quỹ đạo có bán kính r = 2 m. Tính tốc độ góc, chu kì và tần số của vật.</p>
+                    <button onclick="toggleAnswer('tl1')" class="bg-[#330000] text-white px-3 py-1 rounded text-sm mt-2">Xem lời giải</button>
+                    <div id="tl1" class="hidden mt-3 p-3 bg-green-100 rounded border border-green-300">
+                        - Tốc độ góc: \( \omega = \frac{v}{r} = \frac{10}{2} = 5 \) rad/s.<br>
+                        - Chu kì: \( T = \frac{2\pi}{\omega} = \frac{2\pi}{5} \approx 1.26 \) s.<br>
+                        - Tần số: \( f = \frac{1}{T} = \frac{5}{2\pi} \approx 0.8 \) Hz.
+                    </div>
+                </div>
+
+                <div class="bg-[#edf2f7] border border-gray-300 p-4 mb-4 rounded">
+                    <p class="font-semibold mb-2">Bài 2: Một chiếc quạt máy quay với tốc độ 600 vòng/phút. Cánh quạt dài 0.5 m tính từ trục quay. Tính tốc độ góc và tốc độ của một điểm ở mép ngoài cánh quạt.</p>
+                    <button onclick="toggleAnswer('tl2')" class="bg-[#330000] text-white px-3 py-1 rounded text-sm mt-2">Xem lời giải</button>
+                    <div id="tl2" class="hidden mt-3 p-3 bg-green-100 rounded border border-green-300">
+                        - Tần số: \( f = \frac{600}{60} = 10 \) vòng/s (Hz).<br>
+                        - Tốc độ góc: \( \omega = 2\pi f = 20\pi \approx 62.83 \) rad/s.<br>
+                        - Tốc độ dài ở mép cánh: \( v = \omega r = 20\pi \cdot 0.5 = 10\pi \approx 31.4 \) m/s.
+                    </div>
+                </div>
+
+                <div class="bg-[#edf2f7] border border-gray-300 p-4 rounded">
+                    <p class="font-semibold mb-2">Bài 3: Một vệ tinh nhân tạo bay quanh Trái Đất ở độ cao h = 400 km. Biết bán kính Trái Đất R = 6400 km và chu kì quay của vệ tinh là 90 phút. Tính tốc độ dài của vệ tinh.</p>
+                    <button onclick="toggleAnswer('tl3')" class="bg-[#330000] text-white px-3 py-1 rounded text-sm mt-2">Xem lời giải</button>
+                    <div id="tl3" class="hidden mt-3 p-3 bg-green-100 rounded border border-green-300">
+                        - Bán kính quỹ đạo: \( r = R + h = 6400 + 400 = 6800 \) km = \( 6.8 \times 10^6 \) m.<br>
+                        - Chu kì: \( T = 90 \text{ phút} = 90 \times 60 = 5400 \) s.<br>
+                        - Tốc độ góc: \( \omega = \frac{2\pi}{T} = \frac{2\pi}{5400} \approx 1.16 \times 10^{-3} \) rad/s.<br>
+                        - Tốc độ dài: \( v = \omega \cdot r = \frac{2\pi}{5400} \times 6.8 \times 10^6 \approx 7916.8 \) m/s \(\approx 7.92\) km/s.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        function checkQuiz() {
+            const answers = {
+                q1: 'A', q2: 'B', q3: 'B', q4: 'D', q5: 'C'
+            };
+            let score = 0;
+            const total = 5;
+            let feedbackHTML = '';
+
+            for (let i = 1; i <= total; i++) {
+                const qName = 'q' + i;
+                const selected = document.querySelector('input[name="' + qName + '"]:checked');
+                const explanation = document.getElementById('expl-' + qName).innerHTML;
+
+                if (selected) {
+                    if (selected.value === answers[qName]) {
+                        score++;
+                        feedbackHTML += '<div class="mb-3"><span class="text-green-700 font-bold">Câu ' + i + ': ĐÚNG.</span> ' + explanation + '</div>';
+                    } else {
+                        feedbackHTML += '<div class="mb-3"><span class="text-red-600 font-bold">Câu ' + i + ': SAI.</span> (Đáp án đúng là ' + answers[qName] + '). ' + explanation + '</div>';
+                    }
+                } else {
+                    feedbackHTML += '<div class="mb-3"><span class="text-red-600 font-bold">Câu ' + i + ': CHƯA TRẢ LỜI.</span> (Đáp án đúng là ' + answers[qName] + '). ' + explanation + '</div>';
+                }
+            }
+
+            const resultBox = document.getElementById('quiz-result');
+            let scoreSummary = '';
+            if (score === total) {
+                scoreSummary = '<h3 class="text-2xl text-green-700 font-bold mb-4 border-b pb-2">Hoàn hảo! Bạn đạt ' + score + '/' + total + ' điểm.</h3>';
+            } else {
+                scoreSummary = '<h3 class="text-2xl text-red-600 font-bold mb-4 border-b pb-2">Bạn đạt ' + score + '/' + total + ' điểm. Hãy xem lại bài nhé!</h3>';
+            }
+
+            resultBox.innerHTML = scoreSummary + feedbackHTML;
+            resultBox.classList.remove('hidden');
+            
+            // Xử lý render lại mathjax cho các lời giải được inject qua js
+            MathJax.typesetPromise([resultBox]).catch(function (err) {
+                console.log('MathJax error: ' + err.message);
+            });
+        }
+    </script>
+</body>
+</html>

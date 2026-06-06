@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 28: Động Lượng - Vật Lý 10</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- MathJax for Beautiful Equations -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  <style>
+    body {
+      background-color: #f4f7f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .primary-color {
+      color: #330000;
+    }
+    .bg-primary {
+      background-color: #330000;
+    }
+    .border-primary {
+      border-color: #330000;
+    }
+    .hover-bg-primary:hover {
+      background-color: #000066;
+    }
+    /* Custom transition for answers */
+    .answer-box {
+      transition: all 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="text-gray-800 antialiased leading-relaxed pb-20">
+
+  <!-- Main Container -->
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    
+    <!-- HEADER BLOCK -->
+    <header class="bg-primary text-white rounded-xl shadow-lg p-6 mb-8 text-center">
+      <div class="text-sm uppercase tracking-wider font-semibold opacity-90 mb-1">Chương V: ĐỘNG LƯỢNG</div>
+      <div class="w-full h-[1px] bg-blue-300 my-3 opacity-50"></div>
+      <h1 class="text-2xl md:text-3xl font-extrabold tracking-normal">BÀI 28: ĐỘNG LƯỢNG</h1>
+    </header>
+
+    <!-- INTRO BOX (LỜI DẪN) -->
+    <div class="bg-white border-l-4 border-gray-400 rounded-lg shadow-sm p-5 mb-8 italic">
+      <h3 class="font-bold text-gray-700 not-italic mb-2">💡 Tình huống mở đầu:</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+        <div>
+          <div class="mb-3 flex justify-center bg-gray-100 p-2 rounded-lg">
+            <!-- Placeholder for Image a -->
+            <div class="text-center">
+              <img src="h1.png" alt="" class="max-h-32 object-contain mx-auto rounded mb-1" onerror="this.onerror=null; this.src='https://placehold.co/400x150/e2e8f0/475569?text=H%C3%ACnh+a:+Xe+t%E1%BA%A3i+v%C3%A0+xe+con';"/>
+              <span class="text-xs text-gray-500 italic">Hình a: Hai xe chạy cùng vận tốc</span>
+            </div>
+          </div>
+          <p class="text-sm"><strong>Câu hỏi 1:</strong> Xe tải và xe con đang chạy cạnh nhau với cùng vận tốc. Khi đèn tín hiệu màu đỏ bật sáng, xe nào muốn dừng lại thì cần phải có một lực hãm lớn hơn? Tại sao?</p>
+        </div>
+        <div>
+          <div class="mb-3 flex justify-center bg-gray-100 p-2 rounded-lg">
+            <!-- Placeholder for Image b -->
+            <div class="text-center">
+              <img src="h2.png" alt="" class="max-h-32 object-contain mx-auto rounded mb-1" onerror="this.onerror=null; this.src='https://placehold.co/400x150/e2e8f0/475569?text=H%C3%ACnh+b:+S%C3%BAt+ph%E1%BA%A1t+11m';"/>
+              <span class="text-xs text-gray-500 italic">Hình b: Thủ môn bắt bóng sút phạt</span>
+            </div>
+          </div>
+          <p class="text-sm"><strong>Câu hỏi 2:</strong> Cầu thủ đá bóng sút phạt 11 m. Thủ môn khó bắt bóng hơn khi bóng bay tới có tốc độ lớn hay nhỏ? Tại sao?</p>
+        </div>
+      </div>
+      <div class="mt-4 flex justify-end">
+        <button onclick="toggleAnswer('intro-ans')" class="bg-primary text-white text-xs px-3 py-1.5 rounded hover:opacity-90 transition">Xem câu trả lời thảo luận</button>
+      </div>
+      <!-- Hidden Answer -->
+      <div id="intro-ans" class="hidden mt-4 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded text-sm not-italic text-slate-700">
+        <ul class="list-disc pl-5 space-y-2">
+          <li><strong>Hình a:</strong> Xe tải cần một lực hãm lớn hơn vì xe tải có khối lượng lớn hơn xe con rất nhiều, do đó nó có quán tính (khả năng duy trì chuyển động) lớn hơn.</li>
+          <li><strong>Hình b:</strong> Thủ môn khó bắt bóng hơn khi bóng bay tới có tốc độ lớn hơn vì bóng có tốc độ càng lớn thì khả năng truyền chuyển động và lực va đập khi tác dụng lên tay thủ môn càng mạnh.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MỤC I. ĐỘNG LƯỢNG -->
+    <section class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <h2 class="text-xl font-bold primary-color border-b-4 border-primary pb-1 mb-4 uppercase">I. ĐỘNG LƯỢNG</h2>
+      
+      <!-- Thí nghiệm -->
+      <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6">
+        <h3 class="font-bold text-slate-800 flex items-center mb-2">
+          🧪 Thí nghiệm tìm hiểu sự truyền chuyển động trong tương tác
+        </h3>
+        <p class="text-sm mb-3"><strong>Chuẩn bị:</strong> Ba viên bi A, B, C (chọn bi B nặng hơn A và C); Máng trượt; Vật kê tạo độ dốc.</p>
+        
+        <div class="flex flex-col md:flex-row gap-4 items-center mb-4">
+          <div class="w-full md:w-1/2 text-center bg-white p-3 rounded border border-slate-100 shadow-sm">
+            <img src="h3.png" alt="" class="max-h-40 object-contain mx-auto rounded" onerror="this.onerror=null; this.src='https://placehold.co/350x180/e2e8f0/475569?text=H%C3%ACnh+28.1:+Th%C3%AD+nghi%E1%BB%87m';"/>
+            <span class="text-xs text-gray-500 italic block mt-1">Hình 28.1. Thí nghiệm truyền chuyển động</span>
+          </div>
+          <div class="w-full md:w-1/2 text-sm space-y-2">
+            <p><strong>Thí nghiệm 1:</strong> Thả lần lượt A, B (B nặng hơn A) trên cùng một độ dốc. Đo quãng đường dịch chuyển của viên bi C sau va chạm.</p>
+            <p><strong>Thí nghiệm 2:</strong> Chỉ thả viên bi A nhưng thay đổi tăng dần độ dốc của máng trượt (làm tăng vận tốc va chạm). Đo quãng đường di chuyển của C.</p>
+          </div>
+        </div>
+
+        <!-- Thảo luận thí nghiệm -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded text-sm space-y-2">
+          <p class="font-semibold text-blue-950">❓ Thảo luận thí nghiệm:</p>
+          <p class="text-slate-700">1. Trong thí nghiệm 1, vận tốc hai viên bi A và B khi đến chân dốc có giống nhau không? Viên bi nào đẩy viên bi C lăn xa hơn? Tại sao?</p>
+          <p class="text-slate-700">2. Trong thí nghiệm 2, ứng với độ dốc nào thì viên bi A có vận tốc lớn hơn khi va chạm với bi C? Trường hợp nào bi C lăn xa hơn? Tại sao?</p>
+          
+          <div class="pt-2 text-right">
+            <button onclick="toggleAnswer('exp-discuss-ans')" class="bg-primary text-white text-xs px-3 py-1 rounded hover:opacity-90">Xem lời giải thảo luận</button>
+          </div>
+          
+          <div id="exp-discuss-ans" class="hidden mt-3 p-3 bg-emerald-50 rounded border border-emerald-200 text-slate-700 space-y-2">
+            <p><strong>Trả lời 1:</strong> Vận tốc của bi A và bi B ở chân dốc xấp xỉ như nhau (vì thả cùng một độ dốc và bỏ qua ma sát). Viên bi B (nặng hơn) đẩy viên bi C đi xa hơn vì khối lượng của bi B lớn hơn nên khả năng truyền chuyển động của nó mạnh hơn.</p>
+            <p><strong>Trả lời 2:</strong> Độ dốc càng lớn thì vận tốc của bi A khi va chạm với bi C càng lớn. Ở trường hợp độ dốc lớn hơn, viên bi C sẽ lăn xa hơn vì vận tốc va chạm của bi A lớn hơn dẫn đến khả năng truyền chuyển động mạnh hơn.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="mb-4">Từ hai thí nghiệm trên, ta thấy vật có khối lượng và vận tốc càng lớn thì sự truyền chuyển động trong tương tác với các vật khác càng mạnh. Đại lượng đặc trưng cho khả năng truyền chuyển động của một vật được gọi là <strong>động lượng</strong> của vật.</p>
+
+      <!-- Định nghĩa Đóng khung -->
+      <div class="bg-blue-50 border-2 border-primary rounded-xl p-5 mb-6 shadow-sm">
+        <h4 class="font-extrabold text-blue-900 mb-2 uppercase text-center">Định nghĩa động lượng</h4>
+        <p class="text-gray-800 mb-3 text-center">
+          Động lượng của một vật khối lượng \( m \) đang chuyển động với vận tốc \( \vec{v} \) là đại lượng được xác định bởi công thức:
+        </p>
+        <div class="bg-white py-3 px-6 rounded-lg text-center font-mono text-xl text-blue-900 border border-blue-200 my-4 shadow-inner">
+          \( \vec{p} = m \cdot \vec{v} \) <span class="text-sm text-slate-500 ml-4">(28.1)</span>
+        </div>
+        <ul class="list-disc pl-5 text-sm space-y-1 text-slate-700">
+          <li><strong>Tính chất:</strong> Động lượng là một đại lượng vectơ có cùng hướng với vận tốc \( \vec{v} \) của vật.</li>
+          <li><strong>Đơn vị đo:</strong> Ki-lô-gam mét trên giây, kí hiệu là <span class="font-bold text-blue-900">\( \text{kg}\cdot\text{m/s} \)</span> hoặc đơn vị tương đương là Ni-utơn giây <span class="font-bold text-blue-900">\( \text{N}\cdot\text{s} \)</span>.</li>
+        </ul>
+      </div>
+
+      <!-- Câu hỏi củng cố mục I -->
+      <div class="space-y-4">
+        <!-- Câu hỏi ? 1 trang 111 -->
+        <div class="border-l-4 border-blue-600 bg-slate-50 p-4 rounded-r-lg">
+          <p class="font-bold text-sm text-blue-900 flex items-center">
+            <span>❓ CH_I.1: Tìm thêm ví dụ minh hoạ cho ý nghĩa vật lí của động lượng.</span>
+          </p>
+          <div class="mt-2 text-right">
+            <button onclick="toggleAnswer('chi-1-ans')" class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300">Xem giải</button>
+          </div>
+          <div id="chi-1-ans" class="hidden mt-2 p-3 bg-emerald-50 rounded text-sm text-slate-700">
+            <strong>Ví dụ thực tế:</strong> 
+            <ul class="list-disc pl-5 mt-1 space-y-1">
+              <li>Một chiếc xe tải hạng nặng dù chạy chậm (\( \approx 5\text{ m/s} \)) vẫn rất khó phanh gấp và gây ra sức tàn phá dữ dội khi xảy ra va chạm do có động lượng cực kỳ lớn (vì khối lượng khổng lồ).</li>
+              <li>Ngược lại, một viên đạn nhỏ có khối lượng rất bé (\( \approx 10\text{ g} \)) nhưng được bắn ra với tốc độ cực lớn (\( \approx 800\text{ m/s} \)) có sức xuyên phá vô cùng nguy hiểm vì có động lượng rất lớn nhờ vận tốc.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Câu hỏi ? 2 trang 111 -->
+        <div class="border-l-4 border-blue-600 bg-slate-50 p-4 rounded-r-lg">
+          <p class="font-bold text-sm text-blue-900 flex items-center">
+            <span>❓ CH_I.2: Trả lời câu hỏi ở đầu bài dựa vào khái niệm động lượng:</span>
+          </p>
+          <p class="text-xs text-slate-600 pl-4 mt-1">a) Động lượng của xe tải hay ô tô trong hình lớn hơn? <br> b) Tại sao thủ môn khó bắt bóng hơn nếu bóng có động lượng tăng?</p>
+          <div class="mt-2 text-right">
+            <button onclick="toggleAnswer('chi-2-ans')" class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300">Xem giải</button>
+          </div>
+          <div id="chi-2-ans" class="hidden mt-2 p-3 bg-emerald-50 rounded text-sm text-slate-700 space-y-1">
+            <p><strong>a)</strong> Vì xe tải và ô tô con chuyển động với cùng vận tốc \( v \), nhưng khối lượng xe tải lớn hơn rất nhiều so với ô tô con (\( m_{\text{tải}} > m_{\text{con}} \)), nên <strong>động lượng của xe tải lớn hơn</strong> động lượng của ô tô con.</p>
+            <p><strong>b)</strong> Khi quả bóng có động lượng tăng (do vận tốc tăng), khả năng truyền chuyển động và lực tác dụng của nó khi va chạm vào tay thủ môn sẽ lớn hơn rất nhiều, làm quả bóng dễ bị nảy ra xa hoặc làm đau tay, khiến việc bắt dính bóng trở nên rất khó khăn.</p>
+          </div>
+        </div>
+
+        <!-- Câu hỏi bên cột phải trang 111 -->
+        <div class="border-l-4 border-blue-600 bg-slate-50 p-4 rounded-r-lg">
+          <p class="font-bold text-sm text-blue-900">❓ Câu hỏi bài tập trắc nghiệm nhanh:</p>
+          <p class="text-sm mt-1"><strong>Phát biểu nào sau đây không đúng khi nói về động lượng?</strong><br>
+            A. Động lượng của một vật đặc trưng cho trạng thái chuyển động của vật đó.<br>
+            B. Động lượng là đại lượng vectơ.<br>
+            C. Động lượng có đơn vị là \( \text{kg}\cdot\text{m/s} \).<br>
+            D. Động lượng của một vật chỉ phụ thuộc vào vận tốc của vật đó.
+          </p>
+          <div class="mt-2 text-right">
+            <button onclick="toggleAnswer('quick-q2-ans')" class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300">Xem đáp án</button>
+          </div>
+          <div id="quick-q2-ans" class="hidden mt-2 p-3 bg-emerald-50 rounded text-sm text-slate-700">
+            <span class="font-bold text-emerald-700">Đáp án đúng: D</span>. <br>
+            <strong>Giải thích:</strong> Công thức tính động lượng là \( \vec{p} = m \cdot \vec{v} \). Do đó, động lượng phụ thuộc vào cả <strong>khối lượng</strong> \( m \) và <strong>vận tốc</strong> \( \vec{v} \) của vật chứ không chỉ riêng vận tốc.
+          </div>
+        </div>
+
+        <!-- Bài tập tính toán nhanh mục I -->
+        <div class="border-l-4 border-blue-600 bg-slate-50 p-4 rounded-r-lg">
+          <p class="font-bold text-sm text-blue-900">❓ Tính độ lớn động lượng trong các trường hợp sau:</p>
+          <ul class="list-decimal pl-5 text-sm space-y-1 mt-1 text-slate-700">
+            <li>Một xe buýt khối lượng 3 tấn chạy với tốc độ \( 72 \text{ km/h} \).</li>
+            <li>Một hòn đá khối lượng \( 500 \text{ g} \) chuyển động với tốc độ \( 10 \text{ m/s} \).</li>
+            <li>Một electron khối lượng \( 9,1 \cdot 10^{-31} \text{ kg} \) chuyển động với tốc độ \( 2 \cdot 10^7 \text{ m/s} \).</li>
+          </ul>
+          <div class="mt-2 text-right">
+            <button onclick="toggleAnswer('calc-quick-ans')" class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300">Xem giải chi tiết</button>
+          </div>
+          <div id="calc-quick-ans" class="hidden mt-2 p-3 bg-emerald-50 rounded text-sm text-slate-700 space-y-3">
+            <div>
+              <p class="font-semibold text-emerald-800">Trường hợp a:</p>
+              Đổi đơn vị: \( m = 3 \text{ tấn} = 3000 \text{ kg} \); \( v = 72 \text{ km/h} = \frac{72}{3,6} = 20 \text{ m/s} \).<br>
+              Độ lớn động lượng: 
+              \[ p = m \cdot v = 3000 \cdot 20 = 60000 \text{ kg}\cdot\text{m/s} = 6 \cdot 10^4 \text{ kg}\cdot\text{m/s} \]
+            </div>
+            <div>
+              <p class="font-semibold text-emerald-800">Trường hợp b:</p>
+              Đổi đơn vị: \( m = 500 \text{ g} = 0,5 \text{ kg} \); \( v = 10 \text{ m/s} \).<br>
+              Độ lớn động lượng: 
+              \[ p = m \cdot v = 0,5 \cdot 10 = 5 \text{ kg}\cdot\text{m/s} \]
+            </div>
+            <div>
+              <p class="font-semibold text-emerald-800">Trường hợp c:</p>
+              Vật có \( m = 9,1 \cdot 10^{-31} \text{ kg} \); \( v = 2 \cdot 10^7 \text{ m/s} \).<br>
+              Độ lớn động lượng: 
+              \[ p = m \cdot v = (9,1 \cdot 10^{-31}) \cdot (2 \cdot 10^7) = 1,82 \cdot 10^{-23} \text{ kg}\cdot\text{m/s} \]
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MỤC II. XUNG LƯỢNG CỦA LỰC -->
+    <section class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <h2 class="text-xl font-bold primary-color border-b-4 border-primary pb-1 mb-4 uppercase">II. XUNG LƯỢNG CỦA LỰC</h2>
+      
+      <!-- 1. Xung lượng -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold text-slate-800 mb-2">1. Xung lượng là gì?</h3>
+        <p class="mb-4 text-slate-700">Khi ta đá một quả bóng, đánh một quả bóng gôn hoặc một viên bi va chạm vào thành bàn, tương tác sinh ra một lực rất lớn diễn ra trong khoảng thời gian vô cùng ngắn.</p>
+        
+        <!-- Khung định nghĩa Xung lượng -->
+        <div class="bg-cyan-50 border-2 border-cyan-600 rounded-xl p-5 mb-4">
+          <h4 class="font-extrabold text-cyan-900 mb-2 uppercase text-center">Xung lượng của lực</h4>
+          <p class="text-gray-800 mb-3 text-center">
+            Khi một lực \( \vec{F} \) không đổi tác dụng lên một vật trong một khoảng thời gian \( \Delta t \), tích \( \vec{F} \cdot \Delta t \) được định nghĩa là <strong>xung lượng của lực</strong> trong khoảng thời gian đó.
+          </p>
+          <div class="bg-white py-2 px-6 rounded text-center font-mono text-lg text-cyan-900 border border-cyan-200 my-3">
+            Xung lượng = \( \vec{F} \cdot \Delta t \)
+          </div>
+          <p class="text-xs text-slate-600 text-center">
+            Đơn vị đo xung lượng của lực là: <span class="font-bold text-cyan-900">N.s (Ni-utơn giây)</span>.
+          </p>
+        </div>
+
+        <!-- Câu hỏi thảo luận mục II.1 -->
+        <div class="bg-slate-50 p-4 border border-slate-200 rounded-lg space-y-3">
+          <p class="font-bold text-sm text-slate-700">❓ Hoạt động tìm hiểu hiện tượng thực tế:</p>
+          <div class="text-sm text-slate-600 space-y-2">
+            <p><strong>1.</strong> Trong các ví dụ dưới đây, các vật chịu tác dụng của lực nào trong thời gian rất ngắn?</p>
+            <ul class="list-disc pl-5">
+              <li>Cầu thủ thực hiện một cú sút vô lê để đưa bóng vào lưới.</li>
+              <li>Bi-a va chạm vào băng (thành bàn) đổi hướng.</li>
+              <li>Đánh gậy gôn vào quả bóng gôn đang nằm yên.</li>
+            </ul>
+            <p><strong>2.</strong> Tại sao lực tác dụng trong thời gian ngắn như vậy lại gây ra biến đổi đáng kể trạng thái chuyển động của vật?</p>
+          </div>
+          <div class="text-right">
+            <button onclick="toggleAnswer('act-ii-ans')" class="bg-primary text-white text-xs px-3 py-1 rounded hover:opacity-90">Xem hướng dẫn giải quyết</button>
+          </div>
+          <div id="act-ii-ans" class="hidden mt-2 p-3 bg-emerald-50 rounded text-sm text-slate-700 space-y-2">
+            <p><strong>Trả lời 1:</strong></p>
+            <ul class="list-disc pl-5">
+              <li>Cú vô-lê: Lực nâng và lực đẩy rất mạnh từ mu bàn chân cầu thủ tác dụng lên quả bóng.</li>
+              <li>Bi-a: Lực đàn hồi từ lớp đệm cao su của thành bàn tác dụng lên quả bi-a.</li>
+              <li>Đánh gôn: Lực tác dụng va chạm cực mạnh từ đầu gậy gôn cứng vào quả bóng.</li>
+            </ul>
+            <p><strong>Trả lời 2:</strong> Tuy thời gian va chạm \( \Delta t \) rất nhỏ nhưng lực va chạm \( F \) là cực kỳ lớn. Do đó tích \( F \cdot \Delta t \) (xung lượng) có giá trị lớn đáng kể, làm thay đổi vận tốc của vật một cách tức thời và rõ rệt.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Liên hệ giữa xung lượng của lực và độ biến thiên động lượng -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold text-slate-800 mb-2">2. Liên hệ giữa xung lượng của lực và độ biến thiên động lượng</h3>
+        <p class="mb-3 text-slate-700">
+          Xét vật khối lượng \( m \) chịu lực tác dụng \( \vec{F} \) không đổi làm vận tốc biến thiên từ \( \vec{v}_1 \) sang \( \vec{v}_2 \) trong thời gian \( \Delta t \). 
+          Gia tốc của vật: 
+          \[ \vec{a} = \frac{\vec{v}_2 - \vec{v}_1}{\Delta t} \]
+          Theo định luật II Newton: 
+          \[ \vec{F} = m \cdot \vec{a} = m \cdot \frac{\vec{v}_2 - \vec{v}_1}{\Delta t} \]
+          Biến đổi hệ thức ta có:
+        </p>
+
+        <!-- Khung Định luật liên hệ -->
+        <div class="bg-amber-50 border-2 border-amber-600 rounded-xl p-5 mb-4 shadow-sm">
+          <div class="bg-white py-3 px-6 rounded-lg text-center font-mono text-xl text-amber-900 border border-amber-200 my-3">
+            \( \vec{F} \cdot \Delta t = \vec{p}_2 - \vec{p}_1 = \Delta \vec{p} \) <span class="text-sm text-slate-500 ml-4">(28.3)</span>
+          </div>
+          <p class="text-sm text-gray-800 text-center font-medium mt-2">
+            "Xung lượng của lực tác dụng lên vật trong một khoảng thời gian bằng độ biến thiên động lượng của vật trong khoảng thời gian đó."
+          </p>
+        </div>
+
+        <!-- Câu hỏi thảo luận trang 112 -->
+        <div class="space-y-4">
+          <!-- Câu hỏi 1 -->
+          <div class="border-l-4 border-amber-600 bg-slate-50 p-4 rounded-r-lg text-sm">
+            <p class="font-bold text-amber-900">❓ Câu hỏi 1: Một quả bóng khối lượng \( m \) đang bay ngang với tốc độ \( v \) thì đập vuông góc vào một bức tường và bật trở lại với cùng tốc độ. Xung lượng của lực tác dụng lên quả bóng là bao nhiêu?</p>
+            <div class="mt-2 text-right">
+              <button onclick="toggleAnswer('wall-ball-ans')" class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300">Xem giải chi tiết</button>
+            </div>
+            <div id="wall-ball-ans" class="hidden mt-2 p-3 bg-emerald-50 rounded text-slate-700">
+              <p>Chọn chiều dương là chiều bật ra của quả bóng từ tường.</p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Vận tốc lúc sau: \( v_2 = +v \)</li>
+                <li>Vận tốc lúc đầu: \( v_1 = -v \) (ngược chiều dương)</li>
+                <li>Độ biến thiên động lượng: 
+                  \[ \Delta p = p_2 - p_1 = m \cdot v_2 - m \cdot v_1 = m \cdot v - m \cdot (-v) = 2 \cdot m \cdot v \]
+                </li>
+              </ul>
+              <p class="mt-2">Vì xung lượng bằng độ biến thiên động lượng nên độ lớn xung lượng của lực là <strong class="text-red-600">\( 2 \cdot m \cdot v \)</strong>. (Đáp án chọn đúng là <span class="font-bold">C. 2mv</span>).</p>
+            </div>
+          </div>
+
+          <!-- Câu hỏi 2 -->
+          <div class="border-l-4 border-amber-600 bg-slate-50 p-4 rounded-r-lg text-sm">
+            <p class="font-bold text-amber-900">❓ Câu hỏi 2: Tại sao khi bắt bóng, thủ môn phải co tay lại và lùi người một chút theo hướng quả bóng bay?</p>
+            <div class="mt-2 text-right">
+              <button onclick="toggleAnswer('goalkeeper-ans')" class="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded hover:bg-gray-300">Xem giải thích</button>
+            </div>
+            <div id="goalkeeper-ans" class="hidden mt-2 p-3 bg-emerald-50 rounded text-slate-700">
+              <p>Khi thủ môn bắt bóng, động lượng quả bóng biến thiên từ giá trị ban đầu về 0. Từ công thức:</p>
+              \[ F = \frac{\Delta p}{\Delta t} \]
+              <p>Nếu thủ môn chủ động co tay lại và lùi người theo hướng bóng, thời gian va chạm tương tác \( \Delta t \) giữa tay và bóng sẽ <strong>tăng lên</strong>. Khi độ biến thiên động lượng \( \Delta p \) không đổi, việc tăng \( \Delta t \) sẽ làm <strong>giảm đáng kể cường độ lực tác dụng \( F \)</strong> lên tay, giúp thủ môn không bị đau tay và bắt dính bóng chắc chắn hơn.</p>
+              <p class="mt-2 font-semibold text-emerald-800">Chọn đáp án: D. làm giảm cường độ của lực quả bóng tác dụng lên tay.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Dạng tổng quát của định luật 2 Newton -->
+      <div>
+        <h3 class="text-lg font-semibold text-slate-800 mb-2">3. Dạng tổng quát của định luật II Newton</h3>
+        <p class="mb-4 text-slate-700">Từ biểu thức liên hệ xung lượng, ta có thể viết lại định luật II Newton dưới dạng:</p>
+        
+        <!-- Khung định luật II Newton dạng tổng quát -->
+        <div class="bg-purple-50 border-2 border-purple-600 rounded-xl p-5 mb-4 shadow-sm">
+          <div class="bg-white py-3 px-6 rounded-lg text-center font-mono text-xl text-purple-900 border border-purple-200 my-3">
+            \( \vec{F} = \frac{\Delta \vec{p}}{\Delta t} \) <span class="text-sm text-slate-500 ml-4">(28.4)</span>
+          </div>
+          <p class="text-sm text-gray-800 text-center font-medium mt-2">
+            "Lực tổng hợp tác dụng lên một vật bằng tốc độ thay đổi động lượng của vật đó."
+          </p>
+        </div>
+        
+        <p class="text-sm text-slate-600 italic">Đây là cách phát biểu có tính khái quát cao hơn vì nó áp dụng được cho cả các trường hợp khối lượng của vật thay đổi theo thời gian (ví dụ chuyển động của tên lửa).</p>
+      </div>
+    </section>
+
+    <!-- MÔ PHỎNG THỰC TẾ (INTERACTIVE LAB) -->
+    <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-100">
+      <h2 class="text-xl font-bold text-indigo-900 border-b-4 border-indigo-700 pb-1 mb-4 uppercase">🔬 Mô Phỏng Trực Quan Động Lượng</h2>
+      <p class="text-sm text-slate-600 mb-4">Điều chỉnh khối lượng và vận tốc của xe để xem giá trị động lượng \( p = m \cdot v \) thay đổi trực quan ra sao.</p>
+      
+      <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200">
+        <!-- Canvas/Simulation Area -->
+        <div class="relative w-full h-32 bg-slate-800 rounded-lg overflow-hidden flex items-end p-2 border-2 border-slate-950 mb-4 shadow-inner">
+          <div id="sim-truck" class="absolute bottom-4 left-1/4 transition-all duration-300 transform -translate-x-1/2 flex flex-col items-center">
+            <!-- Simple SVG Truck -->
+            <svg class="w-16 h-10 text-orange-500 fill-current" viewBox="0 0 24 24">
+              <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm12 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+            </svg>
+            <span class="text-[10px] text-white font-bold bg-black px-1 rounded">Xe tải</span>
+          </div>
+          <!-- Ground road -->
+          <div class="w-full h-3 bg-slate-600"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Khối lượng (m): <span id="val-mass" class="text-indigo-900 text-sm">1.5</span> tấn</label>
+            <input type="range" id="input-mass" min="0.5" max="5.0" step="0.1" value="1.5" class="w-full accent-indigo-700" oninput="updateSim()">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Vận tốc (v): <span id="val-velo" class="text-indigo-900 text-sm">10</span> m/s</label>
+            <input type="range" id="input-velo" min="2" max="30" step="1" value="10" class="w-full accent-indigo-700" oninput="updateSim()">
+          </div>
+        </div>
+
+        <!-- Dynamic Output -->
+        <div class="mt-4 pt-4 border-t border-indigo-200 text-center">
+          <div class="text-sm font-semibold text-slate-700">Giá trị động lượng tính toán:</div>
+          <div class="text-2xl font-black text-indigo-950 font-mono mt-1">
+            \( p = \) <span id="sim-result">15000</span> kg·m/s
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EM CÓ THỂ & EM ĐÃ HỌC -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Em đã học -->
+      <div class="bg-teal-50 border-2 border-teal-600 rounded-xl p-5 shadow-sm">
+        <h3 class="font-extrabold text-teal-900 mb-3 uppercase flex items-center">
+          <span class="mr-2">📝</span> EM ĐÃ HỌC
+        </h3>
+        <ul class="list-disc pl-5 text-sm text-teal-950 space-y-2">
+          <li>Động lượng của một vật khối lượng \( m \) chuyển động với vận tốc \( \vec{v} \) là: <strong>\( \vec{p} = m \cdot \vec{v} \)</strong>.</li>
+          <li>Động lượng là đại lượng đặc trưng cho khả năng truyền tương tác giữa các vật khi va chạm.</li>
+          <li>Xung lượng của lực tác dụng bằng độ biến thiên động lượng: <strong>\( \vec{F} \cdot \Delta t = \Delta \vec{p} \)</strong>.</li>
+        </ul>
+      </div>
+
+      <!-- Em có thể -->
+      <div class="bg-violet-50 border-2 border-violet-600 rounded-xl p-5 shadow-sm">
+        <h3 class="font-extrabold text-violet-900 mb-3 uppercase flex items-center">
+          <span class="mr-2">🚀</span> EM CÓ THỂ
+        </h3>
+        <div class="text-sm text-violet-950 space-y-3">
+          <div class="p-2 bg-white rounded border border-violet-200">
+            <p class="font-bold text-xs text-violet-800">1. Tính động lượng của Trái Đất:</p>
+            <button onclick="toggleAnswer('earth-p-ans')" class="text-[11px] text-violet-700 underline mt-1 block">Xem hướng dẫn tính</button>
+            <div id="earth-p-ans" class="hidden text-xs mt-1 text-slate-700 bg-slate-50 p-2 rounded">
+              Trái Đất có khối lượng \( M \approx 5,97 \cdot 10^{24} \text{ kg} \), vận tốc quay quanh Mặt Trời \( v \approx 29,8 \text{ km/s} = 29800 \text{ m/s} \). <br>
+              Động lượng Trái Đất: \( p \approx 1,78 \cdot 10^{29} \text{ kg}\cdot\text{m/s} \).
+            </div>
+          </div>
+          <div class="p-2 bg-white rounded border border-violet-200">
+            <p class="font-bold text-xs text-violet-800">2. Tính động lượng hệ tên lửa và khí:</p>
+            <button onclick="toggleAnswer('rocket-p-ans')" class="text-[11px] text-violet-700 underline mt-1 block">Xem nguyên lý</button>
+            <div id="rocket-p-ans" class="hidden text-xs mt-1 text-slate-700 bg-slate-50 p-2 rounded">
+              Sử dụng định luật bảo toàn động lượng cho hệ kín: Động lượng trước khi phụt khí bằng tổng động lượng của vỏ tên lửa và khí phụt ra sau đó.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRẮC NGHIỆM CỦNG CỐ (5 CÂU) -->
+    <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-100">
+      <h2 class="text-xl font-bold primary-color border-b-4 border-primary pb-1 mb-6 uppercase flex items-center">
+        <span class="mr-2">📝</span> BÀI TẬP TRẮC NGHIỆM TỰ ĐÁNH GIÁ
+      </h2>
+      
+      <form id="quiz-form" onsubmit="event.preventDefault(); checkQuiz();">
+        <!-- Câu 1 -->
+        <div class="mb-6 p-4 bg-slate-50 rounded-lg">
+          <p class="font-semibold text-sm mb-2 text-slate-800">Câu 1. Động lượng là một đại lượng:</p>
+          <div class="space-y-2 text-sm pl-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q1" value="A" class="form-radio text-primary">
+              <span>A. Vô hướng, luôn luôn dương.</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q1" value="B" class="form-radio text-primary">
+              <span>B. Vectơ, có cùng hướng với vectơ vận tốc.</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q1" value="C" class="form-radio text-primary">
+              <span>C. Vectơ, ngược hướng với vectơ gia tốc.</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q1" value="D" class="form-radio text-primary">
+              <span>D. Vô hướng, có thể âm hoặc dương.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Câu 2 -->
+        <div class="mb-6 p-4 bg-slate-50 rounded-lg">
+          <p class="font-semibold text-sm mb-2 text-slate-800">Câu 2. Đơn vị nào sau đây KHÔNG phải là đơn vị của động lượng?</p>
+          <div class="space-y-2 text-sm pl-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q2" value="A" class="form-radio text-primary">
+              <span>A. \( \text{kg}\cdot\text{m/s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q2" value="B" class="form-radio text-primary">
+              <span>B. \( \text{N}\cdot\text{s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q2" value="C" class="form-radio text-primary">
+              <span>C. \( \text{g}\cdot\text{m/s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q2" value="D" class="form-radio text-primary">
+              <span>D. \( \text{J/s} \)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Câu 3 -->
+        <div class="mb-6 p-4 bg-slate-50 rounded-lg">
+          <p class="font-semibold text-sm mb-2 text-slate-800">Câu 3. Một vật có khối lượng \( 2 \text{ kg} \) có động lượng \( 8 \text{ kg}\cdot\text{m/s} \). Vận tốc của vật có độ lớn bằng:</p>
+          <div class="space-y-2 text-sm pl-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q3" value="A" class="form-radio text-primary">
+              <span>A. \( 4 \text{ m/s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q3" value="B" class="form-radio text-primary">
+              <span>B. \( 16 \text{ m/s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q3" value="C" class="form-radio text-primary">
+              <span>C. \( 2 \text{ m/s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q3" value="D" class="form-radio text-primary">
+              <span>D. \( 0,25 \text{ m/s} \)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Câu 4 -->
+        <div class="mb-6 p-4 bg-slate-50 rounded-lg">
+          <p class="font-semibold text-sm mb-2 text-slate-800">Câu 4. Biểu thức dạng tổng quát của định luật II Newton là:</p>
+          <div class="space-y-2 text-sm pl-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q4" value="A" class="form-radio text-primary">
+              <span>A. \( \vec{F} = m \cdot \vec{a} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q4" value="B" class="form-radio text-primary">
+              <span>B. \( \vec{F} \cdot \Delta t = \Delta \vec{p} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q4" value="C" class="form-radio text-primary">
+              <span>C. \( \vec{F} = \frac{\Delta \vec{p}}{\Delta t} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q4" value="D" class="form-radio text-primary">
+              <span>D. Cả B và C đều đúng.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Câu 5 -->
+        <div class="mb-6 p-4 bg-slate-50 rounded-lg">
+          <p class="font-semibold text-sm mb-2 text-slate-800">Câu 5. Lực tác dụng lên một vật trong khoảng thời gian \( 0,1 \text{ s} \) là \( 50 \text{ N} \). Độ biến thiên động lượng của vật trong thời gian đó có độ lớn là:</p>
+          <div class="space-y-2 text-sm pl-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q5" value="A" class="form-radio text-primary">
+              <span>A. \( 5 \text{ kg}\cdot\text{m/s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q5" value="B" class="form-radio text-primary">
+              <span>B. \( 500 \text{ kg}\cdot\text{m/s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q5" value="C" class="form-radio text-primary">
+              <span>C. \( 0,5 \text{ kg}\cdot\text{m/s} \)</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="q5" value="D" class="form-radio text-primary">
+              <span>D. \( 50 \text{ kg}\cdot\text{m/s} \)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="bg-primary hover-bg-primary text-white font-bold py-2.5 px-8 rounded-lg shadow transition">
+            NỘP BÀI & KIỂM TRA ĐÁP ÁN
+          </button>
+        </div>
+      </form>
+
+      <!-- Kết quả hiển thị bài trắc nghiệm -->
+      <div id="quiz-result" class="hidden mt-6 p-5 rounded-lg border"></div>
+    </section>
+
+    <!-- BÀI TẬP VẬN DỤNG TỰ LUẬN (3 CÂU) -->
+    <section class="bg-white rounded-xl shadow-md p-6 border border-slate-100">
+      <h2 class="text-xl font-bold primary-color border-b-4 border-primary pb-1 mb-6 uppercase flex items-center">
+        <span class="mr-2">✏️</span> BÀI TẬP TỰ LUẬN VẬN DỤNG
+      </h2>
+
+      <!-- Bài 1 -->
+      <div class="mb-6 border-b border-gray-100 pb-5">
+        <div class="font-semibold text-slate-800 text-sm mb-2">
+          <strong>Bài 1:</strong> Một xe tải có khối lượng \( 1,5 \text{ tấn} \) chuyển động với tốc độ \( 36 \text{ km/h} \) và một ô tô có khối lượng \( 750 \text{ kg} \) chuyển động ngược chiều với tốc độ \( 54 \text{ km/h} \). So sánh động lượng của hai xe.
+        </div>
+        <div class="mt-2">
+          <button onclick="toggleAnswer('essay-1-ans')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded transition">Xem lời giải chi tiết</button>
+        </div>
+        <div id="essay-1-ans" class="hidden mt-3 p-4 bg-emerald-50 rounded text-sm text-slate-700 space-y-2">
+          <p class="font-semibold text-emerald-900">Giải:</p>
+          <p><strong>Xe 1 (xe tải):</strong></p>
+          <ul class="list-disc pl-5">
+            <li>Khối lượng: \( m_1 = 1,5 \text{ tấn} = 1500 \text{ kg} \)</li>
+            <li>Tốc độ: \( v_1 = 36 \text{ km/h} = \frac{36}{3,6} = 10 \text{ m/s} \)</li>
+            <li>Độ lớn động lượng: \( p_1 = m_1 \cdot v_1 = 1500 \cdot 10 = 15000 \text{ kg}\cdot\text{m/s} \)</li>
+          </ul>
+          <p class="mt-2"><strong>Xe 2 (ô tô):</strong></p>
+          <ul class="list-disc pl-5">
+            <li>Khối lượng: \( m_2 = 750 \text{ kg} \)</li>
+            <li>Tốc độ: \( v_2 = 54 \text{ km/h} = \frac{54}{3,6} = 15 \text{ m/s} \)</li>
+            <li>Độ lớn động lượng: \( p_2 = m_2 \cdot v_2 = 750 \cdot 15 = 11250 \text{ kg}\cdot\text{m/s} \)</li>
+          </ul>
+          <p class="mt-3 font-semibold text-indigo-900">Kết luận: Động lượng của xe tải có độ lớn lớn hơn động lượng của ô tô con (\( 15000 > 11250 \)). Hai vectơ động lượng ngược chiều nhau.</p>
+        </div>
+      </div>
+
+      <!-- Bài 2 -->
+      <div class="mb-6 border-b border-gray-100 pb-5">
+        <div class="font-semibold text-slate-800 text-sm mb-2">
+          <strong>Bài 2:</strong> Một quả bóng gôn có khối lượng \( 46 \text{ g} \) đang nằm yên. Sau một cú đánh, quả bóng bay lên với tốc độ \( 70 \text{ m/s} \). Hãy tính độ lớn xung lượng của lực và độ lớn trung bình của lực tác dụng vào quả bóng. Biết thời gian tác dụng rất ngắn, chỉ khoảng \( 0,5 \cdot 10^{-3} \text{ s} \).
+        </div>
+        <div class="mt-2">
+          <button onclick="toggleAnswer('essay-2-ans')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded transition">Xem lời giải chi tiết</button>
+        </div>
+        <div id="essay-2-ans" class="hidden mt-3 p-4 bg-emerald-50 rounded text-sm text-slate-700 space-y-2">
+          <p class="font-semibold text-emerald-900">Giải:</p>
+          <p>Tóm tắt đề bài:</p>
+          <ul class="list-disc pl-5">
+            <li>Khối lượng bóng: \( m = 46 \text{ g} = 0,046 \text{ kg} \)</li>
+            <li>Vận tốc ban đầu: \( v_1 = 0 \text{ m/s} \)</li>
+            <li>Vận tốc sau va chạm: \( v_2 = 70 \text{ m/s} \)</li>
+            <li>Thời gian va chạm: \( \Delta t = 0,5 \cdot 10^{-3} \text{ s} \)</li>
+          </ul>
+          <p class="mt-2"><strong>1. Độ biến thiên động lượng (bằng độ lớn xung lượng của lực):</strong></p>
+          \[ \Delta p = p_2 - p_1 = m \cdot v_2 - m \cdot v_1 = 0,046 \cdot 70 - 0 = 3,22 \text{ kg}\cdot\text{m/s} \]
+          <p>Vậy xung lượng của lực tác dụng lên quả bóng có độ lớn là: <strong class="text-blue-900">\( 3,22 \text{ N}\cdot\text{s} \)</strong>.</p>
+          
+          <p class="mt-2"><strong>2. Lực tác dụng trung bình lên quả bóng:</strong></p>
+          \[ F = \frac{\Delta p}{\Delta t} = \frac{3,22}{0,5 \cdot 10^{-3}} = 6440 \text{ N} \]
+          <p class="text-amber-800">Nhận xét: Lực tác dụng trung bình lên quả bóng lên tới 6440 N (cực kỳ lớn) trong thời gian siêu ngắn, do đó bóng biến đổi trạng thái chuyển động bay đi cực nhanh.</p>
+        </div>
+      </div>
+
+      <!-- Bài 3 -->
+      <div class="mb-4">
+        <div class="font-semibold text-slate-800 text-sm mb-2">
+          <strong>Bài 3:</strong> Hai vật có khối lượng lần lượt là \( m_1 = 1 \text{ kg} \) và \( m_2 = 2 \text{ kg} \), chuyển động với vận tốc có độ lớn tương ứng là \( v_1 = 3 \text{ m/s} \) và \( v_2 = 2 \text{ m/s} \). <br>
+          a) Hãy tính động lượng của mỗi vật. <br>
+          b) Vật nào khó dừng lại hơn? Vì sao?
+        </div>
+        <div class="mt-2">
+          <button onclick="toggleAnswer('essay-3-ans')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded transition">Xem lời giải chi tiết</button>
+        </div>
+        <div id="essay-3-ans" class="hidden mt-3 p-4 bg-emerald-50 rounded text-sm text-slate-700 space-y-2">
+          <p class="font-semibold text-emerald-900">Giải:</p>
+          <p><strong>a) Tính động lượng mỗi vật:</strong></p>
+          <ul class="list-disc pl-5">
+            <li>Vật 1: \( p_1 = m_1 \cdot v_1 = 1 \cdot 3 = 3 \text{ kg}\cdot\text{m/s} \)</li>
+            <li>Vật 2: \( p_2 = m_2 \cdot v_2 = 2 \cdot 2 = 4 \text{ kg}\cdot\text{m/s} \)</li>
+          </ul>
+          <p class="mt-2"><strong>b) Vật nào khó dừng lại hơn?</strong></p>
+          <p>Vật có động lượng lớn hơn sẽ có xu hướng bảo toàn trạng thái chuyển động mạnh hơn, khó bị dừng lại hơn khi chịu lực hãm cùng độ lớn. <br>
+          Vì \( p_2 > p_1 \) (\( 4 \text{ kg}\cdot\text{m/s} > 3 \text{ kg}\cdot\text{m/s} \)), nên <strong>vật thứ 2 khó dừng lại hơn</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- JavaScript logic -->
+  <script>
+    // Toggle answer box view
+    function toggleAnswer(id) {
+      const element = document.getElementById(id);
+      if (element.classList.contains('hidden')) {
+        element.classList.remove('hidden');
+        element.classList.add('block');
+      } else {
+        element.classList.add('hidden');
+        element.classList.remove('block');
+      }
+    }
+
+    // Interactive Lab Simulation logic
+    function updateSim() {
+      const mass = parseFloat(document.getElementById('input-mass').value);
+      const velo = parseInt(document.getElementById('input-velo').value);
+      
+      // Update Text Displays
+      document.getElementById('val-mass').innerText = mass.toFixed(1);
+      document.getElementById('val-velo').innerText = velo;
+      
+      // Calculate momentum (mass is in tons so multiply by 1000 to get kg)
+      const momentum = Math.round(mass * 1000 * velo);
+      document.getElementById('sim-result').innerText = momentum.toLocaleString('vi-VN');
+      
+      // Move visual truck on road relative to velocity
+      const truck = document.getElementById('sim-truck');
+      // Set simple visual positioning from 20% to 80% width
+      const percentage = 20 + (velo - 2) * (60 / 28); 
+      truck.style.left = percentage + '%';
+    }
+
+    // Check Quiz Answers
+    function checkQuiz() {
+      const answers = {
+        q1: 'B',
+        q2: 'D',
+        q3: 'A',
+        q4: 'C',
+        q5: 'A'
+      };
+
+      let score = 0;
+      let total = 5;
+      let resultHTML = "";
+
+      // Check each question
+      for (let i = 1; i <= total; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const userAns = selected ? selected.value : null;
+        const correctAns = answers[`q${i}`];
+
+        if (userAns === correctAns) {
+          score++;
+        }
+      }
+
+      // Generate result summary
+      const isPerfect = score === total;
+      const textColorClass = isPerfect ? 'text-emerald-800' : 'text-rose-800';
+      const bgColorClass = isPerfect ? 'bg-emerald-50 border-emerald-500' : 'bg-rose-50 border-rose-500';
+
+      resultHTML += `
+        <div class="border-l-4 p-4 ${bgColorClass} rounded">
+          <h3 class="text-lg font-bold ${textColorClass}">Kết quả kiểm tra: ${score}/${total} Câu Đúng</h3>
+          <p class="text-sm text-slate-700 mt-2">Dưới đây là phần giải thích chi tiết cho từng câu hỏi giúp bạn ôn tập:</p>
+          <div class="mt-4 space-y-3 divide-y divide-slate-200">
+            <div class="pt-2 text-sm text-slate-700">
+              <p class="font-semibold text-slate-900">Câu 1: Động lượng là đại lượng gì?</p>
+              <p>• Đáp án đúng: <strong>B</strong>. Vì động lượng là đại lượng vectơ có chiều cùng hướng với vận tốc theo định nghĩa \( \vec{p} = m\vec{v} \).</p>
+            </div>
+            <div class="pt-2 text-sm text-slate-700">
+              <p class="font-semibold text-slate-900">Câu 2: Đơn vị của động lượng?</p>
+              <p>• Đáp án đúng: <strong>D</strong>. J/s (Jun trên giây) là đơn vị của công suất. Đơn vị của động lượng bao gồm \( \text{kg}\cdot\text{m/s} \) và \( \text{N}\cdot\text{s} \), còn \( \text{g}\cdot\text{m/s} \) cũng có tính chất đo động lượng nhưng chưa chuẩn hóa hệ SI.</p>
+            </div>
+            <div class="pt-2 text-sm text-slate-700">
+              <p class="font-semibold text-slate-900">Câu 3: Tính toán vận tốc?</p>
+              <p>• Đáp án đúng: <strong>A</strong>. Áp dụng công thức \( v = \frac{p}{m} = \frac{8}{2} = 4 \text{ m/s} \).</p>
+            </div>
+            <div class="pt-2 text-sm text-slate-700">
+              <p class="font-semibold text-slate-900">Câu 4: Biểu thức định luật II Newton dạng tổng quát?</p>
+              <p>• Đáp án đúng: <strong>C</strong>. Công thức chuẩn của định luật II Newton dạng tổng quát là lực bằng tốc độ thay đổi động lượng \( \vec{F} = \frac{\Delta \vec{p}}{\Delta t} \). (Phương án B là hệ thức liên hệ xung lượng và độ biến thiên động lượng chứ không phải dạng tổng quát của lực).</p>
+            </div>
+            <div class="pt-2 text-sm text-slate-700">
+              <p class="font-semibold text-slate-900">Câu 5: Độ biến thiên động lượng?</p>
+              <p>• Đáp án đúng: <strong>A</strong>. Áp dụng \( \Delta p = F \cdot \Delta t = 50 \cdot 0,1 = 5 \text{ kg}\cdot\text{m/s} \).</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const resultBox = document.getElementById('quiz-result');
+      resultBox.innerHTML = resultHTML;
+      resultBox.classList.remove('hidden');
+      resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Run Simulation Update on Init
+    window.onload = function() {
+      updateSim();
+    };
+  </script>
+</body>
+</html>

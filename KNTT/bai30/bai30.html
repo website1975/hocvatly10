@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 30: Thực hành Xác định động lượng</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+        }
+    </style>
+</head>
+<body class="text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto space-y-6">
+
+        <!-- HEADER -->
+        <div class="bg-[#330000] text-white rounded-[12px] p-6 text-center shadow-md">
+            <h2 class="text-xl md:text-2xl font-bold uppercase tracking-wide">Chương V: Động lượng</h2>
+            <hr class="my-3 border-white/40 w-3/4 mx-auto">
+            <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wide">Bài 30: Thực hành<br>Xác định động lượng của vật trước và sau va chạm</h1>
+        </div>
+
+        <!-- LỜI DẪN -->
+        <div class="bg-white border border-gray-800 rounded-[12px] p-5 shadow-md">
+            <p class="italic text-gray-700 text-lg text-justify">
+                Có hai xe chuyển động va chạm vào nhau thì động lượng các xe thay đổi. Em hãy nêu các trường hợp có thể xảy ra và dự đoán sau va chạm hai xe chuyển động như thế nào. Làm thế nào xác định được động lượng của hai xe trước và sau va chạm bằng dụng cụ thí nghiệm, từ đó kiểm nghiệm định luật bảo toàn động lượng?
+            </p>
+        </div>
+
+        <!-- I. DỤNG CỤ THÍ NGHIỆM -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h2 class="text-xl font-bold uppercase border-b-4 border-[#330000] inline-block mb-4 pb-1 text-[#330000]">I. Dụng cụ thí nghiệm</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <ul class="list-disc pl-6 space-y-2 text-lg">
+                    <li>Băng đệm khí (1).</li>
+                    <li>Đồng hồ đo thời gian hiện số (2).</li>
+                    <li>Hai cổng quang điện (3).</li>
+                    <li>Bơm nén khí (4).</li>
+                    <li>Hai xe trượt (5).</li>
+                    <li>Hai tấm cản quang (6).</li>
+                    <li>Cân điện tử (7).</li>
+                    <li>Một số quả nặng (8).</li>
+                    <li>Lò xo hoặc thanh nhựa hình chữ U để mắc dây cao su đàn hồi (9).</li>
+                    <li>Chốt ghim (10).</li>
+                    <li>Các dây nối (11).</li>
+                </ul>
+                <div class="text-center">
+                    <img src="h1.png" alt="Bộ dụng cụ thí nghiệm" class="max-w-full h-auto rounded-md border border-gray-300 shadow-sm mx-auto">
+                    <p class="text-sm italic text-gray-500 mt-2">Hình 30.1. Bộ dụng cụ thí nghiệm xác định động lượng trước và sau va chạm</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- II. THIẾT KẾ PHƯƠNG ÁN THÍ NGHIỆM -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h2 class="text-xl font-bold uppercase border-b-4 border-[#330000] inline-block mb-4 pb-1 text-[#330000]">II. Thiết kế phương án thí nghiệm</h2>
+            <p class="text-lg mb-4">Để hai xe va chạm trên đệm khí, có thể thực hiện như sau:</p>
+            <ul class="list-disc pl-6 space-y-2 text-lg mb-6">
+                <li>Điều chỉnh cho băng đệm khí nằm ngang và lắp ống dẫn khí từ bơm nén khí vào băng đệm khí.</li>
+                <li>Lắp hai cổng quang điện vào hai giá đỡ đặt cách nhau một khoảng.</li>
+                <li>Nối dây từ hai cổng quang điện vào đồng hồ đo thời gian hiện số.</li>
+                <li>Lắp tấm cản quang và các chốt cắm thích hợp lên mỗi xe và đặt hai xe lên băng đệm khí.</li>
+                <li>Cấp điện cho bơm nén khí và đồng hồ đo thời gian hiện số.</li>
+            </ul>
+
+            <div class="text-center mb-6">
+                <img src="h2.png" alt="Bố trí thí nghiệm 1" class="max-w-full h-auto rounded-md border border-gray-300 shadow-sm mx-auto">
+                <img src="h3.png" alt="Bố trí thí nghiệm 2" class="max-w-full h-auto rounded-md border border-gray-300 shadow-sm mx-auto mt-4">
+            </div>
+
+            <p class="text-lg font-semibold mb-4">Đẩy cho hai xe chuyển động va chạm vào nhau trên đệm khí và thảo luận:</p>
+
+            <!-- Thảo luận 1 -->
+            <div class="mb-4">
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p class="text-lg"><strong>Câu hỏi 1:</strong> Khi hai xe chuyển động trên đệm khí nằm ngang, hệ hai xe chuyển động có phải là hệ kín không? Vì sao?</p>
+                    <button onclick="toggleAnswer('tl1')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải</button>
+                </div>
+                <div id="tl1" class="hidden bg-green-100 p-4 mt-2 rounded-md border border-green-300">
+                    <p><strong>Trả lời:</strong> Hệ hai xe có thể coi là một hệ kín. Vì đệm khí triệt tiêu gần như hoàn toàn lực ma sát, đồng thời trọng lực tác dụng lên xe cân bằng với phản lực của mặt phẳng ngang. Do đó tổng ngoại lực tác dụng lên hệ bằng 0.</p>
+                </div>
+            </div>
+
+            <!-- Thảo luận 2 -->
+            <div class="mb-4">
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p class="text-lg"><strong>Câu hỏi 2:</strong> Để xác định động lượng của hai xe trước và sau va chạm cần đo các đại lượng nào?</p>
+                    <button onclick="toggleAnswer('tl2')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải</button>
+                </div>
+                <div id="tl2" class="hidden bg-green-100 p-4 mt-2 rounded-md border border-green-300">
+                    <p><strong>Trả lời:</strong> Cần đo: Khối lượng của hai xe \( m_1, m_2 \); Độ rộng của tấm cản quang \( d \); Thời gian chắn cổng quang điện trước va chạm (\( t_1, t_2 \)) và sau va chạm (\( t'_1, t'_2 \)) để suy ra vận tốc.</p>
+                </div>
+            </div>
+
+            <!-- Thảo luận 3 -->
+            <div class="mb-4">
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p class="text-lg"><strong>Câu hỏi 3:</strong> Hãy thử các trường hợp mà em đã dự đoán và suy nghĩ làm thế nào đo được các đại lượng để xác định động lượng của hai xe trước và sau va chạm.</p>
+                    <button onclick="toggleAnswer('tl3')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải</button>
+                </div>
+                <div id="tl3" class="hidden bg-green-100 p-4 mt-2 rounded-md border border-green-300">
+                    <p><strong>Trả lời:</strong> Dùng cân điện tử đo khối lượng. Dùng đồng hồ hiện số kết nối cổng quang điện chế độ A<->B hoặc A, B để đo thời gian tấm cản quang đi qua cổng quang. Tính \( v = \frac{d}{t} \) rồi tính \( p = m \cdot v \).</p>
+                </div>
+            </div>
+
+            <!-- Thảo luận 4 -->
+            <div class="mb-4">
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p class="text-lg"><strong>Câu hỏi 4:</strong> Thiết kế phương án thí nghiệm để xác định động lượng của hai xe trước và sau va chạm tương ứng với các trường hợp va chạm có thể xảy ra.</p>
+                    <button onclick="toggleAnswer('tl4')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải</button>
+                </div>
+                <div id="tl4" class="hidden bg-green-100 p-4 mt-2 rounded-md border border-green-300">
+                    <p><strong>Trả lời:</strong> <br>- Trường hợp 1 (Va chạm mềm): Gắn chốt ghim (đinh) và sáp dính vào 2 xe để chúng dính vào nhau sau va chạm. <br>- Trường hợp 2 (Va chạm đàn hồi): Gắn lò xo đàn hồi hoặc vòng cao su để 2 xe nảy ra sau khi va chạm.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- III. TIẾN HÀNH THÍ NGHIỆM -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md">
+            <h2 class="text-xl font-bold uppercase border-b-4 border-[#330000] inline-block mb-4 pb-1 text-[#330000]">III. Tiến hành thí nghiệm</h2>
+            
+            <h3 class="text-lg font-bold text-blue-900 mt-4 mb-2">Thí nghiệm 1: Va chạm mềm</h3>
+            <p class="italic mb-3">Hai xe chuyển động va chạm vào nhau, sau va chạm hai xe dính vào nhau và chuyển động với cùng vận tốc.</p>
+            <div class="text-center mb-4">
+                <img src="h2.png" alt="Bố trí thí nghiệm va chạm mềm" class="max-w-md mx-auto rounded-md border border-gray-300">
+                <p class="text-sm italic text-gray-500 mt-2">Hình 30.2. Bố trí thí nghiệm xác định động lượng trong trường hợp va chạm mềm</p>
+            </div>
+            <ol class="list-decimal pl-6 space-y-2 text-lg mb-6">
+                <li>Bố trí thí nghiệm như Hình 30.2.</li>
+                <li>Lắp tấm cản quang vào xe và các chốt cắm thích hợp lên hai xe, sau đó cân khối lượng xe và ghi vào Bảng 30.1.</li>
+                <li>Cấp điện cho bơm nén khí và đồng hồ đo thời gian, điều chỉnh tốc độ của bơm nén khí thích hợp, cho đồng hồ đo thời gian hoạt động ở chế độ đo thời gian vật chắn cổng quang điện.</li>
+                <li>Ấn nút Reset trên mặt đồng hồ để đưa số chỉ của đồng hồ về 0.000.</li>
+                <li>Đặt xe 2 lên băng đệm khí giữa hai cổng quang điện, đặt xe 1 ở khoảng bên ngoài hai cổng quang điện.</li>
+                <li>Đẩy xe 1 va chạm vào xe 2.</li>
+                <li>Lần lượt đọc trên đồng hồ các khoảng thời gian \( t_1 \), \( t_2 \) và ghi vào Bảng 30.1.</li>
+                <li>Gắn thêm vào xe các gia trọng, lặp lại các bước 4, 5, 6, 7 hai lần.</li>
+            </ol>
+
+            <hr class="border-gray-300 my-6">
+
+            <h3 class="text-lg font-bold text-blue-900 mt-4 mb-2">Thí nghiệm 2: Va chạm đàn hồi</h3>
+            <p class="italic mb-3">Hai xe chuyển động va chạm vào nhau, sau va chạm hai xe chuyển động về hai phía ngược nhau.</p>
+            <div class="text-center mb-4">
+                <img src="h3.png" alt="Bố trí thí nghiệm va chạm đàn hồi" class="max-w-md mx-auto rounded-md border border-gray-300">
+                <p class="text-sm italic text-gray-500 mt-2">Hình 30.3. Thí nghiệm xác định động lượng trong trường hợp va chạm đàn hồi</p>
+                <div class="bg-yellow-100 border border-yellow-400 text-yellow-800 p-2 text-sm rounded mt-2 inline-block">
+                    <strong>Chú ý:</strong> Gắn tấm chắn gần cổng quang điện và điều chỉnh cho song song với băng đệm khí.
+                </div>
+            </div>
+            <ol class="list-decimal pl-6 space-y-2 text-lg">
+                <li>Bố trí thí nghiệm như Hình 30.3.</li>
+                <li>Gắn lò xo (hoặc thanh nhựa hình chữ U có dây cao su đàn hồi) vào 1 xe. Cân hai xe và ghi vào Bảng 30.2.</li>
+                <li>Đặt hai xe lên băng đệm khí ở vị trí giữa hai cổng quang. Lấy sợi dây nhỏ buộc hai xe để nén lò xo lại. Ấn nút Reset trên mặt đồng hồ.</li>
+                <li>Cắt sợi dây để lò xo bung ra, đẩy hai xe về hai phía.</li>
+                <li>Lần lượt đọc trên đồng hồ các khoảng thời gian \( t_1 \), \( t_2 \) và ghi vào Bảng 30.2.</li>
+                <li>Gắn thêm vào hai xe các gia trọng, lặp lại các bước 3, 4, 5 hai lần nữa.</li>
+            </ol>
+        </div>
+
+        <!-- IV. KẾT QUẢ THÍ NGHIỆM -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md overflow-x-auto">
+            <h2 class="text-xl font-bold uppercase border-b-4 border-[#330000] inline-block mb-4 pb-1 text-[#330000]">IV. Kết quả thí nghiệm</h2>
+            
+            <p class="text-lg font-bold mb-2">Bảng 30.1. Thí nghiệm va chạm mềm</p>
+            <p class="mb-2">Độ dài tấm cản quang: \( d = \dots \) (m)</p>
+            <table class="w-full border-collapse border border-[#cbd5e0] text-center mb-8">
+                <thead>
+                    <tr class="bg-[#e2e8f0]">
+                        <th class="border border-[#cbd5e0] p-2" rowspan="2">Lần</th>
+                        <th class="border border-[#cbd5e0] p-2" rowspan="2">\( m_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2" rowspan="2">\( m_2 \)</th>
+                        <th class="border border-[#cbd5e0] p-2" colspan="5">Trước va chạm</th>
+                        <th class="border border-[#cbd5e0] p-2" colspan="3">Sau va chạm</th>
+                    </tr>
+                    <tr class="bg-[#e2e8f0]">
+                        <th class="border border-[#cbd5e0] p-2">\( t_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( v_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( p_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( p_2 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( p \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( t'_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( v'_1 = v'_2 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( p' \)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="border border-[#cbd5e0] p-2">1</td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td></tr>
+                    <tr><td class="border border-[#cbd5e0] p-2">2</td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td></tr>
+                    <tr><td class="border border-[#cbd5e0] p-2">3</td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td></tr>
+                </tbody>
+            </table>
+
+            <p class="text-lg font-bold mb-2">Bảng 30.2. Thí nghiệm va chạm đàn hồi</p>
+            <table class="w-full border-collapse border border-[#cbd5e0] text-center mb-6">
+                <thead>
+                    <tr class="bg-[#e2e8f0]">
+                        <th class="border border-[#cbd5e0] p-2" rowspan="2">Lần</th>
+                        <th class="border border-[#cbd5e0] p-2" rowspan="2">\( m_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2" rowspan="2">\( m_2 \)</th>
+                        <th class="border border-[#cbd5e0] p-2" colspan="4">Trước va chạm (Hệ đứng yên)</th>
+                        <th class="border border-[#cbd5e0] p-2" colspan="4">Sau va chạm (Cắt dây lò xo bung)</th>
+                    </tr>
+                    <tr class="bg-[#e2e8f0]">
+                        <th class="border border-[#cbd5e0] p-2">\( t_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( v_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( p_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( p_2 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( t_2 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( v'_2 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( p'_1 \)</th>
+                        <th class="border border-[#cbd5e0] p-2">\( p'_2 \)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="border border-[#cbd5e0] p-2">1</td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td></tr>
+                    <tr><td class="border border-[#cbd5e0] p-2">2</td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td></tr>
+                    <tr><td class="border border-[#cbd5e0] p-2">3</td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td><td class="border border-[#cbd5e0] p-2"></td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="text-lg font-bold mb-2 text-indigo-900">Nhận xét và đánh giá kết quả thí nghiệm</h3>
+            
+            <div class="mb-4">
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p class="text-lg"><strong>Yêu cầu 1:</strong> Từ Bảng 30.1 và Bảng 30.2, hãy so sánh các kết quả xác định động lượng của hai xe trước và sau va chạm trong hai thí nghiệm.</p>
+                    <button onclick="toggleAnswer('nx1')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải</button>
+                </div>
+                <div id="nx1" class="hidden bg-green-100 p-4 mt-2 rounded-md border border-green-300">
+                    <p><strong>Trả lời:</strong> Trong cả hai thí nghiệm (va chạm mềm và va chạm đàn hồi bung lò xo), tổng động lượng của hệ trước va chạm và sau va chạm gần như bằng nhau. Sai số nhỏ giọt do ma sát và sai số dụng cụ đo. Điều này khẳng định <strong>Định luật bảo toàn động lượng</strong> trong hệ kín.</p>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p class="text-lg"><strong>Yêu cầu 2:</strong> Em có thể đề xuất một phương án thí nghiệm khác để xác định động lượng của hai xe trước và sau va chạm.</p>
+                    <button onclick="toggleAnswer('nx2')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải</button>
+                </div>
+                <div id="nx2" class="hidden bg-green-100 p-4 mt-2 rounded-md border border-green-300">
+                    <p><strong>Trả lời:</strong> Có thể sử dụng máng nghiêng và hai viên bi. Dùng giấy than và giấy trắng lót trên mặt bàn. Cho bi 1 lăn từ mặt phẳng nghiêng đập vào bi 2 (đang đứng yên ở mép bàn). Dựa vào tầm xa rơi của bi trên giấy trắng (vết in qua giấy than) có thể tính được vận tốc ném ngang, từ đó gián tiếp tính động lượng.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CÁC HỘP THÔNG TIN MÀU -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- EM ĐÃ HỌC -->
+            <div class="bg-blue-50 border border-blue-300 rounded-[12px] p-6 shadow-md">
+                <h3 class="text-lg font-bold text-blue-800 mb-2 uppercase flex items-center">
+                    <span class="mr-2">📚</span> Em đã học
+                </h3>
+                <p class="text-md text-gray-800">
+                    Sử dụng băng đệm khí, cổng quang và đồng hồ đo thời gian hiện số có thể tiến hành thí nghiệm xác định động lượng của vật trước và sau va chạm đối với va chạm mềm, va chạm đàn hồi.
+                </p>
+            </div>
+
+            <!-- VỚI CUỘC SỐNG (Lưu ý) -->
+            <div class="bg-yellow-50 border border-yellow-400 rounded-[12px] p-6 shadow-md">
+                <h3 class="text-lg font-bold text-yellow-800 mb-2 uppercase flex items-center">
+                    <span class="mr-2">💡</span> Với cuộc sống (Lưu ý)
+                </h3>
+                <p class="text-md text-gray-800">
+                    Để tiến hành thí nghiệm chính xác, cần đặt máng ngang và giảm ma sát ít nhất có thể (đó là lí do người ta dùng hệ thống đệm khí).
+                </p>
+            </div>
+
+        </div>
+
+        <!-- EM CÓ THỂ & EM CÓ BIẾT -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- EM CÓ THỂ -->
+            <div class="bg-purple-50 border border-purple-300 rounded-[12px] p-6 shadow-md">
+                <h3 class="text-lg font-bold text-purple-800 mb-2 uppercase flex items-center">
+                    <span class="mr-2">⚙️</span> Em có thể
+                </h3>
+                <p class="text-md text-gray-800 mb-4">
+                    Sử dụng điện thoại thông minh và phần mềm phân tích video để xác định được vận tốc và động lượng trước và sau va chạm của hai viên bi có khối lượng xác định.
+                </p>
+                <div class="text-center">
+                    <img src="h6.png" alt="Phân tích video trên điện thoại" class="max-w-full h-auto rounded-md shadow-sm mx-auto">
+                    <p class="text-xs italic text-gray-500 mt-2">Hình 30.4. Thiết kế thí nghiệm xác định động lượng bằng phần mềm</p>
+                </div>
+            </div>
+
+            <!-- EM CÓ BIẾT -->
+            <div class="bg-rose-50 border border-rose-300 rounded-[12px] p-6 shadow-md">
+                <h3 class="text-lg font-bold text-rose-800 mb-2 uppercase flex items-center">
+                    <span class="mr-2">❓</span> Em có biết?
+                </h3>
+                <p class="text-md text-gray-800 mb-3">
+                    Trong thiết kế ô tô, ngoài túi khí và dây an toàn trên ô tô, nhà sản xuất còn tạo ra "vùng hấp thụ xung lượng của lực" - đó là phần khung thép mềm hơn các vùng khác.
+                </p>
+                <div class="bg-white p-3 rounded border border-rose-200 mb-3 text-center">
+                    <span class="font-bold">Công thức:</span><br>
+                    \( \Delta\vec{p} = \vec{F} \cdot \Delta t \)
+                </div>
+                <p class="text-md text-gray-800">
+                    Khi có va chạm, độ biến thiên động lượng của xe trong một khoảng thời gian bằng xung của lực tác dụng lên xe trong khoảng thời gian đó. Vùng hấp thụ sẽ biến dạng giúp xe giảm tốc độ chậm hơn, <strong>kéo dài thời gian va chạm (\( \Delta t \))</strong> để <strong>giảm lực tác dụng (\( \vec{F} \))</strong>, giúp giảm chấn thương cho người ngồi trong xe.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- BÀI TẬP VẬN DỤNG & CỦNG CỐ -->
+        <div class="bg-white rounded-[12px] p-6 shadow-md mt-8 border-t-4 border-[#330000]">
+            <h2 class="text-2xl font-bold uppercase text-[#330000] mb-6 text-center">LUYỆN TẬP & CỦNG CỐ</h2>
+
+            <!-- 3 Bài tập vận dụng tính toán -->
+            <h3 class="text-xl font-bold mb-4 text-blue-900 border-b-2 border-gray-200 pb-2">A. Bài tập tự luận (Tính toán)</h3>
+
+            <div class="space-y-4 mb-8">
+                <!-- Bài 1 -->
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p><strong>Bài 1:</strong> Một xe trượt khối lượng \( m_1 = 0,2 \text{ kg} \) chuyển động với vận tốc \( v_1 = 2 \text{ m/s} \) đến va chạm mềm với xe trượt thứ hai khối lượng \( m_2 = 0,3 \text{ kg} \) đang đứng yên. Tính vận tốc của hệ hai xe sau va chạm.</p>
+                    <button onclick="toggleAnswer('bt1')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải chi tiết</button>
+                </div>
+                <div id="bt1" class="hidden bg-green-100 p-4 rounded-md border border-green-300">
+                    <p><strong>Giải:</strong></p>
+                    <p>Áp dụng định luật bảo toàn động lượng cho hệ 2 xe (va chạm mềm):</p>
+                    <p class="text-center my-2">\( m_1 \vec{v}_1 + m_2 \vec{v}_2 = (m_1 + m_2) \vec{V} \)</p>
+                    <p>Vì xe 2 đứng yên (\( v_2 = 0 \)), chiếu lên chiều chuyển động của xe 1:</p>
+                    <p class="text-center my-2">\( m_1 v_1 = (m_1 + m_2) V \Rightarrow V = \frac{m_1 v_1}{m_1 + m_2} = \frac{0,2 \cdot 2}{0,2 + 0,3} = \frac{0,4}{0,5} = 0,8 \text{ (m/s)} \)</p>
+                </div>
+
+                <!-- Bài 2 -->
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p><strong>Bài 2:</strong> Một viên đạn khối lượng \( 10 \text{ g} \) bay ngang với vận tốc \( 500 \text{ m/s} \) găm vào một bao cát khối lượng \( 4,99 \text{ kg} \) đang treo treo trên dây đứng yên. Tính vận tốc của bao cát (cùng đạn) ngay sau khi viên đạn găm vào.</p>
+                    <button onclick="toggleAnswer('bt2')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải chi tiết</button>
+                </div>
+                <div id="bt2" class="hidden bg-green-100 p-4 rounded-md border border-green-300">
+                    <p><strong>Giải:</strong></p>
+                    <p>Đổi \( m_1 = 10 \text{ g} = 0,01 \text{ kg} \). Đây là bài toán va chạm mềm.</p>
+                    <p>Bảo toàn động lượng theo phương ngang:</p>
+                    <p class="text-center my-2">\( m_1 v_1 = (m_1 + m_2) V \)</p>
+                    <p class="text-center my-2">\( V = \frac{0,01 \cdot 500}{0,01 + 4,99} = \frac{5}{5} = 1 \text{ (m/s)} \)</p>
+                </div>
+
+                <!-- Bài 3 -->
+                <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-r-md">
+                    <p><strong>Bài 3:</strong> Tại sao khi nhảy từ trên cao xuống đất, người ta lại phải gập đầu gối lại?</p>
+                    <button onclick="toggleAnswer('bt3')" class="mt-3 bg-[#330000] text-white px-5 py-2 rounded font-medium hover:bg-opacity-90 transition">Xem lời giải chi tiết</button>
+                </div>
+                <div id="bt3" class="hidden bg-green-100 p-4 rounded-md border border-green-300">
+                    <p><strong>Giải:</strong></p>
+                    <p>Dựa vào độ biến thiên động lượng và xung lượng của lực: \( \Delta\vec{p} = \vec{F} \cdot \Delta t \)</p>
+                    <p>Khi chạm đất, động lượng của người giảm về 0 (độ biến thiên động lượng \( \Delta p \) là xác định). Việc gập đầu gối giúp <strong>kéo dài thời gian tương tác \( \Delta t \)</strong> giữa chân và mặt đất. Do \( \Delta p \) không đổi, \( \Delta t \) tăng thì lực tác dụng \( F \) từ mặt đất lên chân sẽ giảm đi đáng kể, giúp cơ thể tránh bị chấn thương.</p>
+                </div>
+            </div>
+
+            <!-- 5 Bài tập trắc nghiệm -->
+            <h3 class="text-xl font-bold mb-4 text-blue-900 border-b-2 border-gray-200 pb-2">B. Bài tập Trắc nghiệm</h3>
+            
+            <form id="quizForm" class="space-y-6">
+                <!-- Câu 1 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 1: Động lượng của một vật khối lượng m đang chuyển động với vận tốc \( \vec{v} \) là đại lượng được xác định bởi công thức:</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="block"><input type="radio" name="q1" value="A" class="mr-2"> A. \( \vec{p} = m \cdot v \)</label>
+                        <label class="block"><input type="radio" name="q1" value="B" class="mr-2"> B. \( \vec{p} = m \cdot \vec{v} \)</label>
+                        <label class="block"><input type="radio" name="q1" value="C" class="mr-2"> C. \( p = m \cdot \vec{v} \)</label>
+                        <label class="block"><input type="radio" name="q1" value="D" class="mr-2"> D. \( \vec{p} = \frac{1}{2}m \cdot v^2 \)</label>
+                    </div>
+                </div>
+
+                <!-- Câu 2 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 2: Trong hiện tượng va chạm mềm giữa hai vật, đại lượng nào sau đây được bảo toàn?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="block"><input type="radio" name="q2" value="A" class="mr-2"> A. Cơ năng của hệ.</label>
+                        <label class="block"><input type="radio" name="q2" value="B" class="mr-2"> B. Động năng của hệ.</label>
+                        <label class="block"><input type="radio" name="q2" value="C" class="mr-2"> C. Động lượng của hệ.</label>
+                        <label class="block"><input type="radio" name="q2" value="D" class="mr-2"> D. Vận tốc của mỗi vật.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 3 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 3: Đơn vị của động lượng trong hệ SI là:</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="block"><input type="radio" name="q3" value="A" class="mr-2"> A. N.s</label>
+                        <label class="block"><input type="radio" name="q3" value="B" class="mr-2"> B. kg.m/s</label>
+                        <label class="block"><input type="radio" name="q3" value="C" class="mr-2"> C. J.s</label>
+                        <label class="block"><input type="radio" name="q3" value="D" class="mr-2"> D. Cả A và B đều đúng</label>
+                    </div>
+                </div>
+
+                <!-- Câu 4 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 4: Khi sử dụng đệm khí trong thí nghiệm va chạm, mục đích chính là gì?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="block"><input type="radio" name="q4" value="A" class="mr-2"> A. Để tăng vận tốc của vật.</label>
+                        <label class="block"><input type="radio" name="q4" value="B" class="mr-2"> B. Để triệt tiêu gần như hoàn toàn lực ma sát.</label>
+                        <label class="block"><input type="radio" name="q4" value="C" class="mr-2"> C. Để giảm khối lượng của xe trượt.</label>
+                        <label class="block"><input type="radio" name="q4" value="D" class="mr-2"> D. Để thay thế cho đồng hồ đo thời gian.</label>
+                    </div>
+                </div>
+
+                <!-- Câu 5 -->
+                <div>
+                    <p class="font-bold mb-2">Câu 5: Trong thiết kế ô tô, vùng "hấp thụ xung lượng" có vai trò gì khi va chạm xảy ra?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="block"><input type="radio" name="q5" value="A" class="mr-2"> A. Giảm thời gian va chạm để giảm lực tác dụng lên xe.</label>
+                        <label class="block"><input type="radio" name="q5" value="B" class="mr-2"> B. Tăng thời gian va chạm để tăng lực tác dụng lên xe.</label>
+                        <label class="block"><input type="radio" name="q5" value="C" class="mr-2"> C. Tăng thời gian va chạm để giảm lực tác dụng lên người ngồi trong xe.</label>
+                        <label class="block"><input type="radio" name="q5" value="D" class="mr-2"> D. Giữ xe đứng yên ngay lập tức.</label>
+                    </div>
+                </div>
+
+                <div class="text-center mt-6">
+                    <button type="button" onclick="checkQuiz()" class="bg-[#330000] text-white px-8 py-3 rounded-[8px] font-bold text-lg hover:bg-opacity-90 transition shadow-md">NỘP BÀI</button>
+                </div>
+            </form>
+
+            <!-- Kết quả Quiz -->
+            <div id="quizResult" class="hidden mt-6 text-center">
+                <h3 id="scoreText" class="text-2xl font-bold mb-4"></h3>
+                <div id="quizExplanations" class="text-left bg-gray-50 border border-gray-300 p-4 rounded-md space-y-3">
+                    <p class="text-green-700"><strong>Câu 1 - Đáp án B:</strong> Động lượng là một đại lượng vectơ, cùng hướng với vận tốc. Công thức: \( \vec{p} = m \cdot \vec{v} \).</p>
+                    <p class="text-green-700"><strong>Câu 2 - Đáp án C:</strong> Trong mọi loại va chạm trong hệ kín, động lượng luôn được bảo toàn. Động năng chỉ bảo toàn trong va chạm đàn hồi.</p>
+                    <p class="text-green-700"><strong>Câu 3 - Đáp án D:</strong> Đơn vị chuẩn là kg.m/s. Ngoài ra theo định lí xung lượng \( \Delta p = F \cdot \Delta t \), đơn vị còn là N.s (Newton nhân giây).</p>
+                    <p class="text-green-700"><strong>Câu 4 - Đáp án B:</strong> Đệm khí thổi không khí nâng xe lên, giúp xe không tiếp xúc trực tiếp với đường ray, từ đó triệt tiêu ma sát để hệ trở thành hệ kín lí tưởng.</p>
+                    <p class="text-green-700"><strong>Câu 5 - Đáp án C:</strong> Dựa vào \( F = \frac{\Delta p}{\Delta t} \). Vùng thép mềm biến dạng làm tăng thời gian va chạm \( \Delta t \), dẫn đến lực va đập \( F \) truyền vào khoang lái giảm đi, bảo vệ người ngồi.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // 1. Hàm ẩn hiện lời giải bài tập tự luận/câu hỏi
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                // Re-render math in case it was hidden during page load
+                if(window.MathJax) {
+                    MathJax.typesetPromise([el]).catch((err) => console.log(err.message));
+                }
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // 2. Hàm kiểm tra trắc nghiệm
+        function checkQuiz() {
+            const answers = {
+                q1: 'B',
+                q2: 'C',
+                q3: 'D',
+                q4: 'B',
+                q5: 'C'
+            };
+
+            let score = 0;
+            const form = document.getElementById('quizForm');
+            const resultDiv = document.getElementById('quizResult');
+            const scoreText = document.getElementById('scoreText');
+
+            for (let q in answers) {
+                const selected = form.querySelector(`input[name="${q}"]:checked`);
+                if (selected && selected.value === answers[q]) {
+                    score++;
+                }
+            }
+
+            resultDiv.classList.remove('hidden');
+            
+            if (score === 5) {
+                scoreText.innerHTML = `Bạn đã trả lời đúng <span class="text-blue-600">5/5</span> câu. Xuất sắc! 🎉`;
+                scoreText.className = "text-2xl font-bold mb-4 text-blue-700";
+            } else {
+                scoreText.innerHTML = `Bạn trả lời đúng <span class="text-red-600">${score}/5</span> câu. Hãy xem lại giải thích bên dưới nhé!`;
+                scoreText.className = "text-2xl font-bold mb-4 text-red-700";
+            }
+
+            // Gọi MathJax render lại vùng kết quả nếu cần
+            if(window.MathJax) {
+                MathJax.typesetPromise([document.getElementById('quizExplanations')]);
+            }
+            
+            // Tự động cuộn xuống kết quả
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 29: Định luật bảo toàn động lượng</title>
+    
+    <!-- Cấu hình Font và Tailwind CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cấu hình MathJax cho công thức toán học -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Script tương tác -->
+    <script>
+        // Hàm ẩn/hiện lời giải
+        function toggleAnswer(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+                element.classList.add('block');
+            } else {
+                element.classList.remove('block');
+                element.classList.add('hidden');
+            }
+        }
+
+        // Hàm kiểm tra bài trắc nghiệm
+        function checkQuiz() {
+            const correctAnswers = {
+                q1: 'B',
+                q2: 'B',
+                q3: 'C',
+                q4: 'A',
+                q5: 'C'
+            };
+            
+            let score = 0;
+            let total = 5;
+
+            // Kiểm tra từng câu và hiện giải thích
+            for (let i = 1; i <= total; i++) {
+                const qName = 'q' + i;
+                const selected = document.querySelector(`input[name="${qName}"]:checked`);
+                const explanation = document.getElementById(`expl_${qName}`);
+                
+                explanation.classList.remove('hidden');
+
+                if (selected) {
+                    if (selected.value === correctAnswers[qName]) {
+                        score++;
+                        explanation.innerHTML = `<span class="text-green-600 font-bold">✓ Chính xác!</span> ${getExplanation(qName)}`;
+                        explanation.className = "mt-3 p-3 rounded-md bg-green-100 border border-green-300 text-sm block";
+                    } else {
+                        explanation.innerHTML = `<span class="text-red-600 font-bold">✗ Sai rồi.</span> Đáp án đúng là ${correctAnswers[qName]}. ${getExplanation(qName)}`;
+                        explanation.className = "mt-3 p-3 rounded-md bg-red-100 border border-red-300 text-sm block";
+                    }
+                } else {
+                    explanation.innerHTML = `<span class="text-yellow-600 font-bold">! Bạn chưa chọn đáp án.</span> Đáp án đúng là ${correctAnswers[qName]}. ${getExplanation(qName)}`;
+                    explanation.className = "mt-3 p-3 rounded-md bg-yellow-100 border border-yellow-300 text-sm block";
+                }
+            }
+
+            // Hiển thị kết quả tổng
+            const resultBox = document.getElementById('quiz-result');
+            resultBox.classList.remove('hidden');
+            if (score === total) {
+                resultBox.innerHTML = `Tuyệt vời! Bạn đạt <strong>${score}/${total}</strong> điểm.`;
+                resultBox.className = "mt-6 p-4 rounded-md text-center font-bold text-green-700 bg-green-100 border border-green-400 block";
+            } else {
+                resultBox.innerHTML = `Bạn đạt <strong>${score}/${total}</strong> điểm. Hãy xem lại phần giải thích nhé!`;
+                resultBox.className = "mt-6 p-4 rounded-md text-center font-bold text-red-700 bg-red-100 border border-red-400 block";
+            }
+        }
+
+        // Nội dung giải thích trắc nghiệm
+        function getExplanation(qId) {
+            const exp = {
+                q1: "Hệ hai vật va chạm trên mặt phẳng ngang không ma sát có các ngoại lực (trọng lực, phản lực) triệt tiêu lẫn nhau, nên được coi là hệ kín.",
+                q2: "Động lượng \\( p = m.v \\) nên đơn vị là kg.m/s.",
+                q3: "Theo định luật, động lượng TOÀN PHẦN của một HỆ KÍN là đại lượng bảo toàn.",
+                q4: "Đặc điểm cốt lõi của va chạm mềm là sau va chạm các vật dính vào nhau và chuyển động cùng vận tốc.",
+                q5: "Biểu thức tổng quát: Tổng động lượng trước bằng tổng động lượng sau: \\( m_1\\vec{v}_1 + m_2\\vec{v}_2 = m_1\\vec{v}'_1 + m_2\\vec{v}'_2 \\)."
+            };
+            return exp[qId];
+        }
+    </script>
+</head>
+
+<body class="p-4 md:p-8 lg:px-32 xl:px-64">
+
+    <!-- Header Chương và Bài -->
+    <div class="bg-[#330000] text-white rounded-[12px] p-6 text-center shadow-md mb-6">
+        <h2 class="text-xl font-semibold mb-2 uppercase tracking-wide">Chương V: Động lượng</h2>
+        <hr class="border-t border-white/40 w-2/3 mx-auto my-3">
+        <h1 class="text-3xl font-bold mt-2 uppercase tracking-wide">Bài 29: Định luật bảo toàn động lượng</h1>
+    </div>
+
+    <!-- Lời dẫn -->
+    <div class="bg-white border border-gray-800 rounded-[12px] p-5 shadow-md mb-8">
+        <p class="italic text-gray-800 text-lg text-center font-medium">
+            "Một người đang ở trong một chiếc thuyền nhỏ đứng yên, tại sao thuyền bị lùi lại khi người đó bước lên bờ?"
+        </p>
+    </div>
+
+    <!-- I. ĐỊNH LUẬT BẢO TOÀN ĐỘNG LƯỢNG -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold uppercase text-[#330000] border-b-[3px] border-[#330000] pb-2 mb-6 inline-block">I. Định luật bảo toàn động lượng</h2>
+        
+        <h3 class="text-xl font-semibold mb-3">1. Hệ kín (hay hệ cô lập)</h3>
+        <p class="mb-3">
+            a) Một hệ nhiều vật được gọi là <strong>hệ kín</strong> khi không có ngoại lực tác dụng lên hệ hoặc nếu có thì các lực ấy cân bằng nhau. Trong một hệ kín, chỉ có các <strong>nội lực</strong> (các lực tác dụng giữa các vật trong hệ) tương tác giữa các vật. Các nội lực này theo định luật 3 Newton trực đối nhau từng đôi một.
+        </p>
+        <p class="mb-4">
+            b) Nếu trong quá trình tương tác, các nội lực xuất hiện lớn hơn các ngoại lực rất nhiều thì có thể bỏ qua các ngoại lực và coi hệ là kín. Ví dụ như: va chạm, đạn nổ, pháo nổ,...
+        </p>
+
+        <!-- Câu hỏi 1 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-[8px] my-5">
+            <div class="flex items-center mb-2">
+                <span class="text-xl mr-2">❓</span>
+                <p class="font-semibold text-blue-900">Hãy cho ví dụ về hệ kín.</p>
+            </div>
+            <button onclick="toggleAnswer('ans1')" class="mt-2 bg-[#330000] text-white px-4 py-2 rounded-md hover:bg-red-900 transition text-sm font-semibold">Xem lời giải</button>
+            <div id="ans1" class="hidden mt-4 bg-[#e6ffed] p-4 rounded-md border border-[#b7ebc5] text-green-900 shadow-sm">
+                <strong>Trả lời:</strong><br>
+                - Hệ gồm hai viên bi lăn tới va chạm với nhau trên mặt bàn nằm ngang nhẵn (trọng lực cân bằng với phản lực, ma sát bị bỏ qua).<br>
+                - Hệ súng và viên đạn trong nòng súng lúc bóp cò (nội lực do thuốc súng nổ rất lớn so với trọng lực).
+            </div>
+        </div>
+
+        <h3 class="text-xl font-semibold mb-3 mt-6">2. Định luật bảo toàn động lượng</h3>
+        <p class="mb-3">Xét một hệ kín gồm hai vật trượt trên một đệm khí đến va chạm với nhau.</p>
+        <p class="mb-3">Vì các lực \(\vec{F}_1\) và \(\vec{F}_2\) là cặp nội lực trực đối nhau, nên theo định luật 3 Newton, ta viết:</p>
+        
+        <div class="bg-gray-100 p-4 rounded-md text-center my-4 font-semibold font-serif text-lg">
+            \(\vec{F}_1 = -\vec{F}_2\)  &nbsp;&nbsp;&nbsp; (29.1)
+        </div>
+
+        <p class="mb-3">Dưới tác dụng của các lực \(\vec{F}_1\) và \(\vec{F}_2\), trong khoảng thời gian \(\Delta t\), động lượng của mỗi vật có độ biến thiên lần lượt là \(\Delta\vec{p}_1\) và \(\Delta\vec{p}_2\).</p>
+        <p class="mb-3">Áp dụng công thức \(\vec{F}.\Delta t = \Delta\vec{p}\) cho từng vật, ta có:</p>
+        
+        <div class="bg-gray-100 p-4 rounded-md text-center my-4 font-semibold font-serif text-lg">
+            \(\begin{cases} \vec{F}_1 \Delta t = \Delta\vec{p}_1 \\ \vec{F}_2 \Delta t = \Delta\vec{p}_2 \end{cases}\) &nbsp;&nbsp;&nbsp; (29.2)
+        </div>
+
+        <p class="mb-3">Từ (29.1) và (29.2), suy ra: \(\Delta\vec{p}_1 = -\Delta\vec{p}_2\) hay \(\Delta\vec{p}_1 + \Delta\vec{p}_2 = \vec{0}\).</p>
+        <p class="mb-3">Gọi \(\vec{p} = \vec{p}_1 + \vec{p}_2\) là động lượng toàn phần của hệ. Ta có biến thiên động lượng toàn phần của hệ bằng tổng các biến thiên động lượng của mỗi vật: \(\Delta\vec{p} = \Delta\vec{p}_1 + \Delta\vec{p}_2 = \vec{0}\).</p>
+        <p class="mb-3">Biến thiên động lượng của hệ bằng không, nghĩa là động lượng toàn phần của hệ không đổi.</p>
+
+        <!-- Khung định luật -->
+        <div class="bg-yellow-50 border-2 border-yellow-400 p-5 rounded-[12px] my-6 shadow-sm">
+            <p class="text-[#330000] font-bold text-lg mb-2 text-center">ĐỊNH LUẬT BẢO TOÀN ĐỘNG LƯỢNG</p>
+            <p class="text-center font-medium italic mb-3">"Động lượng toàn phần của hệ kín là một đại lượng bảo toàn."</p>
+            <div class="text-center font-bold text-lg">
+                \(\vec{p} = \vec{p}_1 + \vec{p}_2 = \text{không đổi}\)
+            </div>
+        </div>
+        <p class="italic text-gray-600 text-sm mb-4">Kết quả này có thể mở rộng cho hệ kín gồm nhiều vật. Định luật này có nhiều ứng dụng thực tế: giải các bài toán va chạm, làm cơ sở cho chuyển động phản lực.</p>
+
+        <!-- Câu hỏi 2 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-[8px] my-5">
+            <div class="flex items-center mb-2">
+                <span class="text-xl mr-2">❓</span>
+                <p class="font-semibold text-blue-900">Một hệ gồm hai vật có khối lượng lần lượt là \(m_1\) và \(m_2\), chuyển động với vận tốc có độ lớn lần lượt là \(v_1\) và \(v_2\) hướng vào nhau. Bỏ qua mọi ma sát và lực cản. Viết biểu thức của định luật bảo toàn động lượng cho hệ này.</p>
+            </div>
+            <button onclick="toggleAnswer('ans2')" class="mt-2 bg-[#330000] text-white px-4 py-2 rounded-md hover:bg-red-900 transition text-sm font-semibold">Xem lời giải</button>
+            <div id="ans2" class="hidden mt-4 bg-[#e6ffed] p-4 rounded-md border border-[#b7ebc5] text-green-900 shadow-sm">
+                <strong>Trả lời:</strong><br>
+                Hệ này là hệ kín. Gọi \(\vec{v}'_1\) và \(\vec{v}'_2\) là vận tốc của 2 vật sau va chạm.<br>
+                Biểu thức định luật bảo toàn động lượng:
+                \\[ m_1\vec{v}_1 + m_2\vec{v}_2 = m_1\vec{v}'_1 + m_2\vec{v}'_2 \\]
+                *(Lưu ý: Các đại lượng vận tốc phải được viết dưới dạng vector vì chúng hướng vào nhau, tức là ngược chiều nhau).*
+            </div>
+        </div>
+    </div>
+
+    <!-- II. VA CHẠM ĐÀN HỒI VÀ VA CHẠM MỀM -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold uppercase text-[#330000] border-b-[3px] border-[#330000] pb-2 mb-6 inline-block">II. Va chạm đàn hồi và va chạm mềm</h2>
+        <p class="mb-4">Có hai kiểu va chạm thường gặp là va chạm đàn hồi và va chạm mềm.</p>
+
+        <!-- 1. Va chạm đàn hồi -->
+        <h3 class="text-xl font-semibold mb-3">1. Va chạm đàn hồi</h3>
+        <p class="mb-3">Hình 29.1 mô tả một thí nghiệm về va chạm đàn hồi.</p>
+        
+        <div class="my-6 text-center border p-4 bg-gray-50 rounded-lg">
+            <img src="h1.png" alt="Hình 29.1. Va chạm đàn hồi" class="mx-auto max-h-64 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/600x200?text=H%C3%ACnh+29.1:+Va+ch%E1%BA%A1m+%C4%91%C3%A0n+h%E1%BB%93i';">
+            <p class="italic text-sm text-gray-600 mt-2">Hình 29.1. Va chạm đàn hồi</p>
+        </div>
+
+        <p class="mb-3">Dùng hai xe A và B giống nhau, ở đầu mỗi xe có gắn một quả cầu kim loại nhỏ, cho xe A chuyển động với vận tốc \(v_A = v\) tới va chạm với xe B đang đứng yên. Kết quả của va chạm làm xe A đang chuyển động thì dừng lại, còn xe B đang đứng yên thì chuyển động với đúng vận tốc \(v'_B = v\).</p>
+        <p class="mb-4">Còn nếu xe A chuyển động đến va chạm trực diện với xe B có vận tốc \(v_B = -v\), thì sau va chạm cả hai xe đổi chiều vận tốc: \(v'_A = -v\) và \(v'_B = v\). Đó là hai ví dụ về kiểu va chạm đàn hồi.</p>
+
+        <!-- Câu hỏi 3 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-[8px] my-5">
+            <div class="flex items-center mb-2">
+                <span class="text-xl mr-2">❓</span>
+                <p class="font-semibold text-blue-900">
+                    1. Hãy tính động lượng và động năng của hệ trước và sau va chạm đàn hồi (Hình 29.1).<br>
+                    2. Từ kết quả tính được rút ra nhận xét gì?
+                </p>
+            </div>
+            <button onclick="toggleAnswer('ans3')" class="mt-2 bg-[#330000] text-white px-4 py-2 rounded-md hover:bg-red-900 transition text-sm font-semibold">Xem lời giải</button>
+            <div id="ans3" class="hidden mt-4 bg-[#e6ffed] p-4 rounded-md border border-[#b7ebc5] text-green-900 shadow-sm">
+                <strong>Trả lời:</strong><br>
+                Do 2 xe giống nhau nên \(m_A = m_B = m\).<br>
+                <strong>1. Tính toán:</strong><br>
+                - Trước va chạm: Động lượng hệ \(p = m.v_A + 0 = m.v\). Động năng hệ \(W_d = \frac{1}{2}mv_A^2 = \frac{1}{2}mv^2\).<br>
+                - Sau va chạm: \(v'_A = 0, v'_B = v\). Động lượng hệ \(p' = 0 + m.v'_B = m.v\). Động năng hệ \(W'_d = 0 + \frac{1}{2}mv'_B^2 = \frac{1}{2}mv^2\).<br>
+                <strong>2. Nhận xét:</strong><br>
+                Trong va chạm đàn hồi, cả động lượng và động năng của hệ đều được bảo toàn.
+            </div>
+        </div>
+
+        <!-- 2. Va chạm mềm -->
+        <h3 class="text-xl font-semibold mb-3 mt-8">2. Va chạm mềm</h3>
+        <p class="mb-3">Hình 29.2 mô tả một thí nghiệm về va chạm mềm.</p>
+
+        <div class="my-6 text-center border p-4 bg-gray-50 rounded-lg">
+            <img src="h2.png" alt="Hình 29.2. Va chạm mềm" class="mx-auto max-h-64 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/600x200?text=H%C3%ACnh+29.2:+Va+ch%E1%BA%A1m+m%E1%BB%81m';">
+            <p class="italic text-sm text-gray-600 mt-2">Hình 29.2. Va chạm mềm</p>
+        </div>
+
+        <p class="mb-4">Dùng hai xe A và B giống nhau, ở đầu mỗi xe có gắn một miếng nhựa dính. Cho xe A chuyển động với vận tốc \(v_A = v\) tới va chạm với xe kia đang đứng yên. Sau va chạm, cả hai xe dính vào nhau và chuyển động với vận tốc bằng \(V_{AB} = \frac{v}{2}\). Kiểu va chạm "dính" này gọi là va chạm mềm.</p>
+
+        <!-- Câu hỏi 4 -->
+        <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-[8px] my-5">
+            <div class="flex mb-2">
+                <span class="text-xl mr-2">❓</span>
+                <p class="font-semibold text-blue-900">
+                    1. Hãy tính động lượng và động năng của hệ trong Hình 29.2 trước và sau va chạm.<br>
+                    2. Từ kết quả tính được rút ra nhận xét gì?<br>
+                    3. Trong Hình 29.3, nếu kéo bi (1) lên thêm một độ cao h rồi thả ra. Con lắc sẽ rơi xuống và va chạm với hai con lắc còn lại. Hãy dự đoán xem va chạm là va chạm gì. Con lắc (2), (3) lên tới độ cao nào?
+                </p>
+            </div>
+            
+            <div class="my-4 text-center">
+                <img src="h3.png" alt="Hình 29.3" class="mx-auto max-h-48 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/400x200?text=H%C3%ACnh+29.3:+Con+l%E1%BA%AFc+Newton';">
+                <p class="italic text-sm text-gray-600 mt-1">Hình 29.3</p>
+            </div>
+
+            <button onclick="toggleAnswer('ans4')" class="mt-2 bg-[#330000] text-white px-4 py-2 rounded-md hover:bg-red-900 transition text-sm font-semibold">Xem lời giải</button>
+            <div id="ans4" class="hidden mt-4 bg-[#e6ffed] p-4 rounded-md border border-[#b7ebc5] text-green-900 shadow-sm">
+                <strong>Trả lời:</strong><br>
+                <strong>1. & 2. Tính và Nhận xét (Hình 29.2):</strong><br>
+                - Trước: \(p = mv\); \(W_d = \frac{1}{2}mv^2\)<br>
+                - Sau: Hai xe dính nhau khối lượng là \(2m\). \(p' = (2m).(\frac{v}{2}) = mv\). Động năng \(W'_d = \frac{1}{2}(2m)(\frac{v}{2})^2 = \frac{1}{4}mv^2\).<br>
+                => Nhận xét: Trong va chạm mềm, động lượng được bảo toàn nhưng động năng KHÔNG bảo toàn (một phần chuyển hóa thành nhiệt hoặc công làm biến dạng).<br><br>
+                <strong>3. Dự đoán (Hình 29.3):</strong><br>
+                Đây là va chạm đàn hồi (do các bi thép đàn hồi rất tốt). Bi (1) truyền toàn bộ động lượng cho bi (2), bi (2) truyền cho bi (3). Kết quả: Bi (1) và (2) sẽ đứng yên, bi (3) sẽ văng lên đúng độ cao \(h\).
+            </div>
+        </div>
+    </div>
+
+    <!-- EM ĐÃ HỌC -->
+    <div class="bg-blue-50 border-2 border-blue-200 rounded-[12px] shadow-sm p-6 mb-8">
+        <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-center">
+            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+            EM ĐÃ HỌC
+        </h3>
+        <ul class="list-disc list-inside space-y-2 text-gray-800">
+            <li>Một hệ nhiều vật tác dụng lẫn nhau được gọi là <strong>hệ kín</strong> (hay hệ cô lập) khi không có ngoại lực tác dụng vào hệ hoặc khi các ngoại lực cân bằng nhau.</li>
+            <li><strong>Định luật bảo toàn động lượng:</strong> "Động lượng toàn phần của hệ kín là một đại lượng bảo toàn".</li>
+            <li>Có hai kiểu va chạm thường gặp là <strong>va chạm đàn hồi</strong> và <strong>va chạm mềm</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- EM CÓ THỂ -->
+    <div class="bg-purple-50 border-2 border-purple-200 rounded-[12px] shadow-sm p-6 mb-8">
+        <h3 class="text-xl font-bold text-purple-900 mb-4 flex items-center">
+            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A12.014 12.014 0 0010 1a11.996 11.996 0 00-7.39 2.52c-.63.504-1.124 1.15-1.442 1.884-.317.734-.45 1.545-.386 2.352.164 2.115 1.34 4.015 3.12 5.143l1.83 1.157v3.298c0 .874.577 1.63 1.417 1.884l1.34.402a2.003 2.003 0 001.024 0l1.34-.402c.84-.254 1.417-1.01 1.417-1.884v-3.298l1.83-1.157c1.78-1.128 2.956-3.028 3.12-5.143.064-.807-.069-1.618-.386-2.352-.318-.734-.812-1.38-1.442-1.884a12.012 12.012 0 00-2.096-1.474zm-2.083 11.23a4.004 4.004 0 01-3.69-2.385c-.171-.43-.075-.92.247-1.26a1.99 1.99 0 011.69-.646l.492.05a1.99 1.99 0 011.666 2.185v1.272a.998.998 0 00.99 1.116h.053a4.004 4.004 0 01-1.448 0h-.001v-1.332a2.003 2.003 0 011.512-1.942l.492-.05a1.99 1.99 0 011.69.646c.322.34.418.83.247 1.26a4.004 4.004 0 01-3.69 2.385v1.332h-.053v-1.332z" clip-rule="evenodd"></path></svg>
+            EM CÓ THỂ
+        </h3>
+        <p class="mb-3 font-semibold text-gray-800">Vận dụng định luật bảo toàn động lượng để giải thích:</p>
+        
+        <div class="my-4 text-center">
+            <img src="h4.png" alt="Hình 29.4: Hai người đẩy nhau trên băng" class="mx-auto max-h-48 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/400x200?text=H%C3%ACnh+29.4:+Tr%C6%B0%E1%BB%A3t+b%C4%83ng';">
+            <p class="italic text-sm text-gray-600 mt-1">Hình 29.4</p>
+        </div>
+
+        <ol class="list-decimal list-inside space-y-2 mb-4 text-gray-800">
+            <li>Tại sao hai người đang đứng yên trên sân băng bị lùi ra xa nhau khi họ dùng tay đẩy vào nhau (Hình 29.4).</li>
+            <li>Tại sao tốc độ lùi của mỗi người có khối lượng khác nhau thì khác nhau.</li>
+        </ol>
+
+        <button onclick="toggleAnswer('ans5')" class="mt-2 bg-purple-800 text-white px-4 py-2 rounded-md hover:bg-purple-900 transition text-sm font-semibold">Xem gợi ý giải thích</button>
+        <div id="ans5" class="hidden mt-4 bg-purple-100 p-4 rounded-md border border-purple-300 text-purple-900 shadow-sm">
+            <strong>Gợi ý:</strong><br>
+            1. Ma sát trên sân băng rất nhỏ, trọng lực cân bằng với phản lực nên hệ hai người có thể coi là hệ kín. Ban đầu cả hai đứng yên nên tổng động lượng \(\vec{p} = \vec{0}\). Khi đẩy nhau, theo ĐLBT động lượng: \(m_1\vec{v}_1 + m_2\vec{v}_2 = \vec{0} \Rightarrow m_1\vec{v}_1 = -m_2\vec{v}_2\). Dấu trừ cho thấy hai người chuyển động ngược chiều nhau (lùi ra xa nhau).<br>
+            2. Từ biểu thức trên về độ lớn ta có: \(v_1 = \frac{m_2}{m_1}v_2\). Tốc độ lùi tỉ lệ nghịch với khối lượng. Người nào nặng hơn sẽ lùi lại với tốc độ nhỏ hơn.
+        </div>
+    </div>
+
+
+    <!-- BÀI TẬP CỦNG CỐ & VẬN DỤNG -->
+    <div class="bg-white rounded-[12px] shadow-md p-6 mt-12 border-t-4 border-[#330000]">
+        <h2 class="text-2xl font-bold uppercase text-[#330000] mb-6 text-center">BÀI TẬP CỦNG CỐ VÀ VẬN DỤNG</h2>
+
+        <!-- Trắc nghiệm -->
+        <h3 class="text-xl font-bold mb-4 text-gray-800">A. Câu hỏi trắc nghiệm</h3>
+        <div class="space-y-6">
+            <!-- Q1 -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+                <p class="font-semibold mb-2">Câu 1: Hệ nào sau đây có thể được coi là hệ kín?</p>
+                <div class="space-y-1">
+                    <label class="flex items-center"><input type="radio" name="q1" value="A" class="mr-2"> A. Một ô tô đang hãm phanh trên đường.</label>
+                    <label class="flex items-center"><input type="radio" name="q1" value="B" class="mr-2"> B. Hai viên bi va chạm trên mặt bàn nằm ngang không ma sát.</label>
+                    <label class="flex items-center"><input type="radio" name="q1" value="C" class="mr-2"> C. Một vật đang rơi tự do trong không khí.</label>
+                    <label class="flex items-center"><input type="radio" name="q1" value="D" class="mr-2"> D. Một đoàn tàu đang tăng tốc.</label>
+                </div>
+                <div id="expl_q1" class="hidden"></div>
+            </div>
+            
+            <!-- Q2 -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+                <p class="font-semibold mb-2">Câu 2: Đơn vị của động lượng là gì?</p>
+                <div class="space-y-1">
+                    <label class="flex items-center"><input type="radio" name="q2" value="A" class="mr-2"> A. N.m/s</label>
+                    <label class="flex items-center"><input type="radio" name="q2" value="B" class="mr-2"> B. kg.m/s</label>
+                    <label class="flex items-center"><input type="radio" name="q2" value="C" class="mr-2"> C. kg.m/s²</label>
+                    <label class="flex items-center"><input type="radio" name="q2" value="D" class="mr-2"> D. J.s</label>
+                </div>
+                <div id="expl_q2" class="hidden"></div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+                <p class="font-semibold mb-2">Câu 3: Phát biểu nào sau đây là đúng về định luật bảo toàn động lượng?</p>
+                <div class="space-y-1">
+                    <label class="flex items-center"><input type="radio" name="q3" value="A" class="mr-2"> A. Động lượng của mỗi vật trong hệ kín luôn không đổi.</label>
+                    <label class="flex items-center"><input type="radio" name="q3" value="B" class="mr-2"> B. Động lượng của hệ kín chỉ bảo toàn về độ lớn, không bảo toàn về hướng.</label>
+                    <label class="flex items-center"><input type="radio" name="q3" value="C" class="mr-2"> C. Động lượng toàn phần của một hệ kín là đại lượng bảo toàn.</label>
+                    <label class="flex items-center"><input type="radio" name="q3" value="D" class="mr-2"> D. Động năng của hệ kín luôn bảo toàn.</label>
+                </div>
+                <div id="expl_q3" class="hidden"></div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+                <p class="font-semibold mb-2">Câu 4: Đặc điểm nào sau đây là của va chạm mềm?</p>
+                <div class="space-y-1">
+                    <label class="flex items-center"><input type="radio" name="q4" value="A" class="mr-2"> A. Sau va chạm hai vật dính vào nhau và chuyển động cùng vận tốc.</label>
+                    <label class="flex items-center"><input type="radio" name="q4" value="B" class="mr-2"> B. Động năng của hệ được bảo toàn hoàn toàn.</label>
+                    <label class="flex items-center"><input type="radio" name="q4" value="C" class="mr-2"> C. Vận tốc hai vật luôn đổi chiều sau va chạm.</label>
+                    <label class="flex items-center"><input type="radio" name="q4" value="D" class="mr-2"> D. Tổng động lượng của hệ không được bảo toàn.</label>
+                </div>
+                <div id="expl_q4" class="hidden"></div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+                <p class="font-semibold mb-2">Câu 5: Biểu thức đúng của định luật bảo toàn động lượng cho hệ gồm 2 vật va chạm là:</p>
+                <div class="space-y-1">
+                    <label class="flex items-center"><input type="radio" name="q5" value="A" class="mr-2"> A. \( m_1v_1 + m_2v_2 = m_1v'_1 + m_2v'_2 \)</label>
+                    <label class="flex items-center"><input type="radio" name="q5" value="B" class="mr-2"> B. \( \vec{p}_1 - \vec{p}_2 = \vec{p}'_1 - \vec{p}'_2 \)</label>
+                    <label class="flex items-center"><input type="radio" name="q5" value="C" class="mr-2"> C. \( m_1\vec{v}_1 + m_2\vec{v}_2 = m_1\vec{v}'_1 + m_2\vec{v}'_2 \)</label>
+                    <label class="flex items-center"><input type="radio" name="q5" value="D" class="mr-2"> D. \( \frac{1}{2}m_1v_1^2 + \frac{1}{2}m_2v_2^2 = \text{const} \)</label>
+                </div>
+                <div id="expl_q5" class="hidden"></div>
+            </div>
+            
+            <button onclick="checkQuiz()" class="w-full bg-[#1a365d] text-white font-bold py-3 rounded-md hover:bg-blue-900 transition shadow-md mt-4">NỘP BÀI TRẮC NGHIỆM</button>
+            <div id="quiz-result" class="hidden text-xl mt-4"></div>
+        </div>
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- Tự luận -->
+        <h3 class="text-xl font-bold mb-4 text-gray-800">B. Bài tập tự luận vận dụng</h3>
+        <div class="space-y-6">
+            <!-- Bài 1 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-[8px]">
+                <p class="font-semibold text-blue-900 mb-2">Bài 1:</p>
+                <p>Một xe chở cát khối lượng \(m_1 = 390\) kg đang chuyển động theo phương ngang với vận tốc \(v_1 = 8\) m/s. Một viên đạn khối lượng \(m_2 = 10\) kg bay ngang với vận tốc \(v_2 = 120\) m/s cùng chiều với xe cát, đến ghim vào trong cát. Tính vận tốc của xe cát sau khi viên đạn ghim vào.</p>
+                <button onclick="toggleAnswer('tl1')" class="mt-3 bg-[#330000] text-white px-4 py-2 rounded-md hover:bg-red-900 transition text-sm font-semibold">Xem lời giải chi tiết</button>
+                <div id="tl1" class="hidden mt-4 bg-white p-4 rounded-md border border-gray-300 text-gray-800">
+                    <strong>Giải:</strong><br>
+                    Đây là bài toán va chạm mềm. Hệ (xe cát + đạn) là hệ kín theo phương ngang.<br>
+                    Chọn chiều dương là chiều chuyển động ban đầu của xe.<br>
+                    - Động lượng trước va chạm: \(p = m_1v_1 + m_2v_2\)<br>
+                    - Động lượng sau va chạm (đạn ghim vào xe): \(p' = (m_1 + m_2)V\)<br>
+                    Áp dụng định luật bảo toàn động lượng: \(p = p'\)<br>
+                    \(\Rightarrow m_1v_1 + m_2v_2 = (m_1 + m_2)V\)<br>
+                    \(\Rightarrow V = \frac{m_1v_1 + m_2v_2}{m_1 + m_2} = \frac{390 \times 8 + 10 \times 120}{390 + 10} = \frac{3120 + 1200}{400} = 10.8\) (m/s).<br>
+                    <em>Kết luận: Xe tiếp tục chuyển động cùng chiều ban đầu với vận tốc 10.8 m/s.</em>
+                </div>
+            </div>
+
+            <!-- Bài 2 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-[8px]">
+                <p class="font-semibold text-blue-900 mb-2">Bài 2:</p>
+                <p>Một khẩu súng đại bác khối lượng \(M = 500\) kg đứng yên. Bắn ra một viên đạn khối lượng \(m = 5\) kg với vận tốc \(v = 400\) m/s theo phương ngang. Bỏ qua ma sát. Tính vận tốc giật lùi của súng sau khi bắn.</p>
+                <button onclick="toggleAnswer('tl2')" class="mt-3 bg-[#330000] text-white px-4 py-2 rounded-md hover:bg-red-900 transition text-sm font-semibold">Xem lời giải chi tiết</button>
+                <div id="tl2" class="hidden mt-4 bg-white p-4 rounded-md border border-gray-300 text-gray-800">
+                    <strong>Giải:</strong><br>
+                    Hệ (súng + đạn) là hệ kín trong thời gian ngắn lúc nổ.<br>
+                    Chọn chiều dương là chiều bay của viên đạn.<br>
+                    - Trước khi bắn, hệ đứng yên: \(p_0 = 0\).<br>
+                    - Sau khi bắn, động lượng hệ: \(\vec{p} = m\vec{v} + M\vec{V}\)<br>
+                    Áp dụng định luật bảo toàn động lượng: \(\vec{p}_0 = \vec{p} \Rightarrow \vec{0} = m\vec{v} + M\vec{V}\)<br>
+                    \(\Rightarrow \vec{V} = -\frac{m}{M}\vec{v}\). Dấu trừ chứng tỏ súng bị giật lùi ngược chiều đạn.<br>
+                    Độ lớn vận tốc giật lùi: \(V = \frac{m \times v}{M} = \frac{5 \times 400}{500} = 4\) (m/s).<br>
+                    <em>Kết luận: Súng giật lùi với tốc độ 4 m/s.</em>
+                </div>
+            </div>
+
+            <!-- Bài 3 -->
+            <div class="bg-[#edf2f7] border-l-4 border-blue-800 p-4 rounded-[8px]">
+                <p class="font-semibold text-blue-900 mb-2">Bài 3:</p>
+                <p>Một vật khối lượng \(m_1 = 2\) kg chuyển động với vận tốc 3 m/s đến va chạm đàn hồi trực diện với vật khối lượng \(m_2 = 3\) kg đang đứng yên trên mặt phẳng nằm ngang không ma sát. Xác định vận tốc của hai vật ngay sau va chạm.</p>
+                <button onclick="toggleAnswer('tl3')" class="mt-3 bg-[#330000] text-white px-4 py-2 rounded-md hover:bg-red-900 transition text-sm font-semibold">Xem lời giải chi tiết</button>
+                <div id="tl3" class="hidden mt-4 bg-white p-4 rounded-md border border-gray-300 text-gray-800">
+                    <strong>Giải:</strong><br>
+                    Gọi \(v_1 = 3\) m/s, \(v_2 = 0\); \(v'_1\) và \(v'_2\) là vận tốc sau va chạm.<br>
+                    Hệ là kín và va chạm đàn hồi nên bảo toàn cả động lượng và động năng:<br>
+                    (1) \(m_1v_1 + m_2v_2 = m_1v'_1 + m_2v'_2 \Rightarrow 2 \times 3 + 0 = 2v'_1 + 3v'_2 \Rightarrow 2v'_1 + 3v'_2 = 6\)<br>
+                    (2) \(\frac{1}{2}m_1v_1^2 + 0 = \frac{1}{2}m_1(v'_1)^2 + \frac{1}{2}m_2(v'_2)^2 \Rightarrow 2 \times 3^2 = 2(v'_1)^2 + 3(v'_2)^2 \Rightarrow 2(v'_1)^2 + 3(v'_2)^2 = 18\)<br>
+                    (Công thức giải nhanh cho va chạm đàn hồi 1 chiều vật 2 đứng yên):<br>
+                    \(v'_1 = \frac{m_1 - m_2}{m_1 + m_2}v_1 = \frac{2 - 3}{2 + 3} \times 3 = \frac{-1}{5} \times 3 = -0.6\) (m/s). (Vật 1 bị bật ngược lại).<br>
+                    \(v'_2 = \frac{2m_1}{m_1 + m_2}v_1 = \frac{2 \times 2}{2 + 3} \times 3 = \frac{4}{5} \times 3 = 2.4\) (m/s). (Vật 2 tiến tới).<br>
+                    <em>Kết luận: Vật 1 bật ngược lại với vận tốc 0.6 m/s, vật 2 chuyển động tiến lên với vận tốc 2.4 m/s.</em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

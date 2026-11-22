@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phân Tích Lực Trên Các Vật Chồng Lên Nhau — Vật Lý 10 (GDPT 2018)</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      box-sizing: border-box;
+    }
+
+    /* Subtle engineering dot-grid background for Canvas */
+    .canvas-grid {
+      background-color: #f8fafc;
+      background-image: radial-gradient(#cbd5e1 1.15px, transparent 1.15px);
+      background-size: 20px 20px;
+    }
+
+    /* Crisp vector arrow above symbol without external dependencies */
+    .vec {
+      position: relative;
+      display: inline-block;
+      font-weight: 800;
+      font-style: italic;
+      line-height: 1.15;
+      padding-top: 0.22em;
+    }
+    .vec::before {
+      content: "→";
+      position: absolute;
+      top: -0.34em;
+      left: 50%;
+      transform: translateX(-50%);
+      font-style: normal;
+      font-size: 0.78em;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* Thin custom scrollbar */
+    .thin-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .thin-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .thin-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .thin-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Floating drag ghost following pointer */
+    #drag-ghost {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.08s ease;
+    }
+
+    /* Gentle shake animation for wrong feedback */
+    @keyframes shakeX {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .animate-shake {
+      animation: shakeX 0.36s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-900">
+  <!-- Main Application Shell (Optimized for 1-screen Desktop / Projector & Responsive Mobile) -->
+  <div id="app" class="min-h-screen lg:h-screen flex flex-col overflow-x-hidden lg:overflow-hidden">
+
+    <!-- Top Header & Controls -->
+    <header class="bg-white border-b border-slate-200 px-3 sm:px-5 py-2 shadow-sm z-20 shrink-0">
+      <div class="max-w-[1640px] mx-auto flex flex-wrap items-center justify-between gap-2">
+
+        <!-- Title & Curriculum Badge -->
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 text-white flex items-center justify-center shadow-sm shrink-0">
+            <span class="vec text-base text-white">F</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-sm sm:text-base font-extrabold text-slate-900 leading-tight">
+                Phân Tích Lực Trên Các Vật Chồng Lên Nhau
+              </h1>
+              <span class="hidden xl:inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                Vật lí 10 • KNTT
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500 hidden sm:block">
+              Kéo thả thẻ vectơ lực vào điểm neo trên vật • Hỗ trợ chuột, cảm ứng &amp; bảng tương tác
+            </p>
+          </div>
+        </div>
+
+        <!-- Level Tabs: 2, 3, 4 Stacked Objects -->
+        <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <button
+            id="tab-level-2"
+            type="button"
+            onclick="setSystemLevel(2)"
+            class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer"
+          >
+            Hệ 2 vật
+          </button>
+          <button
+            id="tab-level-3"
+            type="button"
+            onclick="setSystemLevel(3)"
+            class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer"
+          >
+            Hệ 3 vật
+          </button>
+          <button
+            id="tab-level-4"
+            type="button"
+            onclick="setSystemLevel(4)"
+            class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer"
+          >
+            Hệ 4 vật
+          </button>
+        </div>
+
+        <!-- Right Header Toggles: Exploded View & Sound -->
+        <div class="flex items-center gap-2">
+          <!-- Exploded View Toggle -->
+          <button
+            id="btn-exploded"
+            type="button"
+            onclick="toggleExplodedView()"
+            title="Giãn khoảng cách giữa các lớp để dễ đặt lực tại mặt tiếp xúc"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12M5 20h14" />
+            </svg>
+            <span>Tách nhẹ các lớp</span>
+          </button>
+
+          <!-- Sound Feedback Toggle -->
+          <button
+            id="btn-sound"
+            type="button"
+            onclick="toggleSound()"
+            title="Bật/tắt âm thanh phản hồi"
+            class="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer"
+            aria-label="Âm thanh"
+          >
+            <svg id="icon-sound-on" class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+            <svg id="icon-sound-off" class="w-4 h-4 text-slate-400 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main 2-Column Workspace -->
+    <main class="flex-1 max-w-[1640px] w-full mx-auto p-2.5 sm:p-3.5 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:overflow-hidden">
+
+      <!-- LEFT COLUMN (7 cols): Interactive Canvas + Inspection Mode + Feedback Panel -->
+      <section class="lg:col-span-7 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden min-h-[430px] sm:min-h-[490px] lg:min-h-0">
+
+        <!-- Inspection Mode Bar ("Phân tích từng vật" vs "Xem toàn hệ") -->
+        <div class="px-3 py-2 border-b border-slate-200 bg-slate-50/90 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-xs font-bold text-slate-600 mr-1">Chế độ khảo sát:</span>
+            <div class="inline-flex rounded-xl bg-slate-200/70 p-0.5 border border-slate-200">
+              <button
+                id="mode-single-btn"
+                type="button"
+                onclick="setInspectionMode('single')"
+                class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer"
+              >
+                Phân tích từng vật
+              </button>
+              <button
+                id="mode-all-btn"
+                type="button"
+                onclick="setInspectionMode('all')"
+                class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer"
+              >
+                Xem toàn hệ
+              </button>
+            </div>
+
+            <!-- Object Selector Pills (Active in 'single' mode) -->
+            <div id="single-object-pills" class="flex items-center gap-1 flex-wrap ml-1"></div>
+          </div>
+
+          <!-- Legend Pills -->
+          <div class="hidden sm:flex items-center gap-2.5 text-[11px] font-semibold text-slate-600">
+            <span class="inline-flex items-center gap-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>Trọng lực
+            </span>
+            <span class="inline-flex items-center gap-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>Phản lực
+            </span>
+            <span class="inline-flex items-center gap-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>Áp lực nén
+            </span>
+          </div>
+        </div>
+
+        <!-- Scenario Subtitle Banner -->
+        <div class="px-3.5 py-1.5 bg-indigo-50/60 border-b border-indigo-100 flex items-center justify-between gap-2 text-xs">
+          <div class="text-slate-700 truncate">
+            <span id="scenario-title-badge" class="font-extrabold text-indigo-700 mr-1.5">Hệ 2 vật:</span>
+            <span id="scenario-subtitle">Quyển sách đỏ (1) đặt trên Tấm ván gỗ (2) nằm trên mặt bàn phẳng ngang.</span>
+          </div>
+          <span id="target-prompt-badge" class="shrink-0 font-bold text-indigo-800 bg-white px-2 py-0.5 rounded-md border border-indigo-200 text-[11px]">
+            Đang xét: Vật 1
+          </span>
+        </div>
+
+        <!-- HTML5 Interactive Canvas Container -->
+        <div id="canvas-container" class="relative flex-1 canvas-grid select-none touch-none overflow-hidden">
+          <canvas id="physics-canvas" class="w-full h-full block"></canvas>
+
+          <!-- Top-Left Live Drag / Hover Tip Overlay -->
+          <div
+            id="canvas-status-pill"
+            class="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur border border-slate-200 shadow-xs rounded-xl px-3 py-1.5 text-xs text-slate-700 flex items-center gap-2 max-w-[92%] pointer-events-none"
+          >
+            <span id="canvas-status-dot" class="w-2 h-2 rounded-full bg-indigo-500 shrink-0"></span>
+            <span id="canvas-status-text" class="font-medium truncate">
+              Kéo thẻ lực từ cột bên phải thả vào điểm neo (●) trên vật
+            </span>
+          </div>
+
+          <!-- Bottom-Right Quick Canvas Tip -->
+          <div class="absolute bottom-2.5 right-2.5 bg-white/90 backdrop-blur border border-slate-200/80 rounded-xl px-2.5 py-1 text-[11px] text-slate-500 pointer-events-none hidden sm:block">
+            Mẹo: Kéo đầu mũi tên trên hình để đổi chiều ↑/↓ hoặc chỉnh độ dài • Kéo gốc mũi tên để đổi điểm neo
+          </div>
+        </div>
+
+        <!-- Pedagogical Feedback & Scoring Drawer -->
+        <div id="feedback-box" class="border-t border-slate-200 bg-slate-50 p-3 max-h-44 overflow-y-auto thin-scroll shrink-0">
+          <div id="feedback-content" class="text-xs text-slate-700">
+            <div class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-extrabold flex items-center justify-center shrink-0 mt-0.5">?</span>
+              <div class="leading-relaxed">
+                <p class="font-bold text-slate-800">Nhiệm vụ của em:</p>
+                <p class="text-slate-600 mt-0.5">
+                  Hãy xác định các lực tác dụng lên vật đang khảo sát. Kéo thẻ vectơ lực từ <strong>Kho thẻ vectơ lực</strong> bên phải và thả vào đúng <strong>điểm neo</strong> (Trọng tâm G hoặc Mặt tiếp xúc), sau đó bấm <strong>Kiểm tra kết quả</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN (5 cols): Vector Card Bank + Placed Forces + Action Buttons -->
+      <aside class="lg:col-span-5 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden lg:min-h-0">
+
+        <!-- Bank Header + Toggle Descriptions Switch -->
+        <div class="px-3.5 py-2.5 border-b border-slate-200 bg-slate-50/90 flex items-center justify-between gap-2 shrink-0">
+          <div>
+            <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Kho Thẻ Vectơ Lực</h2>
+            <p class="text-[11px] text-slate-500">Chạm &amp; kéo thả thẻ vào điểm neo trên hình vẽ</p>
+          </div>
+
+          <!-- Toggle Force Descriptions -->
+          <label class="inline-flex items-center gap-2 cursor-pointer select-none bg-white px-2.5 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+            <input
+              id="toggle-descriptions"
+              type="checkbox"
+              checked
+              onchange="toggleForceDescriptions(this.checked)"
+              class="sr-only peer"
+            />
+            <div class="w-8 h-4.5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:bg-indigo-600 relative transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:after:translate-x-3.5"></div>
+            <span class="text-[11px] font-bold text-slate-700">Chú thích tên lực</span>
+          </label>
+        </div>
+
+        <!-- Scrollable Force Bank & Placed List -->
+        <div class="flex-1 overflow-y-auto thin-scroll p-3 space-y-3.5">
+
+          <!-- Draggable Force Cards Grid -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
+                1. Kéo thẻ lực vào điểm neo
+              </span>
+              <span class="text-[11px] text-indigo-600 font-semibold">
+                Gồm lực đúng &amp; lực nhiễu
+              </span>
+            </div>
+            <div id="force-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+          </div>
+
+          <!-- Currently Placed Vectors List -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
+                2. Các lực đã đặt lên hình (<span id="placed-count-label">0</span>)
+              </span>
+              <button
+                type="button"
+                onclick="resetCurrentScope()"
+                class="text-xs font-bold text-rose-600 hover:text-rose-700 hover:underline cursor-pointer"
+              >
+                Làm lại
+              </button>
+            </div>
+            <div id="placed-vectors-list" class="space-y-1.5"></div>
+          </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="p-3 border-t border-slate-200 bg-slate-50 grid grid-cols-2 sm:grid-cols-4 gap-2 shrink-0">
+          <button
+            type="button"
+            onclick="stepByStepHint()"
+            class="px-2.5 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 text-xs font-bold transition cursor-pointer"
+          >
+            Gợi ý từng bước
+          </button>
+          <button
+            type="button"
+            onclick="showStandardAnswer()"
+            class="px-2.5 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-indigo-700 text-xs font-bold transition cursor-pointer"
+          >
+            Xem đáp án chuẩn
+          </button>
+          <button
+            type="button"
+            onclick="resetAllSystem()"
+            class="px-2.5 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold transition cursor-pointer"
+          >
+            Làm lại hết
+          </button>
+          <button
+            type="button"
+            onclick="evaluateStudentWork()"
+            class="px-3 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-xs font-extrabold shadow-sm transition cursor-pointer"
+          >
+            Kiểm tra kết quả
+          </button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Floating Drag Ghost Card (Follows Pointer During Drag) -->
+  <div id="drag-ghost" class="hidden"></div>
+
+  <script>
+    // =========================================================================
+    // 1. WEB AUDIO API SOUND EFFECTS (Soft, pleasant teacher/student feedback)
+    // =========================================================================
+    const audioState = {
+      enabled: true,
+      ctx: null
+    };
+
+    function getAudioCtx() {
+      if (!audioState.ctx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+          audioState.ctx = new AudioContext();
+        }
+      }
+      if (audioState.ctx && audioState.ctx.state === 'suspended') {
+        audioState.ctx.resume().catch(() => {});
+      }
+      return audioState.ctx;
+    }
+
+    function playTone(type) {
+      if (!audioState.enabled) return;
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      if (type === 'snap') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(540, now);
+        osc.frequency.exponentialRampToValueAtTime(760, now + 0.06);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc.start(now);
+        osc.stop(now + 0.075);
+      } else if (type === 'drop') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(420, now);
+        osc.frequency.exponentialRampToValueAtTime(620, now + 0.09);
+        gain.gain.setValueAtTime(0.11, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.start(now);
+        osc.stop(now + 0.11);
+      } else if (type === 'success') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.setValueAtTime(659.25, now + 0.09); // E5
+        osc.frequency.setValueAtTime(783.99, now + 0.18); // G5
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === 'error') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.linearRampToValueAtTime(175, now + 0.18);
+        gain.gain.setValueAtTime(0.07, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.21);
+      }
+    }
+
+    function toggleSound() {
+      audioState.enabled = !audioState.enabled;
+      document.getElementById('icon-sound-on').classList.toggle('hidden', !audioState.enabled);
+      document.getElementById('icon-sound-off').classList.toggle('hidden', audioState.enabled);
+      if (audioState.enabled) playTone('snap');
+    }
+
+    // =========================================================================
+    // 2. CURRICULUM DATA: VẬT LÝ 10 (KNTT) - 2, 3, 4 STACKED OBJECTS
+    // =========================================================================
+    // Visual styling tokens by force physical nature
+    const FORCE_THEMES = {
+      gravity: {
+        name: 'Trọng lực',
+        stroke: '#e11d48', // rose-600
+        lightBg: '#ffe4e6',
+        badgeClass: 'bg-rose-50 text-rose-700 border-rose-200'
+      },
+      normal: {
+        name: 'Phản lực',
+        stroke: '#059669', // emerald-600
+        lightBg: '#d1fae5',
+        badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200'
+      },
+      compression: {
+        name: 'Áp lực / Lực nén',
+        stroke: '#4f46e5', // indigo-600
+        lightBg: '#e0e7ff',
+        badgeClass: 'bg-indigo-50 text-indigo-700 border-indigo-200'
+      },
+      distractor: {
+        name: 'Lực khác',
+        stroke: '#64748b', // slate-500
+        lightBg: '#f1f5f9',
+        badgeClass: 'bg-slate-100 text-slate-700 border-slate-200'
+      }
+    };
+
+    const SYSTEM_LEVELS = {
+      2: {
+        level: 2,
+        title: 'Hệ 2 vật',
+        subtitle: 'Quyển sách đỏ (1) đặt trên Tấm ván gỗ (2) nằm trên mặt bàn phẳng ngang.',
+        objects: [
+          {
+            id: 'obj1',
+            num: 1,
+            name: 'Quyển sách đỏ (1)',
+            shortName: 'Sách (1)',
+            kind: 'book',
+            widthRatio: 0.30,
+            height: 44,
+            offsetXRatio: 0.04
+          },
+          {
+            id: 'obj2',
+            num: 2,
+            name: 'Tấm ván gỗ (2)',
+            shortName: 'Ván gỗ (2)',
+            kind: 'plank',
+            widthRatio: 0.62,
+            height: 46,
+            offsetXRatio: -0.02
+          }
+        ],
+        // Ground-truth forces acting on each object
+        expectedForces: [
+          // Vật 1: Quyển sách đỏ
+          {
+            targetObj: 'obj1',
+            anchorId: 'com_obj1',
+            code: 'P1',
+            htmlSymbol: '<span class="vec">P</span><sub>1</sub>',
+            canvasLabel: 'P₁',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực của Trái Đất hút quyển sách (1)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>1</sub> do Trái Đất tác dụng lên quyển sách (1), đặt tại trọng tâm G<sub>1</sub> và hướng thẳng đứng xuống dưới.'
+          },
+          {
+            targetObj: 'obj1',
+            anchorId: 'bot_obj1',
+            code: 'N21',
+            htmlSymbol: '<span class="vec">N</span><sub>21</sub>',
+            canvasLabel: 'N₂₁',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của tấm ván (2) nâng quyển sách (1)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>21</sub> do tấm ván (2) đẩy quyển sách (1) lên trên, đặt tại mặt tiếp xúc dưới của sách.'
+          },
+          // Vật 2: Tấm ván gỗ
+          {
+            targetObj: 'obj2',
+            anchorId: 'com_obj2',
+            code: 'P2',
+            htmlSymbol: '<span class="vec">P</span><sub>2</sub>',
+            canvasLabel: 'P₂',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực của Trái Đất hút tấm ván (2)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>2</sub> tác dụng lên tấm ván gỗ (2), đặt tại trọng tâm G<sub>2</sub> và hướng thẳng đứng xuống dưới.'
+          },
+          {
+            targetObj: 'obj2',
+            anchorId: 'top_obj2',
+            code: 'Q12',
+            htmlSymbol: '<span class="vec">Q</span><sub>12</sub>',
+            canvasLabel: 'Q₁₂',
+            theme: 'compression',
+            dir: 'down',
+            desc: 'Áp lực của quyển sách (1) đè lên tấm ván (2)',
+            explanation: 'Áp lực (lực nén) <span class="vec">Q</span><sub>12</sub> do quyển sách (1) đè lên mặt trên của tấm ván (2), đặt tại mặt tiếp xúc trên của ván và hướng xuống.'
+          },
+          {
+            targetObj: 'obj2',
+            anchorId: 'bot_obj2',
+            code: 'N_ban_2',
+            htmlSymbol: '<span class="vec">N</span><sub>bàn→2</sub>',
+            canvasLabel: 'N_bàn→2',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của mặt bàn nâng tấm ván (2)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>bàn→2</sub> của mặt bàn đỡ tấm ván gỗ (2), đặt tại mặt tiếp xúc đáy ván với bàn và hướng lên.'
+          }
+        ],
+        // Distractor cards (Pedagogical traps)
+        distractorCards: [
+          {
+            code: 'Fmsn',
+            htmlSymbol: '<span class="vec">F</span><sub>msn</sub>',
+            canvasLabel: 'F_msn',
+            theme: 'distractor',
+            dir: 'right',
+            desc: 'Lực ma sát nghỉ theo phương ngang',
+            wrongReason: 'Hệ các vật nằm yên trên mặt bàn phẳng ngang và không có ngoại lực kéo/đẩy theo phương ngang nên không xuất hiện lực ma sát nghỉ.'
+          },
+          {
+            code: 'Fk',
+            htmlSymbol: '<span class="vec">F</span><sub>k</sub>',
+            canvasLabel: 'F_k',
+            theme: 'distractor',
+            dir: 'right',
+            desc: 'Lực kéo theo phương nằm ngang',
+            wrongReason: 'Đề bài không có lực kéo ngang tác dụng lên hệ vật.'
+          },
+          {
+            code: 'FA',
+            htmlSymbol: '<span class="vec">F</span><sub>A</sub>',
+            canvasLabel: 'F_A',
+            theme: 'distractor',
+            dir: 'up',
+            desc: 'Lực đẩy Ác-si-mét',
+            wrongReason: 'Các vật đặt trong không khí trên mặt bàn, không nhúng trong chất lỏng nên không xét lực đẩy Ác-si-mét.'
+          }
+        ]
+      },
+
+      3: {
+        level: 3,
+        title: 'Hệ 3 vật',
+        subtitle: 'Hộp bút xanh (1) đặt trên Quyển sách đỏ (2) đặt trên Tấm ván gỗ (3) nằm trên mặt bàn.',
+        objects: [
+          {
+            id: 'obj1',
+            num: 1,
+            name: 'Hộp bút xanh (1)',
+            shortName: 'Hộp bút (1)',
+            kind: 'pencilcase',
+            widthRatio: 0.24,
+            height: 38,
+            offsetXRatio: 0.03
+          },
+          {
+            id: 'obj2',
+            num: 2,
+            name: 'Quyển sách đỏ (2)',
+            shortName: 'Sách (2)',
+            kind: 'book',
+            widthRatio: 0.36,
+            height: 40,
+            offsetXRatio: 0.01
+          },
+          {
+            id: 'obj3',
+            num: 3,
+            name: 'Tấm ván gỗ (3)',
+            shortName: 'Ván gỗ (3)',
+            kind: 'plank',
+            widthRatio: 0.64,
+            height: 44,
+            offsetXRatio: -0.02
+          }
+        ],
+        expectedForces: [
+          // Vật 1: Hộp bút xanh
+          {
+            targetObj: 'obj1',
+            anchorId: 'com_obj1',
+            code: 'P1',
+            htmlSymbol: '<span class="vec">P</span><sub>1</sub>',
+            canvasLabel: 'P₁',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực tác dụng lên hộp bút (1)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>1</sub> hút hộp bút (1) xuống dưới, đặt tại trọng tâm G<sub>1</sub>.'
+          },
+          {
+            targetObj: 'obj1',
+            anchorId: 'bot_obj1',
+            code: 'N21',
+            htmlSymbol: '<span class="vec">N</span><sub>21</sub>',
+            canvasLabel: 'N₂₁',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của sách (2) nâng hộp bút (1)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>21</sub> do quyển sách (2) đỡ hộp bút (1) tại mặt tiếp xúc dưới của hộp bút, hướng lên.'
+          },
+          // Vật 2: Quyển sách đỏ
+          {
+            targetObj: 'obj2',
+            anchorId: 'com_obj2',
+            code: 'P2',
+            htmlSymbol: '<span class="vec">P</span><sub>2</sub>',
+            canvasLabel: 'P₂',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực tác dụng lên quyển sách (2)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>2</sub> hút quyển sách (2) xuống dưới, đặt tại trọng tâm G<sub>2</sub>.'
+          },
+          {
+            targetObj: 'obj2',
+            anchorId: 'top_obj2',
+            code: 'Q12',
+            htmlSymbol: '<span class="vec">Q</span><sub>12</sub>',
+            canvasLabel: 'Q₁₂',
+            theme: 'compression',
+            dir: 'down',
+            desc: 'Áp lực của hộp bút (1) đè lên sách (2)',
+            explanation: 'Áp lực <span class="vec">Q</span><sub>12</sub> của hộp bút (1) nén xuống mặt trên quyển sách (2).'
+          },
+          {
+            targetObj: 'obj2',
+            anchorId: 'bot_obj2',
+            code: 'N32',
+            htmlSymbol: '<span class="vec">N</span><sub>32</sub>',
+            canvasLabel: 'N₃₂',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của ván (3) nâng quyển sách (2)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>32</sub> do tấm ván (3) đẩy quyển sách (2) lên trên tại mặt tiếp xúc dưới của sách.'
+          },
+          // Vật 3: Tấm ván gỗ
+          {
+            targetObj: 'obj3',
+            anchorId: 'com_obj3',
+            code: 'P3',
+            htmlSymbol: '<span class="vec">P</span><sub>3</sub>',
+            canvasLabel: 'P₃',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực tác dụng lên tấm ván (3)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>3</sub> hút tấm ván (3) xuống dưới, đặt tại trọng tâm G<sub>3</sub>.'
+          },
+          {
+            targetObj: 'obj3',
+            anchorId: 'top_obj3',
+            code: 'Q23',
+            htmlSymbol: '<span class="vec">Q</span><sub>23</sub>',
+            canvasLabel: 'Q₂₃',
+            theme: 'compression',
+            dir: 'down',
+            desc: 'Áp lực của sách (2) đè lên tấm ván (3)',
+            explanation: 'Áp lực <span class="vec">Q</span><sub>23</sub> do quyển sách (2) nén xuống mặt trên của tấm ván (3).'
+          },
+          {
+            targetObj: 'obj3',
+            anchorId: 'bot_obj3',
+            code: 'N_ban_3',
+            htmlSymbol: '<span class="vec">N</span><sub>bàn→3</sub>',
+            canvasLabel: 'N_bàn→3',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của mặt bàn nâng tấm ván (3)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>bàn→3</sub> của mặt bàn đỡ tấm ván (3) tại mặt tiếp xúc đáy ván, hướng lên.'
+          }
+        ],
+        distractorCards: [
+          {
+            code: 'Q13',
+            htmlSymbol: '<span class="vec">Q</span><sub>13</sub>',
+            canvasLabel: 'Q₁₃',
+            theme: 'compression',
+            dir: 'down',
+            desc: 'Áp lực trực tiếp của vật (1) lên vật (3)',
+            wrongReason: 'Hộp bút (1) và tấm ván (3) không tiếp xúc trực tiếp với nhau (có sách (2) nằm giữa) nên không có lực tiếp xúc trực tiếp giữa (1) và (3).'
+          },
+          {
+            code: 'Fmsn',
+            htmlSymbol: '<span class="vec">F</span><sub>msn</sub>',
+            canvasLabel: 'F_msn',
+            theme: 'distractor',
+            dir: 'right',
+            desc: 'Lực ma sát nghỉ theo phương ngang',
+            wrongReason: 'Hệ đặt nằm yên trên mặt bàn ngang, không có xu hướng trượt ngang nên không có lực ma sát nghỉ.'
+          },
+          {
+            code: 'FA',
+            htmlSymbol: '<span class="vec">F</span><sub>A</sub>',
+            canvasLabel: 'F_A',
+            theme: 'distractor',
+            dir: 'up',
+            desc: 'Lực đẩy Ác-si-mét',
+            wrongReason: 'Không có chất lỏng bao quanh để gây ra lực đẩy Ác-si-mét đáng kể.'
+          }
+        ]
+      },
+
+      4: {
+        level: 4,
+        title: 'Hệ 4 vật',
+        subtitle: 'Khối lập phương gỗ (1) đặt trên Hộp bút (2) đặt trên Quyển sách đỏ (3) đặt trên Tấm ván gỗ (4).',
+        objects: [
+          {
+            id: 'obj1',
+            num: 1,
+            name: 'Khối lập phương gỗ (1)',
+            shortName: 'Khối gỗ (1)',
+            kind: 'cube',
+            widthRatio: 0.16,
+            height: 36,
+            offsetXRatio: 0.04
+          },
+          {
+            id: 'obj2',
+            num: 2,
+            name: 'Hộp bút xanh (2)',
+            shortName: 'Hộp bút (2)',
+            kind: 'pencilcase',
+            widthRatio: 0.28,
+            height: 36,
+            offsetXRatio: 0.02
+          },
+          {
+            id: 'obj3',
+            num: 3,
+            name: 'Quyển sách đỏ (3)',
+            shortName: 'Sách (3)',
+            kind: 'book',
+            widthRatio: 0.42,
+            height: 38,
+            offsetXRatio: 0.00
+          },
+          {
+            id: 'obj4',
+            num: 4,
+            name: 'Tấm ván gỗ (4)',
+            shortName: 'Ván gỗ (4)',
+            kind: 'plank',
+            widthRatio: 0.66,
+            height: 42,
+            offsetXRatio: -0.02
+          }
+        ],
+        expectedForces: [
+          // Vật 1: Khối lập phương gỗ
+          {
+            targetObj: 'obj1',
+            anchorId: 'com_obj1',
+            code: 'P1',
+            htmlSymbol: '<span class="vec">P</span><sub>1</sub>',
+            canvasLabel: 'P₁',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực tác dụng lên khối gỗ (1)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>1</sub> đặt tại trọng tâm G<sub>1</sub> của khối gỗ (1), hướng xuống.'
+          },
+          {
+            targetObj: 'obj1',
+            anchorId: 'bot_obj1',
+            code: 'N21',
+            htmlSymbol: '<span class="vec">N</span><sub>21</sub>',
+            canvasLabel: 'N₂₁',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của hộp bút (2) nâng khối gỗ (1)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>21</sub> của hộp bút (2) nâng khối gỗ (1) tại mặt tiếp xúc dưới khối gỗ, hướng lên.'
+          },
+          // Vật 2: Hộp bút xanh
+          {
+            targetObj: 'obj2',
+            anchorId: 'com_obj2',
+            code: 'P2',
+            htmlSymbol: '<span class="vec">P</span><sub>2</sub>',
+            canvasLabel: 'P₂',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực tác dụng lên hộp bút (2)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>2</sub> đặt tại trọng tâm G<sub>2</sub> của hộp bút (2), hướng xuống.'
+          },
+          {
+            targetObj: 'obj2',
+            anchorId: 'top_obj2',
+            code: 'Q12',
+            htmlSymbol: '<span class="vec">Q</span><sub>12</sub>',
+            canvasLabel: 'Q₁₂',
+            theme: 'compression',
+            dir: 'down',
+            desc: 'Áp lực của khối gỗ (1) đè lên hộp bút (2)',
+            explanation: 'Áp lực <span class="vec">Q</span><sub>12</sub> của khối gỗ (1) đè xuống mặt trên hộp bút (2).'
+          },
+          {
+            targetObj: 'obj2',
+            anchorId: 'bot_obj2',
+            code: 'N32',
+            htmlSymbol: '<span class="vec">N</span><sub>32</sub>',
+            canvasLabel: 'N₃₂',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của sách (3) nâng hộp bút (2)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>32</sub> của quyển sách (3) đẩy hộp bút (2) lên tại mặt tiếp xúc dưới hộp bút.'
+          },
+          // Vật 3: Quyển sách đỏ
+          {
+            targetObj: 'obj3',
+            anchorId: 'com_obj3',
+            code: 'P3',
+            htmlSymbol: '<span class="vec">P</span><sub>3</sub>',
+            canvasLabel: 'P₃',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực tác dụng lên quyển sách (3)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>3</sub> đặt tại trọng tâm G<sub>3</sub> của quyển sách (3), hướng xuống.'
+          },
+          {
+            targetObj: 'obj3',
+            anchorId: 'top_obj3',
+            code: 'Q23',
+            htmlSymbol: '<span class="vec">Q</span><sub>23</sub>',
+            canvasLabel: 'Q₂₃',
+            theme: 'compression',
+            dir: 'down',
+            desc: 'Áp lực của hộp bút (2) đè lên sách (3)',
+            explanation: 'Áp lực <span class="vec">Q</span><sub>23</sub> của hộp bút (2) đè xuống mặt trên quyển sách (3).'
+          },
+          {
+            targetObj: 'obj3',
+            anchorId: 'bot_obj3',
+            code: 'N43',
+            htmlSymbol: '<span class="vec">N</span><sub>43</sub>',
+            canvasLabel: 'N₄₃',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của ván (4) nâng quyển sách (3)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>43</sub> của tấm ván (4) đẩy quyển sách (3) lên tại mặt tiếp xúc dưới sách.'
+          },
+          // Vật 4: Tấm ván gỗ
+          {
+            targetObj: 'obj4',
+            anchorId: 'com_obj4',
+            code: 'P4',
+            htmlSymbol: '<span class="vec">P</span><sub>4</sub>',
+            canvasLabel: 'P₄',
+            theme: 'gravity',
+            dir: 'down',
+            desc: 'Trọng lực tác dụng lên tấm ván (4)',
+            explanation: 'Trọng lực <span class="vec">P</span><sub>4</sub> đặt tại trọng tâm G<sub>4</sub> của tấm ván (4), hướng xuống.'
+          },
+          {
+            targetObj: 'obj4',
+            anchorId: 'top_obj4',
+            code: 'Q34',
+            htmlSymbol: '<span class="vec">Q</span><sub>34</sub>',
+            canvasLabel: 'Q₃₄',
+            theme: 'compression',
+            dir: 'down',
+            desc: 'Áp lực của sách (3) đè lên tấm ván (4)',
+            explanation: 'Áp lực <span class="vec">Q</span><sub>34</sub> của quyển sách (3) đè xuống mặt trên tấm ván (4).'
+          },
+          {
+            targetObj: 'obj4',
+            anchorId: 'bot_obj4',
+            code: 'N_ban_4',
+            htmlSymbol: '<span class="vec">N</span><sub>bàn→4</sub>',
+            canvasLabel: 'N_bàn→4',
+            theme: 'normal',
+            dir: 'up',
+            desc: 'Phản lực của mặt bàn nâng tấm ván (4)',
+            explanation: 'Phản lực <span class="vec">N</span><sub>bàn→4</sub> của mặt bàn đỡ tấm ván (4) tại mặt tiếp xúc đáy ván, hướng lên.'
+          }
+        ],
+        distractorCards: [
+          {
+            code: 'Q14',
+            htmlSymbol: '<span class="vec">Q</span><sub>14</sub>',
+            canvasLabel: 'Q₁₄',
+            theme: 'compression',
+            dir: 'down',
+            desc: 'Áp lực trực tiếp của vật (1) lên vật (4)',
+            wrongReason: 'Khối gỗ (1) không tiếp xúc trực tiếp với tấm ván (4) nên không có lực tiếp xúc trực tiếp giữa (1) và (4).'
+          },
+          {
+            code: 'Fmsn',
+            htmlSymbol: '<span class="vec">F</span><sub>msn</sub>',
+            canvasLabel: 'F_msn',
+            theme: 'distractor',
+            dir: 'right',
+            desc: 'Lực ma sát nghỉ theo phương ngang',
+            wrongReason: 'Hệ đặt nằm yên trên mặt bàn ngang, không có ngoại lực kéo ngang nên không xuất hiện lực ma sát nghỉ.'
+          },
+          {
+            code: 'Fk',
+            htmlSymbol: '<span class="vec">F</span><sub>k</sub>',
+            canvasLabel: 'F_k',
+            theme: 'distractor',
+            dir: 'right',
+            desc: 'Lực kéo theo phương nằm ngang',
+            wrongReason: 'Không có lực kéo ngang tác dụng lên hệ vật trong bài toán này.'
+          }
+        ]
+      }
+    };
+
+    // =========================================================================
+    // 3. APPLICATION & INTERACTIVE DRAG STATE
+    // =========================================================================
+    const appState = {
+      level: 2,
+      inspectionMode: 'single', // 'single' ("Phân tích từng vật") | 'all' ("Xem toàn hệ")
+      activeObjId: 'obj1',      // Used when inspectionMode === 'single'
+      exploded: false,          // "Tách nhẹ các lớp (Exploded View)"
+      showDescriptions: true,   // Toggle force descriptions in bank
+      placedVectors: [],        // Array of { uid, anchorId, targetObj, code, htmlSymbol, canvasLabel, theme, dir, mag, evalState: null | 'correct' | 'wrong', tipScreenPos }
+      anchors: [],              // Computed each frame: { id, objId, kind: 'com'|'top'|'bot', x, y, label }
+      showStandardOverlay: false,
+
+      // Pointer drag state machine
+      drag: {
+        active: false,
+        kind: null, // 'new-card' | 'move-anchor' | 'edit-tip'
+        cardData: null,
+        vectorUid: null,
+        snappedAnchorId: null,
+        clientX: 0,
+        clientY: 0
+      }
+    };
+
+    const SNAP_RADIUS = 38; // Magnetic snap radius in CSS pixels
+
+    // =========================================================================
+    // 4. BUILD BANK CARDS FOR CURRENT LEVEL
+    // =========================================================================
+    function getBankCardsForLevel(level) {
+      const sys = SYSTEM_LEVELS[level];
+      const list = [];
+
+      // Add all true forces as clean cards with natural default directions
+      sys.expectedForces.forEach((f) => {
+        list.push({
+          cardId: `card_${f.code}`,
+          code: f.code,
+          htmlSymbol: f.htmlSymbol,
+          canvasLabel: f.canvasLabel,
+          theme: f.theme,
+          defaultDir: f.dir,
+          desc: f.desc,
+          isDistractor: false
+        });
+      });
+
+      // Add pedagogical distractor cards
+      sys.distractorCards.forEach((d) => {
+        list.push({
+          cardId: `card_${d.code}`,
+          code: d.code,
+          htmlSymbol: d.htmlSymbol,
+          canvasLabel: d.canvasLabel,
+          theme: d.theme,
+          defaultDir: d.dir,
+          desc: d.desc,
+          isDistractor: true,
+          wrongReason: d.wrongReason
+        });
+      });
+
+      return list;
+    }
+
+    // =========================================================================
+    // 5. TOP & MODE UI CONTROLS
+    // =========================================================================
+    function setSystemLevel(level) {
+      appState.level = level;
+      appState.activeObjId = 'obj1';
+      appState.placedVectors = [];
+      appState.showStandardOverlay = false;
+
+      // Update level tab styles
+      [2, 3, 4].forEach((n) => {
+        const btn = document.getElementById(`tab-level-${n}`);
+        if (n === level) {
+          btn.className = 'px-3 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold bg-indigo-600 text-white shadow-xs transition-all cursor-pointer';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:bg-white hover:text-slate-900 transition-all cursor-pointer';
+        }
+      });
+
+      const sys = SYSTEM_LEVELS[level];
+      document.getElementById('scenario-title-badge').textContent = `${sys.title}:`;
+      document.getElementById('scenario-subtitle').textContent = sys.subtitle;
+
+      renderObjectPills();
+      updateModeButtonsUI();
+      renderForceBankCards();
+      renderPlacedVectorsList();
+      resetFeedbackBox();
+      resizeAndRender();
+    }
+
+    function setInspectionMode(mode) {
+      appState.inspectionMode = mode;
+      appState.showStandardOverlay = false;
+      updateModeButtonsUI();
+      renderObjectPills();
+      renderPlacedVectorsList();
+      resizeAndRender();
+    }
+
+    function setActiveSingleObject(objId) {
+      appState.activeObjId = objId;
+      appState.inspectionMode = 'single';
+      appState.showStandardOverlay = false;
+      updateModeButtonsUI();
+      renderObjectPills();
+      renderPlacedVectorsList();
+      resizeAndRender();
+    }
+
+    function updateModeButtonsUI() {
+      const singleBtn = document.getElementById('mode-single-btn');
+      const allBtn = document.getElementById('mode-all-btn');
+      const targetBadge = document.getElementById('target-prompt-badge');
+
+      if (appState.inspectionMode === 'single') {
+        singleBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-2xs transition cursor-pointer';
+        allBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer';
+
+        const sys = SYSTEM_LEVELS[appState.level];
+        const obj = sys.objects.find((o) => o.id === appState.activeObjId) || sys.objects[0];
+        targetBadge.textContent = `Đang xét: ${obj.name}`;
+      } else {
+        allBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-2xs transition cursor-pointer';
+        singleBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer';
+        targetBadge.textContent = `Đang xét: Toàn hệ (${appState.level} vật)`;
+      }
+    }
+
+    function renderObjectPills() {
+      const container = document.getElementById('single-object-pills');
+      const sys = SYSTEM_LEVELS[appState.level];
+
+      if (appState.inspectionMode !== 'single') {
+        container.innerHTML = `<span class="text-[11px] text-slate-500 italic">Hiển thị tất cả ${appState.level} vật</span>`;
+        return;
+      }
+
+      container.innerHTML = sys.objects
+        .map((obj) => {
+          const isActive = obj.id === appState.activeObjId;
+          return `
+            <button
+              type="button"
+              onclick="setActiveSingleObject('${obj.id}')"
+              class="px-2.5 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${
+                isActive
+                  ? 'bg-indigo-600 text-white border-indigo-600 shadow-2xs'
+                  : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+              }"
+            >
+              ${obj.shortName}
+            </button>
+          `;
+        })
+        .join('');
+    }
+
+    function toggleExplodedView() {
+      appState.exploded = !appState.exploded;
+      const btn = document.getElementById('btn-exploded');
+      if (appState.exploded) {
+        btn.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold border border-indigo-600 bg-indigo-50 text-indigo-700 shadow-2xs transition-all cursor-pointer';
+      } else {
+        btn.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition-all cursor-pointer';
+      }
+      playTone('snap');
+      resizeAndRender();
+    }
+
+    function toggleForceDescriptions(checked) {
+      appState.showDescriptions = checked;
+      renderForceBankCards();
+    }
+
+    // =========================================================================
+    // 6. RENDER FORCE BANK CARDS & PLACED VECTORS LIST
+    // =========================================================================
+    function renderForceBankCards() {
+      const grid = document.getElementById('force-cards-grid');
+      const cards = getBankCardsForLevel(appState.level);
+
+      grid.innerHTML = cards
+        .map((card) => {
+          const theme = FORCE_THEMES[card.theme] || FORCE_THEMES.gravity;
+          const arrowBadge =
+            card.defaultDir === 'up'
+              ? '↑ Hướng lên'
+              : card.defaultDir === 'down'
+              ? '↓ Hướng xuống'
+              : '→ Ngang';
+
+          return `
+            <div
+              data-card-id="${card.cardId}"
+              onpointerdown="startCardDrag(event, '${card.cardId}')"
+              class="group relative select-none touch-none rounded-xl border border-slate-200 bg-white hover:border-indigo-400 hover:shadow-sm active:scale-[0.98] p-2.5 transition-all cursor-grab active:cursor-grabbing flex items-center gap-2.5"
+            >
+              <!-- Mini Vector Arrow Graphic -->
+              <div
+                class="w-9 h-11 rounded-lg flex items-center justify-center shrink-0 border"
+                style="background-color:${theme.lightBg}; border-color:${theme.stroke}40;"
+              >
+                ${renderMiniArrowSvg(card.defaultDir, theme.stroke)}
+              </div>
+
+              <!-- Symbol + Optional Description -->
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="text-sm font-extrabold text-slate-900">${card.htmlSymbol}</span>
+                  <span class="text-[10px] font-bold px-1.5 py-0.5 rounded border ${theme.badgeClass}">
+                    ${arrowBadge}
+                  </span>
+                </div>
+                ${
+                  appState.showDescriptions
+                    ? `<p class="text-[11px] text-slate-500 leading-snug mt-1 line-clamp-2">${card.desc}</p>`
+                    : `<p class="text-[10px] text-slate-400 mt-1">Kéo thả vào điểm neo</p>`
+                }
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function renderMiniArrowSvg(dir, color) {
+      if (dir === 'up') {
+        return `
+          <svg width="20" height="30" viewBox="0 0 20 30">
+            <circle cx="10" cy="25" r="2.5" fill="${color}" />
+            <line x1="10" y1="25" x2="10" y2="6" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />
+            <polygon points="10,2 5,9 15,9" fill="${color}" />
+          </svg>
+        `;
+      }
+      if (dir === 'down') {
+        return `
+          <svg width="20" height="30" viewBox="0 0 20 30">
+            <circle cx="10" cy="5" r="2.5" fill="${color}" />
+            <line x1="10" y1="5" x2="10" y2="24" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />
+            <polygon points="10,28 5,21 15,21" fill="${color}" />
+          </svg>
+        `;
+      }
+      return `
+        <svg width="26" height="20" viewBox="0 0 26 20">
+          <circle cx="4" cy="10" r="2.5" fill="${color}" />
+          <line x1="4" y1="10" x2="20" y2="10" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />
+          <polygon points="24,10 17,5 17,15" fill="${color}" />
+        </svg>
+      `;
+    }
+
+    function renderPlacedVectorsList() {
+      const container = document.getElementById('placed-vectors-list');
+      const countLabel = document.getElementById('placed-count-label');
+
+      const visibleVectors = getVisiblePlacedVectors();
+      countLabel.textContent = String(visibleVectors.length);
+
+      if (visibleVectors.length === 0) {
+        container.innerHTML = `
+          <div class="text-xs text-slate-400 italic py-3 px-2 text-center border border-dashed border-slate-200 rounded-xl">
+            Chưa có vectơ lực nào được đặt. Hãy kéo một thẻ lực ở trên thả vào chấm tròn điểm neo (●) bên trái!
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = visibleVectors
+        .map((v) => {
+          const anchor = appState.anchors.find((a) => a.id === v.anchorId);
+          const anchorLabel = anchor ? anchor.label : v.anchorId;
+          const theme = FORCE_THEMES[v.theme] || FORCE_THEMES.gravity;
+          const dirIcon = v.dir === 'up' ? '↑' : v.dir === 'down' ? '↓' : '→';
+
+          let statusBadge = '';
+          let borderClass = 'border-slate-200 bg-slate-50/70';
+          if (v.evalState === 'correct') {
+            statusBadge = `<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">✓ Đúng</span>`;
+            borderClass = 'border-emerald-300 bg-emerald-50/60';
+          } else if (v.evalState === 'wrong') {
+            statusBadge = `<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">✗ Sai</span>`;
+            borderClass = 'border-rose-300 bg-rose-50/60';
+          }
+
+          return `
+            <div class="flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl border ${borderClass} text-xs">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color:${theme.stroke}"></span>
+                <div class="truncate">
+                  <span class="font-extrabold text-slate-900">${v.htmlSymbol}</span>
+                  <span class="font-extrabold mx-0.5" style="color:${theme.stroke}">${dirIcon}</span>
+                  <span class="text-slate-600">tại <strong>${anchorLabel}</strong></span>
+                </div>
+                ${statusBadge}
+              </div>
+
+              <div class="flex items-center gap-1 shrink-0">
+                ${
+                  v.dir === 'up' || v.dir === 'down'
+                    ? `<button
+                        type="button"
+                        onclick="flipPlacedVector('${v.uid}')"
+                        title="Đảo chiều vectơ ↑/↓"
+                        class="px-2 py-1 rounded-lg bg-white hover:bg-indigo-50 border border-slate-200 text-slate-700 hover:text-indigo-700 font-bold text-[11px] transition cursor-pointer"
+                      >
+                        Đảo ↑↓
+                      </button>`
+                    : ''
+                }
+                <button
+                  type="button"
+                  onclick="deletePlacedVector('${v.uid}')"
+                  title="Xóa vectơ lực này"
+                  class="px-2 py-1 rounded-lg bg-white hover:bg-rose-50 border border-slate-200 text-slate-500 hover:text-rose-600 font-bold text-[11px] transition cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function getVisiblePlacedVectors() {
+      if (appState.inspectionMode === 'all') {
+        return appState.placedVectors;
+      }
+      return appState.placedVectors.filter((v) => v.targetObj === appState.activeObjId);
+    }
+
+    function flipPlacedVector(uid) {
+      const vec = appState.placedVectors.find((v) => v.uid === uid);
+      if (!vec) return;
+      if (vec.dir === 'up') vec.dir = 'down';
+      else if (vec.dir === 'down') vec.dir = 'up';
+      vec.evalState = null;
+      appState.showStandardOverlay = false;
+      playTone('snap');
+      renderPlacedVectorsList();
+      resizeAndRender();
+    }
+
+    function deletePlacedVector(uid) {
+      appState.placedVectors = appState.placedVectors.filter((v) => v.uid !== uid);
+      appState.showStandardOverlay = false;
+      renderPlacedVectorsList();
+      resizeAndRender();
+    }
+
+    function resetCurrentScope() {
+      appState.showStandardOverlay = false;
+      if (appState.inspectionMode === 'all') {
+        appState.placedVectors = [];
+      } else {
+        appState.placedVectors = appState.placedVectors.filter((v) => v.targetObj !== appState.activeObjId);
+      }
+      renderPlacedVectorsList();
+      resetFeedbackBox();
+      resizeAndRender();
+    }
+
+    function resetAllSystem() {
+      appState.showStandardOverlay = false;
+      appState.placedVectors = [];
+      renderPlacedVectorsList();
+      resetFeedbackBox();
+      resizeAndRender();
+    }
+
+    // =========================================================================
+    // 7. UNIFIED POINTER EVENTS DRAG & DROP ENGINE
+    //    Supports:
+    //    (A) Dragging a new force card from Bank -> Magnetic Snap to Canvas Anchor
+    //    (B) Dragging an already-placed vector's origin -> Re-anchor or Drag outside to delete
+    //    (C) Dragging an already-placed vector's arrowhead tip -> Flip direction (↑/↓) & resize length
+    // =========================================================================
+    const canvas = document.getElementById('physics-canvas');
+    const ctx = canvas.getContext('2d');
+    const dragGhostEl = document.getElementById('drag-ghost');
+
+    function startCardDrag(event, cardId) {
+      // Only left mouse button or touch/pen
+      if (event.button !== undefined && event.button !== 0) return;
+      event.preventDefault();
+
+      const cards = getBankCardsForLevel(appState.level);
+      const cardData = cards.find((c) => c.cardId === cardId);
+      if (!cardData) return;
+
+      appState.showStandardOverlay = false;
+      appState.drag = {
+        active: true,
+        kind: 'new-card',
+        cardData,
+        vectorUid: null,
+        snappedAnchorId: null,
+        clientX: event.clientX,
+        clientY: event.clientY
+      };
+
+      const theme = FORCE_THEMES[cardData.theme] || FORCE_THEMES.gravity;
+      dragGhostEl.innerHTML = `
+        <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/95 backdrop-blur border-2 shadow-lg text-xs font-extrabold text-slate-900" style="border-color:${theme.stroke}">
+          ${renderMiniArrowSvg(cardData.defaultDir, theme.stroke)}
+          <span>${cardData.htmlSymbol}</span>
+        </div>
+      `;
+      dragGhostEl.style.left = `${event.clientX}px`;
+      dragGhostEl.style.top = `${event.clientY}px`;
+      dragGhostEl.classList.remove('hidden');
+
+      updateCanvasStatusPill('Kéo thẻ lực tới điểm neo (●) phát sáng trên vật...', 'bg-amber-500');
+      resizeAndRender();
+    }
+
+    // Canvas PointerDown: check if user grabs a placed vector's arrowhead tip or origin
+    canvas.addEventListener('pointerdown', (event) => {
+      if (event.button !== undefined && event.button !== 0) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const px = event.clientX - rect.left;
+      const py = event.clientY - rect.top;
+
+      const visibleVectors = getVisiblePlacedVectors();
+
+      // 1. Check arrowhead tips first (for flipping ↑/↓ and resizing magnitude)
+      for (let i = visibleVectors.length - 1; i >= 0; i--) {
+        const v = visibleVectors[i];
+        if (v.tipScreenPos) {
+          const distTip = Math.hypot(px - v.tipScreenPos.x, py - v.tipScreenPos.y);
+          if (distTip <= 20) {
+            event.preventDefault();
+            appState.showStandardOverlay = false;
+            appState.drag = {
+              active: true,
+              kind: 'edit-tip',
+              cardData: null,
+              vectorUid: v.uid,
+              snappedAnchorId: v.anchorId,
+              clientX: event.clientX,
+              clientY: event.clientY
+            };
+            updateCanvasStatusPill(`Kéo đầu mũi tên ${v.canvasLabel} lên hoặc xuống để đổi chiều / độ dài`, 'bg-indigo-600');
+            return;
+          }
+        }
+      }
+
+      // 2. Check vector origins (to re-anchor to another point or drag outside to remove)
+      for (let i = visibleVectors.length - 1; i >= 0; i--) {
+        const v = visibleVectors[i];
+        if (v.originScreenPos) {
+          const distOrig = Math.hypot(px - v.originScreenPos.x, py - v.originScreenPos.y);
+          if (distOrig <= 20) {
+            event.preventDefault();
+            appState.showStandardOverlay = false;
+            appState.drag = {
+              active: true,
+              kind: 'move-anchor',
+              cardData: null,
+              vectorUid: v.uid,
+              snappedAnchorId: v.anchorId,
+              clientX: event.clientX,
+              clientY: event.clientY
+            };
+            updateCanvasStatusPill(`Kéo gốc lực ${v.canvasLabel} sang điểm neo khác hoặc kéo ra ngoài để xóa`, 'bg-amber-500');
+            resizeAndRender();
+            return;
+          }
+        }
+      }
+    });
+
+    // Global PointerMove
+    window.addEventListener('pointermove', (event) => {
+      if (!appState.drag.active) return;
+
+      appState.drag.clientX = event.clientX;
+      appState.drag.clientY = event.clientY;
+
+      const rect = canvas.getBoundingClientRect();
+      const px = event.clientX - rect.left;
+      const py = event.clientY - rect.top;
+      const insideCanvas = px >= -10 && px <= rect.width + 10 && py >= -10 && py <= rect.height + 10;
+
+      if (appState.drag.kind === 'new-card') {
+        dragGhostEl.style.left = `${event.clientX}px`;
+        dragGhostEl.style.top = `${event.clientY}px`;
+
+        if (insideCanvas) {
+          const nearest = findNearestAnchor(px, py, SNAP_RADIUS);
+          if (nearest) {
+            if (appState.drag.snappedAnchorId !== nearest.id) {
+              playTone('snap');
+            }
+            appState.drag.snappedAnchorId = nearest.id;
+            dragGhostEl.style.opacity = '0.25'; // Fade floating card because ghost preview renders directly on canvas!
+            updateCanvasStatusPill(`Bắt dính: ${nearest.label} — Thả tay để đặt lực`, 'bg-emerald-600');
+          } else {
+            appState.drag.snappedAnchorId = null;
+            dragGhostEl.style.opacity = '1';
+            updateCanvasStatusPill('Di chuyển lại gần chấm tròn điểm neo (●) để bắt dính...', 'bg-amber-500');
+          }
+        } else {
+          appState.drag.snappedAnchorId = null;
+          dragGhostEl.style.opacity = '1';
+        }
+        resizeAndRender();
+      } else if (appState.drag.kind === 'move-anchor') {
+        const vec = appState.placedVectors.find((v) => v.uid === appState.drag.vectorUid);
+        if (!vec) return;
+
+        if (insideCanvas) {
+          const nearest = findNearestAnchor(px, py, SNAP_RADIUS);
+          if (nearest) {
+            if (appState.drag.snappedAnchorId !== nearest.id) {
+              playTone('snap');
+            }
+            appState.drag.snappedAnchorId = nearest.id;
+            vec.anchorId = nearest.id;
+            vec.targetObj = nearest.objId;
+            vec.evalState = null;
+            updateCanvasStatusPill(`Chuyển tới: ${nearest.label}`, 'bg-emerald-600');
+          } else {
+            appState.drag.snappedAnchorId = null;
+            updateCanvasStatusPill('Thả ra ngoài vùng vẽ để xóa lực này', 'bg-rose-500');
+          }
+        } else {
+          appState.drag.snappedAnchorId = null;
+          updateCanvasStatusPill('Thả tay ngay để xóa lực này', 'bg-rose-600');
+        }
+        resizeAndRender();
+      } else if (appState.drag.kind === 'edit-tip') {
+        const vec = appState.placedVectors.find((v) => v.uid === appState.drag.vectorUid);
+        if (!vec || !vec.originScreenPos) return;
+
+        const dy = py - vec.originScreenPos.y;
+        const dx = px - vec.originScreenPos.x;
+
+        if (vec.dir === 'up' || vec.dir === 'down') {
+          const newDir = dy < 0 ? 'up' : 'down';
+          if (newDir !== vec.dir) {
+            vec.dir = newDir;
+            playTone('snap');
+          }
+          const absLen = Math.abs(dy);
+          const mag = Math.max(1, Math.min(4, Math.round((absLen - 22) / 16)));
+          vec.mag = mag;
+        } else {
+          const absLen = Math.abs(dx);
+          vec.mag = Math.max(1, Math.min(4, Math.round((absLen - 22) / 16)));
+        }
+
+        vec.evalState = null;
+        updateCanvasStatusPill(
+          `Vectơ ${vec.canvasLabel}: ${vec.dir === 'up' ? 'Hướng lên ↑' : vec.dir === 'down' ? 'Hướng xuống ↓' : 'Ngang →'} (Độ dài mức ${vec.mag})`,
+          'bg-indigo-600'
+        );
+        resizeAndRender();
+      }
+    });
+
+    // Global PointerUp
+    window.addEventListener('pointerup', () => {
+      if (!appState.drag.active) return;
+
+      const drag = { ...appState.drag };
+      appState.drag.active = false;
+      appState.drag.kind = null;
+      appState.drag.snappedAnchorId = null;
+      dragGhostEl.classList.add('hidden');
+      dragGhostEl.style.opacity = '1';
+
+      if (drag.kind === 'new-card' && drag.cardData && drag.snappedAnchorId) {
+        const anchor = appState.anchors.find((a) => a.id === drag.snappedAnchorId);
+        if (anchor) {
+          addOrUpdatePlacedVector(anchor, drag.cardData);
+          playTone('drop');
+        }
+      } else if (drag.kind === 'move-anchor' && drag.vectorUid && !drag.snappedAnchorId) {
+        // User dragged placed vector outside canvas / away from anchors -> remove it
+        deletePlacedVector(drag.vectorUid);
+        playTone('snap');
+      } else if (drag.kind === 'edit-tip') {
+        renderPlacedVectorsList();
+      }
+
+      updateCanvasStatusPill('Kéo thẻ lực từ cột bên phải thả vào điểm neo (●) trên vật', 'bg-indigo-500');
+      resizeAndRender();
+    });
+
+    function findNearestAnchor(px, py, maxRadius) {
+      let best = null;
+      let bestDist = maxRadius;
+      for (const a of appState.anchors) {
+        const d = Math.hypot(px - a.x, py - a.y);
+        if (d <= bestDist) {
+          bestDist = d;
+          best = a;
+        }
+      }
+      return best;
+    }
+
+    function addOrUpdatePlacedVector(anchor, cardData) {
+      // Avoid duplicate identical code on the exact same anchor
+      const existing = appState.placedVectors.find(
+        (v) => v.anchorId === anchor.id && v.code === cardData.code
+      );
+      if (existing) {
+        existing.dir = cardData.defaultDir;
+        existing.evalState = null;
+      } else {
+        appState.placedVectors.push({
+          uid: `vec_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+          anchorId: anchor.id,
+          targetObj: anchor.objId,
+          code: cardData.code,
+          htmlSymbol: cardData.htmlSymbol,
+          canvasLabel: cardData.canvasLabel,
+          theme: cardData.theme,
+          dir: cardData.defaultDir,
+          mag: 2,
+          evalState: null,
+          originScreenPos: null,
+          tipScreenPos: null
+        });
+      }
+      renderPlacedVectorsList();
+    }
+
+    function updateCanvasStatusPill(text, dotColorClass) {
+      document.getElementById('canvas-status-text').textContent = text;
+      document.getElementById('canvas-status-dot').className = `w-2 h-2 rounded-full ${dotColorClass} shrink-0`;
+    }
+
+    // =========================================================================
+    // 8. EVALUATION, HINTS & STANDARD SOLUTION
+    // =========================================================================
+    function evaluateStudentWork() {
+      appState.showStandardOverlay = false;
+      const sys = SYSTEM_LEVELS[appState.level];
+
+      const expectedScope =
+        appState.inspectionMode === 'all'
+          ? sys.expectedForces
+          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
+
+      const placedScope = getVisiblePlacedVectors();
+
+      const matchedExpected = new Set();
+      const diagnostics = [];
+
+      placedScope.forEach((pv) => {
+        const anchor = appState.anchors.find((a) => a.id === pv.anchorId);
+        const anchorLabel = anchor ? anchor.label : pv.anchorId;
+
+        const matchIdx = expectedScope.findIndex(
+          (exp, i) =>
+            !matchedExpected.has(i) &&
+            exp.anchorId === pv.anchorId &&
+            exp.code === pv.code &&
+            exp.dir === pv.dir
+        );
+
+        if (matchIdx >= 0) {
+          matchedExpected.add(matchIdx);
+          pv.evalState = 'correct';
+          diagnostics.push({
+            status: 'ok',
+            html: `<strong>✓ Đúng (${pv.htmlSymbol}):</strong> Đặt tại <em>${anchorLabel}</em>, hướng ${pv.dir === 'up' ? 'lên ↑' : 'xuống ↓'}.`
+          });
+        } else {
+          pv.evalState = 'wrong';
+
+          // Detailed pedagogical diagnosis
+          const distractorInfo = sys.distractorCards.find((d) => d.code === pv.code);
+          const trueForceAnywhere = sys.expectedForces.find((ef) => ef.code === pv.code);
+
+          let reason = '';
+          if (distractorInfo) {
+            reason = distractorInfo.wrongReason;
+          } else if (trueForceAnywhere) {
+            const targetObjMeta = sys.objects.find((o) => o.id === trueForceAnywhere.targetObj);
+            const expectedPlaceText = trueForceAnywhere.anchorId.startsWith('com_')
+              ? `trọng tâm G<sub>${targetObjMeta.num}</sub>`
+              : trueForceAnywhere.anchorId.startsWith('top_')
+              ? `mặt tiếp xúc phía trên của ${targetObjMeta.shortName}`
+              : `mặt tiếp xúc phía dưới của ${targetObjMeta.shortName}`;
+
+            if (trueForceAnywhere.targetObj !== pv.targetObj) {
+              reason = `Nhầm vật chịu lực! Lực ${pv.htmlSymbol} tác dụng lên <strong>${targetObjMeta.name}</strong> (tại ${expectedPlaceText}), không tác dụng lên vật này.`;
+            } else if (trueForceAnywhere.anchorId !== pv.anchorId) {
+              reason = `Sai điểm đặt! Lực ${pv.htmlSymbol} phải đặt tại <strong>${expectedPlaceText}</strong>, không đặt ở <em>${anchorLabel}</em>.`;
+            } else if (trueForceAnywhere.dir !== pv.dir) {
+              reason = `Sai chiều! Lực ${pv.htmlSymbol} phải hướng <strong>${trueForceAnywhere.dir === 'up' ? 'lên ↑' : 'xuống ↓'}</strong>.`;
+            }
+          } else {
+            reason = `Lực ${pv.htmlSymbol} không phù hợp tại vị trí <em>${anchorLabel}</em>.`;
+          }
+
+          diagnostics.push({
+            status: 'err',
+            html: `<strong>✗ Sai (${pv.htmlSymbol} tại ${anchorLabel}):</strong> ${reason}`
+          });
+        }
+      });
+
+      // Check missing forces
+      let missingCount = 0;
+      expectedScope.forEach((exp, idx) => {
+        if (!matchedExpected.has(idx)) {
+          missingCount++;
+          const objMeta = sys.objects.find((o) => o.id === exp.targetObj);
+          const placeText = exp.anchorId.startsWith('com_')
+            ? `Trọng tâm G<sub>${objMeta.num}</sub>`
+            : exp.anchorId.startsWith('top_')
+            ? `Mặt trên ${objMeta.shortName}`
+            : `Mặt dưới ${objMeta.shortName}`;
+
+          diagnostics.push({
+            status: 'miss',
+            html: `<strong>! Còn thiếu:</strong> Lực ${exp.htmlSymbol} (${exp.dir === 'up' ? 'hướng lên ↑' : 'hướng xuống ↓'}) đặt tại <em>${placeText}</em>.`
+          });
+        }
+      });
+
+      const wrongCount = diagnostics.filter((d) => d.status === 'err').length;
+
+      let bannerTone = 'success';
+      let bannerHeading = '';
+
+      if (wrongCount === 0 && missingCount === 0 && expectedScope.length > 0) {
+        bannerTone = 'success';
+        bannerHeading = '🎉 Xuất sắc! Em đã phân tích và vẽ chính xác hoàn toàn các vectơ lực.';
+        playTone('success');
+      } else if (wrongCount === 0 && missingCount > 0) {
+        bannerTone = 'warning';
+        bannerHeading = `Gần xong rồi! Các lực đã vẽ đều đúng, nhưng còn thiếu ${missingCount} lực.`;
+        playTone('snap');
+      } else {
+        bannerTone = 'error';
+        bannerHeading = `Chưa chính xác: Có ${wrongCount} lực đặt sai${missingCount > 0 ? ` và còn thiếu ${missingCount} lực` : ''}.`;
+        playTone('error');
+        const box = document.getElementById('feedback-box');
+        box.classList.remove('animate-shake');
+        void box.offsetWidth;
+        box.classList.add('animate-shake');
+      }
+
+      renderFeedbackList(bannerTone, bannerHeading, diagnostics);
+      renderPlacedVectorsList();
+      resizeAndRender();
+    }
+
+    function stepByStepHint() {
+      const sys = SYSTEM_LEVELS[appState.level];
+      const expectedScope =
+        appState.inspectionMode === 'all'
+          ? sys.expectedForces
+          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
+
+      const nextMissing = expectedScope.find(
+        (exp) =>
+          !appState.placedVectors.some(
+            (pv) => pv.anchorId === exp.anchorId && pv.code === exp.code && pv.dir === exp.dir
+          )
+      );
+
+      if (!nextMissing) {
+        renderFeedbackList('success', 'Em đã đặt đủ các lực chuẩn cho phạm vi này!', [
+          { status: 'ok', html: 'Hãy bấm nút <strong>Kiểm tra kết quả</strong> màu xanh lá để chấm điểm.' }
+        ]);
+        return;
+      }
+
+      // Highlight the target anchor briefly via drag.snappedAnchorId visual pulse
+      appState.drag.snappedAnchorId = nextMissing.anchorId;
+      resizeAndRender();
+      setTimeout(() => {
+        if (!appState.drag.active) {
+          appState.drag.snappedAnchorId = null;
+          resizeAndRender();
+        }
+      }, 2200);
+
+      playTone('snap');
+      renderFeedbackList(
+        'info',
+        `💡 Gợi ý bước tiếp theo: Hãy tìm thẻ ${nextMissing.htmlSymbol}`,
+        [
+          {
+            status: 'ok',
+            html: `${nextMissing.explanation} (Điểm neo tương ứng đã được nháy vòng tròn xanh trên hình).`
+          }
+        ]
+      );
+    }
+
+    function showStandardAnswer() {
+      const sys = SYSTEM_LEVELS[appState.level];
+      const expectedScope =
+        appState.inspectionMode === 'all'
+          ? sys.expectedForces
+          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
+
+      appState.showStandardOverlay = true;
+      playTone('drop');
+      resizeAndRender();
+
+      const items = expectedScope.map((exp) => ({
+        status: 'ok',
+        html: `<strong>${exp.htmlSymbol}</strong> (${exp.dir === 'up' ? '↑' : '↓'}): ${exp.explanation}`
+      }));
+
+      renderFeedbackList(
+        'info',
+        `📘 Đáp án chuẩn (${appState.inspectionMode === 'all' ? sys.title : sys.objects.find((o) => o.id === appState.activeObjId).name})`,
+        items
+      );
+    }
+
+    function resetFeedbackBox() {
+      document.getElementById('feedback-content').innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-extrabold flex items-center justify-center shrink-0 mt-0.5">?</span>
+          <div class="leading-relaxed">
+            <p class="font-bold text-slate-800">Nhiệm vụ của em:</p>
+            <p class="text-slate-600 mt-0.5">
+              Kéo thả thẻ vectơ lực từ <strong>Kho thẻ vectơ lực</strong> bên phải vào đúng <strong>điểm neo</strong> (Trọng tâm G hoặc Mặt tiếp xúc) trên hình, sau đó bấm <strong>Kiểm tra kết quả</strong>.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFeedbackList(tone, heading, items) {
+      const toneStyles = {
+        success: 'bg-emerald-100/90 border-emerald-300 text-emerald-900',
+        warning: 'bg-amber-100/90 border-amber-300 text-amber-950',
+        error: 'bg-rose-100/90 border-rose-300 text-rose-950',
+        info: 'bg-indigo-100/90 border-indigo-300 text-indigo-950'
+      };
+
+      const el = document.getElementById('feedback-content');
+      el.innerHTML = `
+        <div class="px-3 py-2 rounded-xl border font-extrabold text-xs mb-2 ${toneStyles[tone] || toneStyles.info}">
+          ${heading}
+        </div>
+        <div class="space-y-1">
+          ${items
+            .map((it) => {
+              const rowStyle =
+                it.status === 'ok'
+                  ? 'border-emerald-200/80 bg-white'
+                  : it.status === 'err'
+                  ? 'border-rose-200/80 bg-white'
+                  : 'border-amber-200/80 bg-white';
+              return `<div class="px-2.5 py-1.5 rounded-lg border ${rowStyle} text-xs text-slate-700 leading-relaxed">${it.html}</div>`;
+            })
+            .join('')}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 9. HTML5 CANVAS RENDERING ENGINE (OBJECTS, ANCHORS, SMART OFFSET VECTORS)
+    // =========================================================================
+    function resizeAndRender() {
+      const container = document.getElementById('canvas-container');
+      const rect = container.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+
+      const w = Math.max(290, Math.floor(rect.width));
+      const h = Math.max(330, Math.floor(rect.height));
+
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      renderPhysicsScene(w, h);
+    }
+
+    function renderPhysicsScene(width, height) {
+      ctx.clearRect(0, 0, width, height);
+
+      const sys = SYSTEM_LEVELS[appState.level];
+      const objects = sys.objects;
+      const explodeGap = appState.exploded ? 22 : 0;
+
+      // Compute stack vertical layout
+      const totalObjHeight = objects.reduce((sum, o) => sum + o.height, 0);
+      const totalGaps = (objects.length - 1) * explodeGap + (appState.exploded ? 14 : 0);
+      const tableHeight = 32;
+      const tableTopY = Math.min(
+        height - tableHeight - 34,
+        Math.max(130 + (totalObjHeight + totalGaps) * 0.45, height * 0.56 + (totalObjHeight + totalGaps) * 0.42)
+      );
+
+      // Draw Horizontal Table Surface
+      drawHorizontalTable(width, tableTopY, tableHeight);
+
+      // Compute bounding boxes for each stacked object (from bottom to top)
+      const centerX = width * 0.5;
+      const boxes = [];
+      let cursorBottomY = tableTopY - (appState.exploded ? 14 : 0);
+
+      for (let i = objects.length - 1; i >= 0; i--) {
+        const obj = objects[i];
+        const objW = Math.max(92, Math.min(width * 0.78, width * obj.widthRatio));
+        const objH = obj.height;
+        const objX = centerX + width * obj.offsetXRatio - objW * 0.5;
+        const objY = cursorBottomY - objH;
+
+        boxes.unshift({
+          ...obj,
+          x: objX,
+          y: objY,
+          w: objW,
+          h: objH,
+          cx: objX + objW * 0.5,
+          cy: objY + objH * 0.5
+        });
+
+        cursorBottomY = objY - explodeGap;
+      }
+
+      // Draw dashed alignment guides if Exploded View is ON
+      if (appState.exploded) {
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = 'rgba(99, 102, 241, 0.35)';
+        ctx.lineWidth = 1.2;
+        for (let i = 0; i < boxes.length - 1; i++) {
+          const upper = boxes[i];
+          const lower = boxes[i + 1];
+          const midX = (upper.cx + lower.cx) * 0.5;
+          ctx.beginPath();
+          ctx.moveTo(midX, upper.y + upper.h);
+          ctx.lineTo(midX, lower.y);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // Draw each object
+      boxes.forEach((box) => {
+        const isIsolatedOut =
+          appState.inspectionMode === 'single' && appState.activeObjId !== box.id;
+        ctx.save();
+        if (isIsolatedOut) {
+          ctx.globalAlpha = 0.28;
+        }
+        drawStackedObject(box);
+        ctx.restore();
+      });
+
+      // Build valid anchor points for active scope
+      const anchors = [];
+      boxes.forEach((box) => {
+        const isTarget =
+          appState.inspectionMode === 'all' || appState.activeObjId === box.id;
+        if (!isTarget) return;
+
+        // 1. Center of Mass G_i
+        anchors.push({
+          id: `com_${box.id}`,
+          objId: box.id,
+          kind: 'com',
+          x: box.cx,
+          y: box.cy,
+          shortTag: `G${box.num}`,
+          label: `Trọng tâm G${box.num} (${box.shortName})`
+        });
+
+        // 2. Top contact surface (for objects beneath another object)
+        if (box.num > 1) {
+          anchors.push({
+            id: `top_${box.id}`,
+            objId: box.id,
+            kind: 'top',
+            x: box.cx + 18,
+            y: box.y,
+            shortTag: `Mặt trên (${box.num})`,
+            label: `Mặt tiếp xúc trên của ${box.shortName}`
+          });
+        }
+
+        // 3. Bottom contact surface
+        anchors.push({
+          id: `bot_${box.id}`,
+          objId: box.id,
+          kind: 'bot',
+          x: box.cx - 18,
+          y: box.y + box.h,
+          shortTag: `Mặt dưới (${box.num})`,
+          label:
+            box.num < objects.length
+              ? `Mặt tiếp xúc dưới của ${box.shortName}`
+              : `Mặt đáy ${box.shortName} (tiếp xúc mặt bàn)`
+        });
+      });
+
+      appState.anchors = anchors;
+
+      // Render Placed Force Vectors with smart horizontal anti-overlap offset
+      const visibleVectors = getVisiblePlacedVectors();
+      renderVectorGroupWithSmartOffsets(visibleVectors, anchors, false);
+
+      // Render Ghost Preview while dragging a new card onto a snapped anchor
+      if (
+        appState.drag.active &&
+        appState.drag.kind === 'new-card' &&
+        appState.drag.snappedAnchorId &&
+        appState.drag.cardData
+      ) {
+        const snapAnchor = anchors.find((a) => a.id === appState.drag.snappedAnchorId);
+        if (snapAnchor) {
+          drawSingleForceVector({
+            x: snapAnchor.x,
+            y: snapAnchor.y,
+            offsetX: 0,
+            dir: appState.drag.cardData.defaultDir,
+            mag: 2,
+            label: appState.drag.cardData.canvasLabel,
+            themeKey: appState.drag.cardData.theme,
+            evalState: null,
+            isGhost: true
+          });
+        }
+      }
+
+      // Render Standard Solution Overlay if requested
+      if (appState.showStandardOverlay) {
+        const expectedScope =
+          appState.inspectionMode === 'all'
+            ? sys.expectedForces
+            : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
+
+        const solutionItems = expectedScope.map((ef, idx) => ({
+          uid: `sol_${idx}`,
+          anchorId: ef.anchorId,
+          dir: ef.dir,
+          mag: 2,
+          canvasLabel: ef.canvasLabel,
+          theme: ef.theme,
+          evalState: 'solution'
+        }));
+        renderVectorGroupWithSmartOffsets(solutionItems, anchors, true);
+      }
+
+      // Draw Anchor Points on top layer (highlighted during drag!)
+      const isDragging = appState.drag.active && (appState.drag.kind === 'new-card' || appState.drag.kind === 'move-anchor');
+      anchors.forEach((a) => {
+        const isSnapped = appState.drag.snappedAnchorId === a.id;
+        drawAnchorNode(a, isDragging, isSnapped);
+      });
+    }
+
+    // Smart horizontal offset when multiple vertical vectors share the same X column or anchor
+    function renderVectorGroupWithSmartOffsets(vectors, anchors, isSolutionLayer) {
+      // Group vectors by approximate X column (within 24px) & same direction so vertical shafts never overlap
+      const placedCoords = [];
+
+      vectors.forEach((v) => {
+        const anchor = anchors.find((a) => a.id === v.anchorId);
+        if (!anchor) return;
+
+        let offsetX = isSolutionLayer ? 16 : 0;
+
+        // Check collisions with already-drawn vectors in the same vertical lane & direction
+        let attempts = 0;
+        while (
+          placedCoords.some(
+            (p) =>
+              p.dir === v.dir &&
+              Math.abs(p.x - (anchor.x + offsetX)) < 22 &&
+              Math.abs(p.y - anchor.y) < 75
+          ) &&
+          attempts < 6
+        ) {
+          attempts++;
+          const sign = attempts % 2 === 1 ? 1 : -1;
+          const step = Math.ceil(attempts / 2) * 26;
+          offsetX = (isSolutionLayer ? 16 : 0) + sign * step;
+        }
+
+        placedCoords.push({ x: anchor.x + offsetX, y: anchor.y, dir: v.dir });
+
+        const geom = drawSingleForceVector({
+          x: anchor.x,
+          y: anchor.y,
+          offsetX,
+          dir: v.dir,
+          mag: v.mag || 2,
+          label: v.canvasLabel,
+          themeKey: v.theme,
+          evalState: v.evalState,
+          isGhost: false
+        });
+
+        if (!isSolutionLayer) {
+          v.originScreenPos = geom.origin;
+          v.tipScreenPos = geom.tip;
+        }
+      });
+    }
+
+    function drawSingleForceVector({ x, y, offsetX, dir, mag, label, themeKey, evalState, isGhost }) {
+      const theme = FORCE_THEMES[themeKey] || FORCE_THEMES.gravity;
+      let color = theme.stroke;
+      if (evalState === 'correct') color = '#059669';
+      if (evalState === 'wrong') color = '#dc2626';
+
+      const drawX = x + offsetX;
+      const drawY = y;
+      const shaftLen = 34 + (mag || 2) * 14;
+
+      let tipX = drawX;
+      let tipY = drawY;
+      if (dir === 'up') tipY = drawY - shaftLen;
+      else if (dir === 'down') tipY = drawY + shaftLen;
+      else tipX = drawX + shaftLen;
+
+      ctx.save();
+      if (isGhost || evalState === 'solution') {
+        ctx.setLineDash([5, 4]);
+        ctx.globalAlpha = isGhost ? 0.72 : 0.88;
+      }
+
+      // If shifted horizontally from true anchor, draw subtle dashed tie-line back to anchor
+      if (Math.abs(offsetX) > 2) {
+        ctx.save();
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.2;
+        ctx.globalAlpha = 0.65;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(drawX, drawY);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Evaluation glow halo
+      if (evalState === 'correct' || evalState === 'wrong') {
+        ctx.save();
+        ctx.strokeStyle = evalState === 'correct' ? 'rgba(16, 185, 129, 0.35)' : 'rgba(239, 68, 68, 0.35)';
+        ctx.lineWidth = 9;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(drawX, drawY);
+        ctx.lineTo(tipX, tipY);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Vector Shaft
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = 3.2;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(drawX, drawY);
+      ctx.lineTo(tipX, tipY);
+      ctx.stroke();
+
+      // Arrowhead
+      ctx.setLineDash([]);
+      const angle = Math.atan2(tipY - drawY, tipX - drawX);
+      const headLen = 10;
+      ctx.beginPath();
+      ctx.moveTo(tipX, tipY);
+      ctx.lineTo(tipX - headLen * Math.cos(angle - Math.PI / 6), tipY - headLen * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(tipX - headLen * Math.cos(angle + Math.PI / 6), tipY - headLen * Math.sin(angle + Math.PI / 6));
+      ctx.closePath();
+      ctx.fill();
+
+      // Origin handle dot
+      ctx.beginPath();
+      ctx.arc(drawX, drawY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      // Label Pill next to Arrowhead (with vector arrow drawn above symbol!)
+      const badgeText =
+        evalState === 'correct'
+          ? `✓ ${label}`
+          : evalState === 'wrong'
+          ? `✗ ${label}`
+          : label;
+
+      ctx.font = '800 12px Inter, sans-serif';
+      const padX = 7;
+      const textW = ctx.measureText(badgeText).width + padX * 2;
+      const badgeH = 21;
+
+      const labelSide = offsetX < 0 ? -1 : 1;
+      const badgeX =
+        dir === 'right'
+          ? tipX + 6
+          : labelSide > 0
+          ? tipX + 9
+          : tipX - textW - 9;
+      const badgeY =
+        dir === 'up'
+          ? tipY - 4
+          : dir === 'down'
+          ? tipY - 16
+          : tipY - badgeH * 0.5;
+
+      // White card pill
+      ctx.fillStyle = '#ffffff';
+      roundRect(ctx, badgeX, badgeY, textW, badgeH, 6);
+      ctx.fill();
+
+      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = color;
+      ctx.stroke();
+
+      ctx.fillStyle = color;
+      ctx.textBaseline = 'middle';
+      ctx.fillText(badgeText, badgeX + padX, badgeY + badgeH * 0.5 + 1);
+
+      // Draw tiny vector arrow above the main letter of label
+      const symbolStartX =
+        badgeX +
+        padX +
+        (evalState === 'correct' || evalState === 'wrong' ? ctx.measureText('✓ ').width : 0);
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(symbolStartX, badgeY + 3.5);
+      ctx.lineTo(symbolStartX + 9, badgeY + 3.5);
+      ctx.lineTo(symbolStartX + 6.5, badgeY + 1.8);
+      ctx.stroke();
+
+      ctx.restore();
+
+      return {
+        origin: { x: drawX, y: drawY },
+        tip: { x: tipX, y: tipY }
+      };
+    }
+
+    function drawAnchorNode(anchor, isDragging, isSnapped) {
+      const { x, y, kind, shortTag } = anchor;
+      ctx.save();
+
+      // Magnetic field glow ring during drag or snap
+      if (isSnapped) {
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.22)';
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#059669';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(x, y, 14, 0, Math.PI * 2);
+        ctx.stroke();
+      } else if (isDragging) {
+        ctx.fillStyle = 'rgba(79, 70, 229, 0.14)';
+        ctx.beginPath();
+        ctx.arc(x, y, 16, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = '#4f46e5';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.arc(x, y, 12, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Core anchor dot
+      ctx.beginPath();
+      ctx.arc(x, y, isSnapped ? 7 : isDragging ? 6 : 4.8, 0, Math.PI * 2);
+      ctx.fillStyle = isSnapped ? '#059669' : kind === 'com' ? '#0f172a' : '#0284c7';
+      ctx.fill();
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#ffffff';
+      ctx.stroke();
+
+      // Show G_i tag next to center-of-mass dot for clarity
+      if (kind === 'com') {
+        ctx.font = '700 11px Inter, sans-serif';
+        ctx.fillStyle = '#334155';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(shortTag, x + 9, y);
+      }
+
+      ctx.restore();
+    }
+
+    function drawHorizontalTable(width, tableTopY, tableHeight) {
+      const grad = ctx.createLinearGradient(0, tableTopY, 0, tableTopY + tableHeight);
+      grad.addColorStop(0, '#94a3b8');
+      grad.addColorStop(0.3, '#cbd5e1');
+      grad.addColorStop(1, '#e2e8f0');
+
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, tableTopY, width, tableHeight);
+
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(0, tableTopY);
+      ctx.lineTo(width, tableTopY);
+      ctx.stroke();
+
+      // Diagonal ground hatch lines
+      ctx.strokeStyle = 'rgba(100, 116, 139, 0.35)';
+      ctx.lineWidth = 1;
+      for (let x = -20; x < width + 20; x += 14) {
+        ctx.beginPath();
+        ctx.moveTo(x, tableTopY + tableHeight);
+        ctx.lineTo(x + 10, tableTopY + tableHeight + 9);
+        ctx.stroke();
+      }
+
+      // Label "Mặt bàn"
+      ctx.font = '700 11px Inter, sans-serif';
+      ctx.fillStyle = '#475569';
+      ctx.fillText('Mặt bàn phẳng ngang', 14, tableTopY + 19);
+    }
+
+    function drawStackedObject(box) {
+      const { x, y, w, h, kind, shortName } = box;
+      ctx.save();
+
+      if (kind === 'book') {
+        // Red textbook inspired by KNTT Physics 10
+        roundRect(ctx, x, y, w, h, 7);
+        ctx.fillStyle = '#ef4444';
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#b91c1c';
+        ctx.stroke();
+
+        // White pages block inside book
+        const padX = 9;
+        const padY = 6;
+        if (w > padX * 2 + 12 && h > padY * 2 + 6) {
+          roundRect(ctx, x + padX, y + padY, w - padX * 2, h - padY * 2, 3);
+          ctx.fillStyle = '#f8fafc';
+          ctx.fill();
+
+          ctx.strokeStyle = '#cbd5e1';
+          ctx.lineWidth = 1;
+          for (let ly = y + padY + 5; ly < y + h - padY - 3; ly += 5) {
+            ctx.beginPath();
+            ctx.moveTo(x + padX + 2, ly);
+            ctx.lineTo(x + w - padX - 2, ly);
+            ctx.stroke();
+          }
+
+          // Teal ribbon bookmark
+          const rx = x + w * 0.62;
+          ctx.fillStyle = '#0d9488';
+          ctx.beginPath();
+          ctx.moveTo(rx, y + padY);
+          ctx.lineTo(rx + 11, y + padY);
+          ctx.lineTo(rx + 11, y + h - 3);
+          ctx.lineTo(rx + 5.5, y + h - 7);
+          ctx.lineTo(rx, y + h - 3);
+          ctx.closePath();
+          ctx.fill();
+        }
+      } else if (kind === 'plank') {
+        // Wooden plank
+        const grad = ctx.createLinearGradient(x, y, x, y + h);
+        grad.addColorStop(0, '#f59e0b');
+        grad.addColorStop(0.55, '#eab308');
+        grad.addColorStop(1, '#d97706');
+
+        roundRect(ctx, x, y, w, h, 5);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#92400e';
+        ctx.stroke();
+
+        // Wood grain waves
+        ctx.strokeStyle = 'rgba(120, 53, 15, 0.32)';
+        ctx.lineWidth = 1.2;
+        for (let gy = y + 9; gy < y + h - 6; gy += 10) {
+          ctx.beginPath();
+          ctx.moveTo(x + 8, gy);
+          ctx.bezierCurveTo(x + w * 0.32, gy - 4, x + w * 0.68, gy + 4, x + w - 8, gy);
+          ctx.stroke();
+        }
+      } else if (kind === 'pencilcase') {
+        // Blue pencil case
+        const grad = ctx.createLinearGradient(x, y, x, y + h);
+        grad.addColorStop(0, '#38bdf8');
+        grad.addColorStop(1, '#0284c7');
+
+        roundRect(ctx, x, y, w, h, 7);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#0369a1';
+        ctx.stroke();
+
+        // Zipper line
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+        ctx.setLineDash([4, 3]);
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x + 8, y + h * 0.45);
+        ctx.lineTo(x + w - 8, y + h * 0.45);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      } else {
+        // Wooden cube ('cube')
+        const grad = ctx.createLinearGradient(x, y, x, y + h);
+        grad.addColorStop(0, '#fb923c');
+        grad.addColorStop(1, '#ea580c');
+
+        roundRect(ctx, x, y, w, h, 5);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#9a3412';
+        ctx.stroke();
+      }
+
+      // Object name badge on top-left corner of object
+      ctx.font = '700 10.5px Inter, sans-serif';
+      const badgeW = ctx.measureText(shortName).width + 10;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.76)';
+      roundRect(ctx, x + 5, y + 5, badgeW, 17, 5);
+      ctx.fill();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(shortName, x + 10, y + 13.8);
+
+      ctx.restore();
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      const radius = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + w, y, x + w, y + h, radius);
+      ctx.arcTo(x + w, y + h, x, y + h, radius);
+      ctx.arcTo(x, y + h, x, y, radius);
+      ctx.arcTo(x, y, x + w, y, radius);
+      ctx.closePath();
+    }
+
+    // =========================================================================
+    // 10. BOOTSTRAP ON LOAD
+    // =========================================================================
+    window.addEventListener('resize', resizeAndRender);
+    window.addEventListener('DOMContentLoaded', () => {
+      setSystemLevel(2);
+    });
+  </script>
+</body>
+</html>

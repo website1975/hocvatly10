@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phòng Thí Nghiệm Cơ Học Chất Lưu - Lực Cản &amp; Lực Nâng</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #090d16;
+            color: #e2e8f0;
+        }
+        .font-mono-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+        /* Thanh cuộn tinh gọn cho cột lý thuyết và bảng điều khiển */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 9999px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.8);
+            border-radius: 9999px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 0.95);
+        }
+        /* Tùy chỉnh thanh trượt range */
+        input[type="range"].lab-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 9999px;
+            background: #1e293b;
+            outline: none;
+        }
+        input[type="range"].lab-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #38bdf8;
+            border: 2px solid #0f172a;
+            cursor: pointer;
+            transition: transform 0.12s ease, background-color 0.12s ease;
+        }
+        input[type="range"].lab-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #7dd3fc;
+        }
+        input[type="range"].lab-slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #38bdf8;
+            border: 2px solid #0f172a;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col bg-slate-950 text-slate-100 select-none">
+
+    <!-- Thanh tiêu đề trên cùng (gọn gàng để dành tối đa không gian cho khung làm việc 100%) -->
+    <header class="h-12 shrink-0 bg-slate-900/95 border-b border-slate-800 px-4 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shrink-0 shadow">
+                FL
+            </div>
+            <div class="truncate">
+                <h1 class="text-sm sm:text-base font-bold text-white tracking-tight truncate">
+                    Phòng Thí Nghiệm Cơ Học Chất Lưu: Lực Cản &amp; Lực Nâng
+                </h1>
+            </div>
+        </div>
+
+        <!-- Bộ chuyển đổi chế độ nhanh trên header -->
+        <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800 shrink-0">
+            <button
+                id="header-mode-drag"
+                onclick="setSimulationMode('drag')"
+                class="px-2.5 py-1 rounded-md text-xs font-semibold transition flex items-center gap-1.5 bg-sky-600 text-white shadow-sm"
+            >
+                <span>💨</span>
+                <span>Lực Cản</span>
+            </button>
+            <button
+                id="header-mode-lift"
+                onclick="setSimulationMode('lift')"
+                class="px-2.5 py-1 rounded-md text-xs font-semibold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800/70"
+            >
+                <span>🎈</span>
+                <span>Khinh Khí Cầu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Khung nội dung chính chia 2 cột rõ ràng, khóa 100% chiều cao còn lại -->
+    <main class="flex-1 min-h-0 w-full grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+
+        <!-- =====================================================================
+             CỘT TRÁI (5/12 trên desktop): 2 TAB CON ĐỘC LẬP
+             ===================================================================== -->
+        <section class="lg:col-span-5 h-full min-h-0 flex flex-col bg-slate-900/70 border-r border-slate-800">
+            <!-- Thanh 2 tab con độc lập ở cột trái -->
+            <div class="shrink-0 grid grid-cols-2 gap-1.5 p-2 bg-slate-950/90 border-b border-slate-800">
+                <button
+                    id="subtab-btn-theory"
+                    onclick="switchLeftSubTab('theory')"
+                    class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-slate-800 text-sky-300 border border-sky-500/40 shadow-sm"
+                >
+                    <span>📘</span>
+                    <span>Lý thuyết &amp; Ví dụ</span>
+                </button>
+                <button
+                    id="subtab-btn-controls"
+                    onclick="switchLeftSubTab('controls')"
+                    class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent"
+                >
+                    <span>🎛️</span>
+                    <span>Bảng Điều Khiển</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: LÝ THUYẾT & VÍ DỤ (có thanh cuộn nội bộ riêng) -->
+            <div id="subtab-panel-theory" class="flex-1 min-h-0 overflow-y-auto custom-scroll p-4 space-y-4">
+                <!-- Phần 1: Lực cản chất lưu -->
+                <article class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h2 class="text-sm font-bold text-sky-400 flex items-center gap-1.5">
+                            <span>1.</span>
+                            <span>Lực Cản Chất Lưu ($\vec{F}_c$)</span>
+                        </h2>
+                        <span class="text-[11px] px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/30 font-medium">
+                            Vật lý THPT
+                        </span>
+                    </div>
+
+                    <div class="space-y-2 text-xs leading-relaxed text-slate-300">
+                        <div>
+                            <h3 class="font-semibold text-white mb-0.5">• Sự xuất hiện:</h3>
+                            <p>
+                                Xuất hiện khi một vật chuyển động tương đối đối với chất lưu (chất lỏng hoặc chất khí), hoặc khi dòng chất lưu chảy qua vật cản. Lực cản sinh ra do áp suất chênh lệch giữa mặt trước và mặt sau vật kết hợp với ma sát nhớt trên bề mặt tiếp xúc.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-white mb-0.5">• Đặc điểm của vectơ lực cản $\vec{F}_c$:</h3>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li><strong>Điểm đặt:</strong> Đặt tại tâm lực cản (gần trọng tâm hình học của vật).</li>
+                                <li><strong>Phương:</strong> Trùng với phương chuyển động tương đối giữa vật và chất lưu.</li>
+                                <li><strong>Chiều:</strong> <em>Cùng chiều</em> với vectơ vận tốc dòng chất lưu đập vào vật ($\vec{v}_{\text{dòng}}$), tức là <em>ngược chiều</em> với vectơ vận tốc tương đối của vật so với chất lưu ($\vec{v}_{\text{vật/chất lưu}}$).</li>
+                                <li><strong>Độ lớn:</strong> Tăng nhanh theo vận tốc tương đối của vật.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-950/80 border border-slate-800 rounded-lg p-2.5">
+                            <div class="text-[11px] font-semibold text-amber-300 mb-1">
+                                • Công thức tổng quát &amp; 4 yếu tố phụ thuộc:
+                            </div>
+                            <div class="text-center py-1 text-white overflow-x-auto">
+                                $$F_c = \frac{1}{2} C_d \, \rho \, A \, v^2$$
+                            </div>
+                            <ul class="list-disc pl-4 space-y-1 text-[11.5px] text-slate-300 mt-1">
+                                <li><strong>Hệ số cản $C_d$:</strong> Phụ thuộc vào <em>hình dạng và độ nhẵn bề mặt</em> vật (hình giọt nước khí động học có $C_d$ nhỏ hơn nhiều so với hình lập phương hay tấm phẳng).</li>
+                                <li><strong>Khối lượng riêng $\rho$ của chất lưu:</strong> Lực cản tỉ lệ thuận với $\rho$ (nước có $\rho \approx 1000\text{ kg/m}^3$ gây lực cản lớn hơn hẳn không khí với $\rho \approx 1{,}225\text{ kg/m}^3$ ở cùng điều kiện).</li>
+                                <li><strong>Diện tích mặt cắt ngang $A$:</strong> Tiết diện lớn nhất của vật vuông góc với phương dòng chảy (lớn hơn thì chắn nhiều dòng chất lưu hơn $\Rightarrow F_c$ lớn hơn).</li>
+                                <li><strong>Tốc độ tương đối $v$:</strong> Lực cản tỉ lệ với <em>bình phương tốc độ</em> ($v^2$). Khi tốc độ tăng gấp $2$ lần thì lực cản tăng gấp $4$ lần (trong miền dòng chảy quán tính).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Phần 2: Lực nâng & Lực đẩy Archimedes -->
+                <article class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h2 class="text-sm font-bold text-emerald-400 flex items-center gap-1.5">
+                            <span>2.</span>
+                            <span>Lực Nâng &amp; Lực Đẩy Archimedes</span>
+                        </h2>
+                        <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium">
+                            Khí cầu &amp; Chất lỏng
+                        </span>
+                    </div>
+
+                    <div class="space-y-2 text-xs leading-relaxed text-slate-300">
+                        <div>
+                            <h3 class="font-semibold text-white mb-0.5">• Đặc điểm lực nâng trong cơ học chất lưu:</h3>
+                            <p>
+                                Thành phần lực do chất lưu tác dụng lên vật có phương <em>vuông góc</em> với phương chuyển động tương đối (hoặc hướng <em>thẳng đứng lên trên</em> trong trường hợp lực nâng thủy tĩnh / khí tĩnh):
+                            </p>
+                            <ul class="list-disc pl-4 space-y-1 mt-1">
+                                <li><strong>Lực nâng động lực học ($\vec{F}_n$):</strong> Sinh ra khi dòng chất lưu chảy bất đối xứng quanh vật có tiết diện khí động học (như cánh máy bay), tạo chênh lệch áp suất giữa mặt trên và mặt dưới.</li>
+                                <li><strong>Lực đẩy Archimedes ($\vec{F}_A$):</strong> Mọi vật nhúng trong chất lỏng hoặc chất khí đều chịu lực đẩy hướng <em>thẳng đứng lên trên</em>, có độ lớn bằng trọng lượng phần chất lưu bị vật chiếm chỗ:
+                                    <div class="text-center py-1 text-emerald-200 overflow-x-auto">
+                                        $$F_A = \rho_{\text{chất lưu}} \cdot g \cdot V_{\text{chiếm chỗ}}$$
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-950/80 border border-slate-800 rounded-lg p-2.5 space-y-1.5">
+                            <h3 class="font-semibold text-amber-300 text-xs">• Ứng dụng vào Khinh khí cầu:</h3>
+                            <p class="text-[11.5px]">
+                                Khinh khí cầu có thể tích túi khí $V$ không đổi, chiếm chỗ một lượng không khí lạnh bên ngoài có khối lượng riêng $\rho_{\text{ngoài}}$, tạo lực đẩy Archimedes hướng lên: $F_A = \rho_{\text{ngoài}} g V$.
+                            </p>
+                            <p class="text-[11.5px]">
+                                Khi bật đầu đốt, khí bên trong nóng lên, giãn nở và thoát bớt ra ngoài nên khối lượng riêng $\rho_{\text{trong}}$ giảm xuống. Trọng lực tổng cộng gồm trọng lượng khí nóng bên trong và trọng lượng vỏ + giỏ + tải trọng:
+                            </p>
+                            <div class="text-center py-0.5 text-white overflow-x-auto">
+                                $$P_{\text{tổng}} = \rho_{\text{trong}} g V + m_{\text{vỏ+tải}} g$$
+                            </div>
+                            <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-slate-300">
+                                <li>$F_A &gt; P_{\text{tổng}}$: Hợp lực hướng lên $\Rightarrow$ Khinh khí cầu <strong>bay lên</strong>.</li>
+                                <li>$F_A = P_{\text{tổng}}$: Cân bằng lực $\Rightarrow$ Khinh khí cầu <strong>lơ lửng</strong> (hoặc chuyển động đều).</li>
+                                <li>$F_A &lt; P_{\text{tổng}}$: Hợp lực hướng xuống $\Rightarrow$ Khinh khí cầu <strong>hạ xuống</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Phần 3: Ví dụ cụ thể tính lực đẩy Archimedes có lời giải từng bước -->
+                <article class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-3">
+                    <h2 class="text-sm font-bold text-amber-400 border-b border-slate-800 pb-2">
+                        3. Ví Dụ Cụ Thể Về Lực Đẩy Archimedes
+                    </h2>
+
+                    <!-- Ví dụ 1: Khinh khí cầu -->
+                    <div class="bg-slate-950/85 border border-slate-800 rounded-lg p-3 space-y-2 text-xs">
+                        <div class="font-bold text-sky-300">
+                            Ví dụ 1 (Khinh khí cầu): Tính lực đẩy Archimedes &amp; trạng thái chuyển động
+                        </div>
+                        <p class="text-slate-300 leading-relaxed">
+                            Một khinh khí cầu có thể tích túi khí $V = 2500\text{ m}^3$. Không khí bên ngoài có khối lượng riêng $\rho_{\text{ngoài}} = 1{,}225\text{ kg/m}^3$. Khối lượng vỏ, giỏ và hành khách là $m_{\text{vỏ+tải}} = 850\text{ kg}$. Khi đốt nóng, khí bên trong có khối lượng riêng $\rho_{\text{trong}} = 0{,}82\text{ kg/m}^3$. Lấy $g = 9{,}8\text{ m/s}^2$.
+                        </p>
+                        <div class="border-t border-slate-800/80 pt-2 space-y-1.5 text-slate-200">
+                            <div class="font-semibold text-emerald-400">Lời giải từng bước:</div>
+                            <div>
+                                <strong>Bước 1 – Tính lực đẩy Archimedes:</strong>
+                                <div class="overflow-x-auto py-0.5">
+                                    $$F_A = \rho_{\text{ngoài}} g V = 1{,}225 \times 9{,}8 \times 2500 = 30012{,}5\text{ N} \approx 30{,}01\text{ kN}$$
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Bước 2 – Tính trọng lượng khí nóng bên trong và tổng trọng lượng:</strong>
+                                <div class="overflow-x-auto py-0.5">
+                                    $$P_{\text{khí}} = \rho_{\text{trong}} g V = 0{,}82 \times 9{,}8 \times 2500 = 20090\text{ N}$$
+                                </div>
+                                <div class="overflow-x-auto py-0.5">
+                                    $$P_{\text{vỏ+tải}} = 850 \times 9{,}8 = 8330\text{ N}$$
+                                </div>
+                                <div class="overflow-x-auto py-0.5">
+                                    $$P_{\text{tổng}} = 20090 + 8330 = 28420\text{ N}$$
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Bước 3 – Kết luận trạng thái:</strong>
+                                <p class="text-slate-300 mt-0.5">
+                                    Vì $F_A = 30012{,}5\text{ N} &gt; P_{\text{tổng}} = 28420\text{ N}$ (hợp lực nâng $F_{\text{hợp}} = +1592{,}5\text{ N}$ hướng lên), khinh khí cầu <strong>bay lên cao</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ví dụ 2: Vật chìm / nổi trong nước -->
+                    <div class="bg-slate-950/85 border border-slate-800 rounded-lg p-3 space-y-2 text-xs">
+                        <div class="font-bold text-emerald-300">
+                            Ví dụ 2 (Vật chìm hoàn toàn trong nước): Lực đẩy Archimedes &amp; hợp lực
+                        </div>
+                        <p class="text-slate-300 leading-relaxed">
+                            Một khối đá có thể tích $V = 0{,}04\text{ m}^3$ và khối lượng $m = 100\text{ kg}$ được thả chìm hoàn toàn trong nước có $\rho_{\text{nước}} = 1000\text{ kg/m}^3$. Lấy $g = 9{,}8\text{ m/s}^2$.
+                        </p>
+                        <div class="border-t border-slate-800/80 pt-2 space-y-1.5 text-slate-200">
+                            <div class="font-semibold text-emerald-400">Lời giải từng bước:</div>
+                            <div>
+                                <strong>Bước 1 – Lực đẩy Archimedes tác dụng lên khối đá:</strong>
+                                <div class="overflow-x-auto py-0.5">
+                                    $$F_A = \rho_{\text{nước}} g V = 1000 \times 9{,}8 \times 0{,}04 = 392\text{ N}$$
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Bước 2 – Trọng lượng của khối đá:</strong>
+                                <div class="overflow-x-auto py-0.5">
+                                    $$P = m g = 100 \times 9{,}8 = 980\text{ N}$$
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Bước 3 – So sánh &amp; kết luận:</strong>
+                                <p class="text-slate-300 mt-0.5">
+                                    Vì $F_A = 392\text{ N} &lt; P = 980\text{ N}$, khối đá <strong>chìm xuống đáy</strong> với hợp lực ban đầu hướng xuống là $F_{\text{hợp}} = P - F_A = 588\text{ N}$.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- TAB 2: BẢNG ĐIỀU KHIỂN (hiển thị đầy đủ nút, thanh trượt, vectơ, chỉ số) -->
+            <div id="subtab-panel-controls" class="hidden flex-1 min-h-0 overflow-y-auto custom-scroll p-3.5 space-y-3">
+
+                <!-- 1. Nút chọn chế độ mô phỏng -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        Chế độ mô phỏng
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button
+                            id="ctrl-mode-drag"
+                            onclick="setSimulationMode('drag')"
+                            class="py-2 px-2.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-sky-600 text-white border border-sky-400/50 shadow"
+                        >
+                            <span>💨</span>
+                            <span>Lực cản chất lưu</span>
+                        </button>
+                        <button
+                            id="ctrl-mode-lift"
+                            onclick="setSimulationMode('lift')"
+                            class="py-2 px-2.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-slate-800/90 text-slate-300 hover:bg-slate-800 border border-slate-700"
+                        >
+                            <span>🎈</span>
+                            <span>Khinh khí cầu</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KHỐI ĐIỀU KHIỂN CHẾ ĐỘ LỰC CẢN -->
+                <div id="controls-drag-group" class="space-y-3">
+                    <!-- Kịch bản biểu diễn vận tốc v & hướng lực cản Fc -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                                Kịch bản vận tốc &amp; lực cản
+                            </span>
+                            <span id="label-drag-scenario-badge" class="text-[11px] font-mono-num px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                                Fc cùng chiều v_dòng
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button
+                                id="scenario-btn-flow"
+                                onclick="setDragScenario('flow')"
+                                class="py-1.5 px-2 rounded-lg text-[11px] font-semibold transition bg-cyan-600/25 text-cyan-200 border border-cyan-400/60"
+                            >
+                                🌬️ Dòng chảy tới vật (Fc ↗ v)
+                            </button>
+                            <button
+                                id="scenario-btn-object"
+                                onclick="setDragScenario('object')"
+                                class="py-1.5 px-2 rounded-lg text-[11px] font-semibold transition bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700"
+                            >
+                                🚀 Vật bay trong khí (Fc ↙ v)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chọn hình dạng vật thể -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                                Hình dạng vật thể ($C_d$)
+                            </span>
+                            <span id="label-cd-badge" class="text-[11px] font-mono-num px-2 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30">
+                                Cd = 0.47
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button
+                                id="shape-btn-sphere"
+                                onclick="setDragShape('sphere')"
+                                class="py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-sky-600/25 text-sky-200 border border-sky-400/60"
+                            >
+                                <span>⚪</span>
+                                <span>Hình cầu</span>
+                            </button>
+                            <button
+                                id="shape-btn-cube"
+                                onclick="setDragShape('cube')"
+                                class="py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700"
+                            >
+                                <span>⬛</span>
+                                <span>Lập phương</span>
+                            </button>
+                            <button
+                                id="shape-btn-streamlined"
+                                onclick="setDragShape('streamlined')"
+                                class="py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700"
+                            >
+                                <span>💧</span>
+                                <span>Giọt nước</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chọn môi trường chất lưu -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                                Môi trường chất lưu ($\rho$)
+                            </span>
+                            <span id="label-rho-drag-badge" class="text-[11px] font-mono-num px-2 py-0.5 rounded bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                                1.225 kg/m³
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button
+                                id="fluid-btn-air"
+                                onclick="setDragFluid('air')"
+                                class="py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-indigo-600/25 text-indigo-200 border border-indigo-400/60"
+                            >
+                                <span>🌬️</span>
+                                <span>Không khí</span>
+                            </button>
+                            <button
+                                id="fluid-btn-oil"
+                                onclick="setDragFluid('oil')"
+                                class="py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700"
+                            >
+                                <span>🛢️</span>
+                                <span>Dầu hỏa</span>
+                            </button>
+                            <button
+                                id="fluid-btn-water"
+                                onclick="setDragFluid('water')"
+                                class="py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700"
+                            >
+                                <span>🌊</span>
+                                <span>Nước</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Thanh trượt thông số Lực cản: Vận tốc v & Tiết diện A -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-3">
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <label for="slider-v" class="font-semibold text-cyan-300">
+                                    Vận tốc tương đối ($v$)
+                                </label>
+                                <span id="val-v" class="font-mono-num font-bold text-white bg-slate-800 px-2 py-0.5 rounded">
+                                    20.0 m/s
+                                </span>
+                            </div>
+                            <input
+                                id="slider-v"
+                                type="range"
+                                min="2"
+                                max="60"
+                                step="0.5"
+                                value="20"
+                                oninput="updateDragFromUI()"
+                                class="w-full lab-slider"
+                            >
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <label for="slider-area" class="font-semibold text-sky-300">
+                                    Diện tích mặt cắt ngang ($A$)
+                                </label>
+                                <span id="val-area" class="font-mono-num font-bold text-white bg-slate-800 px-2 py-0.5 rounded">
+                                    0.50 m²
+                                </span>
+                            </div>
+                            <input
+                                id="slider-area"
+                                type="range"
+                                min="0.10"
+                                max="2.00"
+                                step="0.05"
+                                value="0.50"
+                                oninput="updateDragFromUI()"
+                                class="w-full lab-slider"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KHỐI ĐIỀU KHIỂN CHẾ ĐỘ KHINH KHÍ CẦU -->
+                <div id="controls-lift-group" class="hidden space-y-3">
+                    <!-- Môi trường khí quyển -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                                Môi trường khí quyển bên ngoài
+                            </span>
+                            <span id="label-rho-outer-badge" class="text-[11px] font-mono-num px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                ρ_ngoài = 1.225 kg/m³
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button
+                                id="atm-btn-sealevel"
+                                onclick="setAtmospherePreset('sealevel')"
+                                class="py-1.5 px-2 rounded-lg text-xs font-semibold transition bg-emerald-600/25 text-emerald-200 border border-emerald-400/60"
+                            >
+                                🏖️ Mực nước biển (15°C)
+                            </button>
+                            <button
+                                id="atm-btn-cold"
+                                onclick="setAtmospherePreset('cold')"
+                                class="py-1.5 px-2 rounded-lg text-xs font-semibold transition bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700"
+                            >
+                                ❄️ Không khí lạnh (-5°C)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Thanh trượt thông số Khinh khí cầu: T_trong, V, m_vỏ+tải -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2.5">
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <label for="slider-temp-in" class="font-semibold text-amber-300">
+                                    Nhiệt độ khí bên trong ($T_{\text{trong}}$)
+                                </label>
+                                <span id="val-temp-in" class="font-mono-num font-bold text-white bg-slate-800 px-2 py-0.5 rounded">
+                                    95 °C
+                                </span>
+                            </div>
+                            <input
+                                id="slider-temp-in"
+                                type="range"
+                                min="15"
+                                max="140"
+                                step="1"
+                                value="95"
+                                oninput="updateLiftFromUI()"
+                                class="w-full lab-slider"
+                            >
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <label for="slider-volume" class="font-semibold text-emerald-300">
+                                    Thể tích túi khí ($V$)
+                                </label>
+                                <span id="val-volume" class="font-mono-num font-bold text-white bg-slate-800 px-2 py-0.5 rounded">
+                                    2500 m³
+                                </span>
+                            </div>
+                            <input
+                                id="slider-volume"
+                                type="range"
+                                min="1000"
+                                max="5000"
+                                step="100"
+                                value="2500"
+                                oninput="updateLiftFromUI()"
+                                class="w-full lab-slider"
+                            >
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <label for="slider-payload" class="font-semibold text-rose-300">
+                                    Khối lượng vỏ + tải trọng ($m_{\text{vỏ+tải}}$)
+                                </label>
+                                <span id="val-payload" class="font-mono-num font-bold text-white bg-slate-800 px-2 py-0.5 rounded">
+                                    750 kg
+                                </span>
+                            </div>
+                            <input
+                                id="slider-payload"
+                                type="range"
+                                min="300"
+                                max="1800"
+                                step="25"
+                                value="750"
+                                oninput="updateLiftFromUI()"
+                                class="w-full lab-slider"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Nút bật/tắt vectơ (bao gồm cả vectơ vận tốc v và các vectơ lực) -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        Hiển thị vectơ vận tốc &amp; lực
+                    </div>
+
+                    <!-- Nút bật/tắt vectơ vận tốc v (dùng chung cho cả 2 chế độ) -->
+                    <button
+                        id="btn-toggle-vec-v"
+                        onclick="toggleVector('v')"
+                        class="w-full py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-between bg-cyan-500/20 text-cyan-200 border border-cyan-400/60"
+                    >
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></span>
+                            <span>Vectơ vận tốc ($\vec{v}$)</span>
+                        </span>
+                        <span id="status-vec-v" class="font-mono-num text-[11px] px-1.5 py-0.5 rounded bg-cyan-500/25">BẬT</span>
+                    </button>
+
+                    <!-- Các nút bật/tắt vectơ lực ở chế độ Lực cản -->
+                    <div id="vector-buttons-drag" class="grid grid-cols-1 gap-1.5">
+                        <button
+                            id="btn-toggle-vec-fc"
+                            onclick="toggleVector('fc')"
+                            class="w-full py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-between bg-rose-500/20 text-rose-200 border border-rose-400/60"
+                        >
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
+                                <span>Vectơ lực cản ($\vec{F}_c$)</span>
+                            </span>
+                            <span id="status-vec-fc" class="font-mono-num text-[11px] px-1.5 py-0.5 rounded bg-rose-500/25">BẬT</span>
+                        </button>
+                    </div>
+
+                    <!-- Các nút bật/tắt vectơ lực ở chế độ Khinh khí cầu -->
+                    <div id="vector-buttons-lift" class="hidden grid-cols-3 gap-1.5">
+                        <button
+                            id="btn-toggle-vec-fa"
+                            onclick="toggleVector('fa')"
+                            class="py-1.5 px-2 rounded-lg text-[11px] font-bold transition flex flex-col items-center gap-0.5 bg-emerald-500/20 text-emerald-200 border border-emerald-400/60"
+                        >
+                            <span>Lực đẩy $\vec{F}_A$</span>
+                            <span id="status-vec-fa" class="font-mono-num text-[10px]">BẬT</span>
+                        </button>
+                        <button
+                            id="btn-toggle-vec-p"
+                            onclick="toggleVector('p')"
+                            class="py-1.5 px-2 rounded-lg text-[11px] font-bold transition flex flex-col items-center gap-0.5 bg-amber-500/20 text-amber-200 border border-amber-400/60"
+                        >
+                            <span>Trọng lực $\vec{P}$</span>
+                            <span id="status-vec-p" class="font-mono-num text-[10px]">BẬT</span>
+                        </button>
+                        <button
+                            id="btn-toggle-vec-fnet"
+                            onclick="toggleVector('fnet')"
+                            class="py-1.5 px-2 rounded-lg text-[11px] font-bold transition flex flex-col items-center gap-0.5 bg-violet-500/20 text-violet-200 border border-violet-400/60"
+                        >
+                            <span>Hợp lực $\vec{F}_{\text{hl}}$</span>
+                            <span id="status-vec-fnet" class="font-mono-num text-[10px]">BẬT</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Nút đặt lại / tạm dừng -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button
+                        id="btn-toggle-pause"
+                        onclick="togglePause()"
+                        class="py-2 px-3 rounded-xl text-xs font-bold transition bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 flex items-center justify-center gap-1.5"
+                    >
+                        <span>⏸️</span>
+                        <span id="label-pause-btn">Tạm dừng</span>
+                    </button>
+                    <button
+                        onclick="resetCurrentMode()"
+                        class="py-2 px-3 rounded-xl text-xs font-bold transition bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 flex items-center justify-center gap-1.5"
+                    >
+                        <span>↺</span>
+                        <span>Đặt lại</span>
+                    </button>
+                </div>
+
+                <!-- 4. Bảng chỉ số trực tiếp gọn gàng -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
+                        Chỉ số trực tiếp
+                    </div>
+
+                    <!-- Chỉ số chế độ Lực cản -->
+                    <div id="readout-drag-box" class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-slate-950/85 border border-slate-800/90 rounded-lg p-2">
+                            <div class="text-[10.5px] text-slate-400">Lực cản ($F_c$)</div>
+                            <div id="metric-fc" class="font-mono-num font-bold text-sm text-rose-400 mt-0.5">
+                                147.0 N
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/85 border border-slate-800/90 rounded-lg p-2">
+                            <div class="text-[10.5px] text-slate-400">Công suất cản ($P_c = F_c v$)</div>
+                            <div id="metric-pc" class="font-mono-num font-bold text-sm text-sky-300 mt-0.5">
+                                2.94 kW
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/85 border border-slate-800/90 rounded-lg p-2">
+                            <div id="metric-v-label" class="text-[10.5px] text-slate-400">Vận tốc dòng ($\vec{v}_{\text{dòng}}$)</div>
+                            <div id="metric-v" class="font-mono-num font-bold text-sm text-cyan-300 mt-0.5">
+                                20.0 m/s
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/85 border border-slate-800/90 rounded-lg p-2">
+                            <div class="text-[10.5px] text-slate-400">Hệ số cản $C_d$</div>
+                            <div id="metric-cd" class="font-mono-num font-bold text-sm text-amber-300 mt-0.5">
+                                0.47
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chỉ số chế độ Khinh khí cầu -->
+                    <div id="readout-lift-box" class="hidden grid-cols-2 gap-2 text-xs">
+                        <div class="bg-slate-950/85 border border-slate-800/90 rounded-lg p-2">
+                            <div class="text-[10.5px] text-slate-400">Lực đẩy Archimedes ($F_A$)</div>
+                            <div id="metric-fa" class="font-mono-num font-bold text-sm text-emerald-400 mt-0.5">
+                                30.01 kN
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/85 border border-slate-800/90 rounded-lg p-2">
+                            <div class="text-[10.5px] text-slate-400">Trọng lực tổng ($P_{\text{tổng}}$)</div>
+                            <div id="metric-ptotal" class="font-mono-num font-bold text-sm text-amber-300 mt-0.5">
+                                28.42 kN
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/85 border border-slate-800/90 rounded-lg p-2">
+                            <div class="text-[10.5px] text-slate-400">Hợp lực ($F_{\text{hl}}$) | Vận tốc ($v_y$)</div>
+                            <div id="metric-fnet-vy" class="font-mono-num font-bold text-xs text-violet-300 mt-0.5">
+                                +1.59 kN | +0.0 m/s
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/85 border border-slate-800/90 rounded-lg p-2">
+                            <div class="text-[10.5px] text-slate-400">Trạng thái khinh khí cầu</div>
+                            <div id="metric-balloon-status" class="font-bold text-xs text-emerald-400 mt-1 truncate">
+                                Đang bay lên (FA &gt; P)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             CỘT PHẢI (7/12 trên desktop): KHUNG MÔ PHỎNG CANVAS TƯƠNG TÁC
+             ===================================================================== -->
+        <section class="lg:col-span-7 h-full min-h-0 flex flex-col bg-slate-950">
+            <!-- Thanh trạng thái phía trên Canvas -->
+            <div class="shrink-0 px-4 py-2 bg-slate-900/80 border-b border-slate-800 flex items-center justify-between gap-2">
+                <div id="canvas-status-title" class="text-xs font-semibold text-slate-200 truncate">
+                    Hầm dòng chất lưu — Quan sát đường dòng, vùng xoáy &amp; vectơ vận tốc v, lực cản Fc
+                </div>
+                <span id="canvas-pause-pill" class="hidden text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40 shrink-0">
+                    Đang tạm dừng
+                </span>
+            </div>
+
+            <!-- Vùng Canvas chính -->
+            <div id="canvas-wrapper" class="relative flex-1 min-h-0 w-full overflow-hidden">
+                <canvas id="sim-canvas" class="block w-full h-full"></canvas>
+            </div>
+
+            <!-- Thanh chú giải vectơ & ký hiệu phía dưới Canvas -->
+            <div class="shrink-0 px-4 py-2 bg-slate-900/90 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11.5px] text-slate-300">
+                <div id="canvas-legend" class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-1 rounded bg-cyan-400 inline-block"></span> Vectơ vận tốc $\vec{v}$</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-1 rounded bg-rose-500 inline-block"></span> Vectơ lực cản $\vec{F}_c$</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-sky-400 inline-block"></span> Đường dòng (Streamlines)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full border border-amber-300/80 inline-block"></span> Vùng xoáy sau vật</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        /* =====================================================================
+           1. HẰNG SỐ VẬT LÝ & TRẠNG THÁI ỨNG DỤNG
+           ===================================================================== */
+        const G_ACCEL = 9.8; // m/s^2
+
+        const SHAPES = {
+            sphere: {
+                id: 'sphere',
+                name: 'Hình cầu',
+                cd: 0.47,
+                wakeStrength: 0.65
+            },
+            cube: {
+                id: 'cube',
+                name: 'Hình lập phương',
+                cd: 1.05,
+                wakeStrength: 1.0
+            },
+            streamlined: {
+                id: 'streamlined',
+                name: 'Hình giọt nước',
+                cd: 0.04,
+                wakeStrength: 0.15
+            }
+        };
+
+        const FLUIDS = {
+            air: {
+                id: 'air',
+                name: 'Không khí',
+                rho: 1.225,
+                bgTop: '#071326',
+                bgBottom: '#0f2342',
+                lineColor: 'rgba(56, 189, 248, 0.55)',
+                vortexColor: 'rgba(125, 211, 252, 0.7)'
+            },
+            oil: {
+                id: 'oil',
+                name: 'Dầu hỏa',
+                rho: 800,
+                bgTop: '#1a1307',
+                bgBottom: '#2d1e08',
+                lineColor: 'rgba(251, 191, 36, 0.55)',
+                vortexColor: 'rgba(253, 224, 71, 0.75)'
+            },
+            water: {
+                id: 'water',
+                name: 'Nước',
+                rho: 1000,
+                bgTop: '#051c2c',
+                bgBottom: '#083344',
+                lineColor: 'rgba(34, 211, 238, 0.6)',
+                vortexColor: 'rgba(103, 232, 249, 0.75)'
+            }
+        };
+
+        const ATMOSPHERES = {
+            sealevel: {
+                id: 'sealevel',
+                name: 'Mực nước biển (15°C)',
+                tempC: 15,
+                rhoOuter: 1.225
+            },
+            cold: {
+                id: 'cold',
+                name: 'Không khí lạnh (-5°C)',
+                tempC: -5,
+                rhoOuter: 1.316
+            }
+        };
+
+        const appState = {
+            leftSubTab: 'theory', // 'theory' | 'controls'
+            mode: 'drag',        // 'drag' | 'lift'
+            paused: false,
+            vectors: {
+                v: true,
+                fc: true,
+                fa: true,
+                p: true,
+                fnet: true
+            },
+
+            // Thông số mô phỏng Lực cản
+            drag: {
+                scenario: 'flow', // 'flow' (dòng chảy tới vật: Fc cùng chiều v_dòng) | 'object' (vật bay trong chất lưu: Fc ngược chiều v_vật)
+                shapeKey: 'sphere',
+                fluidKey: 'air',
+                v: 20.0,       // m/s
+                area: 0.50,    // m^2
+                time: 0,
+                streamOffsets: Array.from({ length: 13 }, (_, idx) => idx / 12),
+                vortices: Array.from({ length: 14 }, (_, i) => ({
+                    xOffset: i * 18,
+                    yJitter: ((i % 3) - 1) * 10,
+                    radius: 7 + (i % 4) * 3.5,
+                    phase: i * 0.65
+                }))
+            },
+
+            // Thông số mô phỏng Khinh khí cầu
+            lift: {
+                atmKey: 'sealevel',
+                tempInC: 95,       // °C
+                volume: 2500,      // m^3
+                payloadMass: 750,  // kg (vỏ + giỏ + tải trọng)
+                altitudeRatio: 0.35, // 0.0 (mặt đất) -> 1.0 (trần bay)
+                vy: 0.0,           // m/s (dương = bay lên, âm = hạ xuống)
+                time: 0
+            }
+        };
+
+        /* =====================================================================
+           2. ĐIỀU HƯỚNG TAB TRÁI & CHẾ ĐỘ MÔ PHỎNG
+           ===================================================================== */
+        function switchLeftSubTab(tabName) {
+            appState.leftSubTab = tabName;
+
+            const btnTheory = document.getElementById('subtab-btn-theory');
+            const btnControls = document.getElementById('subtab-btn-controls');
+            const panelTheory = document.getElementById('subtab-panel-theory');
+            const panelControls = document.getElementById('subtab-panel-controls');
+
+            if (tabName === 'theory') {
+                btnTheory.className = 'py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-slate-800 text-sky-300 border border-sky-500/40 shadow-sm';
+                btnControls.className = 'py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent';
+                panelTheory.classList.remove('hidden');
+                panelControls.classList.add('hidden');
+                renderMathInElementSafe(panelTheory);
+            } else {
+                btnControls.className = 'py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-slate-800 text-sky-300 border border-sky-500/40 shadow-sm';
+                btnTheory.className = 'py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent';
+                panelControls.classList.remove('hidden');
+                panelTheory.classList.add('hidden');
+                renderMathInElementSafe(panelControls);
+            }
+        }
+
+        function setSimulationMode(mode) {
+            appState.mode = mode;
+
+            // Đồng bộ nút ở Header
+            const hDrag = document.getElementById('header-mode-drag');
+            const hLift = document.getElementById('header-mode-lift');
+            if (mode === 'drag') {
+                hDrag.className = 'px-2.5 py-1 rounded-md text-xs font-semibold transition flex items-center gap-1.5 bg-sky-600 text-white shadow-sm';
+                hLift.className = 'px-2.5 py-1 rounded-md text-xs font-semibold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800/70';
+            } else {
+                hLift.className = 'px-2.5 py-1 rounded-md text-xs font-semibold transition flex items-center gap-1.5 bg-emerald-600 text-white shadow-sm';
+                hDrag.className = 'px-2.5 py-1 rounded-md text-xs font-semibold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800/70';
+            }
+
+            // Đồng bộ nút trong Tab Bảng Điều Khiển
+            const cDrag = document.getElementById('ctrl-mode-drag');
+            const cLift = document.getElementById('ctrl-mode-lift');
+            if (mode === 'drag') {
+                cDrag.className = 'py-2 px-2.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-sky-600 text-white border border-sky-400/50 shadow';
+                cLift.className = 'py-2 px-2.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-slate-800/90 text-slate-300 hover:bg-slate-800 border border-slate-700';
+            } else {
+                cLift.className = 'py-2 px-2.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white border border-emerald-400/50 shadow';
+                cDrag.className = 'py-2 px-2.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-slate-800/90 text-slate-300 hover:bg-slate-800 border border-slate-700';
+            }
+
+            // Chuyển nhóm điều khiển, vectơ và chỉ số
+            document.getElementById('controls-drag-group').classList.toggle('hidden', mode !== 'drag');
+            document.getElementById('controls-lift-group').classList.toggle('hidden', mode !== 'lift');
+
+            document.getElementById('vector-buttons-drag').classList.toggle('hidden', mode !== 'drag');
+            document.getElementById('vector-buttons-lift').classList.toggle('hidden', mode !== 'lift');
+
+            document.getElementById('readout-drag-box').classList.toggle('hidden', mode !== 'drag');
+            document.getElementById('readout-lift-box').classList.toggle('hidden', mode !== 'lift');
+
+            // Cập nhật tiêu đề và chú giải phía dưới Canvas
+            const statusTitle = document.getElementById('canvas-status-title');
+            const legend = document.getElementById('canvas-legend');
+
+            if (mode === 'drag') {
+                statusTitle.textContent = 'Hầm dòng chất lưu — Quan sát đường dòng, vùng xoáy & vectơ vận tốc v, lực cản Fc';
+                legend.innerHTML = `
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-1 rounded bg-cyan-400 inline-block"></span> Vectơ vận tốc $\\vec{v}$</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-1 rounded bg-rose-500 inline-block"></span> Vectơ lực cản $\\vec{F}_c$</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-sky-400 inline-block"></span> Đường dòng (Streamlines)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full border border-amber-300/80 inline-block"></span> Vùng xoáy sau vật</span>
+                `;
+            } else {
+                statusTitle.textContent = 'Mô phỏng Khinh khí cầu — Lực đẩy Archimedes, trọng lực, hợp lực & vectơ vận tốc v';
+                legend.innerHTML = `
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-1 rounded bg-cyan-400 inline-block"></span> Vectơ vận tốc $\\vec{v}$</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-1 rounded bg-emerald-400 inline-block"></span> Lực đẩy Archimedes $\\vec{F}_A$</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-1 rounded bg-amber-400 inline-block"></span> Trọng lực tổng $\\vec{P}$</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-1 rounded bg-violet-400 inline-block"></span> Hợp lực $\\vec{F}_{\\text{hl}}$</span>
+                `;
+            }
+
+            renderMathInElementSafe(legend);
+            updateReadouts();
+        }
+
+        /* =====================================================================
+           3. CÁC HÀM ĐIỀU KHIỂN THÔNG SỐ & VECTƠ
+           ===================================================================== */
+        function setDragScenario(scenario) {
+            appState.drag.scenario = scenario === 'object' ? 'object' : 'flow';
+            const btnFlow = document.getElementById('scenario-btn-flow');
+            const btnObject = document.getElementById('scenario-btn-object');
+            const badge = document.getElementById('label-drag-scenario-badge');
+            const vLabel = document.getElementById('metric-v-label');
+
+            if (appState.drag.scenario === 'flow') {
+                btnFlow.className = 'py-1.5 px-2 rounded-lg text-[11px] font-semibold transition bg-cyan-600/25 text-cyan-200 border border-cyan-400/60';
+                btnObject.className = 'py-1.5 px-2 rounded-lg text-[11px] font-semibold transition bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700';
+                if (badge) badge.textContent = 'Fc cùng chiều v_dòng';
+                if (vLabel) vLabel.textContent = 'Vận tốc dòng (v_dòng)';
+            } else {
+                btnObject.className = 'py-1.5 px-2 rounded-lg text-[11px] font-semibold transition bg-cyan-600/25 text-cyan-200 border border-cyan-400/60';
+                btnFlow.className = 'py-1.5 px-2 rounded-lg text-[11px] font-semibold transition bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700';
+                if (badge) badge.textContent = 'Fc ngược chiều v_vật';
+                if (vLabel) vLabel.textContent = 'Vận tốc vật (v_vật)';
+            }
+            updateReadouts();
+        }
+
+        function setDragShape(shapeKey) {
+            appState.drag.shapeKey = shapeKey;
+            ['sphere', 'cube', 'streamlined'].forEach((k) => {
+                const btn = document.getElementById(`shape-btn-${k}`);
+                if (k === shapeKey) {
+                    btn.className = 'py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-sky-600/25 text-sky-200 border border-sky-400/60';
+                } else {
+                    btn.className = 'py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700';
+                }
+            });
+            updateReadouts();
+        }
+
+        function setDragFluid(fluidKey) {
+            appState.drag.fluidKey = fluidKey;
+            ['air', 'oil', 'water'].forEach((k) => {
+                const btn = document.getElementById(`fluid-btn-${k}`);
+                if (k === fluidKey) {
+                    btn.className = 'py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-indigo-600/25 text-indigo-200 border border-indigo-400/60';
+                } else {
+                    btn.className = 'py-2 px-2 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-0.5 bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700';
+                }
+            });
+            updateReadouts();
+        }
+
+        function updateDragFromUI() {
+            appState.drag.v = parseFloat(document.getElementById('slider-v').value);
+            appState.drag.area = parseFloat(document.getElementById('slider-area').value);
+            updateReadouts();
+        }
+
+        function setAtmospherePreset(atmKey) {
+            appState.lift.atmKey = atmKey;
+            ['sealevel', 'cold'].forEach((k) => {
+                const btn = document.getElementById(`atm-btn-${k}`);
+                if (k === atmKey) {
+                    btn.className = 'py-1.5 px-2 rounded-lg text-xs font-semibold transition bg-emerald-600/25 text-emerald-200 border border-emerald-400/60';
+                } else {
+                    btn.className = 'py-1.5 px-2 rounded-lg text-xs font-semibold transition bg-slate-800/80 text-slate-300 hover:bg-slate-800 border border-slate-700';
+                }
+            });
+            updateReadouts();
+        }
+
+        function updateLiftFromUI() {
+            appState.lift.tempInC = parseFloat(document.getElementById('slider-temp-in').value);
+            appState.lift.volume = parseFloat(document.getElementById('slider-volume').value);
+            appState.lift.payloadMass = parseFloat(document.getElementById('slider-payload').value);
+            updateReadouts();
+        }
+
+        function toggleVector(vecKey) {
+            appState.vectors[vecKey] = !appState.vectors[vecKey];
+            syncVectorButtonsUI();
+        }
+
+        function syncVectorButtonsUI() {
+            const vOn = appState.vectors.v;
+            const btnV = document.getElementById('btn-toggle-vec-v');
+            const stV = document.getElementById('status-vec-v');
+            btnV.className = vOn
+                ? 'w-full py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-between bg-cyan-500/20 text-cyan-200 border border-cyan-400/60'
+                : 'w-full py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-between bg-slate-800/70 text-slate-400 border border-slate-700';
+            stV.textContent = vOn ? 'BẬT' : 'TẮT';
+
+            const fcOn = appState.vectors.fc;
+            const btnFc = document.getElementById('btn-toggle-vec-fc');
+            const stFc = document.getElementById('status-vec-fc');
+            btnFc.className = fcOn
+                ? 'w-full py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-between bg-rose-500/20 text-rose-200 border border-rose-400/60'
+                : 'w-full py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-between bg-slate-800/70 text-slate-400 border border-slate-700';
+            stFc.textContent = fcOn ? 'BẬT' : 'TẮT';
+
+            const liftVecConfig = [
+                { key: 'fa', btnId: 'btn-toggle-vec-fa', stId: 'status-vec-fa', activeCls: 'py-1.5 px-2 rounded-lg text-[11px] font-bold transition flex flex-col items-center gap-0.5 bg-emerald-500/20 text-emerald-200 border border-emerald-400/60' },
+                { key: 'p', btnId: 'btn-toggle-vec-p', stId: 'status-vec-p', activeCls: 'py-1.5 px-2 rounded-lg text-[11px] font-bold transition flex flex-col items-center gap-0.5 bg-amber-500/20 text-amber-200 border border-amber-400/60' },
+                { key: 'fnet', btnId: 'btn-toggle-vec-fnet', stId: 'status-vec-fnet', activeCls: 'py-1.5 px-2 rounded-lg text-[11px] font-bold transition flex flex-col items-center gap-0.5 bg-violet-500/20 text-violet-200 border border-violet-400/60' }
+            ];
+
+            liftVecConfig.forEach((cfg) => {
+                const on = appState.vectors[cfg.key];
+                const btn = document.getElementById(cfg.btnId);
+                const st = document.getElementById(cfg.stId);
+                btn.className = on
+                    ? cfg.activeCls
+                    : 'py-1.5 px-2 rounded-lg text-[11px] font-bold transition flex flex-col items-center gap-0.5 bg-slate-800/70 text-slate-400 border border-slate-700';
+                st.textContent = on ? 'BẬT' : 'TẮT';
+            });
+        }
+
+        function togglePause() {
+            appState.paused = !appState.paused;
+            const pill = document.getElementById('canvas-pause-pill');
+            const label = document.getElementById('label-pause-btn');
+            pill.classList.toggle('hidden', !appState.paused);
+            label.textContent = appState.paused ? 'Tiếp tục' : 'Tạm dừng';
+        }
+
+        function resetCurrentMode() {
+            if (appState.mode === 'drag') {
+                appState.drag.v = 20.0;
+                appState.drag.area = 0.50;
+                document.getElementById('slider-v').value = 20;
+                document.getElementById('slider-area').value = 0.50;
+                setDragScenario('flow');
+                setDragShape('sphere');
+                setDragFluid('air');
+            } else {
+                appState.lift.tempInC = 95;
+                appState.lift.volume = 2500;
+                appState.lift.payloadMass = 750;
+                appState.lift.altitudeRatio = 0.35;
+                appState.lift.vy = 0.0;
+                document.getElementById('slider-temp-in').value = 95;
+                document.getElementById('slider-volume').value = 2500;
+                document.getElementById('slider-payload').value = 750;
+                setAtmospherePreset('sealevel');
+            }
+
+            appState.vectors = { v: true, fc: true, fa: true, p: true, fnet: true };
+            syncVectorButtonsUI();
+            updateReadouts();
+        }
+
+        /* =====================================================================
+           4. TÍNH TOÁN VẬT LÝ & CẬP NHẬT CHỈ SỐ TRỰC TIẾP
+           ===================================================================== */
+        function computeDragPhysics() {
+            const shape = SHAPES[appState.drag.shapeKey];
+            const fluid = FLUIDS[appState.drag.fluidKey];
+            const v = appState.drag.v;
+            const A = appState.drag.area;
+            const fc = 0.5 * shape.cd * fluid.rho * A * v * v;
+            const pc = fc * v;
+            return { shape, fluid, v, A, fc, pc };
+        }
+
+        function computeLiftPhysics() {
+            const atm = ATMOSPHERES[appState.lift.atmKey];
+            const tOuterK = atm.tempC + 273.15;
+            const tInnerK = appState.lift.tempInC + 273.15;
+
+            // Áp suất khí quyển gần như không đổi ở độ cao thấp => rho_trong ≈ rho_ngoài * (T_ngoài / T_trong)
+            const rhoOuter = atm.rhoOuter;
+            const rhoInner = rhoOuter * (tOuterK / tInnerK);
+            const V = appState.lift.volume;
+            const mPayload = appState.lift.payloadMass;
+
+            const fa = rhoOuter * G_ACCEL * V;
+            const mGas = rhoInner * V;
+            const pGas = mGas * G_ACCEL;
+            const pPayload = mPayload * G_ACCEL;
+            const pTotal = pGas + pPayload;
+            const fNet = fa - pTotal;
+
+            // Khối lượng quán tính hiệu dụng (kèm khối lượng khí quyển bị dịch chuyển một phần)
+            const effectiveMass = Math.max(250, mGas + mPayload + 0.35 * rhoOuter * V);
+            const ay = fNet / effectiveMass;
+
+            let statusText = 'Cân bằng lơ lửng';
+            let statusColor = 'text-sky-300';
+            if (Math.abs(fNet) < 40) {
+                statusText = 'Cân bằng (lơ lửng)';
+                statusColor = 'text-sky-300';
+            } else if (fNet > 0) {
+                statusText = 'Đang bay lên (FA > P)';
+                statusColor = 'text-emerald-400';
+            } else {
+                statusText = 'Đang hạ xuống (FA < P)';
+                statusColor = 'text-amber-400';
+            }
+
+            return {
+                atm,
+                rhoOuter,
+                rhoInner,
+                V,
+                mPayload,
+                fa,
+                pTotal,
+                fNet,
+                ay,
+                statusText,
+                statusColor
+            };
+        }
+
+        function formatForce(newton) {
+            const absVal = Math.abs(newton);
+            const sign = newton < 0 ? '-' : '';
+            if (absVal >= 1000) {
+                return `${sign}${(absVal / 1000).toFixed(2)} kN`;
+            }
+            return `${sign}${absVal.toFixed(1)} N`;
+        }
+
+        function updateReadouts() {
+            // Cập nhật chỉ số Lực cản
+            const d = computeDragPhysics();
+            document.getElementById('label-cd-badge').textContent = `Cd = ${d.shape.cd.toFixed(2)}`;
+            document.getElementById('label-rho-drag-badge').textContent = `${d.fluid.rho} kg/m³`;
+            document.getElementById('val-v').textContent = `${d.v.toFixed(1)} m/s`;
+            document.getElementById('val-area').textContent = `${d.A.toFixed(2)} m²`;
+
+            document.getElementById('metric-fc').textContent = formatForce(d.fc);
+            document.getElementById('metric-pc').textContent =
+                d.pc >= 1000 ? `${(d.pc / 1000).toFixed(2)} kW` : `${d.pc.toFixed(1)} W`;
+            document.getElementById('metric-v').textContent = `${d.v.toFixed(1)} m/s`;
+            document.getElementById('metric-cd').textContent = d.shape.cd.toFixed(2);
+
+            // Cập nhật chỉ số Khinh khí cầu
+            const l = computeLiftPhysics();
+            document.getElementById('label-rho-outer-badge').textContent = `ρ_ngoài = ${l.rhoOuter.toFixed(3)} kg/m³`;
+            document.getElementById('val-temp-in').textContent = `${appState.lift.tempInC.toFixed(0)} °C`;
+            document.getElementById('val-volume').textContent = `${appState.lift.volume.toFixed(0)} m³`;
+            document.getElementById('val-payload').textContent = `${appState.lift.payloadMass.toFixed(0)} kg`;
+
+            document.getElementById('metric-fa').textContent = formatForce(l.fa);
+            document.getElementById('metric-ptotal').textContent = formatForce(l.pTotal);
+
+            const vyStr = `${appState.lift.vy >= 0 ? '+' : ''}${appState.lift.vy.toFixed(1)} m/s`;
+            const fNetSign = l.fNet >= 0 ? '+' : '';
+            const fNetShort = Math.abs(l.fNet) >= 1000
+                ? `${fNetSign}${(l.fNet / 1000).toFixed(2)} kN`
+                : `${fNetSign}${l.fNet.toFixed(0)} N`;
+            document.getElementById('metric-fnet-vy').textContent = `${fNetShort} | ${vyStr}`;
+
+            const statusEl = document.getElementById('metric-balloon-status');
+            statusEl.textContent = l.statusText;
+            statusEl.className = `font-bold text-xs mt-1 truncate ${l.statusColor}`;
+        }
+
+        /* =====================================================================
+           5. VẼ TRÊN HTML5 CANVAS (ĐƯỜNG DÒNG, VÙNG XOÁY, KHINH KHÍ CẦU, VECTƠ)
+           ===================================================================== */
+        const canvas = document.getElementById('sim-canvas');
+        const ctx = canvas.getContext('2d');
+        const canvasWrapper = document.getElementById('canvas-wrapper');
+
+        function resizeCanvas() {
+            const rect = canvasWrapper.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            const width = Math.max(100, Math.floor(rect.width));
+            const height = Math.max(100, Math.floor(rect.height));
+
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        /**
+         * Vẽ mũi tên vectơ rõ ràng kèm nhãn giá trị trên Canvas
+         */
+        function drawVectorArrow(x1, y1, x2, y2, color, labelText, labelOffsetX = 6, labelOffsetY = -8) {
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const len = Math.hypot(dx, dy);
+            if (len < 4) return;
+
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Thân vectơ
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            // Đầu mũi tên
+            const angle = Math.atan2(dy, dx);
+            const headLen = Math.min(13, Math.max(8, len * 0.25));
+            const headAngle = Math.PI / 6;
+
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(
+                x2 - headLen * Math.cos(angle - headAngle),
+                y2 - headLen * Math.sin(angle - headAngle)
+            );
+            ctx.lineTo(
+                x2 - headLen * Math.cos(angle + headAngle),
+                y2 - headLen * Math.sin(angle + headAngle)
+            );
+            ctx.closePath();
+            ctx.fill();
+
+            // Nhãn giá trị vectơ có nền mờ dễ đọc
+            if (labelText) {
+                ctx.font = 'bold 11.5px "JetBrains Mono", monospace';
+                const textW = ctx.measureText(labelText).width;
+                const tx = x2 + labelOffsetX;
+                const ty = y2 + labelOffsetY;
+
+                ctx.fillStyle = 'rgba(2, 6, 23, 0.82)';
+                ctx.beginPath();
+                ctx.roundRect(tx - 4, ty - 11, textW + 8, 16, 4);
+                ctx.fill();
+
+                ctx.fillStyle = color;
+                ctx.fillText(labelText, tx, ty + 1);
+            }
+
+            ctx.restore();
+        }
+
+        /**
+         * Vẽ hình dạng vật thể theo tiết diện A
+         */
+        function drawDragObjectShape(shapeKey, cx, cy, halfSize) {
+            if (!Number.isFinite(cx) || !Number.isFinite(cy) || !Number.isFinite(halfSize) || halfSize <= 0) {
+                return;
+            }
+
+            ctx.save();
+            ctx.translate(cx, cy);
+
+            const grad = ctx.createLinearGradient(-halfSize, -halfSize, halfSize, halfSize);
+            grad.addColorStop(0, '#38bdf8');
+            grad.addColorStop(0.55, '#0284c7');
+            grad.addColorStop(1, '#1e3a8a');
+
+            ctx.fillStyle = grad;
+            ctx.strokeStyle = '#bae6fd';
+            ctx.lineWidth = 2;
+
+            if (shapeKey === 'sphere') {
+                ctx.beginPath();
+                ctx.arc(0, 0, halfSize, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Điểm sáng phản xạ trên hình cầu
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
+                ctx.beginPath();
+                ctx.arc(-halfSize * 0.32, -halfSize * 0.32, halfSize * 0.24, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (shapeKey === 'cube') {
+                const side = halfSize * 1.85;
+                ctx.beginPath();
+                ctx.roundRect(-side / 2, -side / 2, side, side, 6);
+                ctx.fill();
+                ctx.stroke();
+            } else if (shapeKey === 'streamlined') {
+                // Hình giọt nước khí động học: mũi tròn bên trái, đuôi thuôn nhọn bên phải
+                const noseX = -halfSize * 1.05;
+                const tailX = halfSize * 2.15;
+                const r = halfSize;
+
+                ctx.beginPath();
+                ctx.moveTo(noseX + r, -r);
+                ctx.arc(noseX + r, 0, r, -Math.PI / 2, Math.PI / 2, true);
+                ctx.quadraticCurveTo(noseX + r * 1.8, r * 0.92, tailX, 0);
+                ctx.quadraticCurveTo(noseX + r * 1.8, -r * 0.92, noseX + r, -r);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function renderDragScene(width, height, dt) {
+            if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+                return;
+            }
+            const safeDt = Number.isFinite(dt) && dt > 0 ? dt : 0.016;
+
+            const d = computeDragPhysics();
+            if (!appState.paused) {
+                appState.drag.time += safeDt * (0.4 + d.v * 0.08);
+            }
+
+            // Nền chất lưu theo môi trường chọn
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+            bgGrad.addColorStop(0, d.fluid.bgTop);
+            bgGrad.addColorStop(1, d.fluid.bgBottom);
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Lưới tọa độ nhẹ tạo cảm giác hầm dòng chảy
+            ctx.save();
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.07)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < width; x += 48) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < height; y += 48) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            ctx.restore();
+
+            const objX = width * 0.42;
+            const objY = height * 0.52;
+            // Bán kính / nửa kích thước tỷ lệ với tiết diện A
+            const minDim = Math.max(100, Math.min(width, height));
+            const rawHalfSize = 24 + d.area * 34;
+            const halfSize = Math.max(22, Math.min(minDim * 0.24, Number.isFinite(rawHalfSize) ? rawHalfSize : 40));
+
+            // 1. Vùng xoáy nhiễu loạn (wake vortices) phía sau vật cản
+            const wakeCount = Math.round(6 + d.shape.wakeStrength * 8);
+            for (let i = 0; i < wakeCount; i++) {
+                const vItem = appState.drag.vortices[i % appState.drag.vortices.length];
+                const travel = ((appState.drag.time * (55 + d.v * 2.4) + i * 26) % Math.max(120, width * 0.42));
+                const vx = objX + halfSize * 0.9 + travel;
+                const waveAmp = (4 + d.shape.wakeStrength * 12) * Math.min(1.6, d.v / 20);
+                const vy = objY + vItem.yJitter + Math.sin(appState.drag.time * 5.2 + vItem.phase) * waveAmp;
+                const alphaFactor = Math.max(0, 1 - travel / Math.max(140, width * 0.42));
+                const rVortex = (vItem.radius * (0.65 + d.shape.wakeStrength * 0.55)) * (0.7 + 0.3 * (1 - alphaFactor));
+
+                ctx.save();
+                ctx.strokeStyle = d.fluid.vortexColor;
+                ctx.globalAlpha = alphaFactor * 0.85;
+                ctx.lineWidth = 1.6;
+                ctx.beginPath();
+                ctx.arc(vx, vy, rVortex, 0.2, Math.PI * 1.75);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // 2. Các đường dòng (streamlines) uốn cong quanh vật thể
+            const numLines = 11;
+            const spanY = Math.min(height * 0.76, halfSize * 4.4);
+            for (let i = 0; i < numLines; i++) {
+                const norm = (i / (numLines - 1)) * 2 - 1; // -1 đến +1
+                const baseY = objY + norm * (spanY * 0.5);
+                const distFromCenter = Math.abs(norm);
+                const deflection = (1 - distFromCenter * 0.55) * (halfSize * 0.95 + 8);
+
+                ctx.save();
+                ctx.strokeStyle = d.fluid.lineColor;
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([14, 10]);
+                ctx.lineDashOffset = -appState.drag.time * (30 + d.v * 4.5);
+
+                ctx.beginPath();
+                const steps = 36;
+                for (let s = 0; s <= steps; s++) {
+                    const px = (s / steps) * width;
+                    const dxObj = (px - objX) / Math.max(60, halfSize * 2.6);
+                    const bell = Math.exp(-dxObj * dxObj * 1.4);
+                    const signY = norm >= 0 ? 1 : -1;
+                    const py = baseY + signY * deflection * bell;
+                    if (s === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // 3. Vẽ vật cản
+            drawDragObjectShape(d.shape.id, objX, objY, halfSize);
+
+            // Nhãn thông số vật thể trên Canvas
+            ctx.save();
+            // 4. Vẽ vectơ vận tốc tương đối \vec{v} (hướng từ trái sang phải)
+            const isFlowScenario = appState.drag.scenario !== 'object';
+            const vSymbol = isFlowScenario ? 'v_dòng' : 'v_vật';
+
+            if (appState.vectors.v) {
+                const vLen = Math.min(width * 0.25, Math.max(36, 28 + d.v * 2.2));
+                const vStartX = Math.max(24, objX - halfSize - vLen - 22);
+                const vEndX = vStartX + vLen;
+                const vY = objY - halfSize - 24;
+                drawVectorArrow(
+                    vStartX,
+                    vY,
+                    vEndX,
+                    vY,
+                    '#22d3ee',
+                    `${vSymbol} = ${d.v.toFixed(1)} m/s`,
+                    -10,
+                    -10
+                );
+            }
+
+            // 5. Vẽ vectơ lực cản \vec{F}_c:
+            // Khi v là vận tốc dòng chảy tới vật đứng yên (mặc định), \vec{F}_c cùng chiều \vec{v}_dòng (sang phải).
+            // Khi chuyển sang kịch bản vật chuyển động sang phải trong chất lưu đứng yên, \vec{F}_c ngược chiều \vec{v}_vật (sang trái).
+            if (appState.vectors.fc) {
+                const fcLen = Math.min(width * 0.34, Math.max(28, Math.log10(d.fc + 10) * 44));
+                const fcDir = isFlowScenario ? 1 : -1;
+                const fcStartX = objX;
+                const fcEndX = objX + fcDir * fcLen;
+                drawVectorArrow(
+                    fcStartX,
+                    objY,
+                    fcEndX,
+                    objY,
+                    '#f43f5e',
+                    `Fc = ${formatForce(d.fc)}`,
+                    fcDir > 0 ? -18 : -24,
+                    18
+                );
+            }
+        }
+
+        function renderLiftScene(width, height, dt) {
+            if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+                return;
+            }
+            const safeDt = Number.isFinite(dt) && dt > 0 ? dt : 0.016;
+            const l = computeLiftPhysics();
+
+            // Cập nhật chuyển động thẳng đứng của khinh khí cầu nếu không tạm dừng
+            const groundY = height - 56;
+            const ceilingY = Math.max(95, height * 0.18);
+            const travelSpan = Math.max(80, groundY - ceilingY);
+
+            if (!appState.paused) {
+                appState.lift.time += safeDt;
+                // Tích hợp vận tốc và vị trí theo thời gian thực (đã tinh chỉnh hệ số trực quan)
+                appState.lift.vy += l.ay * safeDt * 0.85;
+                // Lực cản không khí hãm bớt vận tốc khi chuyển động
+                appState.lift.vy *= Math.exp(-0.9 * safeDt);
+                appState.lift.vy = Math.max(-12, Math.min(12, appState.lift.vy));
+
+                appState.lift.altitudeRatio += (appState.lift.vy * safeDt * 0.045);
+
+                if (appState.lift.altitudeRatio <= 0) {
+                    appState.lift.altitudeRatio = 0;
+                    if (appState.lift.vy < 0) appState.lift.vy = 0;
+                } else if (appState.lift.altitudeRatio >= 1) {
+                    appState.lift.altitudeRatio = 1;
+                    if (appState.lift.vy > 0) appState.lift.vy = 0;
+                }
+            }
+
+            // Bầu trời nền
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+            skyGrad.addColorStop(0, '#051329');
+            skyGrad.addColorStop(0.65, '#0c274e');
+            skyGrad.addColorStop(1, '#133863');
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Vạch tham chiếu độ cao bên trái
+            ctx.save();
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.22)';
+            ctx.setLineDash([4, 4]);
+            ctx.lineWidth = 1;
+            for (let k = 0; k <= 4; k++) {
+                const ry = groundY - (k / 4) * travelSpan;
+                ctx.beginPath();
+                ctx.moveTo(28, ry);
+                ctx.lineTo(width - 24, ry);
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(148, 163, 184, 0.65)';
+                ctx.font = '10.5px "JetBrains Mono", monospace';
+                ctx.fillText(`${k * 250} m`, 32, ry - 4);
+            }
+            ctx.restore();
+
+            // Mặt đất phía dưới
+            const groundGrad = ctx.createLinearGradient(0, groundY, 0, height);
+            groundGrad.addColorStop(0, '#14532d');
+            groundGrad.addColorStop(1, '#052e16');
+            ctx.fillStyle = groundGrad;
+            ctx.fillRect(0, groundY, width, height - groundY);
+
+            ctx.strokeStyle = '#4ade80';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, groundY);
+            ctx.lineTo(width, groundY);
+            ctx.stroke();
+
+            // Vị trí tâm túi khí khinh khí cầu
+            const balloonX = width * 0.54;
+            const balloonCenterY = groundY - appState.lift.altitudeRatio * travelSpan - 54;
+            // Bán kính túi khí tỉ lệ thuận với căn bậc 3 của thể tích V
+            const rBalloon = Math.max(32, Math.min(76, 30 + Math.cbrt(l.V) * 2.1));
+
+            // Vẽ túi khí (màu sắc chuyển từ xanh/cam theo nhiệt độ khí nóng)
+            const heatRatio = Math.max(0, Math.min(1, (appState.lift.tempInC - 15) / 125));
+            const envelopeGrad = ctx.createRadialGradient(
+                balloonX - rBalloon * 0.25,
+                balloonCenterY - rBalloon * 0.25,
+                rBalloon * 0.15,
+                balloonX,
+                balloonCenterY,
+                rBalloon * 1.05
+            );
+            envelopeGrad.addColorStop(0, heatRatio > 0.35 ? '#fb923c' : '#38bdf8');
+            envelopeGrad.addColorStop(0.65, heatRatio > 0.35 ? '#ea580c' : '#0284c7');
+            envelopeGrad.addColorStop(1, heatRatio > 0.35 ? '#7c2d12' : '#1e3a8a');
+
+            ctx.save();
+            ctx.fillStyle = envelopeGrad;
+            ctx.strokeStyle = '#f8fafc';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(balloonX, balloonCenterY, rBalloon * 0.95, rBalloon * 1.05, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Các đường múi dọc trên túi khí
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.lineWidth = 1.2;
+            [-0.45, 0, 0.45].forEach((m) => {
+                ctx.beginPath();
+                ctx.ellipse(balloonX, balloonCenterY, Math.max(2, rBalloon * 0.95 * Math.abs(m)), rBalloon * 1.05, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            });
+
+            // Ngọn lửa đầu đốt ở cổ túi khí (tăng độ rực theo nhiệt độ T_trong)
+            const neckY = balloonCenterY + rBalloon * 1.05;
+            if (heatRatio > 0.05) {
+                const flameH = 8 + heatRatio * 12 + Math.sin(appState.lift.time * 18) * 2.5;
+                ctx.fillStyle = '#fde047';
+                ctx.beginPath();
+                ctx.moveTo(balloonX - 6, neckY + 4);
+                ctx.quadraticCurveTo(balloonX, neckY + 4 - flameH, balloonX + 6, neckY + 4);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            // Dây cáp nối tới giỏ hàng khách
+            const basketW = Math.max(22, rBalloon * 0.52);
+            const basketH = Math.max(14, rBalloon * 0.32);
+            const basketY = neckY + 18;
+
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(balloonX - basketW * 0.4, neckY + 2);
+            ctx.lineTo(balloonX - basketW * 0.45, basketY);
+            ctx.moveTo(balloonX + basketW * 0.4, neckY + 2);
+            ctx.lineTo(balloonX + basketW * 0.45, basketY);
+            ctx.stroke();
+
+            // Giỏ khinh khí cầu
+            ctx.fillStyle = '#92400e';
+            ctx.strokeStyle = '#fcd34d';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.roundRect(balloonX - basketW / 2, basketY, basketW, basketH, 3);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+
+            // Chuẩn hóa tỷ lệ độ dài vectơ lực trên Canvas
+            const maxForceRef = Math.max(l.fa, l.pTotal, Math.abs(l.fNet), 15000);
+            const pxPerNewton = Math.min(82, height * 0.16) / maxForceRef;
+
+            // 1. Vectơ lực đẩy Archimedes \vec{F}_A (hướng thẳng đứng lên trên, màu xanh ngọc)
+            if (appState.vectors.fa) {
+                const lenFa = Math.max(22, l.fa * pxPerNewton);
+                drawVectorArrow(
+                    balloonX - rBalloon - 22,
+                    balloonCenterY,
+                    balloonX - rBalloon - 22,
+                    balloonCenterY - lenFa,
+                    '#34d399',
+                    `FA = ${formatForce(l.fa)}`,
+                    -78,
+                    -6
+                );
+            }
+
+            // 2. Vectơ trọng lực tổng \vec{P} (hướng thẳng đứng xuống dưới, màu vàng hổ phách)
+            if (appState.vectors.p) {
+                const lenP = Math.max(22, l.pTotal * pxPerNewton);
+                drawVectorArrow(
+                    balloonX + rBalloon + 22,
+                    balloonCenterY,
+                    balloonX + rBalloon + 22,
+                    balloonCenterY + lenP,
+                    '#fbbf24',
+                    `P = ${formatForce(l.pTotal)}`,
+                    10,
+                    12
+                );
+            }
+
+            // 3. Vectơ hợp lực \vec{F}_{hl} (hướng lên nếu FA > P, hướng xuống nếu FA < P, màu tím)
+            if (appState.vectors.fnet && Math.abs(l.fNet) > 25) {
+                const dirNet = l.fNet > 0 ? -1 : 1;
+                const lenNet = Math.max(20, Math.min(85, Math.abs(l.fNet) * pxPerNewton * 1.4));
+                drawVectorArrow(
+                    balloonX,
+                    balloonCenterY,
+                    balloonX,
+                    balloonCenterY + dirNet * lenNet,
+                    '#c084fc',
+                    `Fhl = ${formatForce(l.fNet)}`,
+                    10,
+                    dirNet < 0 ? -4 : 12
+                );
+            }
+
+            // 4. Vectơ vận tốc thẳng đứng \vec{v} của khinh khí cầu (màu cyan nổi bật)
+            if (appState.vectors.v) {
+                const vAbs = Math.abs(appState.lift.vy);
+                const vxPos = balloonX + rBalloon + 68;
+                if (vAbs >= 0.05) {
+                    const vDir = appState.lift.vy > 0 ? -1 : 1;
+                    const lenV = Math.max(20, Math.min(85, vAbs * 11));
+                    const signV = appState.lift.vy > 0 ? '+' : '';
+                    drawVectorArrow(
+                        vxPos,
+                        balloonCenterY,
+                        vxPos,
+                        balloonCenterY + vDir * lenV,
+                        '#22d3ee',
+                        `v = ${signV}${appState.lift.vy.toFixed(1)} m/s`,
+                        10,
+                        vDir < 0 ? -4 : 12
+                    );
+                } else {
+                    ctx.save();
+                    ctx.font = 'bold 11.5px "JetBrains Mono", monospace';
+                    const zeroLabel = 'v = 0.0 m/s';
+                    const tw = ctx.measureText(zeroLabel).width;
+                    ctx.fillStyle = 'rgba(2, 6, 23, 0.82)';
+                    ctx.beginPath();
+                    ctx.roundRect(vxPos - 4, balloonCenterY - 11, tw + 8, 16, 4);
+                    ctx.fill();
+                    ctx.fillStyle = '#22d3ee';
+                    ctx.fillText(zeroLabel, vxPos, balloonCenterY + 1);
+                    ctx.restore();
+                }
+            }
+        }
+
+        let lastTimestamp = null;
+        function animationLoop(timestamp) {
+            if (lastTimestamp === null || !Number.isFinite(timestamp)) lastTimestamp = timestamp || 0;
+            const dt = Math.min(0.05, Math.max(0.001, ((timestamp || lastTimestamp) - lastTimestamp) / 1000));
+            lastTimestamp = timestamp || lastTimestamp;
+
+            const rect = canvasWrapper.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            const cssWidth = rect.width > 0 ? rect.width : (canvas.width / dpr);
+            const cssHeight = rect.height > 0 ? rect.height : (canvas.height / dpr);
+
+            if (appState.mode === 'drag') {
+                renderDragScene(cssWidth, cssHeight, dt);
+            } else {
+                renderLiftScene(cssWidth, cssHeight, dt);
+            }
+
+            if (!appState.paused && appState.mode === 'lift') {
+                updateReadouts();
+            }
+
+            requestAnimationFrame(animationLoop);
+        }
+
+        /* =====================================================================
+           6. KHỞI TẠO KATEX & SỰ KIỆN HỆ THỐNG
+           ===================================================================== */
+        function renderMathInElementSafe(el) {
+            if (!el || typeof renderMathInElement !== 'function') return;
+            try {
+                renderMathInElement(el, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ],
+                    throwOnError: false
+                });
+            } catch (err) {
+                console.warn('KaTeX render warning:', err);
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
+
+        window.onload = function () {
+            resizeCanvas();
+            setSimulationMode('drag');
+            switchLeftSubTab('theory');
+            syncVectorButtonsUI();
+            updateReadouts();
+            renderMathInElementSafe(document.body);
+            requestAnimationFrame(animationLoop);
+        };
+    </script>
+</body>
+</html>

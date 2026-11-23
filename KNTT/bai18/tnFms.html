@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thí Nghiệm Vật Lí 10: Lực Ma Sát Nghỉ & Ma Sát Trượt</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- MathJax Configuration (No polyfill.io) -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+    /* Custom scrollbar for data table & theory */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    input[type="range"] {
+      accent-color: #2563eb;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 px-4 py-2.5 shadow-sm sticky top-0 z-30">
+    <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          F<sub>ms</sub>
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">
+            Thí Nghiệm: Lực Ma Sát Nghỉ và Lực Ma Sát Trượt
+          </h1>
+          <p class="text-xs text-slate-500">Vật lí 10 • Chương trình GDPT 2018 (Kết nối tri thức với cuộc sống)</p>
+        </div>
+      </div>
+
+      <!-- Status Pill & Quick Toggles -->
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+        <div id="statusBadge" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 border border-slate-300 flex items-center gap-2 transition-colors">
+          <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+          <span id="statusText">TRẠNG THÁI CHỜ (F<sub>kéo</sub> = 0 N)</span>
+        </div>
+
+        <label class="inline-flex items-center gap-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg cursor-pointer select-none transition">
+          <input type="checkbox" id="toggleVectors" checked class="rounded text-blue-600 focus:ring-0" />
+          <span>Hiện vectơ lực</span>
+        </label>
+
+        <label class="inline-flex items-center gap-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg cursor-pointer select-none transition">
+          <input type="checkbox" id="toggleMicro" checked class="rounded text-blue-600 focus:ring-0" />
+          <span>Kính lúp vi mô</span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+    <!-- Left / Center Column (8 cols on lg): Simulation Canvas + Real-time Graph -->
+    <div class="lg:col-span-8 flex flex-col gap-4">
+
+      <!-- Main Physics Simulation Canvas Card -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div class="px-4 py-2 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2 font-semibold text-slate-700">
+            <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-700">Mô hình SGK</span>
+            <span>Kéo tấm lót sang trái để khảo sát ma sát nghỉ & ma sát trượt</span>
+          </div>
+          <div class="text-slate-500 italic">
+            Mẹo: Có thể nắm kéo trực tiếp bàn tay trên khung hình hoặc dùng thanh điều khiển
+          </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div id="simCanvasWrapper" class="relative w-full h-[330px] sm:h-[380px] bg-gradient-to-b from-slate-50 to-slate-100 select-none">
+          <canvas id="simCanvas"></canvas>
+
+          <!-- Floating Live Telemetry Cards -->
+          <div class="absolute top-3 left-3 flex flex-wrap gap-2 pointer-events-none">
+            <div class="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl px-3 py-1.5 shadow-sm">
+              <div class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Áp lực $N$</div>
+              <div class="text-sm sm:text-base font-bold text-slate-800"><span id="hudNormal">5.00</span> N</div>
+            </div>
+            <div class="bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl px-3 py-1.5 shadow-sm">
+              <div class="text-[10px] uppercase tracking-wider text-blue-600 font-semibold">Lực kéo $F_{\text{kéo}}$</div>
+              <div class="text-sm sm:text-base font-bold text-blue-700"><span id="hudPull">0.00</span> N</div>
+            </div>
+            <div class="bg-white/90 backdrop-blur-sm border border-emerald-200 rounded-xl px-3 py-1.5 shadow-sm">
+              <div class="text-[10px] uppercase tracking-wider text-emerald-600 font-semibold">Số chỉ lực kế ($F_{đh} = F_{ms}$)</div>
+              <div class="text-sm sm:text-base font-bold text-emerald-700"><span id="hudFriction">0.00</span> N</div>
+            </div>
+          </div>
+
+          <!-- Threshold info badge -->
+          <div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl px-3 py-1.5 shadow-sm pointer-events-none text-xs">
+            <span class="text-slate-600">Ngưỡng $F_{msn,\max}$ = </span>
+            <strong id="hudMaxStatic" class="text-amber-600">2.25 N</strong>
+            <span class="mx-2 text-slate-300">|</span>
+            <span class="text-slate-600">Ma sát trượt $F_{mst}$ = </span>
+            <strong id="hudKinetic" class="text-rose-600">1.75 N</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-time Graph Card -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div class="px-4 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+            <h2 class="text-xs sm:text-sm font-bold text-slate-800">
+              Đồ thị độ lớn Lực ma sát $F_{ms}$ theo Lực kéo $F_{\text{kéo}}$ (Thời gian thực)
+            </h2>
+          </div>
+          <button id="btnClearGraph" class="text-xs px-2.5 py-1 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-600 font-medium transition">
+            Xóa đồ thị
+          </button>
+        </div>
+        <div id="graphCanvasWrapper" class="relative w-full h-[200px] sm:h-[225px] bg-white">
+          <canvas id="graphCanvas"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column (4 cols on lg): Controls, Parameters, Data Table & Theory -->
+    <div class="lg:col-span-4 flex flex-col gap-4">
+
+      <!-- Control Panel Card -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col gap-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+          <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Bảng Điều Khiển Thí Nghiệm</h2>
+          <button id="btnReset" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition flex items-center gap-1">
+            <span>↺ Đặt lại</span>
+          </button>
+        </div>
+
+        <!-- 1. Pull Force Control -->
+        <div class="bg-blue-50/70 border border-blue-100 rounded-xl p-3 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <label for="pullSlider" class="text-xs font-bold text-blue-900">1. Điều chỉnh lực kéo tay ($F_{\text{kéo}}$):</label>
+            <span class="text-sm font-extrabold text-blue-700 bg-white px-2 py-0.5 rounded-md border border-blue-200">
+              <span id="pullValueDisplay">0.00</span> N
+            </span>
+          </div>
+          <input id="pullSlider" type="range" min="0" max="15" step="0.05" value="0" class="w-full cursor-pointer" />
+
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button id="btnAutoPull" class="py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white text-xs font-semibold shadow-sm transition flex items-center justify-center gap-1.5">
+              <span>▶ Kéo tăng dần tự động</span>
+            </button>
+            <button id="btnRecord" class="py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white text-xs font-semibold shadow-sm transition flex items-center justify-center gap-1.5">
+              <span>＋ Ghi số liệu vào bảng</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Material & Surface Condition -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+          <div>
+            <label for="materialSelect" class="block text-xs font-bold text-slate-700 mb-1">
+              2. Vật liệu bề mặt tiếp xúc:
+            </label>
+            <select id="materialSelect" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:border-blue-500">
+              <option value="wood_wood" selected>Khối gỗ — Mặt tấm gỗ (μₙ = 0.45 ; μₜ = 0.35)</option>
+              <option value="wood_paper">Khối gỗ — Tờ giấy trơn (μₙ = 0.28 ; μₜ = 0.20)</option>
+              <option value="wood_sandpaper">Khối gỗ — Giấy nhám mịn (μₙ = 0.70 ; μₜ = 0.55)</option>
+              <option value="wood_glass">Khối gỗ — Mặt kính phẳng (μₙ = 0.22 ; μₜ = 0.15)</option>
+              <option value="rubber_asphalt">Đế cao su — Mặt bê tông (μₙ = 0.85 ; μₜ = 0.65)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">
+              3. Tình trạng bề mặt tiếp xúc:
+            </label>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button type="button" data-cond="dry" class="cond-btn active py-1.5 px-2 rounded-xl border text-xs font-semibold transition bg-blue-600 text-white border-blue-600">
+                Khô ráo (×1.0)
+              </button>
+              <button type="button" data-cond="smooth" class="cond-btn py-1.5 px-2 rounded-xl border text-xs font-semibold transition bg-white text-slate-700 border-slate-300 hover:bg-slate-50">
+                Đánh nhẵn (×0.75)
+              </button>
+              <button type="button" data-cond="oiled" class="cond-btn py-1.5 px-2 rounded-xl border text-xs font-semibold transition bg-white text-slate-700 border-slate-300 hover:bg-slate-50">
+                Bôi dầu (×0.40)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Normal Force / Load Control (2 ways: Mass & Direct Pressure) -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800">4. Tăng gia trọng / Thay đổi áp lực $N$:</span>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+              $N = P + F_{\text{ấn}} = $ <span id="normalFormulaVal">5.00</span> N
+            </span>
+          </div>
+
+          <!-- Method A: Add Weights (Mass) -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="text-xs text-slate-700">
+              <div class="font-semibold">Cách A: Đặt thêm quả nặng ($m$)</div>
+              <div class="text-[11px] text-slate-500">
+                Khối lượng: <strong id="massDisplay" class="text-slate-800">0.50 kg</strong> ($P = $<span id="weightDisplay">5.0</span> N)
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button id="btnRemoveWeight" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 font-bold text-slate-700 text-sm transition disabled:opacity-40" title="Bớt quả nặng 0.25 kg">
+                −
+              </button>
+              <span id="weightCountBadge" class="text-xs font-bold px-2 py-1 bg-white border border-slate-200 rounded-lg">0 quả</span>
+              <button id="btnAddWeight" class="w-8 h-8 rounded-lg bg-indigo-600 hover:bg-indigo-700 font-bold text-white text-sm transition disabled:opacity-40" title="Thêm quả nặng 0.25 kg">
+                +
+              </button>
+            </div>
+          </div>
+
+          <!-- Method B: Direct Downward Force -->
+          <div class="border-t border-slate-200 pt-2">
+            <div class="flex items-center justify-between text-xs mb-1">
+              <span class="font-semibold text-slate-700">Cách B: Ấn tay thẳng đứng từ trên xuống ($F_{\text{ấn}}$):</span>
+              <span class="font-bold text-purple-700"><span id="pressForceDisplay">0.0</span> N</span>
+            </div>
+            <input id="pressSlider" type="range" min="0" max="15" step="0.5" value="0" class="w-full cursor-pointer" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs Card: Recorded Data Table & Core Theory -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-1 flex flex-col">
+        <div class="flex border-b border-slate-200 bg-slate-50">
+          <button id="tabDataBtn" class="flex-1 py-2.5 px-3 text-xs font-bold border-b-2 border-blue-600 text-blue-700 bg-white transition">
+            Bảng Số Liệu Đo (<span id="recordCount">0</span>)
+          </button>
+          <button id="tabTheoryBtn" class="flex-1 py-2.5 px-3 text-xs font-bold border-b-2 border-transparent text-slate-600 hover:text-slate-800 transition">
+            Kiến Thức Trọng Tâm
+          </button>
+        </div>
+
+        <!-- Tab 1: Data Table -->
+        <div id="tabDataContent" class="p-3 flex-1 flex flex-col justify-between overflow-x-auto">
+          <div class="max-h-[210px] overflow-y-auto border border-slate-200 rounded-xl">
+            <table class="w-full text-left border-collapse text-[11px]">
+              <thead class="bg-slate-100 text-slate-700 sticky top-0">
+                <tr>
+                  <th class="p-2 border-b">Lần</th>
+                  <th class="p-2 border-b">Bề mặt</th>
+                  <th class="p-2 border-b text-right">$N$ (N)</th>
+                  <th class="p-2 border-b text-right">$F_{msn,\max}$</th>
+                  <th class="p-2 border-b text-right">$F_{mst}$ (N)</th>
+                  <th class="p-2 border-b text-right">$\mu_t = \frac{F_{mst}}{N}$</th>
+                </tr>
+              </thead>
+              <tbody id="dataTableBody" class="divide-y divide-slate-100">
+                <tr id="emptyRow">
+                  <td colspan="6" class="p-4 text-center text-slate-400 italic">
+                    Chưa có dữ liệu. Hãy thực hiện kéo vật và nhấn "Ghi số liệu vào bảng".
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="flex justify-between items-center mt-2 pt-1">
+            <span class="text-[11px] text-slate-500">Lấy $g = 10\text{ m/s}^2$. So sánh tỉ số $F_{mst}/N$ khi đổi áp lực.</span>
+            <button id="btnClearTable" class="text-[11px] text-rose-600 hover:underline font-semibold">Xóa bảng</button>
+          </div>
+        </div>
+
+        <!-- Tab 2: Theory Summary -->
+        <div id="tabTheoryContent" class="p-3.5 text-xs text-slate-700 space-y-2.5 hidden max-h-[250px] overflow-y-auto leading-relaxed">
+          <div class="p-2.5 rounded-xl bg-blue-50 border border-blue-100">
+            <h3 class="font-bold text-blue-900 mb-1">1. Lực ma sát nghỉ ($\vec{F}_{msn}$)</h3>
+            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+              <li>Xuất hiện ở mặt tiếp xúc khi vật có xu hướng chuyển động nhưng <strong>vẫn đứng yên</strong>.</li>
+              <li>Ngược chiều với xu hướng chuyển động, độ lớn <strong>bằng lực kéo</strong> ($F_{msn} = F_{\text{kéo}}$) và đạt giá trị cực đại $F_{msn,\max}$ ngay trước khi vật bắt đầu trượt.</li>
+            </ul>
+          </div>
+
+          <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-100">
+            <h3 class="font-bold text-amber-900 mb-1">2. Lực ma sát trượt ($\vec{F}_{mst}$)</h3>
+            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+              <li>Xuất hiện khi vật <strong>trượt</strong> trên bề mặt vật khác, cản trở chuyển động trượt.</li>
+              <li>Công thức: <strong>$F_{mst} = \mu_t \cdot N$</strong> (trong đó $\mu_t$ là hệ số ma sát trượt, $N$ là độ lớn áp lực lên mặt tiếp xúc).</li>
+              <li>Độ lớn lực ma sát trượt <strong>nhỏ hơn</strong> lực ma sát nghỉ cực đại ($F_{mst} < F_{msn,\max}$).</li>
+            </ul>
+          </div>
+
+          <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-100">
+            <h3 class="font-bold text-emerald-900 mb-1">3. Đặc điểm phụ thuộc</h3>
+            <p>Độ lớn lực ma sát trượt <strong>tỉ lệ thuận với áp lực $N$</strong>, phụ thuộc vào <strong>vật liệu và tình trạng của hai mặt tiếp xúc</strong>, không phụ thuộc vào diện tích tiếp xúc và tốc độ của vật.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toastMsg" class="fixed bottom-4 right-4 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50">
+    Đã lưu kết quả vào bảng!
+  </div>
+
+  <script>
+    (function () {
+      // =========================================================================
+      // 1. PHYSICS CONSTANTS & STATE
+      // =========================================================================
+      const G = 10; // m/s^2 (chuẩn SGK Vật lí 10)
+      const BASE_MASS = 0.50; // kg (Khối gỗ ban đầu)
+      const WEIGHT_STEP = 0.25; // kg mỗi quả cân thêm vào
+      const MAX_WEIGHTS = 4; // Tối đa 4 quả cân (tổng 1.50 kg)
+
+      const MATERIALS = {
+        wood_wood: {
+          name: 'Gỗ - Mặt gỗ',
+          shortName: 'Mặt gỗ',
+          muStatic: 0.45,
+          muKinetic: 0.35,
+          boardBase: '#d99b52',
+          boardGrain: '#b4732a',
+          boardBorder: '#854d0e',
+          roughness: 1.0
+        },
+        wood_paper: {
+          name: 'Gỗ - Tờ giấy trơn',
+          shortName: 'Tờ giấy',
+          muStatic: 0.28,
+          muKinetic: 0.20,
+          boardBase: '#f8fafc',
+          boardGrain: '#e2e8f0',
+          boardBorder: '#94a3b8',
+          roughness: 0.45
+        },
+        wood_sandpaper: {
+          name: 'Gỗ - Giấy nhám mịn',
+          shortName: 'Giấy nhám',
+          muStatic: 0.70,
+          muKinetic: 0.55,
+          boardBase: '#78350f',
+          boardGrain: '#451a03',
+          boardBorder: '#292524',
+          roughness: 1.65
+        },
+        wood_glass: {
+          name: 'Gỗ - Mặt kính phẳng',
+          shortName: 'Mặt kính',
+          muStatic: 0.22,
+          muKinetic: 0.15,
+          boardBase: '#cffafe',
+          boardGrain: '#a5f3fc',
+          boardBorder: '#0891b2',
+          roughness: 0.25
+        },
+        rubber_asphalt: {
+          name: 'Cao su - Bê tông',
+          shortName: 'Bê tông',
+          muStatic: 0.85,
+          muKinetic: 0.65,
+          boardBase: '#64748b',
+          boardGrain: '#475569',
+          boardBorder: '#1e293b',
+          roughness: 1.45
+        }
+      };
+
+      const CONDITIONS = {
+        dry: { name: 'Khô ráo', factor: 1.0 },
+        smooth: { name: 'Đánh nhẵn', factor: 0.75 },
+        oiled: { name: 'Bôi dầu', factor: 0.40 }
+      };
+
+      const state = {
+        materialKey: 'wood_wood',
+        conditionKey: 'dry',
+        extraWeights: 0,       // 0..4
+        pressForce: 0,         // 0..15 N (lực ấn trực tiếp từ trên xuống)
+        pullForce: 0,          // 0..15 N (lực kéo của tay vào tấm lót)
+        isSliding: false,      // true khi F_kéo > F_msn_max
+        autoPulling: false,    // Chế độ kéo tăng dần tự động
+        boardOffset: 0,        // Độ dịch chuyển hình ảnh của tấm ván/tờ giấy sang trái (px)
+        springStretchPx: 0,    // Độ giãn lò xo hiện tại (px)
+        targetStretchPx: 0,    // Độ giãn lò xo mục tiêu (px)
+        blockVibration: 0,     // Rung nhẹ khi trượt trên bề mặt nhám
+        showVectors: true,
+        showMicro: true,
+        isDraggingHand: false,
+        dragStartX: 0,
+        dragStartPull: 0,
+        graphHistory: [],      // Mảng lưu { fPull, fFriction, isSliding }
+        records: [],           // Bảng số liệu ghi nhận
+        simTime: 0
+      };
+
+      // =========================================================================
+      // 2. DOM ELEMENTS
+      // =========================================================================
+      const simCanvas = document.getElementById('simCanvas');
+      const simCtx = simCanvas.getContext('2d');
+      const graphCanvas = document.getElementById('graphCanvas');
+      const graphCtx = graphCanvas.getContext('2d');
+
+      const pullSlider = document.getElementById('pullSlider');
+      const pullValueDisplay = document.getElementById('pullValueDisplay');
+      const btnAutoPull = document.getElementById('btnAutoPull');
+      const btnReset = document.getElementById('btnReset');
+      const btnRecord = document.getElementById('btnRecord');
+      const btnClearGraph = document.getElementById('btnClearGraph');
+      const btnClearTable = document.getElementById('btnClearTable');
+
+      const materialSelect = document.getElementById('materialSelect');
+      const condBtns = document.querySelectorAll('.cond-btn');
+      const btnAddWeight = document.getElementById('btnAddWeight');
+      const btnRemoveWeight = document.getElementById('btnRemoveWeight');
+      const weightCountBadge = document.getElementById('weightCountBadge');
+      const massDisplay = document.getElementById('massDisplay');
+      const weightDisplay = document.getElementById('weightDisplay');
+      const pressSlider = document.getElementById('pressSlider');
+      const pressForceDisplay = document.getElementById('pressForceDisplay');
+      const normalFormulaVal = document.getElementById('normalFormulaVal');
+
+      const toggleVectors = document.getElementById('toggleVectors');
+      const toggleMicro = document.getElementById('toggleMicro');
+
+      const statusBadge = document.getElementById('statusBadge');
+      const statusDot = document.getElementById('statusDot');
+      const statusText = document.getElementById('statusText');
+
+      const hudNormal = document.getElementById('hudNormal');
+      const hudPull = document.getElementById('hudPull');
+      const hudFriction = document.getElementById('hudFriction');
+      const hudMaxStatic = document.getElementById('hudMaxStatic');
+      const hudKinetic = document.getElementById('hudKinetic');
+
+      const tabDataBtn = document.getElementById('tabDataBtn');
+      const tabTheoryBtn = document.getElementById('tabTheoryBtn');
+      const tabDataContent = document.getElementById('tabDataContent');
+      const tabTheoryContent = document.getElementById('tabTheoryContent');
+      const dataTableBody = document.getElementById('dataTableBody');
+      const recordCount = document.getElementById('recordCount');
+      const toastMsg = document.getElementById('toastMsg');
+
+      // =========================================================================
+      // 3. PHYSICS CALCULATIONS
+      // =========================================================================
+      function getPhysicsValues() {
+        const mat = MATERIALS[state.materialKey];
+        const cond = CONDITIONS[state.conditionKey];
+
+        const totalMass = BASE_MASS + state.extraWeights * WEIGHT_STEP;
+        const weightP = totalMass * G;
+        const normalN = weightP + state.pressForce;
+
+        // Hệ số ma sát hiệu dụng (luôn đảm bảo muStaticEff > muKineticEff)
+        const muStaticEff = +(mat.muStatic * cond.factor).toFixed(3);
+        const muKineticEff = +(mat.muKinetic * cond.factor).toFixed(3);
+
+        const fStaticMax = muStaticEff * normalN;
+        const fKinetic = muKineticEff * normalN;
+
+        // Xác định trạng thái nghỉ hay trượt (có hiện tượng trễ vật lý tự nhiên)
+        if (state.pullForce === 0) {
+          state.isSliding = false;
+        } else if (!state.isSliding && state.pullForce > fStaticMax) {
+          state.isSliding = true;
+        } else if (state.isSliding && state.pullForce < fKinetic * 0.92) {
+          // Khi giảm lực kéo xuống thấp hơn ngưỡng trượt thì vật dừng trượt và bám lại
+          state.isSliding = false;
+        }
+
+        // Độ lớn lực ma sát hiện tại (cũng chính là số chỉ lực kế khi kéo đều/giữ cân bằng)
+        let currentFriction = 0;
+        if (state.pullForce === 0) {
+          currentFriction = 0;
+        } else if (!state.isSliding) {
+          currentFriction = Math.min(state.pullForce, fStaticMax);
+        } else {
+          currentFriction = fKinetic;
+        }
+
+        return {
+          mat,
+          cond,
+          totalMass,
+          weightP,
+          normalN,
+          muStaticEff,
+          muKineticEff,
+          fStaticMax,
+          fKinetic,
+          currentFriction
+        };
+      }
+
+      // =========================================================================
+      // 4. UI UPDATES & EVENT LISTENERS
+      // =========================================================================
+      function showToast(text) {
+        toastMsg.textContent = text;
+        toastMsg.classList.remove('opacity-0');
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => {
+          toastMsg.classList.add('opacity-0');
+        }, 2200);
+      }
+
+      function updateUI() {
+        const phys = getPhysicsValues();
+
+        // Update numbers
+        pullValueDisplay.textContent = state.pullForce.toFixed(2);
+        pullSlider.value = state.pullForce;
+
+        massDisplay.textContent = phys.totalMass.toFixed(2) + ' kg';
+        weightDisplay.textContent = phys.weightP.toFixed(1);
+        weightCountBadge.textContent = state.extraWeights + ' quả';
+        btnRemoveWeight.disabled = state.extraWeights <= 0;
+        btnAddWeight.disabled = state.extraWeights >= MAX_WEIGHTS;
+
+        pressForceDisplay.textContent = state.pressForce.toFixed(1);
+        normalFormulaVal.textContent = phys.normalN.toFixed(2);
+
+        hudNormal.textContent = phys.normalN.toFixed(2);
+        hudPull.textContent = state.pullForce.toFixed(2);
+        hudFriction.textContent = phys.currentFriction.toFixed(2);
+        hudMaxStatic.textContent = phys.fStaticMax.toFixed(2) + ' N';
+        hudKinetic.textContent = phys.fKinetic.toFixed(2) + ' N';
+
+        // Update Status Badge
+        if (state.pullForce === 0) {
+          statusBadge.className = 'px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 border border-slate-300 flex items-center gap-2 transition-colors';
+          statusDot.className = 'w-2.5 h-2.5 rounded-full bg-slate-400';
+          statusText.innerHTML = 'CHƯA KÉO (F<sub>ms</sub> = 0 N)';
+        } else if (!state.isSliding) {
+          statusBadge.className = 'px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-blue-50 text-blue-700 border border-blue-300 flex items-center gap-2 transition-colors';
+          statusDot.className = 'w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse';
+          statusText.innerHTML = `MA SÁT NGHỈ (F<sub>msn</sub> = F<sub>kéo</sub> = ${phys.currentFriction.toFixed(2)} N)`;
+        } else {
+          statusBadge.className = 'px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-amber-50 text-amber-800 border border-amber-400 flex items-center gap-2 transition-colors';
+          statusDot.className = 'w-2.5 h-2.5 rounded-full bg-rose-600 animate-ping';
+          statusText.innerHTML = `MA SÁT TRƯỢT (F<sub>mst</sub> = ${phys.currentFriction.toFixed(2)} N < F<sub>msn,max</sub>)`;
+        }
+      }
+
+      function recordGraphPoint() {
+        const phys = getPhysicsValues();
+        const last = state.graphHistory[state.graphHistory.length - 1];
+        if (
+          !last ||
+          Math.abs(last.fPull - state.pullForce) > 0.03 ||
+          last.isSliding !== state.isSliding
+        ) {
+          state.graphHistory.push({
+            fPull: state.pullForce,
+            fFriction: phys.currentFriction,
+            isSliding: state.isSliding
+          });
+          if (state.graphHistory.length > 350) {
+            state.graphHistory.shift();
+          }
+        }
+      }
+
+      // Slider & Buttons
+      pullSlider.addEventListener('input', (e) => {
+        state.autoPulling = false;
+        updateAutoPullButton();
+        state.pullForce = parseFloat(e.target.value);
+        updateUI();
+        recordGraphPoint();
+      });
+
+      function updateAutoPullButton() {
+        if (state.autoPulling) {
+          btnAutoPull.innerHTML = '<span>⏸ Tạm dừng kéo</span>';
+          btnAutoPull.classList.replace('bg-blue-600', 'bg-amber-600');
+          btnAutoPull.classList.replace('hover:bg-blue-700', 'hover:bg-amber-700');
+        } else {
+          btnAutoPull.innerHTML = '<span>▶ Kéo tăng dần tự động</span>';
+          btnAutoPull.classList.replace('bg-amber-600', 'bg-blue-600');
+          btnAutoPull.classList.replace('hover:bg-amber-700', 'hover:bg-blue-700');
+        }
+      }
+
+      btnAutoPull.addEventListener('click', () => {
+        if (!state.autoPulling && state.pullForce >= 14.5) {
+          state.pullForce = 0;
+          state.isSliding = false;
+          state.graphHistory = [];
+        }
+        state.autoPulling = !state.autoPulling;
+        updateAutoPullButton();
+      });
+
+      btnReset.addEventListener('click', () => {
+        state.autoPulling = false;
+        updateAutoPullButton();
+        state.pullForce = 0;
+        state.isSliding = false;
+        state.boardOffset = 0;
+        state.springStretchPx = 0;
+        state.graphHistory = [];
+        updateUI();
+        showToast('Đã đặt lại trạng thái ban đầu.');
+      });
+
+      btnClearGraph.addEventListener('click', () => {
+        state.graphHistory = [];
+        recordGraphPoint();
+      });
+
+      materialSelect.addEventListener('change', (e) => {
+        state.materialKey = e.target.value;
+        state.graphHistory = [];
+        updateUI();
+        recordGraphPoint();
+      });
+
+      condBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          condBtns.forEach((b) => {
+            b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+            b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+          });
+          btn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+          btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+          state.conditionKey = btn.dataset.cond;
+          state.graphHistory = [];
+          updateUI();
+          recordGraphPoint();
+        });
+      });
+
+      btnAddWeight.addEventListener('click', () => {
+        if (state.extraWeights < MAX_WEIGHTS) {
+          state.extraWeights++;
+          state.graphHistory = [];
+          updateUI();
+          recordGraphPoint();
+        }
+      });
+
+      btnRemoveWeight.addEventListener('click', () => {
+        if (state.extraWeights > 0) {
+          state.extraWeights--;
+          state.graphHistory = [];
+          updateUI();
+          recordGraphPoint();
+        }
+      });
+
+      pressSlider.addEventListener('input', (e) => {
+        state.pressForce = parseFloat(e.target.value);
+        state.graphHistory = [];
+        updateUI();
+        recordGraphPoint();
+      });
+
+      toggleVectors.addEventListener('change', (e) => {
+        state.showVectors = e.target.checked;
+      });
+
+      toggleMicro.addEventListener('change', (e) => {
+        state.showMicro = e.target.checked;
+      });
+
+      // Tabs switching
+      tabDataBtn.addEventListener('click', () => {
+        tabDataBtn.classList.add('border-blue-600', 'text-blue-700', 'bg-white');
+        tabDataBtn.classList.remove('border-transparent', 'text-slate-600');
+        tabTheoryBtn.classList.remove('border-blue-600', 'text-blue-700', 'bg-white');
+        tabTheoryBtn.classList.add('border-transparent', 'text-slate-600');
+        tabDataContent.classList.remove('hidden');
+        tabTheoryContent.classList.add('hidden');
+      });
+
+      tabTheoryBtn.addEventListener('click', () => {
+        tabTheoryBtn.classList.add('border-blue-600', 'text-blue-700', 'bg-white');
+        tabTheoryBtn.classList.remove('border-transparent', 'text-slate-600');
+        tabDataBtn.classList.remove('border-blue-600', 'text-blue-700', 'bg-white');
+        tabDataBtn.classList.add('border-transparent', 'text-slate-600');
+        tabTheoryContent.classList.remove('hidden');
+        tabDataContent.classList.add('hidden');
+      });
+
+      // Record Data Table
+      btnRecord.addEventListener('click', () => {
+        const phys = getPhysicsValues();
+        const muMeasured = (phys.fKinetic / phys.normalN).toFixed(2);
+        state.records.push({
+          id: state.records.length + 1,
+          surface: `${phys.mat.shortName} (${phys.cond.name})`,
+          normalN: phys.normalN.toFixed(2),
+          fStaticMax: phys.fStaticMax.toFixed(2),
+          fKinetic: phys.fKinetic.toFixed(2),
+          mu: muMeasured
+        });
+        renderDataTable();
+        showToast('Đã ghi nhận kết quả đo vào bảng!');
+      });
+
+      btnClearTable.addEventListener('click', () => {
+        state.records = [];
+        renderDataTable();
+      });
+
+      function renderDataTable() {
+        recordCount.textContent = state.records.length;
+        if (state.records.length === 0) {
+          dataTableBody.innerHTML = `
+            <tr id="emptyRow">
+              <td colspan="6" class="p-4 text-center text-slate-400 italic">
+                Chưa có dữ liệu. Hãy thực hiện kéo vật và nhấn "Ghi số liệu vào bảng".
+              </td>
+            </tr>`;
+          return;
+        }
+        dataTableBody.innerHTML = state.records
+          .map(
+            (r) => `
+            <tr class="hover:bg-blue-50/50 transition">
+              <td class="p-2 font-semibold text-slate-600">#${r.id}</td>
+              <td class="p-2 font-medium text-slate-800">${r.surface}</td>
+              <td class="p-2 text-right font-semibold text-indigo-700">${r.normalN}</td>
+              <td class="p-2 text-right font-semibold text-amber-600">${r.fStaticMax}</td>
+              <td class="p-2 text-right font-semibold text-rose-600">${r.fKinetic}</td>
+              <td class="p-2 text-right font-bold text-emerald-700">${r.mu}</td>
+            </tr>`
+          )
+          .join('');
+      }
+
+      // =========================================================================
+      // 5. INTERACTIVE DRAG ON CANVAS (PULL THE HAND DIRECTLY)
+      // =========================================================================
+      function getPointerPos(e, canvas) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        };
+      }
+
+      simCanvas.addEventListener('mousedown', startDrag);
+      simCanvas.addEventListener('touchstart', startDrag, { passive: false });
+
+      window.addEventListener('mousemove', moveDrag);
+      window.addEventListener('touchmove', moveDrag, { passive: false });
+
+      window.addEventListener('mouseup', endDrag);
+      window.addEventListener('touchend', endDrag);
+
+      function startDrag(e) {
+        const pos = getPointerPos(e, simCanvas);
+        const w = simCanvas.clientWidth;
+        // Cho phép kéo ở nửa trái khung thí nghiệm (khu vực bàn tay & mép trái tấm lót)
+        if (pos.x < w * 0.55) {
+          state.isDraggingHand = true;
+          state.autoPulling = false;
+          updateAutoPullButton();
+          state.dragStartX = pos.x;
+          state.dragStartPull = state.pullForce;
+          simCanvas.style.cursor = 'grabbing';
+          if (e.cancelable) e.preventDefault();
+        }
+      }
+
+      function moveDrag(e) {
+        if (!state.isDraggingHand) return;
+        const pos = getPointerPos(e, simCanvas);
+        // Kéo sang trái (dx < 0) làm tăng lực kéo
+        const dx = state.dragStartX - pos.x;
+        const newPull = Math.max(0, Math.min(15, state.dragStartPull + dx * 0.065));
+        state.pullForce = +newPull.toFixed(2);
+        updateUI();
+        recordGraphPoint();
+        if (e.cancelable) e.preventDefault();
+      }
+
+      function endDrag() {
+        if (state.isDraggingHand) {
+          state.isDraggingHand = false;
+          simCanvas.style.cursor = 'grab';
+        }
+      }
+
+      // =========================================================================
+      // 6. HIGH-DPI CANVAS RESIZING
+      // =========================================================================
+      function resizeCanvases() {
+        [
+          { canvas: simCanvas, ctx: simCtx },
+          { canvas: graphCanvas, ctx: graphCtx }
+        ].forEach(({ canvas, ctx }) => {
+          const dpr = window.devicePixelRatio || 1;
+          const rect = canvas.parentElement.getBoundingClientRect();
+          canvas.width = rect.width * dpr;
+          canvas.height = rect.height * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        });
+      }
+
+      window.addEventListener('resize', resizeCanvases);
+
+      // =========================================================================
+      // 7. DRAWING HELPERS (ARROW, SPRING, HAND, BLOCK, MICRO-VIEW)
+      // =========================================================================
+      function drawArrow(ctx, fromX, fromY, toX, toY, color, label, labelPos = 'top', lineWidth = 3) {
+        const dx = toX - fromX;
+        const dy = toY - fromY;
+        const len = Math.hypot(dx, dy);
+        if (len < 4) return;
+
+        const angle = Math.atan2(dy, dx);
+        const headLen = Math.min(11, len * 0.35);
+
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = 'round';
+
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX - Math.cos(angle) * (headLen * 0.6), toY - Math.sin(angle) * (headLen * 0.6));
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(
+          toX - headLen * Math.cos(angle - Math.PI / 6),
+          toY - headLen * Math.sin(angle - Math.PI / 6)
+        );
+        ctx.lineTo(
+          toX - headLen * Math.cos(angle + Math.PI / 6),
+          toY - headLen * Math.sin(angle + Math.PI / 6)
+        );
+        ctx.closePath();
+        ctx.fill();
+
+        if (label) {
+          ctx.font = 'bold 12px Inter, sans-serif';
+          const textWidth = ctx.measureText(label).width;
+          let lx = (fromX + toX) / 2 - textWidth / 2;
+          let ly = (fromY + toY) / 2;
+
+          if (labelPos === 'top') ly -= 10;
+          else if (labelPos === 'bottom') ly += 18;
+          else if (labelPos === 'left') {
+            lx = toX - textWidth - 8;
+            ly = toY + 4;
+          } else if (labelPos === 'right') {
+            lx = toX + 8;
+            ly = toY + 4;
+          }
+
+          // Pill background for readability
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+          ctx.beginPath();
+          ctx.roundRect(lx - 4, ly - 11, textWidth + 8, 15, 4);
+          ctx.fill();
+
+          ctx.fillStyle = color;
+          ctx.fillText(label, lx, ly);
+        }
+        ctx.restore();
+      }
+
+      function drawHand(ctx, x, y, pullForce) {
+        ctx.save();
+        ctx.translate(x, y);
+
+        // Cánh tay & bàn tay cách điệu thẩm mỹ cầm mép tấm ván
+        // Cổ tay / tay áo
+        ctx.fillStyle = '#3b82f6';
+        ctx.beginPath();
+        ctx.roundRect(-85, -16, 38, 32, 6);
+        ctx.fill();
+
+        // Lòng bàn tay
+        ctx.fillStyle = '#fdba74';
+        ctx.strokeStyle = '#c2410c';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.roundRect(-52, -14, 36, 28, 10);
+        ctx.fill();
+        ctx.stroke();
+
+        // Các ngón tay kẹp lấy mép trái tấm lót
+        for (let i = 0; i < 3; i++) {
+          ctx.beginPath();
+          ctx.roundRect(-22, -12 + i * 7.5, 24, 6.5, 3);
+          ctx.fill();
+          ctx.stroke();
+        }
+        // Ngón cái phía trên
+        ctx.beginPath();
+        ctx.roundRect(-26, -18, 22, 7, 3.5);
+        ctx.fill();
+        ctx.stroke();
+
+        // Mũi tên hướng kéo phía trên bàn tay (giống hình SGK)
+        if (pullForce > 0.05) {
+          const arrowLen = Math.min(75, 24 + pullForce * 3.5);
+          drawArrow(
+            ctx,
+            -10,
+            -32,
+            -10 - arrowLen,
+            -32,
+            '#2563eb',
+            `Kéo (${pullForce.toFixed(1)} N)`,
+            'top',
+            2.8
+          );
+        } else {
+          ctx.fillStyle = '#64748b';
+          ctx.font = '600 11px Inter, sans-serif';
+          ctx.fillText('← Nắm kéo sang trái', -68, -26);
+        }
+
+        ctx.restore();
+      }
+
+      function drawSpringScale(ctx, rightPostX, railY, stretchPx, readingN) {
+        // Lực kế lò xo chuẩn SGK: Vỏ trong suốt, vạch chia độ, lò xo bên trong, kim chỉ thị xanh lá
+        const bodyWidth = 175;
+        const bodyHeight = 40;
+        const bodyRightX = rightPostX - 18;
+        const bodyLeftX = bodyRightX - bodyWidth;
+        const bodyTopY = railY - bodyHeight / 2;
+
+        ctx.save();
+
+        // Thanh nối từ giá đỡ vào đầu phải lực kế
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(rightPostX, railY);
+        ctx.lineTo(bodyRightX, railY);
+        ctx.stroke();
+
+        // Vỏ lực kế (hình chữ nhật bo góc, nền trắng mờ)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.94)';
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(bodyLeftX, bodyTopY, bodyWidth, bodyHeight, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        // Hai đầu bịt cam/nâu của lực kế (giống hình SGK)
+        ctx.fillStyle = '#fb923c';
+        ctx.fillRect(bodyLeftX, bodyTopY, 8, bodyHeight);
+        ctx.fillRect(bodyRightX - 8, bodyTopY, 8, bodyHeight);
+
+        // Vạch chia Newton trên thân lực kế (từ phải sang trái: 0 -> 15 N)
+        const scaleStartX = bodyRightX - 22;
+        const scaleEndX = bodyLeftX + 18;
+        const scaleSpan = scaleStartX - scaleEndX; // ~135px cho 15N (9px / 1N)
+
+        ctx.strokeStyle = '#64748b';
+        ctx.fillStyle = '#475569';
+        ctx.font = '600 8px Inter, sans-serif';
+        ctx.textAlign = 'center';
+
+        for (let n = 0; n <= 15; n++) {
+          const tx = scaleStartX - (n / 15) * scaleSpan;
+          const isMajor = n % 5 === 0;
+          ctx.lineWidth = isMajor ? 1.4 : 0.9;
+          ctx.beginPath();
+          ctx.moveTo(tx, bodyTopY + bodyHeight - 2);
+          ctx.lineTo(tx, bodyTopY + bodyHeight - (isMajor ? 10 : 6));
+          ctx.stroke();
+
+          if (isMajor) {
+            ctx.fillText(n.toString(), tx, bodyTopY + 11);
+          }
+        }
+
+        // Vị trí kim chỉ thị màu xanh lá (dịch sang trái khi lực tăng)
+        const pointerX = scaleStartX - stretchPx;
+
+        // Vẽ lò xo xoắn từ đầu phải đến vị trí kim chỉ thị
+        const springRight = bodyRightX - 10;
+        const springLeft = pointerX;
+        const coils = 10;
+        const coilLen = Math.max(12, springRight - springLeft);
+
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(springRight, railY);
+        for (let i = 0; i <= coils; i++) {
+          const sx = springRight - (i / coils) * coilLen;
+          const sy = i === 0 || i === coils ? railY : railY + (i % 2 === 0 ? -7 : 7);
+          ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+
+        // Thanh trục xanh lá nối từ kim chỉ thị qua đầu trái lực kế tới móc khối gỗ
+        const hookX = bodyLeftX - 24 - stretchPx;
+        ctx.strokeStyle = '#16a34a';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(pointerX, railY);
+        ctx.lineTo(hookX + 6, railY);
+        ctx.stroke();
+
+        // Móc chữ U nối với khối gỗ
+        ctx.beginPath();
+        ctx.arc(hookX + 3, railY, 4.5, Math.PI * 0.5, Math.PI * 1.5);
+        ctx.stroke();
+
+        // Kim chỉ thị xanh lá nổi bật
+        ctx.fillStyle = '#16a34a';
+        ctx.fillRect(pointerX - 2, bodyTopY + 3, 4, bodyHeight - 6);
+
+        // Nhãn số chỉ trực tiếp trên lực kế
+        ctx.fillStyle = '#15803d';
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`Lực kế: ${readingN.toFixed(2)} N`, (bodyLeftX + bodyRightX) / 2, bodyTopY - 6);
+
+        ctx.restore();
+        return hookX;
+      }
+
+      function drawMicroView(ctx, x, y, size, phys) {
+        ctx.save();
+
+        // Khung kính lúp tròn / bo góc
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.roundRect(x, y, size, size, 16);
+        ctx.fill();
+        ctx.stroke();
+
+        // Clip bên trong khung kính lúp
+        ctx.beginPath();
+        ctx.roundRect(x + 2, y + 2, size - 4, size - 4, 14);
+        ctx.clip();
+
+        // Nền trời vi mô
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(x, y, size, size);
+
+        const midY = y + size * 0.55;
+        const roughAmp = Math.max(2, 6.5 * phys.mat.roughness * (state.conditionKey === 'smooth' ? 0.55 : 1));
+        const toothWidth = 14;
+
+        // Vẽ bề mặt dưới (tấm lót) dịch chuyển sang trái theo boardOffset
+        ctx.fillStyle = phys.mat.boardBase;
+        ctx.beginPath();
+        ctx.moveTo(x, y + size);
+        ctx.lineTo(x, midY);
+        const shiftBottom = (state.boardOffset * 1.6) % (toothWidth * 2);
+        for (let px = x - toothWidth * 2; px <= x + size + toothWidth * 2; px += toothWidth) {
+          const peakY = midY + (((Math.round(px / toothWidth) % 2) === 0) ? -roughAmp : roughAmp * 0.6);
+          ctx.lineTo(px - shiftBottom, peakY);
+        }
+        ctx.lineTo(x + size, y + size);
+        ctx.closePath();
+        ctx.fill();
+
+        // Nếu bôi dầu: vẽ lớp màng dầu xanh ngọc bôi trơn giữa 2 bề mặt
+        if (state.conditionKey === 'oiled') {
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.45)';
+          ctx.fillRect(x, midY - roughAmp - 3, size, roughAmp * 2 + 6);
+        }
+
+        // Vẽ bề mặt trên (đáy khối gỗ) - hơi nhích lên khi trượt qua các mấu nhám
+        const liftY = state.isSliding
+          ? -roughAmp * 0.85 - Math.abs(Math.sin(state.simTime * 28)) * 2.5
+          : -roughAmp * 0.25 + Math.min(3, phys.normalN * 0.15);
+
+        ctx.fillStyle = '#d97706';
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + size, y);
+        ctx.lineTo(x + size, midY + liftY);
+        for (let px = x + size + toothWidth; px >= x - toothWidth; px -= toothWidth) {
+          const peakY = midY + liftY + (((Math.round(px / toothWidth) % 2) === 0) ? roughAmp * 0.8 : -roughAmp * 0.5);
+          ctx.lineTo(px, peakY);
+        }
+        ctx.closePath();
+        ctx.fill();
+
+        // Tiêu đề nhỏ trong kính lúp
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+        ctx.fillRect(x, y, size, 20);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Soi vi mô bề mặt tiếp xúc', x + size / 2, y + 13);
+
+        // Chú thích trạng thái vi mô phía dưới
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillRect(x, y + size - 18, size, 18);
+        ctx.fillStyle = state.isSliding ? '#be123c' : '#1d4ed8';
+        ctx.font = '600 9.5px Inter, sans-serif';
+        const microCaption =
+          state.conditionKey === 'oiled'
+            ? 'Màng dầu ngăn tiếp xúc trực tiếp'
+            : state.isSliding
+            ? 'Các mấu nhám trượt qua nhau'
+            : 'Các mấu nhám móc vào nhau';
+        ctx.fillText(microCaption, x + size / 2, y + size - 6);
+
+        ctx.restore();
+      }
+
+      // =========================================================================
+      // 8. MAIN SIMULATION RENDER LOOP
+      // =========================================================================
+      function updatePhysicsAnimation(dt) {
+        state.simTime += dt;
+
+        // Chế độ kéo tăng dần tự động
+        if (state.autoPulling) {
+          state.pullForce = Math.min(15, state.pullForce + dt * 1.45);
+          if (state.pullForce >= 15) {
+            state.autoPulling = false;
+            updateAutoPullButton();
+          }
+          updateUI();
+          recordGraphPoint();
+        }
+
+        const phys = getPhysicsValues();
+
+        // Độ giãn lò xo tỉ lệ với số chỉ lực kế (currentFriction): 9px cho mỗi 1N
+        state.targetStretchPx = phys.currentFriction * 8.5;
+        // Làm mượt chuyển động lò xo (có độ đàn hồi khi giật từ F_msn_max về F_mst)
+        state.springStretchPx += (state.targetStretchPx - state.springStretchPx) * Math.min(1, dt * 16);
+
+        // Chuyển động của tấm ván/tờ giấy bên dưới:
+        if (!state.isSliding) {
+          // Khi nghỉ: tấm lót cùng khối gỗ chỉ nhích nhẹ đúng bằng độ giãn lò xo
+          state.boardOffset = state.springStretchPx;
+          state.blockVibration = 0;
+        } else {
+          // Khi trượt: tấm lót trượt liên tục sang trái với tốc độ tỉ lệ lực kéo dư
+          const slideSpeed = 55 + (state.pullForce - phys.fKinetic) * 14;
+          state.boardOffset = (state.boardOffset + slideSpeed * dt) % 10000;
+          state.blockVibration = Math.sin(state.simTime * 45) * (0.6 * phys.mat.roughness);
+        }
+      }
+
+      function renderSimCanvas() {
+        const w = simCanvas.clientWidth;
+        const h = simCanvas.clientHeight;
+        simCtx.clearRect(0, 0, w, h);
+
+        const phys = getPhysicsValues();
+
+        // Tọa độ mặt bàn thí nghiệm
+        const tableTopY = h * 0.74;
+        const rightPostX = w - 42;
+        const boardHeight = 18;
+        const boardTopY = tableTopY - boardHeight;
+        const blockHeight = 52;
+        const blockWidth = Math.min(135, w * 0.2);
+
+        // 1. Vẽ mặt bàn phòng thí nghiệm (màu hồng nhạt / xám sáng thanh lịch)
+        simCtx.fillStyle = '#fce7f3';
+        simCtx.fillRect(16, tableTopY, w - 32, 16);
+        simCtx.strokeStyle = '#f472b6';
+        simCtx.lineWidth = 1.5;
+        simCtx.strokeRect(16, tableTopY, w - 32, 16);
+
+        // Chân bàn
+        simCtx.fillStyle = '#cbd5e1';
+        simCtx.fillRect(36, tableTopY + 16, 14, h - tableTopY - 16);
+        simCtx.fillRect(w - 50, tableTopY + 16, 14, h - tableTopY - 16);
+
+        // 2. Vẽ giá đỡ cố định bên phải (cột xanh cổ vịt giống hình SGK)
+        simCtx.fillStyle = '#0f766e';
+        simCtx.beginPath();
+        simCtx.roundRect(rightPostX - 6, tableTopY - 145, 12, 145, [4, 4, 0, 0]);
+        simCtx.fill();
+        // Đế giá đỡ
+        simCtx.fillStyle = '#115e59';
+        simCtx.fillRect(rightPostX - 22, tableTopY - 6, 44, 6);
+
+        // 3. Vẽ Lực kế lò xo & nhận tọa độ móc kéo
+        const railY = boardTopY - blockHeight / 2;
+        const hookX = drawSpringScale(simCtx, rightPostX, railY, state.springStretchPx, phys.currentFriction);
+
+        // 4. Vị trí khối gỗ (gắn trực tiếp với móc lực kế)
+        const blockRightX = hookX;
+        const blockLeftX = blockRightX - blockWidth;
+        const blockTopY = boardTopY - blockHeight + state.blockVibration;
+
+        // 5. Vẽ tấm ván / tờ giấy bên dưới khối gỗ
+        // Khi trượt, tấm ván dịch sang trái nhưng giữ chiều dài đủ đỡ khối gỗ để thí nghiệm lặp lại mượt mà
+        const visualShift = state.isSliding
+          ? 25 + (state.boardOffset % 140)
+          : state.boardOffset;
+        const boardRightX = Math.min(rightPostX - 28, blockRightX + 195 - visualShift * 0.35);
+        const boardLeftX = Math.max(85, blockLeftX - 45 - visualShift * 0.45);
+        const boardW = boardRightX - boardLeftX;
+
+        simCtx.save();
+        simCtx.fillStyle = phys.mat.boardBase;
+        simCtx.strokeStyle = phys.mat.boardBorder;
+        simCtx.lineWidth = 1.8;
+        simCtx.beginPath();
+        simCtx.roundRect(boardLeftX, boardTopY, boardW, boardHeight, 3);
+        simCtx.fill();
+        simCtx.stroke();
+
+        // Vân bề mặt trượt động để học sinh thấy rõ tấm lót đang chuyển động sang trái
+        simCtx.beginPath();
+        simCtx.rect(boardLeftX + 2, boardTopY + 1, boardW - 4, boardHeight - 2);
+        simCtx.clip();
+
+        simCtx.strokeStyle = phys.mat.boardGrain;
+        simCtx.lineWidth = 1.5;
+        const stripeGap = 22;
+        const stripeOffset = state.boardOffset % stripeGap;
+        for (let sx = boardLeftX - stripeGap; sx < boardRightX + stripeGap; sx += stripeGap) {
+          const drawX = sx - stripeOffset;
+          simCtx.beginPath();
+          simCtx.moveTo(drawX, boardTopY + 2);
+          simCtx.lineTo(drawX - 8, boardTopY + boardHeight - 2);
+          simCtx.stroke();
+        }
+        simCtx.restore();
+
+        // Lớp dầu bôi trơn mỏng trên mặt tấm ván nếu chọn "Bôi dầu"
+        if (state.conditionKey === 'oiled') {
+          simCtx.fillStyle = 'rgba(56, 189, 248, 0.55)';
+          simCtx.fillRect(boardLeftX + 4, boardTopY - 2.5, boardW - 8, 3);
+        }
+
+        // Nhãn tên tấm vật liệu phía dưới bàn
+        simCtx.fillStyle = '#334155';
+        simCtx.font = 'bold 12px Inter, sans-serif';
+        simCtx.textAlign = 'center';
+        simCtx.fillText(
+          `Bề mặt: ${phys.mat.name} (${phys.cond.name})`,
+          (boardLeftX + boardRightX) / 2,
+          tableTopY + 34
+        );
+
+        // 6. Vẽ bàn tay kéo mép trái tấm lót
+        drawHand(simCtx, boardLeftX, boardTopY + boardHeight / 2, state.pullForce);
+
+        // 7. Vẽ khối gỗ (màu vàng cam gỗ ấm áp giống hình SGK)
+        simCtx.save();
+        const woodGrad = simCtx.createLinearGradient(blockLeftX, blockTopY, blockLeftX, blockTopY + blockHeight);
+        woodGrad.addColorStop(0, '#fbbf24');
+        woodGrad.addColorStop(1, '#d97706');
+        simCtx.fillStyle = woodGrad;
+        simCtx.strokeStyle = '#92400e';
+        simCtx.lineWidth = 2;
+        simCtx.beginPath();
+        simCtx.roundRect(blockLeftX, blockTopY, blockWidth, blockHeight, 5);
+        simCtx.fill();
+        simCtx.stroke();
+
+        // Vân gỗ trang trí trên khối gỗ
+        simCtx.strokeStyle = 'rgba(146, 64, 14, 0.25)';
+        simCtx.lineWidth = 1.2;
+        simCtx.beginPath();
+        simCtx.moveTo(blockLeftX + 12, blockTopY + 16);
+        simCtx.lineTo(blockRightX - 14, blockTopY + 16);
+        simCtx.moveTo(blockLeftX + 20, blockTopY + 34);
+        simCtx.lineTo(blockRightX - 10, blockTopY + 34);
+        simCtx.stroke();
+
+        // Nhãn khối lượng trên khối gỗ
+        simCtx.fillStyle = '#78350f';
+        simCtx.font = 'bold 11px Inter, sans-serif';
+        simCtx.textAlign = 'center';
+        simCtx.fillText(`m = ${phys.totalMass.toFixed(2)} kg`, blockLeftX + blockWidth / 2, blockTopY + blockHeight / 2 + 4);
+        simCtx.restore();
+
+        // 8. Vẽ các quả nặng xếp chồng lên khối gỗ (nếu có)
+        const weightW = 24;
+        const weightH = 16;
+        const totalWeightsW = state.extraWeights * (weightW + 4) - 4;
+        const startWeightX = blockLeftX + (blockWidth - totalWeightsW) / 2;
+        for (let i = 0; i < state.extraWeights; i++) {
+          const wx = startWeightX + i * (weightW + 4);
+          const wy = blockTopY - weightH;
+          simCtx.fillStyle = '#475569';
+          simCtx.strokeStyle = '#1e293b';
+          simCtx.lineWidth = 1.5;
+          simCtx.beginPath();
+          simCtx.roundRect(wx, wy, weightW, weightH, 3);
+          simCtx.fill();
+          simCtx.stroke();
+          // Núm cầm quả cân
+          simCtx.fillStyle = '#94a3b8';
+          simCtx.fillRect(wx + weightW / 2 - 3, wy - 4, 6, 4);
+        }
+
+        // 9. Vẽ Bản đồ Vectơ Lực (Free Body Diagram) trên khối gỗ
+        if (state.showVectors) {
+          const cx = blockLeftX + blockWidth / 2;
+          const cy = blockTopY + blockHeight / 2;
+          const forceScale = 5.2; // px per Newton
+
+          // Trọng lực P (hướng xuống)
+          const pLen = Math.min(68, phys.weightP * forceScale);
+          drawArrow(simCtx, cx, cy, cx, cy + pLen, '#6366f1', `P = ${phys.weightP.toFixed(1)}N`, 'right', 2.6);
+
+          // Lực ấn trực tiếp F_ấn (nếu > 0, vẽ mũi tên từ trên ấn xuống mặt trên khối gỗ)
+          if (state.pressForce > 0) {
+            const topSurfaceY = blockTopY - (state.extraWeights > 0 ? weightH + 4 : 0);
+            const pressLen = Math.min(60, 18 + state.pressForce * 2.8);
+            drawArrow(
+              simCtx,
+              cx - 18,
+              topSurfaceY - pressLen,
+              cx - 18,
+              topSurfaceY - 2,
+              '#9333ea',
+              `F_ấn = ${state.pressForce.toFixed(1)}N`,
+              'left',
+              2.8
+            );
+          }
+
+          // Phản lực N (hướng lên từ mặt tiếp xúc)
+          const nLen = Math.min(76, phys.normalN * forceScale);
+          drawArrow(simCtx, cx + 14, boardTopY, cx + 14, boardTopY - nLen, '#0d9488', `N = ${phys.normalN.toFixed(1)}N`, 'right', 2.6);
+
+          // Lực đàn hồi của lực kế F_đh (hướng sang phải) & Lực ma sát F_ms (hướng sang trái tại mặt tiếp xúc)
+          if (phys.currentFriction > 0.05) {
+            const hLen = Math.min(95, 16 + phys.currentFriction * 6.2);
+            // F_đh tác dụng vào khối gỗ hướng sang phải
+            drawArrow(
+              simCtx,
+              blockRightX,
+              cy,
+              blockRightX + hLen,
+              cy,
+              '#16a34a',
+              `F_đh = ${phys.currentFriction.toFixed(2)}N`,
+              'top',
+              2.8
+            );
+
+            // F_ms tác dụng lên đáy khối gỗ hướng sang trái (cùng chiều kéo của tấm lót)
+            const fLabel = state.isSliding
+              ? `F_mst = ${phys.currentFriction.toFixed(2)}N`
+              : `F_msn = ${phys.currentFriction.toFixed(2)}N`;
+            const fColor = state.isSliding ? '#e11d48' : '#2563eb';
+            drawArrow(
+              simCtx,
+              cx,
+              boardTopY - 3,
+              cx - hLen,
+              boardTopY - 3,
+              fColor,
+              fLabel,
+              'top',
+              3
+            );
+          }
+        }
+
+        // 10. Vẽ Kính lúp vi mô góc trên bên phải
+        if (state.showMicro) {
+          const microSize = Math.min(132, w * 0.22);
+          drawMicroView(simCtx, w - microSize - 14, 12, microSize, phys);
+        }
+      }
+
+      // =========================================================================
+      // 9. REAL-TIME GRAPH RENDERING
+      // =========================================================================
+      function renderGraphCanvas() {
+        const w = graphCanvas.clientWidth;
+        const h = graphCanvas.clientHeight;
+        graphCtx.clearRect(0, 0, w, h);
+
+        const padLeft = 52;
+        const padRight = 24;
+        const padTop = 20;
+        const padBottom = 34;
+        const plotW = w - padLeft - padRight;
+        const plotH = h - padTop - padBottom;
+
+        if (plotW <= 20 || plotH <= 20) return;
+
+        const maxPull = 15; // N
+        const maxFrictionAxis = 15; // N
+
+        const toX = (fPull) => padLeft + (fPull / maxPull) * plotW;
+        const toY = (fFric) => padTop + plotH - (fFric / maxFrictionAxis) * plotH;
+
+        // Grid lines
+        graphCtx.strokeStyle = '#f1f5f9';
+        graphCtx.lineWidth = 1;
+        for (let xVal = 0; xVal <= maxPull; xVal += 2.5) {
+          const gx = toX(xVal);
+          graphCtx.beginPath();
+          graphCtx.moveTo(gx, padTop);
+          graphCtx.lineTo(gx, padTop + plotH);
+          graphCtx.stroke();
+        }
+        for (let yVal = 0; yVal <= maxFrictionAxis; yVal += 3) {
+          const gy = toY(yVal);
+          graphCtx.beginPath();
+          graphCtx.moveTo(padLeft, gy);
+          graphCtx.lineTo(padLeft + plotW, gy);
+          graphCtx.stroke();
+        }
+
+        // Theoretical Reference Dashed Curve (Đường lý thuyết mờ để học sinh dễ đối chiếu)
+        const phys = getPhysicsValues();
+        if (phys.fStaticMax <= maxFrictionAxis) {
+          graphCtx.save();
+          graphCtx.strokeStyle = 'rgba(148, 163, 184, 0.55)';
+          graphCtx.setLineDash([5, 4]);
+          graphCtx.lineWidth = 1.5;
+          graphCtx.beginPath();
+          graphCtx.moveTo(toX(0), toY(0));
+          graphCtx.lineTo(toX(phys.fStaticMax), toY(phys.fStaticMax));
+          graphCtx.lineTo(toX(phys.fStaticMax), toY(phys.fKinetic));
+          graphCtx.lineTo(toX(maxPull), toY(phys.fKinetic));
+          graphCtx.stroke();
+
+          // Chú thích đỉnh F_msn,max
+          graphCtx.fillStyle = '#d97706';
+          graphCtx.font = 'bold 10px Inter, sans-serif';
+          graphCtx.fillText(
+            `Đỉnh F_msn,max (${phys.fStaticMax.toFixed(2)}N)`,
+            Math.min(w - 135, toX(phys.fStaticMax) + 6),
+            Math.max(padTop + 12, toY(phys.fStaticMax) - 4)
+          );
+          graphCtx.restore();
+        }
+
+        // Axes
+        graphCtx.strokeStyle = '#64748b';
+        graphCtx.lineWidth = 1.5;
+        graphCtx.beginPath();
+        graphCtx.moveTo(padLeft, padTop);
+        graphCtx.lineTo(padLeft, padTop + plotH);
+        graphCtx.lineTo(padLeft + plotW, padTop + plotH);
+        graphCtx.stroke();
+
+        // Axis labels
+        graphCtx.fillStyle = '#475569';
+        graphCtx.font = '600 10px Inter, sans-serif';
+        graphCtx.textAlign = 'right';
+        for (let yVal = 0; yVal <= maxFrictionAxis; yVal += 3) {
+          graphCtx.fillText(yVal.toString(), padLeft - 6, toY(yVal) + 3);
+        }
+
+        graphCtx.textAlign = 'center';
+        for (let xVal = 0; xVal <= maxPull; xVal += 2.5) {
+          graphCtx.fillText(xVal.toFixed(1), toX(xVal), padTop + plotH + 14);
+        }
+
+        graphCtx.font = 'bold 11px Inter, sans-serif';
+        graphCtx.fillStyle = '#1e293b';
+        graphCtx.fillText('Lực kéo F_kéo (N)', padLeft + plotW / 2, h - 5);
+
+        graphCtx.save();
+        graphCtx.translate(14, padTop + plotH / 2);
+        graphCtx.rotate(-Math.PI / 2);
+        graphCtx.fillText('Lực ma sát F_ms (N)', 0, 0);
+        graphCtx.restore();
+
+        // Recorded Real-time Curve
+        if (state.graphHistory.length > 1) {
+          for (let i = 1; i < state.graphHistory.length; i++) {
+            const p0 = state.graphHistory[i - 1];
+            const p1 = state.graphHistory[i];
+            graphCtx.strokeStyle = p1.isSliding ? '#e11d48' : '#2563eb';
+            graphCtx.lineWidth = 2.8;
+            graphCtx.beginPath();
+            graphCtx.moveTo(toX(p0.fPull), toY(p0.fFriction));
+            graphCtx.lineTo(toX(p1.fPull), toY(p1.fFriction));
+            graphCtx.stroke();
+          }
+        }
+
+        // Current Live Point
+        const curX = toX(state.pullForce);
+        const curY = toY(phys.currentFriction);
+        graphCtx.fillStyle = state.isSliding ? '#e11d48' : '#2563eb';
+        graphCtx.beginPath();
+        graphCtx.arc(curX, curY, 5, 0, Math.PI * 2);
+        graphCtx.fill();
+        graphCtx.strokeStyle = '#ffffff';
+        graphCtx.lineWidth = 1.8;
+        graphCtx.stroke();
+
+        // Legend top-right
+        graphCtx.font = '600 10px Inter, sans-serif';
+        graphCtx.textAlign = 'left';
+        graphCtx.fillStyle = '#2563eb';
+        graphCtx.fillRect(w - 220, 8, 10, 10);
+        graphCtx.fillStyle = '#334155';
+        graphCtx.fillText('Vùng ma sát nghỉ', w - 205, 17);
+
+        graphCtx.fillStyle = '#e11d48';
+        graphCtx.fillRect(w - 110, 8, 10, 10);
+        graphCtx.fillStyle = '#334155';
+        graphCtx.fillText('Vùng ma sát trượt', w - 95, 17);
+      }
+
+      // =========================================================================
+      // 10. ANIMATION LOOP START
+      // =========================================================================
+      let lastTimestamp = 0;
+      function animateLoop(timestamp) {
+        if (!lastTimestamp) lastTimestamp = timestamp;
+        const dt = Math.min(0.05, (timestamp - lastTimestamp) / 1000);
+        lastTimestamp = timestamp;
+
+        updatePhysicsAnimation(dt);
+        renderSimCanvas();
+        renderGraphCanvas();
+
+        requestAnimationFrame(animateLoop);
+      }
+
+      window.onload = function () {
+        resizeCanvases();
+        updateUI();
+        recordGraphPoint();
+        simCanvas.style.cursor = 'grab';
+        requestAnimationFrame(animateLoop);
+      };
+    })();
+  </script>
+</body>
+</html>

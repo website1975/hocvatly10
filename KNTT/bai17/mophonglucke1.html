@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mô Phỏng Thí Nghiệm Vật Lý: Lực Kế & Trọng Tâm Vật Mỏng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+    .font-mono-num {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Custom subtle grid background for lab feel */
+    .lab-canvas-bg {
+      background-color: #ffffff;
+      background-image: 
+        linear-gradient(to right, rgba(226, 232, 240, 0.55) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(226, 232, 240, 0.55) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    /* Custom range slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      margin-top: -6px;
+      background-color: #2563eb;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+      transition: transform 0.15s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.12);
+    }
+    .tab-active {
+      background-color: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+    .tab-inactive {
+      background-color: #ffffff;
+      color: #475569;
+    }
+    .tab-inactive:hover {
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+    canvas {
+      touch-action: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/20">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold text-slate-900 leading-tight">Phòng Thí Nghiệm Vật Lý Ảo</h1>
+          <p class="text-xs sm:text-sm text-slate-500">Mô phỏng Lực kế lò xo & Xác định trọng tâm vật mỏng</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 w-full sm:w-auto">
+        <button id="btn-tab-spring" onclick="switchTab('spring')" class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 tab-active">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m0-18l-3 3m3-3l3 3m-3 15l-3-3m3 3l3-3" />
+          </svg>
+          <span>1. Thí nghiệm Lực kế</span>
+        </button>
+        <button id="btn-tab-cg" onclick="switchTab('cg')" class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 tab-inactive">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v6m0 0l-6 10h12L12 8zm0 5a1 1 0 100 2 1 1 0 000-2z" />
+          </svg>
+          <span>2. Trọng tâm Vật mỏng</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+
+    <!-- ==================== TAB 1: DYNAMOMETER (LỰC KẾ) ==================== -->
+    <section id="section-spring" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Left Canvas Area -->
+      <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div class="px-5 py-3.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-slate-50/70">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h2 class="font-bold text-slate-800 text-sm sm:text-base">Mô hình Lực kế & Lực đẩy Archimedes</h2>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="toggleVectors()" id="btn-vectors" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition flex items-center gap-1.5">
+              <span>Vectơ lực: BẬT</span>
+            </button>
+            <button onclick="toggleMagnifier()" id="btn-magnifier" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+              </svg>
+              <span>Kính lúp: BẬT</span>
+            </button>
+            <button onclick="disturbSpring()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition">
+              Kéo nhẹ thử
+            </button>
+          </div>
+        </div>
+
+        <!-- Overload Banner -->
+        <div id="overload-banner" class="hidden bg-red-600 text-white px-4 py-2.5 text-sm font-semibold flex items-center justify-center gap-2 animate-pulse">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          <span>CẢNH BÁO QUÁ GIỚI HẠN ĐO (GHĐ)! Lực kéo vượt mức tối đa của lực kế.</span>
+        </div>
+
+        <!-- Canvas Container -->
+        <div id="spring-canvas-wrapper" class="relative w-full h-[560px] sm:h-[630px] lab-canvas-bg">
+          <canvas id="springCanvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- Bottom Quick Hint -->
+        <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-600 flex flex-wrap items-center justify-between gap-2">
+          <span>💡 <strong>Tương tác:</strong> Kéo trực tiếp <strong>cốc chất lỏng</strong> lên/xuống để nhúng vật, hoặc kéo <strong>quả nặng</strong> để thử dao động.</span>
+          <span class="font-mono-num text-slate-500">F = P - F_A</span>
+        </div>
+      </div>
+
+      <!-- Right Control & Readout Panel -->
+      <div class="lg:col-span-5 flex flex-col gap-4">
+        
+        <!-- Live Measurement Dashboard -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2.5">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Bảng phân tích số liệu & Trạng thái</h3>
+            <span id="readout-state-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">Ngoài không khí</span>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2.5 mb-3">
+            <div class="bg-blue-50/80 border border-blue-200/80 rounded-xl p-3">
+              <div class="text-[11px] text-blue-700 font-semibold">Số chỉ lực kế (F = F_đh)</div>
+              <div id="readout-force" class="text-2xl sm:text-3xl font-extrabold font-mono-num text-blue-700 mt-0.5">1.00 N</div>
+            </div>
+            <div class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-3">
+              <div class="text-[11px] text-amber-800 font-semibold">Lực đẩy Archimedes (F_A)</div>
+              <div id="readout-fa" class="text-2xl sm:text-3xl font-extrabold font-mono-num text-amber-700 mt-0.5">0.00 N</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center bg-slate-50 rounded-xl p-2.5 border border-slate-100">
+            <div>
+              <div class="text-[11px] text-slate-500">Trọng lượng P</div>
+              <div id="readout-weight-p" class="text-xs sm:text-sm font-bold font-mono-num text-slate-800">1.00 N</div>
+            </div>
+            <div class="border-x border-slate-200">
+              <div class="text-[11px] text-slate-500">Thể tích vật V</div>
+              <div id="readout-vol" class="text-xs sm:text-sm font-bold font-mono-num text-slate-800">12.8 cm³</div>
+            </div>
+            <div>
+              <div class="text-[11px] text-slate-500">Thể tích chìm V_c</div>
+              <div id="readout-sub-vol" class="text-xs sm:text-sm font-bold font-mono-num text-cyan-700">0.0 cm³</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 1: Select Dynamometer Range -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2.5">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 text-xs font-bold flex items-center justify-center">1</span>
+              Chọn loại Lực kế (GHĐ & ĐCNN)
+            </h3>
+            <span class="text-[11px] font-mono-num text-slate-500" id="readout-ghd-inline">GHĐ: 2N | ĐCNN: 0,1N</span>
+          </div>
+          <div class="grid grid-cols-4 gap-2" id="dynamometer-selector">
+            <button onclick="setDynamometer(1)" data-ghd="1" class="dyn-btn p-2 rounded-xl border text-center transition">
+              <div class="font-bold text-xs sm:text-sm">1 N</div>
+              <div class="text-[10px] opacity-80">0,05 N</div>
+            </button>
+            <button onclick="setDynamometer(2)" data-ghd="2" class="dyn-btn p-2 rounded-xl border text-center transition">
+              <div class="font-bold text-xs sm:text-sm">2 N</div>
+              <div class="text-[10px] opacity-80">0,1 N</div>
+            </button>
+            <button onclick="setDynamometer(5)" data-ghd="5" class="dyn-btn p-2 rounded-xl border text-center transition">
+              <div class="font-bold text-xs sm:text-sm">5 N</div>
+              <div class="text-[10px] opacity-80">0,2 N</div>
+            </button>
+            <button onclick="setDynamometer(10)" data-ghd="10" class="dyn-btn p-2 rounded-xl border text-center transition">
+              <div class="font-bold text-xs sm:text-sm">10 N</div>
+              <div class="text-[10px] opacity-80">0,5 N</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Adjust Mass & Material of Object -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2.5">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 text-xs font-bold flex items-center justify-center">2</span>
+              Vật nặng (Khối lượng & Chất liệu)
+            </h3>
+            <button onclick="setMass(0)" class="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-2 py-0.5 rounded-lg">
+              Tháo vật (0g)
+            </button>
+          </div>
+
+          <!-- Material Selector -->
+          <div class="mb-3">
+            <div class="text-xs font-medium text-slate-600 mb-1.5">Chất liệu vật (Khối lượng riêng $D_{\text{vật}}$):</div>
+            <div class="grid grid-cols-5 gap-1.5" id="material-selector">
+              <button onclick="setMaterial('iron')" data-mat="iron" class="mat-btn py-1.5 px-1 rounded-lg border text-center transition">
+                <div class="font-bold text-[11px]">Sắt</div>
+                <div class="text-[9px] opacity-75">7800</div>
+              </button>
+              <button onclick="setMaterial('aluminum')" data-mat="aluminum" class="mat-btn py-1.5 px-1 rounded-lg border text-center transition">
+                <div class="font-bold text-[11px]">Nhôm</div>
+                <div class="text-[9px] opacity-75">2700</div>
+              </button>
+              <button onclick="setMaterial('copper')" data-mat="copper" class="mat-btn py-1.5 px-1 rounded-lg border text-center transition">
+                <div class="font-bold text-[11px]">Đồng</div>
+                <div class="text-[9px] opacity-75">8900</div>
+              </button>
+              <button onclick="setMaterial('stone')" data-mat="stone" class="mat-btn py-1.5 px-1 rounded-lg border text-center transition">
+                <div class="font-bold text-[11px]">Đá</div>
+                <div class="text-[9px] opacity-75">2500</div>
+              </button>
+              <button onclick="setMaterial('wood')" data-mat="wood" class="mat-btn py-1.5 px-1 rounded-lg border text-center transition">
+                <div class="font-bold text-[11px]">Gỗ đặc</div>
+                <div class="text-[9px] opacity-75">800</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Slider -->
+          <div class="mb-3">
+            <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+              <span>Khối lượng $m$:</span>
+              <span id="slider-mass-label" class="font-mono-num font-bold text-blue-600">200 g (0.20 kg)</span>
+            </div>
+            <input id="mass-slider" type="range" min="0" max="1000" step="10" value="200" oninput="onSliderMassChange(this.value)" class="w-full" />
+          </div>
+
+          <!-- Quick Slotted Weights Buttons -->
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="addMass(50)" class="py-1.5 px-2 rounded-xl bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-xs font-bold transition">+ 50g</button>
+            <button onclick="addMass(100)" class="py-1.5 px-2 rounded-xl bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-xs font-bold transition">+ 100g</button>
+            <button onclick="addMass(200)" class="py-1.5 px-2 rounded-xl bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-xs font-bold transition">+ 200g</button>
+            <button onclick="addMass(-100)" class="py-1.5 px-2 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 border border-slate-200 text-xs font-bold transition">- 100g</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Environment & Liquid Immersion -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2.5">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-800 text-xs font-bold flex items-center justify-center">3</span>
+              Môi trường chứa vật & Mức nhúng chìm
+            </h3>
+            <div class="flex rounded-lg bg-slate-100 p-0.5 border border-slate-200 text-[11px]">
+              <button onclick="setGravity(10)" id="btn-g-10" class="px-2 py-0.5 rounded font-bold bg-white text-blue-700 shadow-sm">g=10</button>
+              <button onclick="setGravity(9.8)" id="btn-g-98" class="px-2 py-0.5 rounded font-bold text-slate-600">9,8</button>
+            </div>
+          </div>
+
+          <!-- Liquid Environment Buttons -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 mb-3" id="medium-selector">
+            <button onclick="setMedium('air')" data-med="air" class="med-btn p-2 rounded-xl border text-left transition">
+              <div class="font-bold text-xs">Không khí</div>
+              <div class="text-[10px] opacity-75">D = 1,2 kg/m³</div>
+            </button>
+            <button onclick="setMedium('water')" data-med="water" class="med-btn p-2 rounded-xl border text-left transition">
+              <div class="font-bold text-xs">Nước tinh khiết</div>
+              <div class="text-[10px] opacity-75">D = 1000 kg/m³</div>
+            </button>
+            <button onclick="setMedium('saltwater')" data-med="saltwater" class="med-btn p-2 rounded-xl border text-left transition">
+              <div class="font-bold text-xs">Nước muối đặc</div>
+              <div class="text-[10px] opacity-75">D = 1200 kg/m³</div>
+            </button>
+            <button onclick="setMedium('oil')" data-med="oil" class="med-btn p-2 rounded-xl border text-left transition">
+              <div class="font-bold text-xs">Dầu hỏa / Cồn</div>
+              <div class="text-[10px] opacity-75">D = 800 kg/m³</div>
+            </button>
+            <button onclick="setMedium('mercury')" data-med="mercury" class="med-btn p-2 rounded-xl border text-left transition sm:col-span-2">
+              <div class="font-bold text-xs">Thủy ngân (Chất lỏng nặng)</div>
+              <div class="text-[10px] opacity-75">D = 13600 kg/m³ (Kim loại nổi!)</div>
+            </button>
+          </div>
+
+          <!-- Beaker Lift / Immersion Slider -->
+          <div id="beaker-control-box" class="pt-2 border-t border-slate-100">
+            <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+              <span>Nâng bình chất lỏng (Độ cao cốc):</span>
+              <span id="beaker-lift-label" class="font-mono-num font-bold text-cyan-700">65%</span>
+            </div>
+            <input id="beaker-slider" type="range" min="0" max="100" step="1" value="65" oninput="onBeakerSliderChange(this.value)" class="w-full" />
+            <div class="grid grid-cols-3 gap-2 mt-2">
+              <button onclick="setBeakerLift(0)" class="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold transition">
+                Hạ bình (Ngoài KK)
+              </button>
+              <button onclick="setBeakerLift(48)" class="py-1.5 px-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-[11px] font-semibold transition">
+                Nhúng một phần
+              </button>
+              <button onclick="setBeakerLift(85)" class="py-1.5 px-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-[11px] font-semibold transition">
+                Nhúng chìm hoàn toàn
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: CENTER OF GRAVITY (TRỌNG TÂM VẬT MỎNG) ==================== -->
+    <section id="section-cg" class="hidden grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Left Canvas Area -->
+      <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div class="px-5 py-3.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-slate-50/70">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+            <h2 class="font-bold text-slate-800 text-sm sm:text-base">Thí nghiệm Dây dọi tìm Trọng tâm Vật mỏng</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="togglePlumbLine()" id="btn-toggle-plumb" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition">
+              Dây dọi: HIỆN
+            </button>
+            <button onclick="resetCGExperiment()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition">
+              Xóa đường kẻ
+            </button>
+          </div>
+        </div>
+
+        <!-- Status Banner -->
+        <div id="cg-status-banner" class="bg-blue-50 border-b border-blue-100 text-blue-800 px-4 py-2 text-xs sm:text-sm font-medium flex items-center justify-between gap-2">
+          <span id="cg-instruction-text">👉 Bước 1: Nhấp vào một điểm bất kỳ trên tấm bìa (hoặc chọn lỗ A, B, C) để treo vật.</span>
+          <span id="cg-lines-count" class="font-mono-num text-xs font-bold bg-blue-600 text-white px-2 py-0.5 rounded-full shrink-0">0/2 đường</span>
+        </div>
+
+        <!-- Canvas Container -->
+        <div id="cg-canvas-wrapper" class="relative w-full h-[520px] sm:h-[580px] lab-canvas-bg">
+          <canvas id="cgCanvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-600 flex flex-wrap items-center justify-between gap-2">
+          <span>💡 <strong>Nguyên tắc:</strong> Khi vật treo cân bằng, trọng tâm G luôn nằm trên đường thẳng đứng trùng với dây dọi.</span>
+          <span id="cg-coords-display" class="font-mono-num text-slate-500">Trọng tâm G: Chưa xác định</span>
+        </div>
+      </div>
+
+      <!-- Right Controls Panel -->
+      <div class="lg:col-span-5 flex flex-col gap-5">
+
+        <!-- Step 1: Select Thin Lamina Shape -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 mb-3">
+            <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 text-xs font-bold flex items-center justify-center">1</span>
+            Chọn hình dạng vật mỏng đồng chất
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="shape-selector">
+            <button onclick="selectCGShape('irregular')" data-shape="irregular" class="shape-btn p-2.5 rounded-xl border text-xs font-bold text-center transition">
+              Bìa đa giác bất kỳ
+            </button>
+            <button onclick="selectCGShape('lshape')" data-shape="lshape" class="shape-btn p-2.5 rounded-xl border text-xs font-bold text-center transition">
+              Bản mỏng chữ L
+            </button>
+            <button onclick="selectCGShape('triangle')" data-shape="triangle" class="shape-btn p-2.5 rounded-xl border text-xs font-bold text-center transition">
+              Tam giác lệch
+            </button>
+            <button onclick="selectCGShape('semicircle')" data-shape="semicircle" class="shape-btn p-2.5 rounded-xl border text-xs font-bold text-center transition">
+              Hình bán nguyệt
+            </button>
+            <button onclick="selectCGShape('tshape')" data-shape="tshape" class="shape-btn p-2.5 rounded-xl border text-xs font-bold text-center transition">
+              Bản mỏng chữ T
+            </button>
+            <button onclick="selectCGShape('custom')" data-shape="custom" class="shape-btn p-2.5 rounded-xl border text-xs font-bold text-center transition">
+              ✏️ Tự chỉnh đỉnh
+            </button>
+          </div>
+
+          <!-- Custom Shape Editor Helper -->
+          <div id="custom-shape-helper" class="hidden mt-3 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900">
+            <div class="font-bold mb-1">Chế độ thay đổi hình dạng tự do:</div>
+            <p class="mb-2">Kéo các chốt tròn màu cam ở góc tấm bìa để biến đổi hình dạng vật mỏng theo ý muốn!</p>
+            <div class="flex gap-2">
+              <button onclick="randomizeCustomPolygon()" class="px-3 py-1.5 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700 transition">
+                Tạo hình ngẫu nhiên mới
+              </button>
+              <button onclick="finishCustomEdit()" id="btn-finish-edit" class="px-3 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-900 font-semibold hover:bg-amber-100 transition">
+                Xong & Bắt đầu treo
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Hang & Trace Plumb Line -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 mb-3">
+            <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 text-xs font-bold flex items-center justify-center">2</span>
+            Treo vật & Kẻ đường thẳng đứng theo dây dọi
+          </h3>
+
+          <div class="mb-3">
+            <div class="text-xs text-slate-500 mb-2">Chọn nhanh điểm treo có sẵn (hoặc click trực tiếp lên vật):</div>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="hangAtPreset(0)" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-xs font-bold transition">
+                Treo tại lỗ A
+              </button>
+              <button onclick="hangAtPreset(1)" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-xs font-bold transition">
+                Treo tại lỗ B
+              </button>
+              <button onclick="hangAtPreset(2)" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-xs font-bold transition">
+                Treo tại lỗ C
+              </button>
+            </div>
+          </div>
+
+          <button onclick="tracePlumbLine()" id="btn-trace-line" class="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold text-sm shadow-md shadow-blue-600/20 transition flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+            <span>Kẻ đường thẳng đứng theo dây dọi</span>
+          </button>
+
+          <div class="mt-3 flex items-center justify-between gap-2">
+            <button onclick="pushPendulum()" class="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+              Lắc nhẹ vật treo
+            </button>
+            <button onclick="toggleRevealTrueG()" id="btn-reveal-g" class="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+              Hiện đáp án G: TẮT
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Verify Balance at Center of Gravity -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">3</span>
+            Kiểm chứng thăng bằng tại Trọng tâm G
+          </h3>
+          <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+            Sau khi kẻ ít nhất <strong>2 đường thẳng đứng</strong> từ 2 điểm treo khác nhau, giao điểm của chúng chính là <strong>Trọng tâm G</strong>. Đặt vật nằm ngang lên mũi nhọn tại G để kiểm tra sự cân bằng!
+          </p>
+          <button onclick="toggleBalanceTest()" id="btn-balance-test" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Đặt thăng bằng trên mũi nhọn tại G</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // TAB NAVIGATION LOGIC
+    // =========================================================================
+    let activeTab = 'spring';
+
+    function switchTab(tab) {
+      activeTab = tab;
+      const secSpring = document.getElementById('section-spring');
+      const secCG = document.getElementById('section-cg');
+      const btnSpring = document.getElementById('btn-tab-spring');
+      const btnCG = document.getElementById('btn-tab-cg');
+
+      if (tab === 'spring') {
+        secSpring.classList.remove('hidden');
+        secSpring.classList.add('grid');
+        secCG.classList.add('hidden');
+        secCG.classList.remove('grid');
+        btnSpring.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 tab-active';
+        btnCG.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 tab-inactive';
+        resizeSpringCanvas();
+      } else {
+        secSpring.classList.add('hidden');
+        secSpring.classList.remove('grid');
+        secCG.classList.remove('hidden');
+        secCG.classList.add('grid');
+        btnCG.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 tab-active';
+        btnSpring.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 tab-inactive';
+        resizeCGCanvas();
+      }
+    }
+
+    // =========================================================================
+    // PART 1: SPRING SCALE & ARCHIMEDES BUOYANCY SIMULATION
+    // =========================================================================
+    const springCanvas = document.getElementById('springCanvas');
+    const sCtx = springCanvas.getContext('2d');
+
+    const dynamometerConfigs = {
+      1:  { ghd: 1.0,  dcnn: 0.05, majorStep: 0.2, subDivs: 4, color: '#0284c7' },
+      2:  { ghd: 2.0,  dcnn: 0.1,  majorStep: 0.5, subDivs: 5, color: '#2563eb' },
+      5:  { ghd: 5.0,  dcnn: 0.2,  majorStep: 1.0, subDivs: 5, color: '#0d9488' },
+      10: { ghd: 10.0, dcnn: 0.5,  majorStep: 2.0, subDivs: 4, color: '#7c3aed' }
+    };
+
+    const materialConfigs = {
+      iron:     { name: 'Sắt / Thép', density: 7800, color1: '#334155', color2: '#64748b', color3: '#1e293b', textCol: '#f8fafc' },
+      aluminum: { name: 'Nhôm',       density: 2700, color1: '#94a3b8', color2: '#e2e8f0', color3: '#64748b', textCol: '#0f172a' },
+      copper:   { name: 'Đồng đỏ',    density: 8900, color1: '#b45309', color2: '#f59e0b', color3: '#78350f', textCol: '#ffffff' },
+      stone:    { name: 'Đá tự nhiên',density: 2500, color1: '#57534e', color2: '#a8a29e', color3: '#44403c', textCol: '#ffffff' },
+      wood:     { name: 'Gỗ đặc',     density: 800,  color1: '#92400e', color2: '#d97706', color3: '#78350f', textCol: '#ffffff' }
+    };
+
+    const mediumConfigs = {
+      air:       { name: 'Không khí',       density: 1.2,   fill: 'rgba(224, 242, 254, 0.0)', surface: 'rgba(148, 163, 184, 0.3)' },
+      water:     { name: 'Nước tinh khiết', density: 1000,  fill: 'rgba(56, 189, 248, 0.34)', surface: 'rgba(2, 132, 199, 0.75)' },
+      saltwater: { name: 'Nước muối đặc',   density: 1200,  fill: 'rgba(20, 184, 166, 0.38)', surface: 'rgba(13, 148, 136, 0.8)' },
+      oil:       { name: 'Dầu hỏa / Cồn',   density: 800,   fill: 'rgba(250, 204, 21, 0.32)', surface: 'rgba(202, 138, 4, 0.75)' },
+      mercury:   { name: 'Thủy ngân',       density: 13600, fill: 'rgba(148, 163, 184, 0.78)',surface: 'rgba(71, 85, 105, 0.95)' }
+    };
+
+    const springState = {
+      ghd: 2.0,
+      massGrams: 200,
+      material: 'iron',
+      medium: 'water',
+      beakerLift: 65,       // 0..100% vertical position of beaker
+      gravity: 10,          // m/s^2
+      currentExtension: 0,  // normalized 0..1+ (1 = full GHĐ stretch)
+      velocity: 0,
+      floatOffsetY: 0,      // upward slack offset when object floats on liquid surface!
+      showMagnifier: true,
+      showVectors: true,
+      dragTarget: null,     // 'weight' | 'beaker' | null
+      dragStartY: 0,
+      dragStartVal: 0,
+      weightScreenBounds: { x: 0, y: 0, w: 0, h: 0 },
+      beakerScreenBounds: { x: 0, y: 0, w: 0, h: 0 },
+      // Computed instantaneous physics values for display
+      livePhysics: {
+        P: 0,
+        Fa: 0,
+        Fdh: 0,
+        volCm3: 0,
+        subVolCm3: 0,
+        subRatio: 0,
+        stateText: 'Ngoài không khí'
+      }
+    };
+
+    function resizeSpringCanvas() {
+      const wrapper = document.getElementById('spring-canvas-wrapper');
+      if (!wrapper) return;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = wrapper.getBoundingClientRect();
+      springCanvas.width = rect.width * dpr;
+      springCanvas.height = rect.height * dpr;
+      sCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function setDynamometer(ghd) {
+      springState.ghd = ghd;
+      const cfg = dynamometerConfigs[ghd];
+      document.querySelectorAll('.dyn-btn').forEach(btn => {
+        const val = parseFloat(btn.getAttribute('data-ghd'));
+        if (val === ghd) {
+          btn.className = 'dyn-btn p-2 rounded-xl border-2 border-blue-600 bg-blue-50/80 text-blue-900 text-center transition shadow-sm';
+        } else {
+          btn.className = 'dyn-btn p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-center transition';
+        }
+      });
+      document.getElementById('readout-ghd-inline').textContent = `GHĐ: ${cfg.ghd}N | ĐCNN: ${cfg.dcnn}N`;
+      springState.velocity += 0.035;
+    }
+
+    function setMaterial(matKey) {
+      springState.material = matKey;
+      document.querySelectorAll('.mat-btn').forEach(btn => {
+        if (btn.getAttribute('data-mat') === matKey) {
+          btn.className = 'mat-btn py-1.5 px-1 rounded-lg border-2 border-blue-600 bg-blue-50 text-blue-900 text-center transition shadow-sm';
+        } else {
+          btn.className = 'mat-btn py-1.5 px-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-center transition';
+        }
+      });
+      springState.velocity += 0.025;
+    }
+
+    function setMedium(medKey) {
+      springState.medium = medKey;
+      document.querySelectorAll('.med-btn').forEach(btn => {
+        if (btn.getAttribute('data-med') === medKey) {
+          btn.className = 'med-btn p-2 rounded-xl border-2 border-cyan-600 bg-cyan-50/80 text-cyan-950 text-left transition shadow-sm';
+        } else {
+          btn.className = 'med-btn p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-left transition';
+        }
+      });
+      // Automatically raise beaker slightly if user selects a liquid while beaker is at 0%
+      if (medKey !== 'air' && springState.beakerLift === 0) {
+        setBeakerLift(65);
+      }
+      springState.velocity += 0.025;
+    }
+
+    function setBeakerLift(val) {
+      springState.beakerLift = Math.max(0, Math.min(100, Math.round(val)));
+      document.getElementById('beaker-slider').value = springState.beakerLift;
+      document.getElementById('beaker-lift-label').textContent = `${springState.beakerLift}%`;
+    }
+
+    function onBeakerSliderChange(val) {
+      setBeakerLift(parseFloat(val));
+    }
+
+    function setMass(grams) {
+      springState.massGrams = Math.max(0, Math.min(1000, Math.round(grams)));
+      document.getElementById('mass-slider').value = springState.massGrams;
+      document.getElementById('slider-mass-label').textContent = `${springState.massGrams} g (${(springState.massGrams / 1000).toFixed(2)} kg)`;
+    }
+
+    function onSliderMassChange(val) {
+      setMass(parseFloat(val));
+    }
+
+    function addMass(delta) {
+      setMass(springState.massGrams + delta);
+      springState.velocity += 0.05;
+    }
+
+    function setGravity(g) {
+      springState.gravity = g;
+      const btn10 = document.getElementById('btn-g-10');
+      const btn98 = document.getElementById('btn-g-98');
+      if (g === 10) {
+        btn10.className = 'px-2 py-0.5 rounded font-bold bg-white text-blue-700 shadow-sm';
+        btn98.className = 'px-2 py-0.5 rounded font-bold text-slate-600';
+      } else {
+        btn98.className = 'px-2 py-0.5 rounded font-bold bg-white text-blue-700 shadow-sm';
+        btn10.className = 'px-2 py-0.5 rounded font-bold text-slate-600';
+      }
+    }
+
+    function toggleMagnifier() {
+      springState.showMagnifier = !springState.showMagnifier;
+      const btn = document.getElementById('btn-magnifier');
+      btn.querySelector('span').textContent = `Kính lúp: ${springState.showMagnifier ? 'BẬT' : 'TẮT'}`;
+    }
+
+    function toggleVectors() {
+      springState.showVectors = !springState.showVectors;
+      const btn = document.getElementById('btn-vectors');
+      btn.querySelector('span').textContent = `Vectơ lực: ${springState.showVectors ? 'BẬT' : 'TẮT'}`;
+    }
+
+    function disturbSpring() {
+      springState.velocity += 0.14;
+    }
+
+    // Spring Canvas Pointer Interactions (pull weight OR drag beaker up/down)
+    springCanvas.addEventListener('pointerdown', (e) => {
+      const rect = springCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const wb = springState.weightScreenBounds;
+      const bb = springState.beakerScreenBounds;
+
+      if (x >= wb.x - 15 && x <= wb.x + wb.w + 15 && y >= wb.y - 15 && y <= wb.y + wb.h + 20) {
+        springState.dragTarget = 'weight';
+        springState.dragStartY = y;
+        springState.dragStartVal = springState.currentExtension;
+        springCanvas.setPointerCapture(e.pointerId);
+      } else if (springState.medium !== 'air' && x >= bb.x && x <= bb.x + bb.w && y >= bb.y && y <= bb.y + bb.h) {
+        springState.dragTarget = 'beaker';
+        springState.dragStartY = y;
+        springState.dragStartVal = springState.beakerLift;
+        springCanvas.setPointerCapture(e.pointerId);
+      }
+    });
+
+    springCanvas.addEventListener('pointermove', (e) => {
+      const rect = springCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const wb = springState.weightScreenBounds;
+      const bb = springState.beakerScreenBounds;
+
+      const hoverW = (x >= wb.x - 15 && x <= wb.x + wb.w + 15 && y >= wb.y - 15 && y <= wb.y + wb.h + 20);
+      const hoverB = (springState.medium !== 'air' && x >= bb.x && x <= bb.x + bb.w && y >= bb.y && y <= bb.y + bb.h);
+      springCanvas.style.cursor = springState.dragTarget ? 'grabbing' : ((hoverW || hoverB) ? 'grab' : 'default');
+
+      if (springState.dragTarget === 'weight') {
+        const dy = y - springState.dragStartY;
+        const scalePixels = 200;
+        let nextExt = springState.dragStartVal + dy / scalePixels;
+        nextExt = Math.max(-0.02, Math.min(1.12, nextExt));
+        springState.currentExtension = nextExt;
+        springState.velocity = 0;
+      } else if (springState.dragTarget === 'beaker') {
+        const dy = y - springState.dragStartY;
+        // Dragging mouse UP (dy < 0) increases beakerLift
+        const nextLift = springState.dragStartVal - (dy / 165) * 100;
+        setBeakerLift(nextLift);
+      }
+    });
+
+    springCanvas.addEventListener('pointerup', (e) => {
+      if (springState.dragTarget) {
+        springState.dragTarget = null;
+        springCanvas.releasePointerCapture(e.pointerId);
+      }
+    });
+
+    // Helper to get key vertical layout coordinates consistently between physics & render
+    function getSpringLayoutMetrics() {
+      const w = springCanvas.clientWidth;
+      const h = springCanvas.clientHeight;
+      const centerX = springState.showMagnifier ? Math.min(w * 0.34, 215) : w * 0.5;
+      const ringCenterY = 40;
+      const ringRadius = 16;
+      const topCapY = ringCenterY + ringRadius - 2;
+      const capH = 14;
+      const tubeTopY = topCapY + capH;
+      const tubeH = 225;
+      const bottomCapY = tubeTopY + tubeH;
+      const zeroY = tubeTopY + 28;
+      const maxScaleY = bottomCapY - 20;
+      const scaleLength = maxScaleY - zeroY;
+
+      // Beaker geometry at bottom of canvas
+      const beakerW = 148;
+      const beakerH = 165;
+      const beakerMaxLiftPx = 155;
+      const beakerBottomY = h - 22 - (springState.beakerLift / 100) * beakerMaxLiftPx;
+      const beakerTopY = beakerBottomY - beakerH;
+      const baseLiquidDepth = 108; // Base liquid height before immersion
+
+      return {
+        w, h, centerX, ringCenterY, ringRadius, topCapY, capH,
+        tubeTopY, tubeH, bottomCapY, zeroY, maxScaleY, scaleLength,
+        beakerW, beakerH, beakerBottomY, beakerTopY, baseLiquidDepth
+      };
+    }
+
+    function updateSpringPhysics(dt) {
+      const m = getSpringLayoutMetrics();
+      const cfg = dynamometerConfigs[springState.ghd];
+      const mat = materialConfigs[springState.material];
+      const med = mediumConfigs[springState.medium];
+
+      const massKg = springState.massGrams / 1000;
+      const P = massKg * springState.gravity; // Weight in air (N)
+      const volM3 = massKg / mat.density;     // Volume of object (m^3)
+      const volCm3 = volM3 * 1e6;
+
+      // Compute current hook & weight geometry at currentExtension
+      const ext = springState.currentExtension;
+      const rodBottomY = m.bottomCapY + m.capH + 18 + ext * m.scaleLength;
+      const hookBottomY = rodBottomY + 18;
+      const weightTopY = hookBottomY + 10;
+      // Weight visual height scales smoothly with volume/mass
+      const weightH = springState.massGrams > 0 ? Math.min(76, 34 + (volCm3 / 400) * 32) : 0;
+      const weightBottomY = weightTopY + weightH;
+
+      // Liquid surface level (accounting for displaced liquid rise!)
+      const beakerCrossSectionCm2 = 42; // realistic beaker cross-section area (cm^2)
+      let subRatio = 0;
+      let liquidSurfaceY = m.beakerBottomY - m.baseLiquidDepth;
+
+      if (springState.medium !== 'air' && springState.massGrams > 0) {
+        // Iteratively solve exact submerged depth including water level rise
+        for (let iter = 0; iter < 3; iter++) {
+          const risePx = ((volCm3 * subRatio) / beakerCrossSectionCm2) * 3.2;
+          liquidSurfaceY = m.beakerBottomY - m.baseLiquidDepth - risePx;
+          if (weightBottomY <= liquidSurfaceY) {
+            subRatio = 0;
+          } else if (weightTopY >= liquidSurfaceY) {
+            subRatio = 1;
+          } else {
+            subRatio = Math.max(0, Math.min(1, (weightBottomY - liquidSurfaceY) / weightH));
+          }
+        }
+      }
+
+      // Check if object floats naturally (D_object < D_liquid)
+      let effectiveSubRatio = subRatio;
+      let targetFloatSlackY = 0;
+
+      if (springState.medium !== 'air' && springState.massGrams > 0 && mat.density < med.density) {
+        // Equilibrium floating submerged fraction = D_obj / D_liq
+        const maxFloatSubRatio = mat.density / med.density;
+        if (subRatio > maxFloatSubRatio) {
+          // Liquid pushes the floating block up so the thread/spring goes slack!
+          effectiveSubRatio = maxFloatSubRatio;
+          const equilibriumSubmergedHeight = effectiveSubRatio * weightH;
+          const desiredWeightBottomY = liquidSurfaceY + equilibriumSubmergedHeight;
+          targetFloatSlackY = Math.max(0, weightBottomY - desiredWeightBottomY);
+        }
+      }
+
+      // Smoothly animate slack offset when floating
+      springState.floatOffsetY += (targetFloatSlackY - springState.floatOffsetY) * Math.min(1, dt * 18);
+
+      const subVolM3 = volM3 * effectiveSubRatio;
+      const subVolCm3 = volCm3 * effectiveSubRatio;
+      const Fa = med.density * springState.gravity * subVolM3; // Archimedes buoyant force (N)
+      const netTension = Math.max(0, P - Fa); // Spring tension F_đh = max(0, P - F_A)
+
+      const targetExt = Math.min(1.08, netTension / cfg.ghd);
+
+      if (springState.dragTarget !== 'weight') {
+        const stiffness = 135;
+        const damping = 11.5;
+        const accel = -stiffness * (springState.currentExtension - targetExt) - damping * springState.velocity;
+        springState.velocity += accel * dt;
+        springState.currentExtension += springState.velocity * dt;
+
+        if (springState.currentExtension < -0.02) {
+          springState.currentExtension = -0.02;
+          springState.velocity *= -0.3;
+        }
+        if (springState.currentExtension > 1.12) {
+          springState.currentExtension = 1.12;
+          springState.velocity *= -0.3;
+        }
+      }
+
+      // Determine physical state label
+      let stateText = 'Ngoài không khí';
+      if (springState.massGrams === 0) {
+        stateText = 'Chưa treo vật';
+      } else if (springState.medium === 'air' || effectiveSubRatio <= 0.001) {
+        stateText = 'Treo ngoài không khí';
+      } else if (targetFloatSlackY > 1) {
+        stateText = 'Nổi trên mặt thoáng (F = 0)';
+      } else if (effectiveSubRatio < 0.999) {
+        stateText = `Chìm một phần (${Math.round(effectiveSubRatio * 100)}%)`;
+      } else {
+        stateText = 'Chìm hoàn toàn trong chất lỏng';
+      }
+
+      springState.livePhysics = {
+        P,
+        Fa,
+        Fdh: Math.max(0, springState.currentExtension * cfg.ghd),
+        volCm3,
+        subVolCm3,
+        subRatio: effectiveSubRatio,
+        liquidSurfaceY,
+        stateText
+      };
+
+      updateSpringDashboardUI();
+    }
+
+    function updateSpringDashboardUI() {
+      const cfg = dynamometerConfigs[springState.ghd];
+      const lp = springState.livePhysics;
+      const isOverload = lp.Fdh > cfg.ghd + 1e-4;
+
+      const forceEl = document.getElementById('readout-force');
+      forceEl.textContent = isOverload ? `> ${cfg.ghd.toFixed(1)} N` : `${lp.Fdh.toFixed(2)} N`;
+      forceEl.className = isOverload
+        ? 'text-2xl sm:text-3xl font-extrabold font-mono-num text-red-600 mt-0.5'
+        : 'text-2xl sm:text-3xl font-extrabold font-mono-num text-blue-700 mt-0.5';
+
+      document.getElementById('readout-fa').textContent = `${lp.Fa.toFixed(2)} N`;
+      document.getElementById('readout-weight-p').textContent = `${lp.P.toFixed(2)} N`;
+      document.getElementById('readout-vol').textContent = `${lp.volCm3.toFixed(1)} cm³`;
+      document.getElementById('readout-sub-vol').textContent = `${lp.subVolCm3.toFixed(1)} cm³`;
+
+      const badge = document.getElementById('readout-state-badge');
+      badge.textContent = lp.stateText;
+      if (lp.stateText.includes('Nổi')) {
+        badge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800';
+      } else if (lp.subRatio > 0) {
+        badge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800';
+      } else {
+        badge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700';
+      }
+
+      const banner = document.getElementById('overload-banner');
+      if (isOverload) banner.classList.remove('hidden');
+      else banner.classList.add('hidden');
+    }
+
+    function drawSpringScale() {
+      const m = getSpringLayoutMetrics();
+      const { w, h, centerX, ringCenterY, ringRadius, topCapY, capH, tubeTopY, tubeH, bottomCapY, zeroY, scaleLength } = m;
+      sCtx.clearRect(0, 0, w, h);
+
+      const cfg = dynamometerConfigs[springState.ghd];
+      const mat = materialConfigs[springState.material];
+      const med = mediumConfigs[springState.medium];
+      const lp = springState.livePhysics;
+      const ext = springState.currentExtension;
+      const pointerY = zeroY + ext * scaleLength;
+
+      // 1. Draw Laboratory Stand on the left
+      sCtx.save();
+      sCtx.fillStyle = '#475569';
+      sCtx.fillRect(16, 14, 12, h - 28); // Vertical rod
+      sCtx.fillStyle = '#334155';
+      sCtx.beginPath();
+      sCtx.roundRect(6, h - 22, 110, 10, 4); // Base
+      sCtx.fill();
+      // Horizontal arm
+      sCtx.fillStyle = '#64748b';
+      sCtx.fillRect(24, ringCenterY - 20, centerX - 24, 7);
+      // Clamp
+      sCtx.fillStyle = '#1e293b';
+      sCtx.beginPath();
+      sCtx.roundRect(12, ringCenterY - 25, 20, 16, 4);
+      sCtx.fill();
+      // Pin holding top ring
+      sCtx.strokeStyle = '#334155';
+      sCtx.lineWidth = 3.5;
+      sCtx.beginPath();
+      sCtx.moveTo(centerX, ringCenterY - 13);
+      sCtx.lineTo(centerX, ringCenterY - ringRadius + 3);
+      sCtx.stroke();
+      sCtx.restore();
+
+      // Top Suspension Ring
+      sCtx.save();
+      sCtx.strokeStyle = '#0d9488';
+      sCtx.lineWidth = 4.5;
+      sCtx.beginPath();
+      sCtx.arc(centerX, ringCenterY, ringRadius, 0, Math.PI * 2);
+      sCtx.stroke();
+      sCtx.restore();
+
+      // 2. Draw Dynamometer Casing
+      const bodyW = 72;
+      const bodyX = centerX - bodyW / 2;
+
+      sCtx.save();
+      sCtx.shadowColor = 'rgba(15, 23, 42, 0.08)';
+      sCtx.shadowBlur = 14;
+      sCtx.shadowOffsetX = 3;
+      sCtx.shadowOffsetY = 5;
+
+      const tubeGrad = sCtx.createLinearGradient(bodyX, 0, bodyX + bodyW, 0);
+      tubeGrad.addColorStop(0, '#f1f5f9');
+      tubeGrad.addColorStop(0.25, '#ffffff');
+      tubeGrad.addColorStop(0.85, '#f8fafc');
+      tubeGrad.addColorStop(1, '#e2e8f0');
+      sCtx.fillStyle = tubeGrad;
+      sCtx.fillRect(bodyX, tubeTopY, bodyW, tubeH);
+      sCtx.restore();
+
+      sCtx.strokeStyle = '#94a3b8';
+      sCtx.lineWidth = 1.5;
+      sCtx.strokeRect(bodyX, tubeTopY, bodyW, tubeH);
+
+      // Top & Bottom Caps
+      const capGrad = sCtx.createLinearGradient(bodyX - 4, 0, bodyX + bodyW + 4, 0);
+      capGrad.addColorStop(0, '#d97706');
+      capGrad.addColorStop(0.5, '#f59e0b');
+      capGrad.addColorStop(1, '#b45309');
+
+      sCtx.fillStyle = capGrad;
+      sCtx.beginPath();
+      sCtx.roundRect(bodyX - 4, topCapY, bodyW + 8, capH, 3);
+      sCtx.fill();
+      sCtx.beginPath();
+      sCtx.roundRect(bodyX - 4, bottomCapY, bodyW + 8, capH, 3);
+      sCtx.fill();
+
+      sCtx.fillStyle = '#ffffff';
+      sCtx.font = 'bold 9.5px Inter, sans-serif';
+      sCtx.textAlign = 'center';
+      sCtx.fillText(`GHĐ: ${cfg.ghd} N`, centerX, topCapY + 10.5);
+
+      // 3. Draw Scale Graduations
+      const totalSteps = Math.round(cfg.ghd / cfg.dcnn);
+      const tickRightX = bodyX + bodyW - 5;
+      sCtx.font = '600 10.5px "JetBrains Mono", monospace';
+      sCtx.textAlign = 'right';
+      sCtx.textBaseline = 'middle';
+
+      for (let i = 0; i <= totalSteps; i++) {
+        const val = +(i * cfg.dcnn).toFixed(2);
+        const y = zeroY + (val / cfg.ghd) * scaleLength;
+        const isMajor = Math.abs((val / cfg.majorStep) - Math.round(val / cfg.majorStep)) < 1e-4;
+        const isMid = !isMajor && (i % 2 === 0 && cfg.subDivs === 4);
+        const tickLen = isMajor ? 14 : (isMid ? 10 : 6);
+
+        sCtx.strokeStyle = isMajor ? '#0f172a' : '#64748b';
+        sCtx.lineWidth = isMajor ? 1.5 : 1;
+        sCtx.beginPath();
+        sCtx.moveTo(tickRightX, y);
+        sCtx.lineTo(tickRightX - tickLen, y);
+        sCtx.stroke();
+
+        if (isMajor) {
+          sCtx.fillStyle = '#0f172a';
+          const label = Number.isInteger(val) ? val.toString() : val.toFixed(1);
+          sCtx.fillText(label, tickRightX - tickLen - 3, y);
+        }
+      }
+
+      sCtx.fillStyle = cfg.color;
+      sCtx.font = 'bold 11px Inter, sans-serif';
+      sCtx.textAlign = 'left';
+      sCtx.fillText('N', bodyX + 9, zeroY - 12);
+
+      // 4. Draw Coiled Spring
+      const springX = centerX - 10;
+      const springTop = tubeTopY + 4;
+      const springBottom = Math.max(springTop + 12, pointerY - 2);
+      const coils = 10;
+      const coilRadiusX = 10;
+      const coilHeight = (springBottom - springTop) / coils;
+
+      sCtx.save();
+      sCtx.lineCap = 'round';
+      for (let c = 0; c < coils; c++) {
+        const y1 = springTop + c * coilHeight;
+        const yMid = y1 + coilHeight * 0.5;
+        const y2 = y1 + coilHeight;
+
+        sCtx.strokeStyle = '#64748b';
+        sCtx.lineWidth = 2.8;
+        sCtx.beginPath();
+        sCtx.moveTo(springX + coilRadiusX, yMid);
+        sCtx.lineTo(springX - coilRadiusX, y2);
+        sCtx.stroke();
+
+        sCtx.strokeStyle = '#cbd5e1';
+        sCtx.lineWidth = 3.2;
+        sCtx.beginPath();
+        sCtx.moveTo(springX - coilRadiusX, y1);
+        sCtx.lineTo(springX + coilRadiusX, yMid);
+        sCtx.stroke();
+      }
+      sCtx.restore();
+
+      // Red Pointer
+      sCtx.save();
+      sCtx.fillStyle = '#ef4444';
+      sCtx.beginPath();
+      sCtx.roundRect(bodyX + 5, pointerY - 2.2, bodyW - 13, 4.5, 2);
+      sCtx.fill();
+      sCtx.beginPath();
+      sCtx.moveTo(tickRightX - 2, pointerY);
+      sCtx.lineTo(tickRightX - 8, pointerY - 3.5);
+      sCtx.lineTo(tickRightX - 8, pointerY + 3.5);
+      sCtx.closePath();
+      sCtx.fill();
+      sCtx.restore();
+
+      // 5. Connecting Rod & Hook
+      const rodBottomY = bottomCapY + capH + 18 + ext * scaleLength;
+      sCtx.strokeStyle = '#64748b';
+      sCtx.lineWidth = 3.5;
+      sCtx.beginPath();
+      sCtx.moveTo(centerX, pointerY + 2);
+      sCtx.lineTo(centerX, rodBottomY);
+      sCtx.stroke();
+
+      const hookCenterY = rodBottomY + 9;
+      sCtx.strokeStyle = '#475569';
+      sCtx.lineWidth = 3.5;
+      sCtx.lineCap = 'round';
+      sCtx.beginPath();
+      sCtx.arc(centerX, hookCenterY, 9, -Math.PI * 0.5, Math.PI * 1.15, false);
+      sCtx.stroke();
+      const hookBottomY = hookCenterY + 9;
+
+      // 6. Draw Beaker Back Layer (if environment is a liquid)
+      const beakerX = centerX - m.beakerW / 2;
+      if (springState.medium !== 'air') {
+        springState.beakerScreenBounds = { x: beakerX, y: m.beakerTopY, w: m.beakerW, h: m.beakerH };
+        // Back glass wall
+        sCtx.fillStyle = 'rgba(241, 245, 249, 0.55)';
+        sCtx.fillRect(beakerX, m.beakerTopY, m.beakerW, m.beakerH);
+      } else {
+        springState.beakerScreenBounds = { x: 0, y: 0, w: 0, h: 0 };
+      }
+
+      // 7. Draw Suspended Object (adjusted by floatOffsetY if floating)
+      let objCenterX = centerX;
+      let objCenterY = hookBottomY + 25;
+
+      if (springState.massGrams > 0) {
+        const massKg = springState.massGrams / 1000;
+        const volCm3 = (massKg / mat.density) * 1e6;
+        const weightW = Math.min(72, Math.max(36, 36 + (volCm3 / 400) * 32));
+        const weightH = Math.min(76, 34 + (volCm3 / 400) * 32);
+        const weightTopY = hookBottomY + 10 - springState.floatOffsetY;
+
+        // Draw flexible thread connecting hook to object (curves slightly if slack!)
+        sCtx.save();
+        sCtx.strokeStyle = '#334155';
+        sCtx.lineWidth = 2;
+        sCtx.beginPath();
+        sCtx.moveTo(centerX, hookBottomY);
+        if (springState.floatOffsetY > 4) {
+          // Slack thread curve
+          sCtx.quadraticCurveTo(centerX + Math.min(26, springState.floatOffsetY * 0.6), (hookBottomY + weightTopY) / 2, centerX, weightTopY);
+        } else {
+          sCtx.lineTo(centerX, weightTopY);
+        }
+        sCtx.stroke();
+        sCtx.restore();
+
+        // Top loop on cylinder
+        sCtx.strokeStyle = '#334155';
+        sCtx.lineWidth = 2.5;
+        sCtx.beginPath();
+        sCtx.arc(centerX, weightTopY + 4, 5, 0, Math.PI * 2);
+        sCtx.stroke();
+
+        const cylTop = weightTopY + 8;
+        const grad = sCtx.createLinearGradient(centerX - weightW / 2, 0, centerX + weightW / 2, 0);
+        grad.addColorStop(0, mat.color1);
+        grad.addColorStop(0.35, mat.color2);
+        grad.addColorStop(0.75, mat.color1);
+        grad.addColorStop(1, mat.color3);
+
+        sCtx.save();
+        sCtx.shadowColor = 'rgba(15, 23, 42, 0.2)';
+        sCtx.shadowBlur = 8;
+        sCtx.shadowOffsetY = 4;
+        sCtx.fillStyle = grad;
+        sCtx.beginPath();
+        sCtx.roundRect(centerX - weightW / 2, cylTop, weightW, weightH, 5);
+        sCtx.fill();
+        sCtx.restore();
+
+        // Wood grain lines if material is wood
+        if (springState.material === 'wood') {
+          sCtx.strokeStyle = 'rgba(69, 26, 3, 0.25)';
+          sCtx.lineWidth = 1.2;
+          for (let wy = cylTop + 8; wy < cylTop + weightH - 4; wy += 9) {
+            sCtx.beginPath();
+            sCtx.moveTo(centerX - weightW / 2 + 3, wy);
+            sCtx.lineTo(centerX + weightW / 2 - 3, wy);
+            sCtx.stroke();
+          }
+        }
+
+        // Mass & Material label inside object
+        sCtx.fillStyle = mat.textCol;
+        sCtx.font = 'bold 11px "JetBrains Mono", monospace';
+        sCtx.textAlign = 'center';
+        sCtx.textBaseline = 'middle';
+        sCtx.fillText(`${springState.massGrams}g`, centerX, cylTop + weightH * 0.42);
+        sCtx.font = '600 9.5px Inter, sans-serif';
+        sCtx.fillText(mat.name.split(' ')[0], centerX, cylTop + weightH * 0.72);
+
+        springState.weightScreenBounds = { x: centerX - weightW / 2, y: cylTop, w: weightW, h: weightH };
+        objCenterY = cylTop + weightH / 2;
+      } else {
+        springState.weightScreenBounds = { x: centerX - 25, y: hookBottomY - 10, w: 50, h: 45 };
+      }
+
+      // 8. Draw Liquid & Front Beaker Glass (semi-transparent over submerged part of object!)
+      if (springState.medium !== 'air') {
+        const initialSurfaceY = m.beakerBottomY - m.baseLiquidDepth;
+        const currentSurfaceY = lp.liquidSurfaceY || initialSurfaceY;
+        const liquidH = m.beakerBottomY - currentSurfaceY;
+
+        // Liquid body
+        sCtx.save();
+        sCtx.fillStyle = med.fill;
+        sCtx.fillRect(beakerX + 2, currentSurfaceY, m.beakerW - 4, liquidH - 2);
+
+        // Top meniscus / liquid surface line
+        sCtx.strokeStyle = med.surface;
+        sCtx.lineWidth = 2.5;
+        sCtx.beginPath();
+        sCtx.moveTo(beakerX + 2, currentSurfaceY);
+        sCtx.lineTo(beakerX + m.beakerW - 2, currentSurfaceY);
+        sCtx.stroke();
+
+        // Dashed reference line showing initial liquid level before immersion
+        if (lp.subRatio > 0.02) {
+          sCtx.strokeStyle = 'rgba(220, 38, 38, 0.65)';
+          sCtx.lineWidth = 1.3;
+          sCtx.setLineDash([4, 3]);
+          sCtx.beginPath();
+          sCtx.moveTo(beakerX + 2, initialSurfaceY);
+          sCtx.lineTo(beakerX + m.beakerW - 2, initialSurfaceY);
+          sCtx.stroke();
+          sCtx.setLineDash([]);
+
+          sCtx.fillStyle = '#dc2626';
+          sCtx.font = 'bold 9.5px Inter, sans-serif';
+          sCtx.textAlign = 'left';
+          sCtx.fillText(`ΔV = ${lp.subVolCm3.toFixed(0)} cm³`, beakerX + m.beakerW + 6, (initialSurfaceY + currentSurfaceY) / 2);
+        }
+
+        // Beaker Glass Outline (U-shape with lip)
+        sCtx.strokeStyle = '#475569';
+        sCtx.lineWidth = 2.5;
+        sCtx.lineCap = 'round';
+        sCtx.lineJoin = 'round';
+        sCtx.beginPath();
+        sCtx.moveTo(beakerX - 4, m.beakerTopY);
+        sCtx.lineTo(beakerX, m.beakerTopY + 5);
+        sCtx.lineTo(beakerX, m.beakerBottomY);
+        sCtx.lineTo(beakerX + m.beakerW, m.beakerBottomY);
+        sCtx.lineTo(beakerX + m.beakerW, m.beakerTopY + 5);
+        sCtx.lineTo(beakerX + m.beakerW + 4, m.beakerTopY);
+        sCtx.stroke();
+
+        // Beaker graduation ticks
+        sCtx.strokeStyle = 'rgba(71, 85, 105, 0.55)';
+        sCtx.lineWidth = 1.2;
+        sCtx.font = '500 9px "JetBrains Mono", monospace';
+        sCtx.fillStyle = '#475569';
+        sCtx.textAlign = 'left';
+        for (let ml = 100; ml <= 400; ml += 100) {
+          const ty = m.beakerBottomY - (ml / 450) * (m.beakerH - 15);
+          sCtx.beginPath();
+          sCtx.moveTo(beakerX + 3, ty);
+          sCtx.lineTo(beakerX + 12, ty);
+          sCtx.stroke();
+          sCtx.fillText(`${ml}`, beakerX + 15, ty + 3);
+        }
+
+        // Medium name badge at bottom of beaker
+        sCtx.fillStyle = 'rgba(15, 23, 42, 0.72)';
+        sCtx.beginPath();
+        sCtx.roundRect(centerX - 48, m.beakerBottomY - 22, 96, 17, 8);
+        sCtx.fill();
+        sCtx.fillStyle = '#ffffff';
+        sCtx.font = 'bold 9.5px Inter, sans-serif';
+        sCtx.textAlign = 'center';
+        sCtx.fillText(med.name, centerX, m.beakerBottomY - 13);
+        sCtx.restore();
+      }
+
+      // 9. Draw Force Vectors on Object (P, F_A, F_đh)
+      if (springState.showVectors && springState.massGrams > 0) {
+        const pxPerNewton = 26;
+        // Weight Vector P (pointing straight DOWN from center of object)
+        if (lp.P > 0.01) {
+          const lenP = Math.min(115, Math.max(22, lp.P * pxPerNewton));
+          drawForceArrow(sCtx, objCenterX, objCenterY, objCenterX, objCenterY + lenP, '#dc2626', `P = ${lp.P.toFixed(2)}N`, 'right');
+        }
+        // Archimedes Buoyant Force F_A (pointing UP, slightly offset left so it doesn't overlap F_đh)
+        if (lp.Fa > 0.01) {
+          const lenFa = Math.min(115, Math.max(20, lp.Fa * pxPerNewton));
+          drawForceArrow(sCtx, objCenterX - 9, objCenterY, objCenterX - 9, objCenterY - lenFa, '#d97706', `F_A = ${lp.Fa.toFixed(2)}N`, 'left');
+        }
+        // Spring Tension Force F_đh (pointing UP, slightly offset right)
+        if (lp.Fdh > 0.01) {
+          const lenFdh = Math.min(115, Math.max(20, lp.Fdh * pxPerNewton));
+          drawForceArrow(sCtx, objCenterX + 9, objCenterY, objCenterX + 9, objCenterY - lenFdh, '#2563eb', `F_đh = ${lp.Fdh.toFixed(2)}N`, 'right');
+        }
+      }
+
+      // Glass tube highlight
+      sCtx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      sCtx.fillRect(bodyX + 5, tubeTopY + 2, 9, tubeH - 4);
+
+      // 10. Magnifier Lens
+      if (springState.showMagnifier) {
+        drawMagnifierLens(sCtx, w, h, centerX, pointerY, zeroY, scaleLength, cfg, ext);
+      }
+    }
+
+    function drawForceArrow(ctx, x1, y1, x2, y2, color, label, labelSide) {
+      const headLen = 9;
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = 2.8;
+
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(x2 - headLen * Math.cos(angle - Math.PI / 6), y2 - headLen * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(x2 - headLen * Math.cos(angle + Math.PI / 6), y2 - headLen * Math.sin(angle + Math.PI / 6));
+      ctx.closePath();
+      ctx.fill();
+
+      // Label pill for high legibility over liquid/background
+      ctx.font = 'bold 10.5px "JetBrains Mono", monospace';
+      const textW = ctx.measureText(label).width;
+      const lx = labelSide === 'right' ? x2 + 8 : x2 - textW - 14;
+      const ly = y2 - 8;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+      ctx.beginPath();
+      ctx.roundRect(lx - 3, ly - 2, textW + 10, 17, 5);
+      ctx.fill();
+
+      ctx.fillStyle = color;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(label, lx + 2, ly + 1);
+      ctx.restore();
+    }
+
+    function drawMagnifierLens(ctx, w, h, scaleCenterX, pointerY, zeroY, scaleLength, cfg, ext) {
+      const lensRadius = Math.min(92, w * 0.19);
+      const lensX = w - lensRadius - 26;
+      const lensY = Math.max(lensRadius + 30, Math.min(h - lensRadius - 30, pointerY));
+
+      // Connector dashed line from pointer to lens
+      ctx.save();
+      ctx.strokeStyle = 'rgba(37, 99, 235, 0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(scaleCenterX + 36, pointerY);
+      ctx.lineTo(lensX - lensRadius, lensY);
+      ctx.stroke();
+      ctx.restore();
+
+      // Lens Clip & Magnified Scale Render
+      ctx.save();
+      ctx.shadowColor = 'rgba(15, 23, 42, 0.16)';
+      ctx.shadowBlur = 18;
+      ctx.shadowOffsetY = 6;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(lensX, lensY, lensRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(lensX, lensY, lensRadius - 2, 0, Math.PI * 2);
+      ctx.clip();
+
+      // Zoom factor 2.6x
+      const zoom = 2.6;
+      const totalSteps = Math.round(cfg.ghd / cfg.dcnn);
+      const tickX = lensX + 26;
+
+      // Subtle background grid inside lens
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(lensX - lensRadius, lensY - lensRadius, lensRadius * 2, lensRadius * 2);
+
+      // Draw magnified ticks
+      ctx.font = 'bold 14px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+
+      for (let i = -4; i <= totalSteps + 4; i++) {
+        const val = +(i * cfg.dcnn).toFixed(2);
+        const origY = zeroY + (val / cfg.ghd) * scaleLength;
+        const magY = lensY + (origY - pointerY) * zoom;
+
+        if (magY < lensY - lensRadius - 20 || magY > lensY + lensRadius + 20) continue;
+        if (val < -0.001 || val > cfg.ghd + 0.001) continue;
+
+        const isMajor = Math.abs((val / cfg.majorStep) - Math.round(val / cfg.majorStep)) < 1e-4;
+        const tickLen = isMajor ? 32 : 18;
+
+        ctx.strokeStyle = isMajor ? '#0f172a' : '#64748b';
+        ctx.lineWidth = isMajor ? 2.5 : 1.5;
+        ctx.beginPath();
+        ctx.moveTo(tickX, magY);
+        ctx.lineTo(tickX - tickLen, magY);
+        ctx.stroke();
+
+        if (isMajor) {
+          ctx.fillStyle = '#0f172a';
+          const label = Number.isInteger(val) ? `${val} N` : `${val.toFixed(1)} N`;
+          ctx.fillText(label, tickX - tickLen - 8, magY);
+        }
+      }
+
+      // Magnified Red Pointer Line fixed at center of lens
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.moveTo(lensX - lensRadius + 8, lensY);
+      ctx.lineTo(tickX - 2, lensY);
+      ctx.stroke();
+
+      // Pointer arrowhead
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.moveTo(tickX + 2, lensY);
+      ctx.lineTo(tickX - 12, lensY - 7);
+      ctx.lineTo(tickX - 12, lensY + 7);
+      ctx.closePath();
+      ctx.fill();
+
+      // Current instant reading badge at top of lens
+      const currentForceReading = Math.max(0, ext * cfg.ghd);
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.beginPath();
+      ctx.roundRect(lensX - 44, lensY - lensRadius + 12, 88, 22, 11);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${currentForceReading.toFixed(2)} N`, lensX, lensY - lensRadius + 23);
+
+      ctx.restore();
+
+      // Lens outer bezel ring
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(lensX, lensY, lensRadius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = '#2563eb';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('KÍNH LÚP ĐỌC VẠCH', lensX, lensY + lensRadius + 16);
+    }
+
+    // =========================================================================
+    // PART 2: CENTER OF GRAVITY OF THIN LAMINA (TRỌNG TÂM VẬT MỎNG)
+    // =========================================================================
+    const cgCanvas = document.getElementById('cgCanvas');
+    const cCtx = cgCanvas.getContext('2d');
+
+    const cgState = {
+      shapeType: 'irregular',
+      // Vertices in local object coordinates (centered around 0,0 roughly)
+      vertices: [],
+      centroid: { x: 0, y: 0 },
+      presetHoles: [],       // 3 preset holes A, B, C in local coordinates
+      suspensionLocal: { x: 0, y: -90 }, // Current suspension pin point in local coords
+      angle: 0.25,           // Current rotation angle of plate (radians)
+      angularVel: 0,         // Angular velocity
+      tracedLines: [],       // Array of { p1: {x,y}, p2: {x,y}, label: string } in local coords
+      intersectionG: null,   // Detected intersection in local coords
+      showPlumbLine: true,
+      revealTrueG: false,
+      balanceMode: false,    // Testing balance horizontally on a sharp pin at G
+      balanceTilt: 0,
+      isDragging: false,
+      dragMode: null,        // 'swing' | 'vertex'
+      dragVertexIdx: -1,
+      editCustomMode: false
+    };
+
+    function resizeCGCanvas() {
+      const wrapper = document.getElementById('cg-canvas-wrapper');
+      if (!wrapper) return;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = wrapper.getBoundingClientRect();
+      cgCanvas.width = rect.width * dpr;
+      cgCanvas.height = rect.height * dpr;
+      cCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // Compute exact geometric centroid (Area-weighted polygon centroid)
+    function computePolygonCentroid(pts) {
+      let area2 = 0;
+      let cx = 0;
+      let cy = 0;
+      const n = pts.length;
+      for (let i = 0; i < n; i++) {
+        const p1 = pts[i];
+        const p2 = pts[(i + 1) % n];
+        const cross = p1.x * p2.y - p2.x * p1.y;
+        area2 += cross;
+        cx += (p1.x + p2.x) * cross;
+        cy += (p1.y + p2.y) * cross;
+      }
+      if (Math.abs(area2) < 1e-5) {
+        // Fallback average
+        let sx = 0, sy = 0;
+        pts.forEach(p => { sx += p.x; sy += p.y; });
+        return { x: sx / n, y: sy / n };
+      }
+      return {
+        x: cx / (3 * area2),
+        y: cy / (3 * area2)
+      };
+    }
+
+    // Ray-casting point-in-polygon test (local coordinates)
+    function isPointInPolygon(pt, vs) {
+      let inside = false;
+      for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        const xi = vs[i].x, yi = vs[i].y;
+        const xj = vs[j].x, yj = vs[j].y;
+        const intersect = ((yi > pt.y) !== (yj > pt.y)) &&
+          (pt.x < (xj - xi) * (pt.y - yi) / ((yj - yi) || 1e-9) + xi);
+        if (intersect) inside = !inside;
+      }
+      return inside;
+    }
+
+    // Generate preset holes inside the polygon near edges
+    function generatePresetHoles(pts, centroid) {
+      // Pick 3 well-separated vertices and pull them slightly inward toward centroid
+      const indices = [
+        0,
+        Math.floor(pts.length / 3),
+        Math.floor((2 * pts.length) / 3)
+      ];
+      return indices.map((idx, i) => {
+        const v = pts[idx % pts.length];
+        // Move 18% from vertex toward centroid so hole is clearly inside the cardboard
+        return {
+          x: v.x + (centroid.x - v.x) * 0.18,
+          y: v.y + (centroid.y - v.y) * 0.18,
+          name: ['A', 'B', 'C'][i]
+        };
+      });
+    }
+
+    function selectCGShape(shapeType) {
+      cgState.shapeType = shapeType;
+      cgState.balanceMode = false;
+      cgState.editCustomMode = (shapeType === 'custom');
+
+      document.querySelectorAll('.shape-btn').forEach(btn => {
+        if (btn.getAttribute('data-shape') === shapeType) {
+          btn.className = 'shape-btn p-2.5 rounded-xl border-2 border-amber-600 bg-amber-50 text-amber-900 text-xs font-bold text-center transition shadow-sm';
+        } else {
+          btn.className = 'shape-btn p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold text-center transition';
+        }
+      });
+
+      const customHelper = document.getElementById('custom-shape-helper');
+      if (shapeType === 'custom') {
+        customHelper.classList.remove('hidden');
+      } else {
+        customHelper.classList.add('hidden');
+      }
+
+      let pts = [];
+      if (shapeType === 'irregular') {
+        // Organic irregular cardboard shape inspired by textbook image
+        pts = [
+          { x: -115, y: -75 },
+          { x: -45,  y: -82 },
+          { x: 35,   y: -78 },
+          { x: 85,   y: -55 },
+          { x: 112,  y: -48 },
+          { x: 118,  y: 10 },
+          { x: 122,  y: 68 },
+          { x: 65,   y: 76 },
+          { x: 5,    y: 95 },
+          { x: -55,  y: 80 },
+          { x: -102, y: 62 },
+          { x: -126, y: 12 }
+        ];
+      } else if (shapeType === 'lshape') {
+        pts = [
+          { x: -90, y: -110 },
+          { x: -20, y: -110 },
+          { x: -20, y: 40 },
+          { x: 100, y: 40 },
+          { x: 100, y: 110 },
+          { x: -90, y: 110 }
+        ];
+      } else if (shapeType === 'triangle') {
+        pts = [
+          { x: -40,  y: -115 },
+          { x: 125,  y: 75 },
+          { x: -115, y: 95 }
+        ];
+      } else if (shapeType === 'semicircle') {
+        const R = 115;
+        const steps = 28;
+        for (let i = 0; i <= steps; i++) {
+          const theta = Math.PI + (i / steps) * Math.PI; // top arc
+          pts.push({ x: R * Math.cos(theta), y: R * Math.sin(theta) + 45 });
+        }
+      } else if (shapeType === 'tshape') {
+        pts = [
+          { x: -115, y: -95 },
+          { x: 115,  y: -95 },
+          { x: 115,  y: -35 },
+          { x: 32,   y: -35 },
+          { x: 32,   y: 110 },
+          { x: -32,  y: 110 },
+          { x: -32,  y: -35 },
+          { x: -115, y: -35 }
+        ];
+      } else if (shapeType === 'custom') {
+        pts = [
+          { x: -95, y: -85 },
+          { x: 25,  y: -105 },
+          { x: 115, y: -35 },
+          { x: 85,  y: 85 },
+          { x: -35, y: 100 },
+          { x: -115, y: 25 }
+        ];
+      }
+
+      cgState.vertices = pts;
+      recalculateShapeGeometry(true);
+    }
+
+    function randomizeCustomPolygon() {
+      const count = 6;
+      const pts = [];
+      for (let i = 0; i < count; i++) {
+        const ang = (i / count) * Math.PI * 2 - Math.PI * 0.7;
+        const rad = 75 + Math.random() * 55;
+        pts.push({
+          x: Math.round(Math.cos(ang) * rad),
+          y: Math.round(Math.sin(ang) * rad)
+        });
+      }
+      cgState.vertices = pts;
+      recalculateShapeGeometry(true);
+    }
+
+    function finishCustomEdit() {
+      cgState.editCustomMode = false;
+      recalculateShapeGeometry(true);
+      updateCGInstruction();
+    }
+
+    function recalculateShapeGeometry(resetLines = false) {
+      cgState.centroid = computePolygonCentroid(cgState.vertices);
+      cgState.presetHoles = generatePresetHoles(cgState.vertices, cgState.centroid);
+
+      if (resetLines) {
+        cgState.tracedLines = [];
+        cgState.intersectionG = null;
+        cgState.balanceMode = false;
+        // Hang from Hole A initially with slight initial swing
+        hangAtPoint(cgState.presetHoles[0], 0.35);
+      }
+      updateCGInstruction();
+    }
+
+    function resetCGExperiment() {
+      cgState.tracedLines = [];
+      cgState.intersectionG = null;
+      cgState.balanceMode = false;
+      updateBalanceButtonUI();
+      updateCGInstruction();
+    }
+
+    function hangAtPreset(idx) {
+      cgState.editCustomMode = false;
+      cgState.balanceMode = false;
+      updateBalanceButtonUI();
+      const hole = cgState.presetHoles[idx];
+      if (hole) {
+        hangAtPoint(hole, (Math.random() > 0.5 ? 1 : -1) * 0.28);
+      }
+    }
+
+    function hangAtPoint(localPt, initialKick = 0.22) {
+      // Compute what angle puts localPt -> centroid vertical, then offset by initialKick
+      const dx = cgState.centroid.x - localPt.x;
+      const dy = cgState.centroid.y - localPt.y;
+      const eqAngle = Math.PI / 2 - Math.atan2(dy, dx);
+      cgState.suspensionLocal = { x: localPt.x, y: localPt.y };
+      cgState.angle = eqAngle + initialKick;
+      cgState.angularVel = 0;
+    }
+
+    function pushPendulum() {
+      if (cgState.balanceMode) return;
+      cgState.angularVel += (Math.random() > 0.5 ? 1 : -1) * 1.4;
+    }
+
+    function togglePlumbLine() {
+      cgState.showPlumbLine = !cgState.showPlumbLine;
+      document.getElementById('btn-toggle-plumb').textContent = `Dây dọi: ${cgState.showPlumbLine ? 'HIỆN' : 'ẨN'}`;
+    }
+
+    function toggleRevealTrueG() {
+      cgState.revealTrueG = !cgState.revealTrueG;
+      document.getElementById('btn-reveal-g').textContent = `Hiện đáp án G: ${cgState.revealTrueG ? 'BẬT' : 'TẮT'}`;
+    }
+
+    function toggleBalanceTest() {
+      cgState.balanceMode = !cgState.balanceMode;
+      if (cgState.balanceMode) {
+        cgState.editCustomMode = false;
+        cgState.balanceTilt = 0;
+      }
+      updateBalanceButtonUI();
+      updateCGInstruction();
+    }
+
+    function updateBalanceButtonUI() {
+      const btn = document.getElementById('btn-balance-test');
+      if (cgState.balanceMode) {
+        btn.className = 'w-full py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2';
+        btn.innerHTML = `<span>↩ Quay lại treo bằng dây dọi</span>`;
+      } else {
+        btn.className = 'w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2';
+        btn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Đặt thăng bằng trên mũi nhọn tại G</span>
+        `;
+      }
+    }
+
+    // Trace vertical plumb line across the lamina in local coordinates
+    function tracePlumbLine() {
+      if (cgState.balanceMode) {
+        cgState.balanceMode = false;
+        updateBalanceButtonUI();
+      }
+
+      // Snap to equilibrium if nearly settled so line is accurate for students
+      const dx = cgState.centroid.x - cgState.suspensionLocal.x;
+      const dy = cgState.centroid.y - cgState.suspensionLocal.y;
+      const eqAngle = Math.PI / 2 - Math.atan2(dy, dx);
+      if (Math.abs(normalizeAngle(cgState.angle - eqAngle)) < 0.08) {
+        cgState.angle = eqAngle;
+        cgState.angularVel = 0;
+      }
+
+      // Vertical downward direction in world space is (0, 1).
+      // Convert world direction (0, 1) into local plate coordinates:
+      // World = R(angle) * Local  =>  Local = R(-angle) * World
+      const dirLocal = {
+        x: Math.sin(cgState.angle),
+        y: Math.cos(cgState.angle)
+      };
+
+      const S = cgState.suspensionLocal;
+      // Clip ray S + t * dirLocal to polygon boundary segments
+      const intersections = [];
+      const vs = cgState.vertices;
+      for (let i = 0; i < vs.length; i++) {
+        const A = vs[i];
+        const B = vs[(i + 1) % vs.length];
+        const hit = intersectRaySegment(S, dirLocal, A, B);
+        if (hit !== null) {
+          intersections.push(hit);
+        }
+      }
+
+      intersections.sort((a, b) => a.t - b.t);
+      let pStart = { x: S.x - dirLocal.x * 15, y: S.y - dirLocal.y * 15 };
+      let pEnd = { x: S.x + dirLocal.x * 220, y: S.y + dirLocal.y * 220 };
+
+      if (intersections.length >= 2) {
+        pStart = intersections[0].pt;
+        pEnd = intersections[intersections.length - 1].pt;
+      } else if (intersections.length === 1) {
+        pStart = S;
+        pEnd = intersections[0].pt;
+      }
+
+      cgState.tracedLines.push({
+        p1: pStart,
+        p2: pEnd,
+        num: cgState.tracedLines.length + 1
+      });
+
+      // Compute intersection of traced lines if >= 2
+      if (cgState.tracedLines.length >= 2) {
+        const L1 = cgState.tracedLines[cgState.tracedLines.length - 2];
+        const L2 = cgState.tracedLines[cgState.tracedLines.length - 1];
+        const inter = intersectLines(L1.p1, L1.p2, L2.p1, L2.p2);
+        if (inter && isPointInPolygon(inter, vs)) {
+          cgState.intersectionG = inter;
+        } else {
+          // Fallback to true centroid if lines were nearly parallel
+          cgState.intersectionG = { ...cgState.centroid };
+        }
+      }
+
+      updateCGInstruction();
+    }
+
+    function intersectRaySegment(S, d, A, B) {
+      // S + t*d = A + u*(B - A), u in [0, 1]
+      const v1 = { x: S.x - A.x, y: S.y - A.y };
+      const v2 = { x: B.x - A.x, y: B.y - A.y };
+      const v3 = { x: -d.y, y: d.x };
+      const dot = v2.x * v3.x + v2.y * v3.y;
+      if (Math.abs(dot) < 1e-7) return null;
+      const t = (v2.x * v1.y - v2.y * v1.x) / dot;
+      const u = (v1.x * v3.x + v1.y * v3.y) / dot;
+      if (u >= -1e-4 && u <= 1 + 1e-4) {
+        return {
+          t,
+          pt: { x: S.x + t * d.x, y: S.y + t * d.y }
+        };
+      }
+      return null;
+    }
+
+    function intersectLines(p1, p2, p3, p4) {
+      const denom = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x);
+      if (Math.abs(denom) < 1e-6) return null;
+      const t = ((p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)) / denom;
+      return {
+        x: p1.x + t * (p2.x - p1.x),
+        y: p1.y + t * (p2.y - p1.y)
+      };
+    }
+
+    function normalizeAngle(a) {
+      while (a > Math.PI) a -= Math.PI * 2;
+      while (a < -Math.PI) a += Math.PI * 2;
+      return a;
+    }
+
+    function updateCGInstruction() {
+      const count = cgState.tracedLines.length;
+      document.getElementById('cg-lines-count').textContent = `${count}/2 đường`;
+      const instr = document.getElementById('cg-instruction-text');
+      const coords = document.getElementById('cg-coords-display');
+
+      if (cgState.editCustomMode) {
+        instr.textContent = '✏️ Kéo các đỉnh tròn màu cam để thay đổi hình dạng tấm bìa, sau đó nhấn "Xong".';
+      } else if (cgState.balanceMode) {
+        instr.textContent = '⚖️ Vật đang nằm thăng bằng hoàn hảo trên mũi nhọn đặt đúng tại Trọng tâm G!';
+      } else if (count === 0) {
+        instr.textContent = '👉 Bước 1: Chọn điểm treo trên tấm bìa, chờ vật đứng yên rồi nhấn "Kẻ đường thẳng đứng".';
+      } else if (count === 1) {
+        instr.textContent = '👉 Bước 2: Nhấp vào một vị trí KHÁC trên tấm bìa (ví dụ lỗ B) để treo lần 2 và kẻ đường thứ hai.';
+      } else {
+        instr.textContent = '✅ Tuyệt vời! Giao điểm 2 đường thẳng đứng chính là Trọng tâm G của vật mỏng.';
+      }
+
+      if (cgState.intersectionG || cgState.revealTrueG) {
+        const gPt = cgState.intersectionG || cgState.centroid;
+        coords.textContent = `Trọng tâm G: (${Math.round(gPt.x)}, ${Math.round(gPt.y)})`;
+      } else {
+        coords.textContent = 'Trọng tâm G: Chưa xác định';
+      }
+    }
+
+    // Coordinate transforms between World (Canvas) and Local (Plate)
+    function getCGWorldPin() {
+      const w = cgCanvas.clientWidth;
+      return { x: w * 0.5, y: 95 };
+    }
+
+    function localToWorld(pt) {
+      if (cgState.balanceMode) {
+        const w = cgCanvas.clientWidth;
+        const h = cgCanvas.clientHeight;
+        const pivotWorld = { x: w * 0.5, y: h * 0.54 };
+        const gPt = cgState.intersectionG || cgState.centroid;
+        const cos = Math.cos(cgState.balanceTilt);
+        const sin = Math.sin(cgState.balanceTilt);
+        const rx = pt.x - gPt.x;
+        const ry = pt.y - gPt.y;
+        return {
+          x: pivotWorld.x + rx * cos - ry * sin,
+          y: pivotWorld.y + rx * sin + ry * cos
+        };
+      }
+      const pin = getCGWorldPin();
+      const cos = Math.cos(cgState.angle);
+      const sin = Math.sin(cgState.angle);
+      const rx = pt.x - cgState.suspensionLocal.x;
+      const ry = pt.y - cgState.suspensionLocal.y;
+      return {
+        x: pin.x + rx * cos - ry * sin,
+        y: pin.y + rx * sin + ry * cos
+      };
+    }
+
+    function worldToLocal(wPt) {
+      if (cgState.balanceMode) {
+        const w = cgCanvas.clientWidth;
+        const h = cgCanvas.clientHeight;
+        const pivotWorld = { x: w * 0.5, y: h * 0.54 };
+        const gPt = cgState.intersectionG || cgState.centroid;
+        const cos = Math.cos(-cgState.balanceTilt);
+        const sin = Math.sin(-cgState.balanceTilt);
+        const dx = wPt.x - pivotWorld.x;
+        const dy = wPt.y - pivotWorld.y;
+        return {
+          x: gPt.x + dx * cos - dy * sin,
+          y: gPt.y + dx * sin + dy * cos
+        };
+      }
+      const pin = getCGWorldPin();
+      const cos = Math.cos(-cgState.angle);
+      const sin = Math.sin(-cgState.angle);
+      const dx = wPt.x - pin.x;
+      const dy = wPt.y - pin.y;
+      return {
+        x: cgState.suspensionLocal.x + dx * cos - dy * sin,
+        y: cgState.suspensionLocal.y + dx * sin + dy * cos
+      };
+    }
+
+    // CG Canvas Pointer Events (Click to hang at any point, drag to swing, or drag custom vertices)
+    let pointerDownWorld = null;
+    let movedDuringDrag = false;
+
+    cgCanvas.addEventListener('pointerdown', (e) => {
+      const rect = cgCanvas.getBoundingClientRect();
+      const wPt = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      pointerDownWorld = wPt;
+      movedDuringDrag = false;
+
+      // Check if grabbing a custom vertex handle
+      if (cgState.editCustomMode) {
+        for (let i = 0; i < cgState.vertices.length; i++) {
+          const vw = localToWorld(cgState.vertices[i]);
+          if (Math.hypot(wPt.x - vw.x, wPt.y - vw.y) < 18) {
+            cgState.isDragging = true;
+            cgState.dragMode = 'vertex';
+            cgState.dragVertexIdx = i;
+            cgCanvas.setPointerCapture(e.pointerId);
+            return;
+          }
+        }
+      }
+
+      const lPt = worldToLocal(wPt);
+      if (isPointInPolygon(lPt, cgState.vertices)) {
+        cgState.isDragging = true;
+        cgState.dragMode = 'swing';
+        cgCanvas.setPointerCapture(e.pointerId);
+      }
+    });
+
+    cgCanvas.addEventListener('pointermove', (e) => {
+      const rect = cgCanvas.getBoundingClientRect();
+      const wPt = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+
+      if (!cgState.isDragging) {
+        const lPt = worldToLocal(wPt);
+        cgCanvas.style.cursor = isPointInPolygon(lPt, cgState.vertices) ? 'pointer' : 'default';
+        return;
+      }
+
+      if (pointerDownWorld && Math.hypot(wPt.x - pointerDownWorld.x, wPt.y - pointerDownWorld.y) > 5) {
+        movedDuringDrag = true;
+      }
+
+      if (cgState.dragMode === 'vertex' && cgState.dragVertexIdx >= 0) {
+        const lPt = worldToLocal(wPt);
+        cgState.vertices[cgState.dragVertexIdx] = {
+          x: Math.max(-165, Math.min(165, lPt.x)),
+          y: Math.max(-155, Math.min(155, lPt.y))
+        };
+        recalculateShapeGeometry(true);
+      } else if (cgState.dragMode === 'swing' && !cgState.balanceMode) {
+        const pin = getCGWorldPin();
+        const prevAngle = Math.atan2(pointerDownWorld.y - pin.y, pointerDownWorld.x - pin.x);
+        const currAngle = Math.atan2(wPt.y - pin.y, wPt.x - pin.x);
+        cgState.angle += (currAngle - prevAngle);
+        cgState.angularVel = 0;
+        pointerDownWorld = wPt;
+      }
+    });
+
+    cgCanvas.addEventListener('pointerup', (e) => {
+      const rect = cgCanvas.getBoundingClientRect();
+      const wPt = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+
+      if (cgState.isDragging) {
+        cgCanvas.releasePointerCapture(e.pointerId);
+      }
+
+      // If it was a clean click (not a drag) inside the plate, move the suspension pin there!
+      if (!movedDuringDrag && !cgState.editCustomMode && !cgState.balanceMode) {
+        const lPt = worldToLocal(wPt);
+        // Check preset holes first for magnetic snap
+        let chosen = null;
+        for (const h of cgState.presetHoles) {
+          if (Math.hypot(lPt.x - h.x, lPt.y - h.y) < 18) {
+            chosen = { x: h.x, y: h.y };
+            break;
+          }
+        }
+        if (!chosen && isPointInPolygon(lPt, cgState.vertices)) {
+          chosen = lPt;
+        }
+        if (chosen) {
+          hangAtPoint(chosen, 0.24);
+        }
+      }
+
+      cgState.isDragging = false;
+      cgState.dragMode = null;
+      cgState.dragVertexIdx = -1;
+    });
+
+    function updateCGPhysics(dt) {
+      if (cgState.balanceMode) {
+        // Gentle micro-stabilization when balanced at G
+        cgState.balanceTilt = Math.sin(performance.now() * 0.002) * 0.012;
+        return;
+      }
+
+      if (cgState.isDragging && cgState.dragMode === 'swing') return;
+
+      // Physical pendulum equation: alpha = -(g / L) * sin(angle - eqAngle) - damping * omega
+      const dx = cgState.centroid.x - cgState.suspensionLocal.x;
+      const dy = cgState.centroid.y - cgState.suspensionLocal.y;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist < 2) {
+        // Hung right at Center of Gravity -> Neutral equilibrium (stays at any angle!)
+        cgState.angularVel *= 0.9;
+        cgState.angle += cgState.angularVel * dt;
+        return;
+      }
+
+      const eqAngle = Math.PI / 2 - Math.atan2(dy, dx);
+      const diff = normalizeAngle(cgState.angle - eqAngle);
+      const omega0Sq = 18 * (dist / 80); // natural frequency squared
+      const damping = 3.6;
+
+      const angularAccel = -omega0Sq * Math.sin(diff) - damping * cgState.angularVel;
+      cgState.angularVel += angularAccel * dt;
+      cgState.angle += cgState.angularVel * dt;
+    }
+
+    function drawCGExperiment() {
+      const w = cgCanvas.clientWidth;
+      const h = cgCanvas.clientHeight;
+      cCtx.clearRect(0, 0, w, h);
+
+      if (cgState.balanceMode) {
+        drawBalancePivotScene(w, h);
+        return;
+      }
+
+      const pin = getCGWorldPin();
+
+      // 1. Draw Top Ceiling Support Bar (Thanh giá đỡ màu xanh ngọc giống hình SGK)
+      cCtx.save();
+      cCtx.fillStyle = '#38bdf8';
+      cCtx.strokeStyle = '#0284c7';
+      cCtx.lineWidth = 2;
+      cCtx.beginPath();
+      cCtx.roundRect(pin.x - 56, 24, 112, 16, 4);
+      cCtx.fill();
+      cCtx.stroke();
+
+      // Vertical suspension string from top bar to pin
+      cCtx.strokeStyle = '#1e293b';
+      cCtx.lineWidth = 2.5;
+      cCtx.beginPath();
+      cCtx.moveTo(pin.x, 40);
+      cCtx.lineTo(pin.x, pin.y);
+      cCtx.stroke();
+      cCtx.restore();
+
+      // 2. Draw Thin Flat Lamina (Bản mỏng vật liệu bìa cứng / gỗ)
+      cCtx.save();
+      cCtx.translate(pin.x, pin.y);
+      cCtx.rotate(cgState.angle);
+      cCtx.translate(-cgState.suspensionLocal.x, -cgState.suspensionLocal.y);
+
+      // Shadow
+      cCtx.save();
+      cCtx.shadowColor = 'rgba(15, 23, 42, 0.18)';
+      cCtx.shadowBlur = 16;
+      cCtx.shadowOffsetX = 4;
+      cCtx.shadowOffsetY = 8;
+
+      // Cardboard / Wood texture fill
+      const minX = Math.min(...cgState.vertices.map(v => v.x));
+      const maxX = Math.max(...cgState.vertices.map(v => v.x));
+      const minY = Math.min(...cgState.vertices.map(v => v.y));
+      const maxY = Math.max(...cgState.vertices.map(v => v.y));
+
+      const cardGrad = cCtx.createLinearGradient(minX, minY, maxX, maxY);
+      cardGrad.addColorStop(0, '#d6b899');
+      cardGrad.addColorStop(0.5, '#c7a482');
+      cardGrad.addColorStop(1, '#b58e69');
+
+      cCtx.fillStyle = cardGrad;
+      cCtx.beginPath();
+      cgState.vertices.forEach((v, idx) => {
+        if (idx === 0) cCtx.moveTo(v.x, v.y);
+        else cCtx.lineTo(v.x, v.y);
+      });
+      cCtx.closePath();
+      cCtx.fill();
+      cCtx.restore();
+
+      // Thick dark brown cardboard border (like uploaded image_d1394e.png)
+      cCtx.strokeStyle = '#5c2d16';
+      cCtx.lineWidth = 3.2;
+      cCtx.lineJoin = 'round';
+      cCtx.beginPath();
+      cgState.vertices.forEach((v, idx) => {
+        if (idx === 0) cCtx.moveTo(v.x, v.y);
+        else cCtx.lineTo(v.x, v.y);
+      });
+      cCtx.closePath();
+      cCtx.stroke();
+
+      // Subtle inner grain lines on cardboard
+      cCtx.save();
+      cCtx.clip();
+      cCtx.strokeStyle = 'rgba(92, 45, 22, 0.07)';
+      cCtx.lineWidth = 1;
+      for (let gx = minX; gx <= maxX; gx += 6) {
+        cCtx.beginPath();
+        cCtx.moveTo(gx, minY);
+        cCtx.lineTo(gx, maxY);
+        cCtx.stroke();
+      }
+
+      // Draw Traced Vertical Plumb Lines on the cardboard
+      cgState.tracedLines.forEach((line) => {
+        cCtx.strokeStyle = '#1d4ed8';
+        cCtx.lineWidth = 2.4;
+        cCtx.setLineDash([7, 5]);
+        cCtx.beginPath();
+        cCtx.moveTo(line.p1.x, line.p1.y);
+        cCtx.lineTo(line.p2.x, line.p2.y);
+        cCtx.stroke();
+        cCtx.setLineDash([]);
+      });
+      cCtx.restore();
+
+      // Draw Preset Holes A, B, C
+      cgState.presetHoles.forEach((hole) => {
+        cCtx.fillStyle = '#ffffff';
+        cCtx.strokeStyle = '#475569';
+        cCtx.lineWidth = 2;
+        cCtx.beginPath();
+        cCtx.arc(hole.x, hole.y, 5, 0, Math.PI * 2);
+        cCtx.fill();
+        cCtx.stroke();
+
+        cCtx.fillStyle = '#1e293b';
+        cCtx.font = 'bold 12px Inter, sans-serif';
+        cCtx.textAlign = 'center';
+        cCtx.fillText(hole.name, hole.x, hole.y - 10);
+      });
+
+      // Draw Custom Vertex Handles if in custom edit mode
+      if (cgState.editCustomMode) {
+        cgState.vertices.forEach((v) => {
+          cCtx.fillStyle = '#f97316';
+          cCtx.strokeStyle = '#ffffff';
+          cCtx.lineWidth = 2.5;
+          cCtx.beginPath();
+          cCtx.arc(v.x, v.y, 8, 0, Math.PI * 2);
+          cCtx.fill();
+          cCtx.stroke();
+        });
+      }
+
+      // Draw Discovered Intersection G (Trọng tâm G)
+      if (cgState.intersectionG) {
+        const G = cgState.intersectionG;
+        // Glow ring
+        cCtx.fillStyle = 'rgba(239, 68, 68, 0.22)';
+        cCtx.beginPath();
+        cCtx.arc(G.x, G.y, 13, 0, Math.PI * 2);
+        cCtx.fill();
+
+        cCtx.fillStyle = '#dc2626';
+        cCtx.strokeStyle = '#ffffff';
+        cCtx.lineWidth = 2;
+        cCtx.beginPath();
+        cCtx.arc(G.x, G.y, 5.5, 0, Math.PI * 2);
+        cCtx.fill();
+        cCtx.stroke();
+
+        cCtx.fillStyle = '#b91c1c';
+        cCtx.font = 'bold 14px Inter, sans-serif';
+        cCtx.textAlign = 'left';
+        cCtx.fillText('G', G.x + 10, G.y + 5);
+      }
+
+      // Draw True Centroid if "Hiện đáp án G" is toggled ON
+      if (cgState.revealTrueG) {
+        const T = cgState.centroid;
+        cCtx.strokeStyle = '#059669';
+        cCtx.lineWidth = 2;
+        cCtx.beginPath();
+        cCtx.arc(T.x, T.y, 8, 0, Math.PI * 2);
+        cCtx.stroke();
+        cCtx.fillStyle = '#059669';
+        cCtx.font = 'bold 12px Inter, sans-serif';
+        cCtx.fillText('G (Lý thuyết)', T.x + 11, T.y - 8);
+      }
+
+      cCtx.restore();
+
+      // 3. Draw Plumb Line (Dây dọi thẳng đứng từ điểm treo pin xuống dưới)
+      if (cgState.showPlumbLine) {
+        const plumbBottomY = Math.min(h - 42, pin.y + 320);
+
+        cCtx.save();
+        // Plumb string
+        cCtx.strokeStyle = '#ef4444';
+        cCtx.lineWidth = 2;
+        cCtx.setLineDash([4, 3]);
+        cCtx.beginPath();
+        cCtx.moveTo(pin.x, pin.y);
+        cCtx.lineTo(pin.x, plumbBottomY);
+        cCtx.stroke();
+        cCtx.setLineDash([]);
+
+        // Plumb bob (Quả dọi hình nón nhọn ở dưới)
+        cCtx.fillStyle = '#d97706';
+        cCtx.strokeStyle = '#78350f';
+        cCtx.lineWidth = 1.5;
+        cCtx.beginPath();
+        cCtx.moveTo(pin.x - 8, plumbBottomY);
+        cCtx.lineTo(pin.x + 8, plumbBottomY);
+        cCtx.lineTo(pin.x, plumbBottomY + 20);
+        cCtx.closePath();
+        cCtx.fill();
+        cCtx.stroke();
+
+        cCtx.fillStyle = '#b45309';
+        cCtx.font = '600 11px Inter, sans-serif';
+        cCtx.textAlign = 'left';
+        cCtx.fillText('Dây dọi thẳng đứng', pin.x + 12, plumbBottomY + 10);
+        cCtx.restore();
+      }
+
+      // 4. Draw Suspension Pin Head on top
+      cCtx.save();
+      cCtx.fillStyle = '#dc2626';
+      cCtx.strokeStyle = '#ffffff';
+      cCtx.lineWidth = 2;
+      cCtx.beginPath();
+      cCtx.arc(pin.x, pin.y, 5.5, 0, Math.PI * 2);
+      cCtx.fill();
+      cCtx.stroke();
+      cCtx.restore();
+    }
+
+    // Scene when user tests balancing the lamina on a sharp pivot pin directly at G
+    function drawBalancePivotScene(w, h) {
+      const pivotWorld = { x: w * 0.5, y: h * 0.54 };
+      const gPt = cgState.intersectionG || cgState.centroid;
+
+      // Draw Stand & Sharp Cone Pivot pointing up to pivotWorld
+      cCtx.save();
+      // Base
+      cCtx.fillStyle = '#334155';
+      cCtx.beginPath();
+      cCtx.roundRect(pivotWorld.x - 70, pivotWorld.y + 130, 140, 14, 5);
+      cCtx.fill();
+      // Vertical pillar
+      cCtx.fillStyle = '#475569';
+      cCtx.fillRect(pivotWorld.x - 6, pivotWorld.y + 30, 12, 100);
+      // Sharp brass tip
+      cCtx.fillStyle = '#f59e0b';
+      cCtx.beginPath();
+      cCtx.moveTo(pivotWorld.x - 10, pivotWorld.y + 30);
+      cCtx.lineTo(pivotWorld.x + 10, pivotWorld.y + 30);
+      cCtx.lineTo(pivotWorld.x, pivotWorld.y);
+      cCtx.closePath();
+      cCtx.fill();
+      cCtx.restore();
+
+      // Draw Horizontal Balanced Plate centered at G
+      cCtx.save();
+      cCtx.translate(pivotWorld.x, pivotWorld.y);
+      cCtx.rotate(cgState.balanceTilt);
+      cCtx.translate(-gPt.x, -gPt.y);
+
+      cCtx.fillStyle = 'rgba(214, 184, 153, 0.92)';
+      cCtx.strokeStyle = '#5c2d16';
+      cCtx.lineWidth = 3;
+      cCtx.beginPath();
+      cgState.vertices.forEach((v, idx) => {
+        if (idx === 0) cCtx.moveTo(v.x, v.y);
+        else cCtx.lineTo(v.x, v.y);
+      });
+      cCtx.closePath();
+      cCtx.fill();
+      cCtx.stroke();
+
+      // Traced lines
+      cgState.tracedLines.forEach((line) => {
+        cCtx.strokeStyle = '#1d4ed8';
+        cCtx.lineWidth = 2;
+        cCtx.setLineDash([6, 4]);
+        cCtx.beginPath();
+        cCtx.moveTo(line.p1.x, line.p1.y);
+        cCtx.lineTo(line.p2.x, line.p2.y);
+        cCtx.stroke();
+        cCtx.setLineDash([]);
+      });
+
+      // Center of Gravity marker at pivot
+      cCtx.fillStyle = '#dc2626';
+      cCtx.beginPath();
+      cCtx.arc(gPt.x, gPt.y, 6, 0, Math.PI * 2);
+      cCtx.fill();
+      cCtx.fillStyle = '#b91c1c';
+      cCtx.font = 'bold 14px Inter, sans-serif';
+      cCtx.fillText('G (Cân bằng)', gPt.x + 10, gPt.y - 8);
+
+      cCtx.restore();
+
+      // Force vectors diagram (Trọng lực P và Phản lực N cân bằng nhau tại G)
+      cCtx.save();
+      // Weight vector P pointing down from G
+      drawArrow(cCtx, pivotWorld.x, pivotWorld.y, pivotWorld.x, pivotWorld.y + 85, '#dc2626', 'Trọng lực P');
+      // Normal reaction N pointing up from G
+      drawArrow(cCtx, pivotWorld.x, pivotWorld.y, pivotWorld.x, pivotWorld.y - 85, '#059669', 'Phản lực N');
+      cCtx.restore();
+    }
+
+    function drawArrow(ctx, x1, y1, x2, y2, color, label) {
+      const headLen = 10;
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = 3;
+
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(x2 - headLen * Math.cos(angle - Math.PI / 6), y2 - headLen * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(x2 - headLen * Math.cos(angle + Math.PI / 6), y2 - headLen * Math.sin(angle + Math.PI / 6));
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.font = 'bold 12px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(label, x2 + 10, (y1 + y2) / 2);
+    }
+
+    // =========================================================================
+    // MAIN ANIMATION LOOP & INITIALIZATION
+    // =========================================================================
+    let lastTime = performance.now();
+
+    function animate(now) {
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+
+      if (activeTab === 'spring') {
+        updateSpringPhysics(dt);
+        drawSpringScale();
+      } else {
+        updateCGPhysics(dt);
+        drawCGExperiment();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeSpringCanvas();
+      resizeCGCanvas();
+    });
+
+    window.onload = function () {
+      resizeSpringCanvas();
+      resizeCGCanvas();
+      setDynamometer(2);
+      setMaterial('iron');
+      setMedium('water');
+      setBeakerLift(65);
+      setMass(200);
+      selectCGShape('irregular');
+      lastTime = performance.now();
+      requestAnimationFrame(animate);
+    };
+  </script>
+</body>
+</html>

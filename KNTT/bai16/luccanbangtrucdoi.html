@@ -246,7 +246,7 @@
           >
             <span id="canvas-status-dot" class="w-2 h-2 rounded-full bg-indigo-500 shrink-0"></span>
             <span id="canvas-status-text" class="font-medium truncate">
-              Kéo thẻ lực từ cột bên phải thả vào điểm neo (●) trên vật
+              Kéo thẻ lực từ cột bên phải thả vào vùng vật thể (Trọng tâm G hoặc Mặt tiếp xúc)
             </span>
           </div>
 
@@ -969,7 +969,8 @@
       exploded: false,          // "Tách nhẹ các lớp (Exploded View)"
       showDescriptions: true,   // Toggle force descriptions in bank
       placedVectors: [],        // Array of { uid, anchorId, targetObj, code, htmlSymbol, canvasLabel, theme, dir, mag, evalState: null | 'correct' | 'wrong', tipScreenPos }
-      anchors: [],              // Computed each frame: { id, objId, kind: 'com'|'top'|'bot', x, y, label }
+      anchors: [],              // Computed each frame: { id, objId, kind: 'com'|'top'|'bot', x, y, shortTag, label, zoneBox }
+      renderedBoxes: [],        // Computed each frame: bounding boxes of stacked objects for zone hit-testing
       showStandardOverlay: false,
 
       // Pointer drag state machine
@@ -979,54 +980,55 @@
         cardData: null,
         vectorUid: null,
         snappedAnchorId: null,
+        hoveredObjId: null,
+        cursorCanvasPos: null,
         clientX: 0,
         clientY: 0
       }
     };
 
-    const SNAP_RADIUS = 38; // Magnetic snap radius in CSS pixels
+    const SNAP_RADIUS = 82; // Expanded magnetic snap radius in CSS pixels
 
     // =========================================================================
     // 4. BUILD BANK CARDS FOR CURRENT LEVEL
     // =========================================================================
     function getBankCardsForLevel(level) {
       const sys = SYSTEM_LEVELS[level];
-      const list = [];
+      const map = new Map();
 
-      // Add all true forces as clean cards with natural default directions
       sys.expectedForces.forEach((f) => {
-        list.push({
-          cardId: `card_${f.code}`,
-          code: f.code,
-          htmlSymbol: f.htmlSymbol,
-          canvasLabel: f.canvasLabel,
-          theme: f.theme,
-          defaultDir: f.dir,
-          desc: f.desc,
-          isDistractor: false
-        });
+        if (!map.has(f.code)) {
+          map.set(f.code, {
+            code: f.code,
+            htmlSymbol: f.htmlSymbol,
+            canvasLabel: f.canvasLabel,
+            theme: f.theme,
+            defaultDir: f.dir,
+            desc: f.desc,
+            isDistractor: false
+          });
+        }
       });
 
-      // Add pedagogical distractor cards
       sys.distractorCards.forEach((d) => {
-        list.push({
-          cardId: `card_${d.code}`,
-          code: d.code,
-          htmlSymbol: d.htmlSymbol,
-          canvasLabel: d.canvasLabel,
-          theme: d.theme,
-          defaultDir: d.dir,
-          desc: d.desc,
-          isDistractor: true,
-          wrongReason: d.wrongReason
-        });
+        if (!map.has(d.code)) {
+          map.set(d.code, {
+            code: d.code,
+            htmlSymbol: d.htmlSymbol,
+            canvasLabel: d.canvasLabel,
+            theme: d.theme,
+            defaultDir: d.dir,
+            desc: d.desc,
+            isDistractor: true
+          });
+        }
       });
 
-      return list;
+      return Array.from(map.values());
     }
 
     // =========================================================================
-    // 5. TOP & MODE UI CONTROLS
+    // 5. UI STATE CONTROLS & RENDERING
     // =========================================================================
     function setSystemLevel(level) {
       appState.level = level;
@@ -1034,13 +1036,17 @@
       appState.placedVectors = [];
       appState.showStandardOverlay = false;
 
+      // Auto-enable Exploded View for 3–4 objects so top/bottom contact surfaces never overlap in Y
+      appState.exploded = level >= 3;
+      syncExplodedButtonUI();
+
       // Update level tab styles
       [2, 3, 4].forEach((n) => {
         const btn = document.getElementById(`tab-level-${n}`);
         if (n === level) {
           btn.className = 'px-3 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold bg-indigo-600 text-white shadow-xs transition-all cursor-pointer';
         } else {
-          btn.className = 'px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:bg-white hover:text-slate-900 transition-all cursor-pointer';
+          btn.className = 'px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all cursor-pointer';
         }
       });
 
@@ -1048,8 +1054,7 @@
       document.getElementById('scenario-title-badge').textContent = `${sys.title}:`;
       document.getElementById('scenario-subtitle').textContent = sys.subtitle;
 
-      renderObjectPills();
-      updateModeButtonsUI();
+      renderInspectionModeControls();
       renderForceBankCards();
       renderPlacedVectorsList();
       resetFeedbackBox();
@@ -1059,80 +1064,35 @@
     function setInspectionMode(mode) {
       appState.inspectionMode = mode;
       appState.showStandardOverlay = false;
-      updateModeButtonsUI();
-      renderObjectPills();
+      renderInspectionModeControls();
       renderPlacedVectorsList();
+      resetFeedbackBox();
       resizeAndRender();
     }
 
-    function setActiveSingleObject(objId) {
+    function setActiveObject(objId) {
       appState.activeObjId = objId;
-      appState.inspectionMode = 'single';
       appState.showStandardOverlay = false;
-      updateModeButtonsUI();
-      renderObjectPills();
+      renderInspectionModeControls();
       renderPlacedVectorsList();
+      resetFeedbackBox();
       resizeAndRender();
-    }
-
-    function updateModeButtonsUI() {
-      const singleBtn = document.getElementById('mode-single-btn');
-      const allBtn = document.getElementById('mode-all-btn');
-      const targetBadge = document.getElementById('target-prompt-badge');
-
-      if (appState.inspectionMode === 'single') {
-        singleBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-2xs transition cursor-pointer';
-        allBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer';
-
-        const sys = SYSTEM_LEVELS[appState.level];
-        const obj = sys.objects.find((o) => o.id === appState.activeObjId) || sys.objects[0];
-        targetBadge.textContent = `Đang xét: ${obj.name}`;
-      } else {
-        allBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-2xs transition cursor-pointer';
-        singleBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer';
-        targetBadge.textContent = `Đang xét: Toàn hệ (${appState.level} vật)`;
-      }
-    }
-
-    function renderObjectPills() {
-      const container = document.getElementById('single-object-pills');
-      const sys = SYSTEM_LEVELS[appState.level];
-
-      if (appState.inspectionMode !== 'single') {
-        container.innerHTML = `<span class="text-[11px] text-slate-500 italic">Hiển thị tất cả ${appState.level} vật</span>`;
-        return;
-      }
-
-      container.innerHTML = sys.objects
-        .map((obj) => {
-          const isActive = obj.id === appState.activeObjId;
-          return `
-            <button
-              type="button"
-              onclick="setActiveSingleObject('${obj.id}')"
-              class="px-2.5 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${
-                isActive
-                  ? 'bg-indigo-600 text-white border-indigo-600 shadow-2xs'
-                  : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
-              }"
-            >
-              ${obj.shortName}
-            </button>
-          `;
-        })
-        .join('');
     }
 
     function toggleExplodedView() {
       appState.exploded = !appState.exploded;
+      syncExplodedButtonUI();
+      playTone('snap');
+      resizeAndRender();
+    }
+
+    function syncExplodedButtonUI() {
       const btn = document.getElementById('btn-exploded');
       if (appState.exploded) {
         btn.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold border border-indigo-600 bg-indigo-50 text-indigo-700 shadow-2xs transition-all cursor-pointer';
       } else {
         btn.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition-all cursor-pointer';
       }
-      playTone('snap');
-      resizeAndRender();
     }
 
     function toggleForceDescriptions(checked) {
@@ -1140,9 +1100,57 @@
       renderForceBankCards();
     }
 
-    // =========================================================================
-    // 6. RENDER FORCE BANK CARDS & PLACED VECTORS LIST
-    // =========================================================================
+    function renderInspectionModeControls() {
+      const singleBtn = document.getElementById('mode-single-btn');
+      const allBtn = document.getElementById('mode-all-btn');
+      const pillsWrap = document.getElementById('single-object-pills');
+      const targetBadge = document.getElementById('target-prompt-badge');
+
+      if (appState.inspectionMode === 'single') {
+        singleBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-2xs transition cursor-pointer';
+        allBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer';
+        pillsWrap.classList.remove('hidden');
+
+        const sys = SYSTEM_LEVELS[appState.level];
+        pillsWrap.innerHTML = sys.objects
+          .map((obj) => {
+            const active = obj.id === appState.activeObjId;
+            return `
+              <button
+                type="button"
+                onclick="setActiveObject('${obj.id}')"
+                class="px-2.5 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${
+                  active
+                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-2xs'
+                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                }"
+              >
+                ${obj.shortName}
+              </button>
+            `;
+          })
+          .join('');
+
+        const activeObj = sys.objects.find((o) => o.id === appState.activeObjId);
+        targetBadge.textContent = `Đang xét: ${activeObj ? activeObj.name : ''}`;
+      } else {
+        singleBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer';
+        allBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-extrabold bg-white text-indigo-700 shadow-2xs transition cursor-pointer';
+        pillsWrap.classList.add('hidden');
+        targetBadge.textContent = 'Đang xét: Toàn bộ hệ vật';
+      }
+    }
+
+    function renderMiniArrowSvg(dir, strokeColor) {
+      if (dir === 'up') {
+        return `<svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="none" stroke="${strokeColor}" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M10 17V3m0 0l-4 4m4-4l4 4"/></svg>`;
+      }
+      if (dir === 'down') {
+        return `<svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="none" stroke="${strokeColor}" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M10 3v14m0 0l-4-4m4 4l4-4"/></svg>`;
+      }
+      return `<svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="none" stroke="${strokeColor}" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h14m0 0l-4-4m4 4l-4 4"/></svg>`;
+    }
+
     function renderForceBankCards() {
       const grid = document.getElementById('force-cards-grid');
       const cards = getBankCardsForLevel(appState.level);
@@ -1150,39 +1158,26 @@
       grid.innerHTML = cards
         .map((card) => {
           const theme = FORCE_THEMES[card.theme] || FORCE_THEMES.gravity;
-          const arrowBadge =
-            card.defaultDir === 'up'
-              ? '↑ Hướng lên'
-              : card.defaultDir === 'down'
-              ? '↓ Hướng xuống'
-              : '→ Ngang';
-
           return `
             <div
-              data-card-id="${card.cardId}"
-              onpointerdown="startCardDrag(event, '${card.cardId}')"
-              class="group relative select-none touch-none rounded-xl border border-slate-200 bg-white hover:border-indigo-400 hover:shadow-sm active:scale-[0.98] p-2.5 transition-all cursor-grab active:cursor-grabbing flex items-center gap-2.5"
+              data-card-code="${card.code}"
+              onpointerdown="startBankCardDrag(event, '${card.code}')"
+              class="group select-none touch-none rounded-xl border border-slate-200 hover:border-indigo-400 bg-white hover:bg-indigo-50/40 p-2.5 shadow-2xs hover:shadow transition-all cursor-grab active:cursor-grabbing flex items-start gap-2.5"
             >
-              <!-- Mini Vector Arrow Graphic -->
-              <div
-                class="w-9 h-11 rounded-lg flex items-center justify-center shrink-0 border"
-                style="background-color:${theme.lightBg}; border-color:${theme.stroke}40;"
-              >
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border" style="background:${theme.lightBg}; border-color:${theme.stroke}40">
                 ${renderMiniArrowSvg(card.defaultDir, theme.stroke)}
               </div>
-
-              <!-- Symbol + Optional Description -->
               <div class="min-w-0 flex-1">
                 <div class="flex items-center justify-between gap-1">
                   <span class="text-sm font-extrabold text-slate-900">${card.htmlSymbol}</span>
                   <span class="text-[10px] font-bold px-1.5 py-0.5 rounded border ${theme.badgeClass}">
-                    ${arrowBadge}
+                    ${card.defaultDir === 'up' ? '↑ Lên' : card.defaultDir === 'down' ? '↓ Xuống' : '→ Ngang'}
                   </span>
                 </div>
                 ${
                   appState.showDescriptions
-                    ? `<p class="text-[11px] text-slate-500 leading-snug mt-1 line-clamp-2">${card.desc}</p>`
-                    : `<p class="text-[10px] text-slate-400 mt-1">Kéo thả vào điểm neo</p>`
+                    ? `<p class="text-[11px] text-slate-500 leading-snug mt-1">${card.desc}</p>`
+                    : ''
                 }
               </div>
             </div>
@@ -1191,99 +1186,76 @@
         .join('');
     }
 
-    function renderMiniArrowSvg(dir, color) {
-      if (dir === 'up') {
-        return `
-          <svg width="20" height="30" viewBox="0 0 20 30">
-            <circle cx="10" cy="25" r="2.5" fill="${color}" />
-            <line x1="10" y1="25" x2="10" y2="6" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />
-            <polygon points="10,2 5,9 15,9" fill="${color}" />
-          </svg>
-        `;
+    // =========================================================================
+    // 6. PLACED VECTORS LIST & QUICK CONTROLS
+    // =========================================================================
+    function getVisiblePlacedVectors() {
+      if (appState.inspectionMode === 'all') {
+        return appState.placedVectors;
       }
-      if (dir === 'down') {
-        return `
-          <svg width="20" height="30" viewBox="0 0 20 30">
-            <circle cx="10" cy="5" r="2.5" fill="${color}" />
-            <line x1="10" y1="5" x2="10" y2="24" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />
-            <polygon points="10,28 5,21 15,21" fill="${color}" />
-          </svg>
-        `;
-      }
-      return `
-        <svg width="26" height="20" viewBox="0 0 26 20">
-          <circle cx="4" cy="10" r="2.5" fill="${color}" />
-          <line x1="4" y1="10" x2="20" y2="10" stroke="${color}" stroke-width="2.5" stroke-linecap="round" />
-          <polygon points="24,10 17,5 17,15" fill="${color}" />
-        </svg>
-      `;
+      return appState.placedVectors.filter((v) => v.targetObj === appState.activeObjId);
     }
 
     function renderPlacedVectorsList() {
       const container = document.getElementById('placed-vectors-list');
-      const countLabel = document.getElementById('placed-count-label');
+      const countEl = document.getElementById('placed-count-label');
+      const visible = getVisiblePlacedVectors();
 
-      const visibleVectors = getVisiblePlacedVectors();
-      countLabel.textContent = String(visibleVectors.length);
+      countEl.textContent = visible.length;
 
-      if (visibleVectors.length === 0) {
+      if (visible.length === 0) {
         container.innerHTML = `
-          <div class="text-xs text-slate-400 italic py-3 px-2 text-center border border-dashed border-slate-200 rounded-xl">
-            Chưa có vectơ lực nào được đặt. Hãy kéo một thẻ lực ở trên thả vào chấm tròn điểm neo (●) bên trái!
+          <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50/70 p-3 text-center text-xs text-slate-500">
+            Chưa có vectơ lực nào được đặt. Hãy kéo thẻ lực ở mục 1 thả vào hình vẽ bên trái.
           </div>
         `;
         return;
       }
 
-      container.innerHTML = visibleVectors
+      container.innerHTML = visible
         .map((v) => {
           const anchor = appState.anchors.find((a) => a.id === v.anchorId);
-          const anchorLabel = anchor ? anchor.label : v.anchorId;
+          const anchorName = anchor ? anchor.label : v.anchorId;
           const theme = FORCE_THEMES[v.theme] || FORCE_THEMES.gravity;
-          const dirIcon = v.dir === 'up' ? '↑' : v.dir === 'down' ? '↓' : '→';
 
+          let statusRing = 'border-slate-200 bg-white';
           let statusBadge = '';
-          let borderClass = 'border-slate-200 bg-slate-50/70';
           if (v.evalState === 'correct') {
-            statusBadge = `<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">✓ Đúng</span>`;
-            borderClass = 'border-emerald-300 bg-emerald-50/60';
+            statusRing = 'border-emerald-400 bg-emerald-50/50';
+            statusBadge = '<span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">✓ Đúng</span>';
           } else if (v.evalState === 'wrong') {
-            statusBadge = `<span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">✗ Sai</span>`;
-            borderClass = 'border-rose-300 bg-rose-50/60';
+            statusRing = 'border-rose-400 bg-rose-50/50';
+            statusBadge = '<span class="text-[10px] font-extrabold text-rose-700 bg-rose-100 px-1.5 py-0.5 rounded">✗ Sai</span>';
           }
 
           return `
-            <div class="flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl border ${borderClass} text-xs">
-              <div class="flex items-center gap-2 min-w-0">
-                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color:${theme.stroke}"></span>
-                <div class="truncate">
-                  <span class="font-extrabold text-slate-900">${v.htmlSymbol}</span>
-                  <span class="font-extrabold mx-0.5" style="color:${theme.stroke}">${dirIcon}</span>
-                  <span class="text-slate-600">tại <strong>${anchorLabel}</strong></span>
+            <div class="rounded-xl border ${statusRing} px-2.5 py-2 flex items-center justify-between gap-2 text-xs transition">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="font-extrabold text-sm" style="color:${theme.stroke}">${v.htmlSymbol}</span>
+                  <span class="text-slate-600 font-medium truncate">tại ${anchorName}</span>
+                  ${statusBadge}
                 </div>
-                ${statusBadge}
               </div>
-
               <div class="flex items-center gap-1 shrink-0">
-                ${
-                  v.dir === 'up' || v.dir === 'down'
-                    ? `<button
-                        type="button"
-                        onclick="flipPlacedVector('${v.uid}')"
-                        title="Đảo chiều vectơ ↑/↓"
-                        class="px-2 py-1 rounded-lg bg-white hover:bg-indigo-50 border border-slate-200 text-slate-700 hover:text-indigo-700 font-bold text-[11px] transition cursor-pointer"
-                      >
-                        Đảo ↑↓
-                      </button>`
-                    : ''
-                }
+                <button
+                  type="button"
+                  onclick="flipPlacedVectorDir('${v.uid}')"
+                  title="Đổi chiều lên/xuống"
+                  class="px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-slate-700 cursor-pointer"
+                >
+                  ${v.dir === 'up' ? '↑' : v.dir === 'down' ? '↓' : '→'}
+                </button>
                 <button
                   type="button"
                   onclick="deletePlacedVector('${v.uid}')"
-                  title="Xóa vectơ lực này"
-                  class="px-2 py-1 rounded-lg bg-white hover:bg-rose-50 border border-slate-200 text-slate-500 hover:text-rose-600 font-bold text-[11px] transition cursor-pointer"
+                  title="Xóa lực này"
+                  class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer"
+                  aria-label="Xóa"
                 >
-                  ✕
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -1292,14 +1264,7 @@
         .join('');
     }
 
-    function getVisiblePlacedVectors() {
-      if (appState.inspectionMode === 'all') {
-        return appState.placedVectors;
-      }
-      return appState.placedVectors.filter((v) => v.targetObj === appState.activeObjId);
-    }
-
-    function flipPlacedVector(uid) {
+    function flipPlacedVectorDir(uid) {
       const vec = appState.placedVectors.find((v) => v.uid === uid);
       if (!vec) return;
       if (vec.dir === 'up') vec.dir = 'down';
@@ -1319,43 +1284,41 @@
     }
 
     function resetCurrentScope() {
-      appState.showStandardOverlay = false;
       if (appState.inspectionMode === 'all') {
         appState.placedVectors = [];
       } else {
-        appState.placedVectors = appState.placedVectors.filter((v) => v.targetObj !== appState.activeObjId);
+        appState.placedVectors = appState.placedVectors.filter(
+          (v) => v.targetObj !== appState.activeObjId
+        );
       }
+      appState.showStandardOverlay = false;
       renderPlacedVectorsList();
       resetFeedbackBox();
       resizeAndRender();
     }
 
     function resetAllSystem() {
-      appState.showStandardOverlay = false;
       appState.placedVectors = [];
+      appState.showStandardOverlay = false;
+      playTone('snap');
       renderPlacedVectorsList();
       resetFeedbackBox();
       resizeAndRender();
     }
 
     // =========================================================================
-    // 7. UNIFIED POINTER EVENTS DRAG & DROP ENGINE
-    //    Supports:
-    //    (A) Dragging a new force card from Bank -> Magnetic Snap to Canvas Anchor
-    //    (B) Dragging an already-placed vector's origin -> Re-anchor or Drag outside to delete
-    //    (C) Dragging an already-placed vector's arrowhead tip -> Flip direction (↑/↓) & resize length
+    // 7. MAGNETIC DRAG & DROP ENGINE (POINTER EVENTS + ZONE SNAPPING)
     // =========================================================================
     const canvas = document.getElementById('physics-canvas');
     const ctx = canvas.getContext('2d');
     const dragGhostEl = document.getElementById('drag-ghost');
 
-    function startCardDrag(event, cardId) {
-      // Only left mouse button or touch/pen
+    function startBankCardDrag(event, cardCode) {
       if (event.button !== undefined && event.button !== 0) return;
       event.preventDefault();
 
       const cards = getBankCardsForLevel(appState.level);
-      const cardData = cards.find((c) => c.cardId === cardId);
+      const cardData = cards.find((c) => c.code === cardCode);
       if (!cardData) return;
 
       appState.showStandardOverlay = false;
@@ -1365,523 +1328,358 @@
         cardData,
         vectorUid: null,
         snappedAnchorId: null,
+        hoveredObjId: null,
+        cursorCanvasPos: null,
         clientX: event.clientX,
         clientY: event.clientY
       };
 
+      showDragGhost(cardData, event.clientX, event.clientY);
+      updateDragAtClientPoint(event.clientX, event.clientY);
+    }
+
+    function showDragGhost(cardData, clientX, clientY) {
       const theme = FORCE_THEMES[cardData.theme] || FORCE_THEMES.gravity;
       dragGhostEl.innerHTML = `
-        <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/95 backdrop-blur border-2 shadow-lg text-xs font-extrabold text-slate-900" style="border-color:${theme.stroke}">
+        <div class="px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur border-2 shadow-lg flex items-center gap-2" style="border-color:${theme.stroke}">
           ${renderMiniArrowSvg(cardData.defaultDir, theme.stroke)}
-          <span>${cardData.htmlSymbol}</span>
+          <span class="text-sm font-extrabold text-slate-900">${cardData.htmlSymbol}</span>
         </div>
       `;
-      dragGhostEl.style.left = `${event.clientX}px`;
-      dragGhostEl.style.top = `${event.clientY}px`;
+      dragGhostEl.style.left = `${clientX}px`;
+      dragGhostEl.style.top = `${clientY}px`;
       dragGhostEl.classList.remove('hidden');
+    }
 
-      updateCanvasStatusPill('Kéo thẻ lực tới điểm neo (●) phát sáng trên vật...', 'bg-amber-500');
+    function hideDragGhost() {
+      dragGhostEl.classList.add('hidden');
+    }
+
+    function getCanvasCoords(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top,
+        inside:
+          clientX >= rect.left &&
+          clientX <= rect.right &&
+          clientY >= rect.top &&
+          clientY <= rect.bottom
+      };
+    }
+
+    function getEligibleAnchors() {
+      if (appState.inspectionMode === 'all') {
+        return appState.anchors;
+      }
+      return appState.anchors.filter((a) => a.objId === appState.activeObjId);
+    }
+
+    // Zone-based magnetic snap: divides each object's bounding box into
+    // top contact surface (top 30%), center of mass G (middle 40%), and bottom contact surface (bottom 30%)
+    function findBestZoneAnchor(pt) {
+      const eligible = getEligibleAnchors();
+      if (!pt || !pt.inside || eligible.length === 0) {
+        return { anchor: null, hoveredObjId: null };
+      }
+
+      const activeBoxes =
+        appState.inspectionMode === 'all'
+          ? appState.renderedBoxes
+          : appState.renderedBoxes.filter((b) => b.id === appState.activeObjId);
+
+      // 1. Check if pointer is inside or near an eligible object's bounding box
+      const padX = 28;
+      const padY = 20;
+      for (const box of activeBoxes) {
+        if (
+          pt.x >= box.x - padX &&
+          pt.x <= box.x + box.w + padX &&
+          pt.y >= box.y - padY &&
+          pt.y <= box.y + box.h + padY
+        ) {
+          const relY = (pt.y - box.y) / Math.max(1, box.h);
+          let desiredKind = 'com';
+          if (relY < 0.30) {
+            desiredKind = 'top';
+          } else if (relY > 0.70) {
+            desiredKind = 'bot';
+          }
+
+          const matchedAnchor =
+            eligible.find((a) => a.objId === box.id && a.kind === desiredKind) ||
+            eligible.find((a) => a.objId === box.id && a.kind === 'com') ||
+            eligible.find((a) => a.objId === box.id);
+
+          if (matchedAnchor) {
+            return { anchor: matchedAnchor, hoveredObjId: box.id };
+          }
+        }
+      }
+
+      // 2. Fallback: nearest eligible anchor within magnetic SNAP_RADIUS
+      let bestAnchor = null;
+      let bestDist = SNAP_RADIUS;
+      for (const a of eligible) {
+        const d = Math.hypot(pt.x - a.x, pt.y - a.y);
+        if (d <= bestDist) {
+          bestDist = d;
+          bestAnchor = a;
+        }
+      }
+
+      return {
+        anchor: bestAnchor,
+        hoveredObjId: bestAnchor ? bestAnchor.objId : null
+      };
+    }
+
+    function updateDragAtClientPoint(clientX, clientY) {
+      appState.drag.clientX = clientX;
+      appState.drag.clientY = clientY;
+
+      if (!dragGhostEl.classList.contains('hidden')) {
+        dragGhostEl.style.left = `${clientX}px`;
+        dragGhostEl.style.top = `${clientY}px`;
+      }
+
+      const pt = getCanvasCoords(clientX, clientY);
+      appState.drag.cursorCanvasPos = pt;
+
+      if (appState.drag.kind === 'new-card' || appState.drag.kind === 'move-anchor') {
+        const prevSnap = appState.drag.snappedAnchorId;
+        const { anchor, hoveredObjId } = findBestZoneAnchor(pt);
+        appState.drag.snappedAnchorId = anchor ? anchor.id : null;
+        appState.drag.hoveredObjId = hoveredObjId;
+
+        if (anchor && anchor.id !== prevSnap) {
+          playTone('snap');
+        }
+
+        if (anchor) {
+          setCanvasStatus(
+            `Đặt vào: ${anchor.label} (${anchor.shortTag}) — Thả tay để gắn lực`,
+            'bg-emerald-500'
+          );
+        } else {
+          setCanvasStatus(
+            'Di chuyển thẻ lực vào vùng thân vật (Trọng tâm G) hoặc mép trên / mép dưới vật',
+            'bg-indigo-500'
+          );
+        }
+      } else if (appState.drag.kind === 'edit-tip') {
+        const vec = appState.placedVectors.find((v) => v.uid === appState.drag.vectorUid);
+        const anchor = vec && appState.anchors.find((a) => a.id === vec.anchorId);
+        if (vec && anchor) {
+          const dy = pt.y - anchor.y;
+          const dx = pt.x - anchor.x;
+          if (Math.abs(dy) >= Math.abs(dx) * 0.65) {
+            vec.dir = dy < 0 ? 'up' : 'down';
+            vec.mag = Math.max(46, Math.min(115, Math.abs(dy)));
+          } else {
+            vec.dir = 'right';
+            vec.mag = Math.max(46, Math.min(115, Math.abs(dx)));
+          }
+          vec.evalState = null;
+          setCanvasStatus(
+            `Đang chỉnh chiều (${vec.dir === 'up' ? '↑ hướng lên' : vec.dir === 'down' ? '↓ hướng xuống' : '→ ngang'}) & độ dài vectơ`,
+            'bg-amber-500'
+          );
+        }
+      }
+
       resizeAndRender();
     }
 
-    // Canvas PointerDown: check if user grabs a placed vector's arrowhead tip or origin
-    canvas.addEventListener('pointerdown', (event) => {
-      if (event.button !== undefined && event.button !== 0) return;
-
-      const rect = canvas.getBoundingClientRect();
-      const px = event.clientX - rect.left;
-      const py = event.clientY - rect.top;
-
-      const visibleVectors = getVisiblePlacedVectors();
-
-      // 1. Check arrowhead tips first (for flipping ↑/↓ and resizing magnitude)
-      for (let i = visibleVectors.length - 1; i >= 0; i--) {
-        const v = visibleVectors[i];
-        if (v.tipScreenPos) {
-          const distTip = Math.hypot(px - v.tipScreenPos.x, py - v.tipScreenPos.y);
-          if (distTip <= 20) {
-            event.preventDefault();
-            appState.showStandardOverlay = false;
-            appState.drag = {
-              active: true,
-              kind: 'edit-tip',
-              cardData: null,
-              vectorUid: v.uid,
-              snappedAnchorId: v.anchorId,
-              clientX: event.clientX,
-              clientY: event.clientY
-            };
-            updateCanvasStatusPill(`Kéo đầu mũi tên ${v.canvasLabel} lên hoặc xuống để đổi chiều / độ dài`, 'bg-indigo-600');
-            return;
-          }
-        }
-      }
-
-      // 2. Check vector origins (to re-anchor to another point or drag outside to remove)
-      for (let i = visibleVectors.length - 1; i >= 0; i--) {
-        const v = visibleVectors[i];
-        if (v.originScreenPos) {
-          const distOrig = Math.hypot(px - v.originScreenPos.x, py - v.originScreenPos.y);
-          if (distOrig <= 20) {
-            event.preventDefault();
-            appState.showStandardOverlay = false;
-            appState.drag = {
-              active: true,
-              kind: 'move-anchor',
-              cardData: null,
-              vectorUid: v.uid,
-              snappedAnchorId: v.anchorId,
-              clientX: event.clientX,
-              clientY: event.clientY
-            };
-            updateCanvasStatusPill(`Kéo gốc lực ${v.canvasLabel} sang điểm neo khác hoặc kéo ra ngoài để xóa`, 'bg-amber-500');
-            resizeAndRender();
-            return;
-          }
-        }
-      }
-    });
-
-    // Global PointerMove
-    window.addEventListener('pointermove', (event) => {
+    function finishActiveDrag(clientX, clientY) {
       if (!appState.drag.active) return;
 
-      appState.drag.clientX = event.clientX;
-      appState.drag.clientY = event.clientY;
-
-      const rect = canvas.getBoundingClientRect();
-      const px = event.clientX - rect.left;
-      const py = event.clientY - rect.top;
-      const insideCanvas = px >= -10 && px <= rect.width + 10 && py >= -10 && py <= rect.height + 10;
+      const pt = getCanvasCoords(clientX, clientY);
 
       if (appState.drag.kind === 'new-card') {
-        dragGhostEl.style.left = `${event.clientX}px`;
-        dragGhostEl.style.top = `${event.clientY}px`;
+        const { anchor } = findBestZoneAnchor(pt);
+        if (anchor && appState.drag.cardData) {
+          const card = appState.drag.cardData;
+          // Replace existing vector with the same code on the same target object if already placed
+          appState.placedVectors = appState.placedVectors.filter(
+            (v) => !(v.targetObj === anchor.objId && v.code === card.code)
+          );
 
-        if (insideCanvas) {
-          const nearest = findNearestAnchor(px, py, SNAP_RADIUS);
-          if (nearest) {
-            if (appState.drag.snappedAnchorId !== nearest.id) {
-              playTone('snap');
-            }
-            appState.drag.snappedAnchorId = nearest.id;
-            dragGhostEl.style.opacity = '0.25'; // Fade floating card because ghost preview renders directly on canvas!
-            updateCanvasStatusPill(`Bắt dính: ${nearest.label} — Thả tay để đặt lực`, 'bg-emerald-600');
-          } else {
-            appState.drag.snappedAnchorId = null;
-            dragGhostEl.style.opacity = '1';
-            updateCanvasStatusPill('Di chuyển lại gần chấm tròn điểm neo (●) để bắt dính...', 'bg-amber-500');
-          }
-        } else {
-          appState.drag.snappedAnchorId = null;
-          dragGhostEl.style.opacity = '1';
+          appState.placedVectors.push({
+            uid: `vec_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            anchorId: anchor.id,
+            targetObj: anchor.objId,
+            code: card.code,
+            htmlSymbol: card.htmlSymbol,
+            canvasLabel: card.canvasLabel,
+            theme: card.theme,
+            dir: card.defaultDir,
+            mag: 68,
+            evalState: null,
+            tipScreenPos: null
+          });
+
+          playTone('drop');
+          renderPlacedVectorsList();
         }
-        resizeAndRender();
       } else if (appState.drag.kind === 'move-anchor') {
         const vec = appState.placedVectors.find((v) => v.uid === appState.drag.vectorUid);
-        if (!vec) return;
-
-        if (insideCanvas) {
-          const nearest = findNearestAnchor(px, py, SNAP_RADIUS);
-          if (nearest) {
-            if (appState.drag.snappedAnchorId !== nearest.id) {
-              playTone('snap');
-            }
-            appState.drag.snappedAnchorId = nearest.id;
-            vec.anchorId = nearest.id;
-            vec.targetObj = nearest.objId;
-            vec.evalState = null;
-            updateCanvasStatusPill(`Chuyển tới: ${nearest.label}`, 'bg-emerald-600');
-          } else {
-            appState.drag.snappedAnchorId = null;
-            updateCanvasStatusPill('Thả ra ngoài vùng vẽ để xóa lực này', 'bg-rose-500');
-          }
-        } else {
-          appState.drag.snappedAnchorId = null;
-          updateCanvasStatusPill('Thả tay ngay để xóa lực này', 'bg-rose-600');
-        }
-        resizeAndRender();
-      } else if (appState.drag.kind === 'edit-tip') {
-        const vec = appState.placedVectors.find((v) => v.uid === appState.drag.vectorUid);
-        if (!vec || !vec.originScreenPos) return;
-
-        const dy = py - vec.originScreenPos.y;
-        const dx = px - vec.originScreenPos.x;
-
-        if (vec.dir === 'up' || vec.dir === 'down') {
-          const newDir = dy < 0 ? 'up' : 'down';
-          if (newDir !== vec.dir) {
-            vec.dir = newDir;
+        if (vec) {
+          if (!pt.inside) {
+            // Dragged outside canvas -> delete vector
+            appState.placedVectors = appState.placedVectors.filter((v) => v.uid !== vec.uid);
             playTone('snap');
+          } else {
+            const { anchor } = findBestZoneAnchor(pt);
+            if (anchor) {
+              vec.anchorId = anchor.id;
+              vec.targetObj = anchor.objId;
+              vec.evalState = null;
+              playTone('drop');
+            }
           }
-          const absLen = Math.abs(dy);
-          const mag = Math.max(1, Math.min(4, Math.round((absLen - 22) / 16)));
-          vec.mag = mag;
-        } else {
-          const absLen = Math.abs(dx);
-          vec.mag = Math.max(1, Math.min(4, Math.round((absLen - 22) / 16)));
+          renderPlacedVectorsList();
         }
-
-        vec.evalState = null;
-        updateCanvasStatusPill(
-          `Vectơ ${vec.canvasLabel}: ${vec.dir === 'up' ? 'Hướng lên ↑' : vec.dir === 'down' ? 'Hướng xuống ↓' : 'Ngang →'} (Độ dài mức ${vec.mag})`,
-          'bg-indigo-600'
-        );
-        resizeAndRender();
-      }
-    });
-
-    // Global PointerUp
-    window.addEventListener('pointerup', () => {
-      if (!appState.drag.active) return;
-
-      const drag = { ...appState.drag };
-      appState.drag.active = false;
-      appState.drag.kind = null;
-      appState.drag.snappedAnchorId = null;
-      dragGhostEl.classList.add('hidden');
-      dragGhostEl.style.opacity = '1';
-
-      if (drag.kind === 'new-card' && drag.cardData && drag.snappedAnchorId) {
-        const anchor = appState.anchors.find((a) => a.id === drag.snappedAnchorId);
-        if (anchor) {
-          addOrUpdatePlacedVector(anchor, drag.cardData);
-          playTone('drop');
-        }
-      } else if (drag.kind === 'move-anchor' && drag.vectorUid && !drag.snappedAnchorId) {
-        // User dragged placed vector outside canvas / away from anchors -> remove it
-        deletePlacedVector(drag.vectorUid);
+      } else if (appState.drag.kind === 'edit-tip') {
         playTone('snap');
-      } else if (drag.kind === 'edit-tip') {
         renderPlacedVectorsList();
       }
 
-      updateCanvasStatusPill('Kéo thẻ lực từ cột bên phải thả vào điểm neo (●) trên vật', 'bg-indigo-500');
+      hideDragGhost();
+      appState.drag = {
+        active: false,
+        kind: null,
+        cardData: null,
+        vectorUid: null,
+        snappedAnchorId: null,
+        hoveredObjId: null,
+        cursorCanvasPos: null,
+        clientX: 0,
+        clientY: 0
+      };
+
+      setCanvasStatus(
+        'Kéo thẻ lực từ cột bên phải thả vào vùng vật thể (Trọng tâm G hoặc Mặt tiếp xúc)',
+        'bg-indigo-500'
+      );
+      resizeAndRender();
+    }
+
+    function setCanvasStatus(text, dotClass) {
+      const textEl = document.getElementById('canvas-status-text');
+      const dotEl = document.getElementById('canvas-status-dot');
+      if (textEl) textEl.textContent = text;
+      if (dotEl) dotEl.className = `w-2 h-2 rounded-full ${dotClass} shrink-0`;
+    }
+
+    // Canvas pointer listeners for dragging existing vector tips (flip/resize) or origins (re-anchor)
+    canvas.addEventListener('pointerdown', (e) => {
+      if (e.button !== undefined && e.button !== 0) return;
+      const pt = getCanvasCoords(e.clientX, e.clientY);
+      const visible = getVisiblePlacedVectors();
+
+      // 1. Check arrow tip hit first (to flip direction or resize magnitude)
+      for (let i = visible.length - 1; i >= 0; i--) {
+        const v = visible[i];
+        if (v.tipScreenPos && Math.hypot(pt.x - v.tipScreenPos.x, pt.y - v.tipScreenPos.y) <= 18) {
+          e.preventDefault();
+          appState.showStandardOverlay = false;
+          appState.drag = {
+            active: true,
+            kind: 'edit-tip',
+            cardData: null,
+            vectorUid: v.uid,
+            snappedAnchorId: v.anchorId,
+            hoveredObjId: v.targetObj,
+            cursorCanvasPos: pt,
+            clientX: e.clientX,
+            clientY: e.clientY
+          };
+          updateDragAtClientPoint(e.clientX, e.clientY);
+          return;
+        }
+      }
+
+      // 2. Check arrow origin/anchor hit (to move vector to another anchor or drag off canvas to delete)
+      for (let i = visible.length - 1; i >= 0; i--) {
+        const v = visible[i];
+        const anchor = appState.anchors.find((a) => a.id === v.anchorId);
+        if (anchor && Math.hypot(pt.x - anchor.x, pt.y - anchor.y) <= 20) {
+          e.preventDefault();
+          appState.showStandardOverlay = false;
+          appState.drag = {
+            active: true,
+            kind: 'move-anchor',
+            cardData: null,
+            vectorUid: v.uid,
+            snappedAnchorId: anchor.id,
+            hoveredObjId: anchor.objId,
+            cursorCanvasPos: pt,
+            clientX: e.clientX,
+            clientY: e.clientY
+          };
+          updateDragAtClientPoint(e.clientX, e.clientY);
+          return;
+        }
+      }
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!appState.drag.active) return;
+      updateDragAtClientPoint(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('pointerup', (e) => {
+      if (!appState.drag.active) return;
+      finishActiveDrag(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('pointercancel', () => {
+      if (!appState.drag.active) return;
+      hideDragGhost();
+      appState.drag.active = false;
       resizeAndRender();
     });
 
-    function findNearestAnchor(px, py, maxRadius) {
-      let best = null;
-      let bestDist = maxRadius;
-      for (const a of appState.anchors) {
-        const d = Math.hypot(px - a.x, py - a.y);
-        if (d <= bestDist) {
-          bestDist = d;
-          best = a;
-        }
-      }
-      return best;
-    }
-
-    function addOrUpdatePlacedVector(anchor, cardData) {
-      // Avoid duplicate identical code on the exact same anchor
-      const existing = appState.placedVectors.find(
-        (v) => v.anchorId === anchor.id && v.code === cardData.code
-      );
-      if (existing) {
-        existing.dir = cardData.defaultDir;
-        existing.evalState = null;
-      } else {
-        appState.placedVectors.push({
-          uid: `vec_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-          anchorId: anchor.id,
-          targetObj: anchor.objId,
-          code: cardData.code,
-          htmlSymbol: cardData.htmlSymbol,
-          canvasLabel: cardData.canvasLabel,
-          theme: cardData.theme,
-          dir: cardData.defaultDir,
-          mag: 2,
-          evalState: null,
-          originScreenPos: null,
-          tipScreenPos: null
-        });
-      }
-      renderPlacedVectorsList();
-    }
-
-    function updateCanvasStatusPill(text, dotColorClass) {
-      document.getElementById('canvas-status-text').textContent = text;
-      document.getElementById('canvas-status-dot').className = `w-2 h-2 rounded-full ${dotColorClass} shrink-0`;
-    }
-
     // =========================================================================
-    // 8. EVALUATION, HINTS & STANDARD SOLUTION
-    // =========================================================================
-    function evaluateStudentWork() {
-      appState.showStandardOverlay = false;
-      const sys = SYSTEM_LEVELS[appState.level];
-
-      const expectedScope =
-        appState.inspectionMode === 'all'
-          ? sys.expectedForces
-          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
-
-      const placedScope = getVisiblePlacedVectors();
-
-      const matchedExpected = new Set();
-      const diagnostics = [];
-
-      placedScope.forEach((pv) => {
-        const anchor = appState.anchors.find((a) => a.id === pv.anchorId);
-        const anchorLabel = anchor ? anchor.label : pv.anchorId;
-
-        const matchIdx = expectedScope.findIndex(
-          (exp, i) =>
-            !matchedExpected.has(i) &&
-            exp.anchorId === pv.anchorId &&
-            exp.code === pv.code &&
-            exp.dir === pv.dir
-        );
-
-        if (matchIdx >= 0) {
-          matchedExpected.add(matchIdx);
-          pv.evalState = 'correct';
-          diagnostics.push({
-            status: 'ok',
-            html: `<strong>✓ Đúng (${pv.htmlSymbol}):</strong> Đặt tại <em>${anchorLabel}</em>, hướng ${pv.dir === 'up' ? 'lên ↑' : 'xuống ↓'}.`
-          });
-        } else {
-          pv.evalState = 'wrong';
-
-          // Detailed pedagogical diagnosis
-          const distractorInfo = sys.distractorCards.find((d) => d.code === pv.code);
-          const trueForceAnywhere = sys.expectedForces.find((ef) => ef.code === pv.code);
-
-          let reason = '';
-          if (distractorInfo) {
-            reason = distractorInfo.wrongReason;
-          } else if (trueForceAnywhere) {
-            const targetObjMeta = sys.objects.find((o) => o.id === trueForceAnywhere.targetObj);
-            const expectedPlaceText = trueForceAnywhere.anchorId.startsWith('com_')
-              ? `trọng tâm G<sub>${targetObjMeta.num}</sub>`
-              : trueForceAnywhere.anchorId.startsWith('top_')
-              ? `mặt tiếp xúc phía trên của ${targetObjMeta.shortName}`
-              : `mặt tiếp xúc phía dưới của ${targetObjMeta.shortName}`;
-
-            if (trueForceAnywhere.targetObj !== pv.targetObj) {
-              reason = `Nhầm vật chịu lực! Lực ${pv.htmlSymbol} tác dụng lên <strong>${targetObjMeta.name}</strong> (tại ${expectedPlaceText}), không tác dụng lên vật này.`;
-            } else if (trueForceAnywhere.anchorId !== pv.anchorId) {
-              reason = `Sai điểm đặt! Lực ${pv.htmlSymbol} phải đặt tại <strong>${expectedPlaceText}</strong>, không đặt ở <em>${anchorLabel}</em>.`;
-            } else if (trueForceAnywhere.dir !== pv.dir) {
-              reason = `Sai chiều! Lực ${pv.htmlSymbol} phải hướng <strong>${trueForceAnywhere.dir === 'up' ? 'lên ↑' : 'xuống ↓'}</strong>.`;
-            }
-          } else {
-            reason = `Lực ${pv.htmlSymbol} không phù hợp tại vị trí <em>${anchorLabel}</em>.`;
-          }
-
-          diagnostics.push({
-            status: 'err',
-            html: `<strong>✗ Sai (${pv.htmlSymbol} tại ${anchorLabel}):</strong> ${reason}`
-          });
-        }
-      });
-
-      // Check missing forces
-      let missingCount = 0;
-      expectedScope.forEach((exp, idx) => {
-        if (!matchedExpected.has(idx)) {
-          missingCount++;
-          const objMeta = sys.objects.find((o) => o.id === exp.targetObj);
-          const placeText = exp.anchorId.startsWith('com_')
-            ? `Trọng tâm G<sub>${objMeta.num}</sub>`
-            : exp.anchorId.startsWith('top_')
-            ? `Mặt trên ${objMeta.shortName}`
-            : `Mặt dưới ${objMeta.shortName}`;
-
-          diagnostics.push({
-            status: 'miss',
-            html: `<strong>! Còn thiếu:</strong> Lực ${exp.htmlSymbol} (${exp.dir === 'up' ? 'hướng lên ↑' : 'hướng xuống ↓'}) đặt tại <em>${placeText}</em>.`
-          });
-        }
-      });
-
-      const wrongCount = diagnostics.filter((d) => d.status === 'err').length;
-
-      let bannerTone = 'success';
-      let bannerHeading = '';
-
-      if (wrongCount === 0 && missingCount === 0 && expectedScope.length > 0) {
-        bannerTone = 'success';
-        bannerHeading = '🎉 Xuất sắc! Em đã phân tích và vẽ chính xác hoàn toàn các vectơ lực.';
-        playTone('success');
-      } else if (wrongCount === 0 && missingCount > 0) {
-        bannerTone = 'warning';
-        bannerHeading = `Gần xong rồi! Các lực đã vẽ đều đúng, nhưng còn thiếu ${missingCount} lực.`;
-        playTone('snap');
-      } else {
-        bannerTone = 'error';
-        bannerHeading = `Chưa chính xác: Có ${wrongCount} lực đặt sai${missingCount > 0 ? ` và còn thiếu ${missingCount} lực` : ''}.`;
-        playTone('error');
-        const box = document.getElementById('feedback-box');
-        box.classList.remove('animate-shake');
-        void box.offsetWidth;
-        box.classList.add('animate-shake');
-      }
-
-      renderFeedbackList(bannerTone, bannerHeading, diagnostics);
-      renderPlacedVectorsList();
-      resizeAndRender();
-    }
-
-    function stepByStepHint() {
-      const sys = SYSTEM_LEVELS[appState.level];
-      const expectedScope =
-        appState.inspectionMode === 'all'
-          ? sys.expectedForces
-          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
-
-      const nextMissing = expectedScope.find(
-        (exp) =>
-          !appState.placedVectors.some(
-            (pv) => pv.anchorId === exp.anchorId && pv.code === exp.code && pv.dir === exp.dir
-          )
-      );
-
-      if (!nextMissing) {
-        renderFeedbackList('success', 'Em đã đặt đủ các lực chuẩn cho phạm vi này!', [
-          { status: 'ok', html: 'Hãy bấm nút <strong>Kiểm tra kết quả</strong> màu xanh lá để chấm điểm.' }
-        ]);
-        return;
-      }
-
-      // Highlight the target anchor briefly via drag.snappedAnchorId visual pulse
-      appState.drag.snappedAnchorId = nextMissing.anchorId;
-      resizeAndRender();
-      setTimeout(() => {
-        if (!appState.drag.active) {
-          appState.drag.snappedAnchorId = null;
-          resizeAndRender();
-        }
-      }, 2200);
-
-      playTone('snap');
-      renderFeedbackList(
-        'info',
-        `💡 Gợi ý bước tiếp theo: Hãy tìm thẻ ${nextMissing.htmlSymbol}`,
-        [
-          {
-            status: 'ok',
-            html: `${nextMissing.explanation} (Điểm neo tương ứng đã được nháy vòng tròn xanh trên hình).`
-          }
-        ]
-      );
-    }
-
-    function showStandardAnswer() {
-      const sys = SYSTEM_LEVELS[appState.level];
-      const expectedScope =
-        appState.inspectionMode === 'all'
-          ? sys.expectedForces
-          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
-
-      appState.showStandardOverlay = true;
-      playTone('drop');
-      resizeAndRender();
-
-      const items = expectedScope.map((exp) => ({
-        status: 'ok',
-        html: `<strong>${exp.htmlSymbol}</strong> (${exp.dir === 'up' ? '↑' : '↓'}): ${exp.explanation}`
-      }));
-
-      renderFeedbackList(
-        'info',
-        `📘 Đáp án chuẩn (${appState.inspectionMode === 'all' ? sys.title : sys.objects.find((o) => o.id === appState.activeObjId).name})`,
-        items
-      );
-    }
-
-    function resetFeedbackBox() {
-      document.getElementById('feedback-content').innerHTML = `
-        <div class="flex items-start gap-2.5">
-          <span class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-extrabold flex items-center justify-center shrink-0 mt-0.5">?</span>
-          <div class="leading-relaxed">
-            <p class="font-bold text-slate-800">Nhiệm vụ của em:</p>
-            <p class="text-slate-600 mt-0.5">
-              Kéo thả thẻ vectơ lực từ <strong>Kho thẻ vectơ lực</strong> bên phải vào đúng <strong>điểm neo</strong> (Trọng tâm G hoặc Mặt tiếp xúc) trên hình, sau đó bấm <strong>Kiểm tra kết quả</strong>.
-            </p>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderFeedbackList(tone, heading, items) {
-      const toneStyles = {
-        success: 'bg-emerald-100/90 border-emerald-300 text-emerald-900',
-        warning: 'bg-amber-100/90 border-amber-300 text-amber-950',
-        error: 'bg-rose-100/90 border-rose-300 text-rose-950',
-        info: 'bg-indigo-100/90 border-indigo-300 text-indigo-950'
-      };
-
-      const el = document.getElementById('feedback-content');
-      el.innerHTML = `
-        <div class="px-3 py-2 rounded-xl border font-extrabold text-xs mb-2 ${toneStyles[tone] || toneStyles.info}">
-          ${heading}
-        </div>
-        <div class="space-y-1">
-          ${items
-            .map((it) => {
-              const rowStyle =
-                it.status === 'ok'
-                  ? 'border-emerald-200/80 bg-white'
-                  : it.status === 'err'
-                  ? 'border-rose-200/80 bg-white'
-                  : 'border-amber-200/80 bg-white';
-              return `<div class="px-2.5 py-1.5 rounded-lg border ${rowStyle} text-xs text-slate-700 leading-relaxed">${it.html}</div>`;
-            })
-            .join('')}
-        </div>
-      `;
-    }
-
-    // =========================================================================
-    // 9. HTML5 CANVAS RENDERING ENGINE (OBJECTS, ANCHORS, SMART OFFSET VECTORS)
+    // 8. HTML5 CANVAS RENDERING ENGINE (OBJECTS, ZONES, ANCHORS, VECTORS)
     // =========================================================================
     function resizeAndRender() {
       const container = document.getElementById('canvas-container');
-      const rect = container.getBoundingClientRect();
+      if (!container) return;
+
       const dpr = window.devicePixelRatio || 1;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      if (width === 0 || height === 0) return;
 
-      const w = Math.max(290, Math.floor(rect.width));
-      const h = Math.max(330, Math.floor(rect.height));
+      if (canvas.width !== Math.round(width * dpr) || canvas.height !== Math.round(height * dpr)) {
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+      }
 
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      renderPhysicsScene(w, h);
-    }
-
-    function renderPhysicsScene(width, height) {
+      ctx.save();
+      ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, width, height);
 
       const sys = SYSTEM_LEVELS[appState.level];
-      const objects = sys.objects;
+      const tableTopY = Math.round(height * 0.76);
+      const tableHeight = Math.max(28, height - tableTopY);
+
+      // 1. Draw Tabletop Surface
+      drawTableSurface(width, tableTopY, tableHeight);
+
+      // 2. Compute Stacked Object Boxes (from bottom object up to top object)
       const explodeGap = appState.exploded ? 22 : 0;
-
-      // Compute stack vertical layout
-      const totalObjHeight = objects.reduce((sum, o) => sum + o.height, 0);
-      const totalGaps = (objects.length - 1) * explodeGap + (appState.exploded ? 14 : 0);
-      const tableHeight = 32;
-      const tableTopY = Math.min(
-        height - tableHeight - 34,
-        Math.max(130 + (totalObjHeight + totalGaps) * 0.45, height * 0.56 + (totalObjHeight + totalGaps) * 0.42)
-      );
-
-      // Draw Horizontal Table Surface
-      drawHorizontalTable(width, tableTopY, tableHeight);
-
-      // Compute bounding boxes for each stacked object (from bottom to top)
-      const centerX = width * 0.5;
+      let cursorBottomY = tableTopY - (appState.exploded ? 12 : 0);
       const boxes = [];
-      let cursorBottomY = tableTopY - (appState.exploded ? 14 : 0);
 
-      for (let i = objects.length - 1; i >= 0; i--) {
-        const obj = objects[i];
-        const objW = Math.max(92, Math.min(width * 0.78, width * obj.widthRatio));
+      for (let i = sys.objects.length - 1; i >= 0; i--) {
+        const obj = sys.objects[i];
+        const objW = Math.max(108, Math.round(width * obj.widthRatio));
         const objH = obj.height;
-        const objX = centerX + width * obj.offsetXRatio - objW * 0.5;
-        const objY = cursorBottomY - objH;
+        const objX = Math.round(width * 0.5 - objW * 0.5 + width * obj.offsetXRatio);
+        const objY = Math.round(cursorBottomY - objH);
 
         boxes.unshift({
           ...obj,
@@ -1896,44 +1694,31 @@
         cursorBottomY = objY - explodeGap;
       }
 
-      // Draw dashed alignment guides if Exploded View is ON
-      if (appState.exploded) {
-        ctx.save();
-        ctx.setLineDash([4, 4]);
-        ctx.strokeStyle = 'rgba(99, 102, 241, 0.35)';
-        ctx.lineWidth = 1.2;
-        for (let i = 0; i < boxes.length - 1; i++) {
-          const upper = boxes[i];
-          const lower = boxes[i + 1];
-          const midX = (upper.cx + lower.cx) * 0.5;
-          ctx.beginPath();
-          ctx.moveTo(midX, upper.y + upper.h);
-          ctx.lineTo(midX, lower.y);
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
+      // Draw each object (with luminous Zone Highlight when dragged over!)
+      const isDraggingCardOrOrigin =
+        appState.drag.active &&
+        (appState.drag.kind === 'new-card' || appState.drag.kind === 'move-anchor');
 
-      // Draw each object
       boxes.forEach((box) => {
         const isIsolatedOut =
           appState.inspectionMode === 'single' && appState.activeObjId !== box.id;
+        const isZoneHovered =
+          isDraggingCardOrOrigin && appState.drag.hoveredObjId === box.id;
+
         ctx.save();
         if (isIsolatedOut) {
-          ctx.globalAlpha = 0.28;
+          ctx.globalAlpha = 0.25;
         }
-        drawStackedObject(box);
+        drawStackedObject(box, isZoneHovered);
         ctx.restore();
       });
 
-      // Build valid anchor points for active scope
+      appState.renderedBoxes = boxes;
+
+      // 3. Build valid anchor points for every object (Center of Mass, Top Surface, Bottom Surface)
       const anchors = [];
       boxes.forEach((box) => {
-        const isTarget =
-          appState.inspectionMode === 'all' || appState.activeObjId === box.id;
-        if (!isTarget) return;
-
-        // 1. Center of Mass G_i
+        // Center of mass G_i
         anchors.push({
           id: `com_${box.id}`,
           objId: box.id,
@@ -1941,341 +1726,70 @@
           x: box.cx,
           y: box.cy,
           shortTag: `G${box.num}`,
-          label: `Trọng tâm G${box.num} (${box.shortName})`
+          label: `${box.name} — Trọng tâm G${box.num}`
         });
 
-        // 2. Top contact surface (for objects beneath another object)
+        // Top contact surface (applicable when another object rests on top of this object)
         if (box.num > 1) {
           anchors.push({
             id: `top_${box.id}`,
             objId: box.id,
             kind: 'top',
-            x: box.cx + 18,
+            x: box.cx,
             y: box.y,
             shortTag: `Mặt trên (${box.num})`,
-            label: `Mặt tiếp xúc trên của ${box.shortName}`
+            label: `${box.name} — Mặt tiếp xúc trên`
           });
         }
 
-        // 3. Bottom contact surface
+        // Bottom contact surface (every object rests on either the object below or the table)
         anchors.push({
           id: `bot_${box.id}`,
           objId: box.id,
           kind: 'bot',
-          x: box.cx - 18,
+          x: box.cx,
           y: box.y + box.h,
           shortTag: `Mặt dưới (${box.num})`,
-          label:
-            box.num < objects.length
-              ? `Mặt tiếp xúc dưới của ${box.shortName}`
-              : `Mặt đáy ${box.shortName} (tiếp xúc mặt bàn)`
+          label: `${box.name} — Mặt tiếp xúc dưới`
         });
       });
-
       appState.anchors = anchors;
 
-      // Render Placed Force Vectors with smart horizontal anti-overlap offset
-      const visibleVectors = getVisiblePlacedVectors();
-      renderVectorGroupWithSmartOffsets(visibleVectors, anchors, false);
-
-      // Render Ghost Preview while dragging a new card onto a snapped anchor
-      if (
-        appState.drag.active &&
-        appState.drag.kind === 'new-card' &&
-        appState.drag.snappedAnchorId &&
-        appState.drag.cardData
-      ) {
-        const snapAnchor = anchors.find((a) => a.id === appState.drag.snappedAnchorId);
-        if (snapAnchor) {
-          drawSingleForceVector({
-            x: snapAnchor.x,
-            y: snapAnchor.y,
-            offsetX: 0,
-            dir: appState.drag.cardData.defaultDir,
-            mag: 2,
-            label: appState.drag.cardData.canvasLabel,
-            themeKey: appState.drag.cardData.theme,
-            evalState: null,
-            isGhost: true
-          });
-        }
+      // 4. Draw Zone Highlight Band + Magnetic Tether during drag
+      if (isDraggingCardOrOrigin) {
+        drawActiveDragZoneOverlay();
       }
 
-      // Render Standard Solution Overlay if requested
+      // 5. Draw Anchor Points for Active Inspection Scope
+      drawAnchorPoints();
+
+      // 6. Draw Placed Force Vectors (with horizontal anti-overlap lane offsets)
+      drawPlacedForceVectors();
+
+      // 7. Draw Ghost Preview Vector when snapped to an anchor
+      if (isDraggingCardOrOrigin && appState.drag.snappedAnchorId) {
+        drawSnappedGhostVector();
+      }
+
+      // 8. Draw Standard Answer Overlay if requested
       if (appState.showStandardOverlay) {
-        const expectedScope =
-          appState.inspectionMode === 'all'
-            ? sys.expectedForces
-            : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
-
-        const solutionItems = expectedScope.map((ef, idx) => ({
-          uid: `sol_${idx}`,
-          anchorId: ef.anchorId,
-          dir: ef.dir,
-          mag: 2,
-          canvasLabel: ef.canvasLabel,
-          theme: ef.theme,
-          evalState: 'solution'
-        }));
-        renderVectorGroupWithSmartOffsets(solutionItems, anchors, true);
-      }
-
-      // Draw Anchor Points on top layer (highlighted during drag!)
-      const isDragging = appState.drag.active && (appState.drag.kind === 'new-card' || appState.drag.kind === 'move-anchor');
-      anchors.forEach((a) => {
-        const isSnapped = appState.drag.snappedAnchorId === a.id;
-        drawAnchorNode(a, isDragging, isSnapped);
-      });
-    }
-
-    // Smart horizontal offset when multiple vertical vectors share the same X column or anchor
-    function renderVectorGroupWithSmartOffsets(vectors, anchors, isSolutionLayer) {
-      // Group vectors by approximate X column (within 24px) & same direction so vertical shafts never overlap
-      const placedCoords = [];
-
-      vectors.forEach((v) => {
-        const anchor = anchors.find((a) => a.id === v.anchorId);
-        if (!anchor) return;
-
-        let offsetX = isSolutionLayer ? 16 : 0;
-
-        // Check collisions with already-drawn vectors in the same vertical lane & direction
-        let attempts = 0;
-        while (
-          placedCoords.some(
-            (p) =>
-              p.dir === v.dir &&
-              Math.abs(p.x - (anchor.x + offsetX)) < 22 &&
-              Math.abs(p.y - anchor.y) < 75
-          ) &&
-          attempts < 6
-        ) {
-          attempts++;
-          const sign = attempts % 2 === 1 ? 1 : -1;
-          const step = Math.ceil(attempts / 2) * 26;
-          offsetX = (isSolutionLayer ? 16 : 0) + sign * step;
-        }
-
-        placedCoords.push({ x: anchor.x + offsetX, y: anchor.y, dir: v.dir });
-
-        const geom = drawSingleForceVector({
-          x: anchor.x,
-          y: anchor.y,
-          offsetX,
-          dir: v.dir,
-          mag: v.mag || 2,
-          label: v.canvasLabel,
-          themeKey: v.theme,
-          evalState: v.evalState,
-          isGhost: false
-        });
-
-        if (!isSolutionLayer) {
-          v.originScreenPos = geom.origin;
-          v.tipScreenPos = geom.tip;
-        }
-      });
-    }
-
-    function drawSingleForceVector({ x, y, offsetX, dir, mag, label, themeKey, evalState, isGhost }) {
-      const theme = FORCE_THEMES[themeKey] || FORCE_THEMES.gravity;
-      let color = theme.stroke;
-      if (evalState === 'correct') color = '#059669';
-      if (evalState === 'wrong') color = '#dc2626';
-
-      const drawX = x + offsetX;
-      const drawY = y;
-      const shaftLen = 34 + (mag || 2) * 14;
-
-      let tipX = drawX;
-      let tipY = drawY;
-      if (dir === 'up') tipY = drawY - shaftLen;
-      else if (dir === 'down') tipY = drawY + shaftLen;
-      else tipX = drawX + shaftLen;
-
-      ctx.save();
-      if (isGhost || evalState === 'solution') {
-        ctx.setLineDash([5, 4]);
-        ctx.globalAlpha = isGhost ? 0.72 : 0.88;
-      }
-
-      // If shifted horizontally from true anchor, draw subtle dashed tie-line back to anchor
-      if (Math.abs(offsetX) > 2) {
-        ctx.save();
-        ctx.setLineDash([3, 3]);
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1.2;
-        ctx.globalAlpha = 0.65;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(drawX, drawY);
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // Evaluation glow halo
-      if (evalState === 'correct' || evalState === 'wrong') {
-        ctx.save();
-        ctx.strokeStyle = evalState === 'correct' ? 'rgba(16, 185, 129, 0.35)' : 'rgba(239, 68, 68, 0.35)';
-        ctx.lineWidth = 9;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(drawX, drawY);
-        ctx.lineTo(tipX, tipY);
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // Vector Shaft
-      ctx.strokeStyle = color;
-      ctx.fillStyle = color;
-      ctx.lineWidth = 3.2;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(drawX, drawY);
-      ctx.lineTo(tipX, tipY);
-      ctx.stroke();
-
-      // Arrowhead
-      ctx.setLineDash([]);
-      const angle = Math.atan2(tipY - drawY, tipX - drawX);
-      const headLen = 10;
-      ctx.beginPath();
-      ctx.moveTo(tipX, tipY);
-      ctx.lineTo(tipX - headLen * Math.cos(angle - Math.PI / 6), tipY - headLen * Math.sin(angle - Math.PI / 6));
-      ctx.lineTo(tipX - headLen * Math.cos(angle + Math.PI / 6), tipY - headLen * Math.sin(angle + Math.PI / 6));
-      ctx.closePath();
-      ctx.fill();
-
-      // Origin handle dot
-      ctx.beginPath();
-      ctx.arc(drawX, drawY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.fill();
-
-      // Label Pill next to Arrowhead (with vector arrow drawn above symbol!)
-      const badgeText =
-        evalState === 'correct'
-          ? `✓ ${label}`
-          : evalState === 'wrong'
-          ? `✗ ${label}`
-          : label;
-
-      ctx.font = '800 12px Inter, sans-serif';
-      const padX = 7;
-      const textW = ctx.measureText(badgeText).width + padX * 2;
-      const badgeH = 21;
-
-      const labelSide = offsetX < 0 ? -1 : 1;
-      const badgeX =
-        dir === 'right'
-          ? tipX + 6
-          : labelSide > 0
-          ? tipX + 9
-          : tipX - textW - 9;
-      const badgeY =
-        dir === 'up'
-          ? tipY - 4
-          : dir === 'down'
-          ? tipY - 16
-          : tipY - badgeH * 0.5;
-
-      // White card pill
-      ctx.fillStyle = '#ffffff';
-      roundRect(ctx, badgeX, badgeY, textW, badgeH, 6);
-      ctx.fill();
-
-      ctx.lineWidth = 1.6;
-      ctx.strokeStyle = color;
-      ctx.stroke();
-
-      ctx.fillStyle = color;
-      ctx.textBaseline = 'middle';
-      ctx.fillText(badgeText, badgeX + padX, badgeY + badgeH * 0.5 + 1);
-
-      // Draw tiny vector arrow above the main letter of label
-      const symbolStartX =
-        badgeX +
-        padX +
-        (evalState === 'correct' || evalState === 'wrong' ? ctx.measureText('✓ ').width : 0);
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(symbolStartX, badgeY + 3.5);
-      ctx.lineTo(symbolStartX + 9, badgeY + 3.5);
-      ctx.lineTo(symbolStartX + 6.5, badgeY + 1.8);
-      ctx.stroke();
-
-      ctx.restore();
-
-      return {
-        origin: { x: drawX, y: drawY },
-        tip: { x: tipX, y: tipY }
-      };
-    }
-
-    function drawAnchorNode(anchor, isDragging, isSnapped) {
-      const { x, y, kind, shortTag } = anchor;
-      ctx.save();
-
-      // Magnetic field glow ring during drag or snap
-      if (isSnapped) {
-        ctx.fillStyle = 'rgba(16, 185, 129, 0.22)';
-        ctx.beginPath();
-        ctx.arc(x, y, 20, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.strokeStyle = '#059669';
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.arc(x, y, 14, 0, Math.PI * 2);
-        ctx.stroke();
-      } else if (isDragging) {
-        ctx.fillStyle = 'rgba(79, 70, 229, 0.14)';
-        ctx.beginPath();
-        ctx.arc(x, y, 16, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.setLineDash([3, 3]);
-        ctx.strokeStyle = '#4f46e5';
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        ctx.arc(x, y, 12, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-
-      // Core anchor dot
-      ctx.beginPath();
-      ctx.arc(x, y, isSnapped ? 7 : isDragging ? 6 : 4.8, 0, Math.PI * 2);
-      ctx.fillStyle = isSnapped ? '#059669' : kind === 'com' ? '#0f172a' : '#0284c7';
-      ctx.fill();
-
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = '#ffffff';
-      ctx.stroke();
-
-      // Show G_i tag next to center-of-mass dot for clarity
-      if (kind === 'com') {
-        ctx.font = '700 11px Inter, sans-serif';
-        ctx.fillStyle = '#334155';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(shortTag, x + 9, y);
+        drawStandardAnswerOverlay();
       }
 
       ctx.restore();
     }
 
-    function drawHorizontalTable(width, tableTopY, tableHeight) {
+    function drawTableSurface(width, tableTopY, tableHeight) {
+      // Tabletop gradient
       const grad = ctx.createLinearGradient(0, tableTopY, 0, tableTopY + tableHeight);
-      grad.addColorStop(0, '#94a3b8');
-      grad.addColorStop(0.3, '#cbd5e1');
-      grad.addColorStop(1, '#e2e8f0');
-
+      grad.addColorStop(0, '#cbd5e1');
+      grad.addColorStop(1, '#94a3b8');
       ctx.fillStyle = grad;
       ctx.fillRect(0, tableTopY, width, tableHeight);
 
-      ctx.strokeStyle = '#475569';
-      ctx.lineWidth = 2.5;
+      // Top edge line
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, tableTopY);
       ctx.lineTo(width, tableTopY);
@@ -2293,143 +1807,632 @@
 
       // Label "Mặt bàn"
       ctx.font = '700 11px Inter, sans-serif';
-      ctx.fillStyle = '#475569';
-      ctx.fillText('Mặt bàn phẳng ngang', 14, tableTopY + 19);
+      ctx.fillStyle = '#334155';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Mặt bàn nằm ngang', 14, tableTopY + tableHeight * 0.5);
     }
 
-    function drawStackedObject(box) {
+    function drawStackedObject(box, isZoneHovered = false) {
       const { x, y, w, h, kind, shortName } = box;
       ctx.save();
 
       if (kind === 'book') {
-        // Red textbook inspired by KNTT Physics 10
-        roundRect(ctx, x, y, w, h, 7);
-        ctx.fillStyle = '#ef4444';
+        // Red hardcover book illustration (matching textbook figure)
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 8);
         ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#b91c1c';
-        ctx.stroke();
 
-        // White pages block inside book
-        const padX = 9;
-        const padY = 6;
-        if (w > padX * 2 + 12 && h > padY * 2 + 6) {
-          roundRect(ctx, x + padX, y + padY, w - padX * 2, h - padY * 2, 3);
-          ctx.fillStyle = '#f8fafc';
-          ctx.fill();
+        // Spine & inner white pages
+        ctx.fillStyle = '#f8fafc';
+        ctx.beginPath();
+        ctx.roundRect(x + 12, y + 6, w - 16, h - 12, [4, 0, 0, 4]);
+        ctx.fill();
 
-          ctx.strokeStyle = '#cbd5e1';
-          ctx.lineWidth = 1;
-          for (let ly = y + padY + 5; ly < y + h - padY - 3; ly += 5) {
-            ctx.beginPath();
-            ctx.moveTo(x + padX + 2, ly);
-            ctx.lineTo(x + w - padX - 2, ly);
-            ctx.stroke();
-          }
-
-          // Teal ribbon bookmark
-          const rx = x + w * 0.62;
-          ctx.fillStyle = '#0d9488';
+        // Page lines
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 1;
+        for (let py = y + 11; py < y + h - 8; py += 4) {
           ctx.beginPath();
-          ctx.moveTo(rx, y + padY);
-          ctx.lineTo(rx + 11, y + padY);
-          ctx.lineTo(rx + 11, y + h - 3);
-          ctx.lineTo(rx + 5.5, y + h - 7);
-          ctx.lineTo(rx, y + h - 3);
-          ctx.closePath();
-          ctx.fill();
+          ctx.moveTo(x + 16, py);
+          ctx.lineTo(x + w - 6, py);
+          ctx.stroke();
         }
-      } else if (kind === 'plank') {
-        // Wooden plank
-        const grad = ctx.createLinearGradient(x, y, x, y + h);
-        grad.addColorStop(0, '#f59e0b');
-        grad.addColorStop(0.55, '#eab308');
-        grad.addColorStop(1, '#d97706');
 
-        roundRect(ctx, x, y, w, h, 5);
-        ctx.fillStyle = grad;
+        // Teal bookmark ribbon
+        ctx.fillStyle = '#0d9488';
+        ctx.beginPath();
+        ctx.moveTo(x + w * 0.68, y + h - 6);
+        ctx.lineTo(x + w * 0.68 + 8, y + h + 6);
+        ctx.lineTo(x + w * 0.68 + 14, y + h - 6);
+        ctx.closePath();
         ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#92400e';
+      } else if (kind === 'plank') {
+        // Warm wooden plank illustration
+        const woodGrad = ctx.createLinearGradient(x, y, x, y + h);
+        woodGrad.addColorStop(0, '#f59e0b');
+        woodGrad.addColorStop(1, '#d97706');
+        ctx.fillStyle = woodGrad;
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 5);
+        ctx.fill();
+
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        // Wood grain waves
-        ctx.strokeStyle = 'rgba(120, 53, 15, 0.32)';
-        ctx.lineWidth = 1.2;
-        for (let gy = y + 9; gy < y + h - 6; gy += 10) {
+        // Subtle wood grain waves
+        ctx.strokeStyle = 'rgba(146, 64, 14, 0.25)';
+        ctx.lineWidth = 1.1;
+        for (let gy = y + 10; gy < y + h - 6; gy += 9) {
           ctx.beginPath();
           ctx.moveTo(x + 8, gy);
-          ctx.bezierCurveTo(x + w * 0.32, gy - 4, x + w * 0.68, gy + 4, x + w - 8, gy);
+          ctx.bezierCurveTo(x + w * 0.35, gy - 2, x + w * 0.65, gy + 2, x + w - 8, gy);
           ctx.stroke();
         }
       } else if (kind === 'pencilcase') {
-        // Blue pencil case
-        const grad = ctx.createLinearGradient(x, y, x, y + h);
-        grad.addColorStop(0, '#38bdf8');
-        grad.addColorStop(1, '#0284c7');
-
-        roundRect(ctx, x, y, w, h, 7);
-        ctx.fillStyle = grad;
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#0369a1';
-        ctx.stroke();
-
-        // Zipper line
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
-        ctx.setLineDash([4, 3]);
-        ctx.lineWidth = 1.5;
+        // Blue zippered pencil case
+        const caseGrad = ctx.createLinearGradient(x, y, x, y + h);
+        caseGrad.addColorStop(0, '#3b82f6');
+        caseGrad.addColorStop(1, '#1d4ed8');
+        ctx.fillStyle = caseGrad;
         ctx.beginPath();
-        ctx.moveTo(x + 8, y + h * 0.45);
-        ctx.lineTo(x + w - 8, y + h * 0.45);
+        ctx.roundRect(x, y, w, h, 10);
+        ctx.fill();
+
+        // Zipper stripe
+        ctx.strokeStyle = '#93c5fd';
+        ctx.setLineDash([4, 3]);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x + 12, y + h * 0.35);
+        ctx.lineTo(x + w - 12, y + h * 0.35);
         ctx.stroke();
         ctx.setLineDash([]);
       } else {
-        // Wooden cube ('cube')
-        const grad = ctx.createLinearGradient(x, y, x, y + h);
-        grad.addColorStop(0, '#fb923c');
-        grad.addColorStop(1, '#ea580c');
-
-        roundRect(ctx, x, y, w, h, 5);
-        ctx.fillStyle = grad;
+        // Wooden cube block
+        const cubeGrad = ctx.createLinearGradient(x, y, x, y + h);
+        cubeGrad.addColorStop(0, '#a855f7');
+        cubeGrad.addColorStop(1, '#7e22ce');
+        ctx.fillStyle = cubeGrad;
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 6);
         ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#9a3412';
-        ctx.stroke();
       }
 
-      // Object name badge on top-left corner of object
-      ctx.font = '700 10.5px Inter, sans-serif';
-      const badgeW = ctx.measureText(shortName).width + 10;
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.76)';
-      roundRect(ctx, x + 5, y + 5, badgeW, 17, 5);
-      ctx.fill();
+      // Luminous outer aura when pointer enters this object's drag zone
+      if (isZoneHovered) {
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = 'rgba(16, 185, 129, 0.55)';
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.roundRect(x - 3, y - 3, w + 6, h + 6, 9);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
 
-      ctx.fillStyle = '#ffffff';
+      // Object name badge on the left side of the object
+      ctx.font = '700 11px Inter, sans-serif';
+      const labelW = ctx.measureText(shortName).width + 14;
+      const badgeX = Math.max(8, x - labelW - 10);
+      const badgeY = y + h * 0.5 - 10;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(badgeX, badgeY, labelW, 20, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#1e293b';
+      ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(shortName, x + 10, y + 13.8);
+      ctx.fillText(shortName, badgeX + labelW * 0.5, badgeY + 10);
 
       ctx.restore();
     }
 
-    function roundRect(ctx, x, y, w, h, r) {
-      const radius = Math.min(r, w / 2, h / 2);
+    function drawActiveDragZoneOverlay() {
+      const snappedId = appState.drag.snappedAnchorId;
+      const anchor = appState.anchors.find((a) => a.id === snappedId);
+      const cursor = appState.drag.cursorCanvasPos;
+      if (!anchor) return;
+
+      const box = appState.renderedBoxes.find((b) => b.id === anchor.objId);
+      if (!box) return;
+
+      ctx.save();
+
+      // Highlight specific sub-zone: top strip, center body, or bottom strip
+      if (anchor.kind === 'top') {
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.28)';
+        ctx.fillRect(box.x, box.y - 5, box.w, 12);
+        ctx.strokeStyle = '#059669';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(box.x, box.y);
+        ctx.lineTo(box.x + box.w, box.y);
+        ctx.stroke();
+      } else if (anchor.kind === 'bot') {
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.28)';
+        ctx.fillRect(box.x, box.y + box.h - 7, box.w, 12);
+        ctx.strokeStyle = '#059669';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(box.x, box.y + box.h);
+        ctx.lineTo(box.x + box.w, box.y + box.h);
+        ctx.stroke();
+      } else {
+        // Center of mass G zone
+        ctx.fillStyle = 'rgba(99, 102, 241, 0.22)';
+        ctx.beginPath();
+        ctx.roundRect(box.x + 4, box.y + 4, box.w - 8, box.h - 8, 6);
+        ctx.fill();
+      }
+
+      // Draw dashed magnetic tether line from cursor to snapped anchor
+      if (cursor && cursor.inside) {
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(cursor.x, cursor.y);
+        ctx.lineTo(anchor.x, anchor.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Floating callout tag right above the object
+      const tagText = `Đặt vào: ${anchor.label}`;
+      ctx.font = '700 11px Inter, sans-serif';
+      const tw = ctx.measureText(tagText).width + 16;
+      const tx = Math.max(8, Math.min(canvas.clientWidth - tw - 8, box.cx - tw * 0.5));
+      const ty = Math.max(42, box.y - 28);
+
+      ctx.fillStyle = '#065f46';
       ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.arcTo(x + w, y, x + w, y + h, radius);
-      ctx.arcTo(x + w, y + h, x, y + h, radius);
-      ctx.arcTo(x, y + h, x, y, radius);
-      ctx.arcTo(x, y, x + w, y, radius);
+      ctx.roundRect(tx, ty, tw, 22, 7);
+      ctx.fill();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(tagText, tx + tw * 0.5, ty + 11);
+
+      ctx.restore();
+    }
+
+    function drawAnchorPoints() {
+      const eligible = getEligibleAnchors();
+      const snappedId = appState.drag.snappedAnchorId;
+
+      eligible.forEach((a) => {
+        const isSnapped = a.id === snappedId;
+        const radius = isSnapped ? 9 : a.kind === 'com' ? 6.5 : 5.5;
+
+        ctx.save();
+        if (isSnapped) {
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, 16, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.25)';
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = isSnapped ? '#10b981' : a.kind === 'com' ? '#4f46e5' : '#0ea5e9';
+        ctx.fill();
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        // Label G_i next to center of mass
+        if (a.kind === 'com') {
+          ctx.font = '800 11px Inter, sans-serif';
+          ctx.fillStyle = '#1e1b4b';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(a.shortTag, a.x + 10, a.y);
+        }
+        ctx.restore();
+      });
+    }
+
+    function drawArrowVector(x, y, dir, mag, color, label, evalState = null, isGhost = false) {
+      ctx.save();
+      if (isGhost) {
+        ctx.globalAlpha = 0.62;
+        ctx.setLineDash([5, 4]);
+      }
+
+      let endX = x;
+      let endY = y;
+      if (dir === 'up') endY = y - mag;
+      else if (dir === 'down') endY = y + mag;
+      else endX = x + mag;
+
+      // Origin dot
+      ctx.beginPath();
+      ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      // Shaft
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3.2;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(endX, endY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Arrowhead
+      const headLen = 11;
+      const angle = Math.atan2(endY - y, endX - x);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(endX, endY);
+      ctx.lineTo(
+        endX - headLen * Math.cos(angle - Math.PI / 6),
+        endY - headLen * Math.sin(angle - Math.PI / 6)
+      );
+      ctx.lineTo(
+        endX - headLen * Math.cos(angle + Math.PI / 6),
+        endY - headLen * Math.sin(angle + Math.PI / 6)
+      );
       ctx.closePath();
+      ctx.fill();
+
+      // Vector label pill with over-arrow
+      ctx.font = '800 12px Inter, sans-serif';
+      const displayLabel = `→ ${label}`;
+      const pad = 6;
+      const tw = ctx.measureText(displayLabel).width + pad * 2;
+      const th = 20;
+
+      let lx = endX + 8;
+      let ly = endY - th * 0.5;
+      if (dir === 'up') {
+        lx = endX + 9;
+        ly = endY - 4;
+      } else if (dir === 'down') {
+        lx = endX + 9;
+        ly = endY - 16;
+      } else {
+        lx = endX + 8;
+        ly = endY - th * 0.5;
+      }
+
+      ctx.fillStyle =
+        evalState === 'correct'
+          ? '#ecfdf5'
+          : evalState === 'wrong'
+          ? '#fff1f2'
+          : 'rgba(255, 255, 255, 0.94)';
+      ctx.strokeStyle =
+        evalState === 'correct' ? '#10b981' : evalState === 'wrong' ? '#e11d48' : color;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.roundRect(lx, ly, tw, th, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = color;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(displayLabel, lx + tw * 0.5, ly + th * 0.5);
+
+      ctx.restore();
+      return { x: endX, y: endY };
+    }
+
+    function drawPlacedForceVectors() {
+      const visible = getVisiblePlacedVectors();
+      // Group vertical vectors sharing nearly the same X column so arrows & labels never overlap
+      const laneOffsets = [0, -24, 24, -46, 46, -68, 68];
+
+      visible.forEach((v, idx) => {
+        const anchor = appState.anchors.find((a) => a.id === v.anchorId);
+        if (!anchor) return;
+
+        const theme = FORCE_THEMES[v.theme] || FORCE_THEMES.gravity;
+        const offsetX = v.dir === 'right' ? 0 : laneOffsets[idx % laneOffsets.length];
+        const drawX = anchor.x + offsetX;
+        const drawY = anchor.y;
+
+        // Horizontal dashed guide connecting anchor to offset vertical lane
+        if (offsetX !== 0) {
+          ctx.save();
+          ctx.strokeStyle = 'rgba(100, 116, 139, 0.45)';
+          ctx.setLineDash([3, 3]);
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(anchor.x, anchor.y);
+          ctx.lineTo(drawX, drawY);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        const tip = drawArrowVector(
+          drawX,
+          drawY,
+          v.dir,
+          v.mag || 68,
+          theme.stroke,
+          v.canvasLabel,
+          v.evalState,
+          false
+        );
+        v.tipScreenPos = tip;
+      });
+    }
+
+    function drawSnappedGhostVector() {
+      const anchor = appState.anchors.find((a) => a.id === appState.drag.snappedAnchorId);
+      if (!anchor) return;
+
+      let card = appState.drag.cardData;
+      if (!card && appState.drag.kind === 'move-anchor') {
+        const existing = appState.placedVectors.find((v) => v.uid === appState.drag.vectorUid);
+        if (existing) {
+          card = {
+            theme: existing.theme,
+            defaultDir: existing.dir,
+            canvasLabel: existing.canvasLabel
+          };
+        }
+      }
+      if (!card) return;
+
+      const theme = FORCE_THEMES[card.theme] || FORCE_THEMES.gravity;
+      drawArrowVector(
+        anchor.x + 14,
+        anchor.y,
+        card.defaultDir,
+        66,
+        theme.stroke,
+        card.canvasLabel,
+        null,
+        true
+      );
+    }
+
+    function drawStandardAnswerOverlay() {
+      const sys = SYSTEM_LEVELS[appState.level];
+      const expected =
+        appState.inspectionMode === 'all'
+          ? sys.expectedForces
+          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
+
+      const laneOffsets = [16, -22, 38, -44, 60, -66];
+
+      expected.forEach((f, idx) => {
+        const anchor = appState.anchors.find((a) => a.id === f.anchorId);
+        if (!anchor) return;
+        const theme = FORCE_THEMES[f.theme] || FORCE_THEMES.gravity;
+        const drawX = anchor.x + laneOffsets[idx % laneOffsets.length];
+        drawArrowVector(drawX, anchor.y, f.dir, 72, theme.stroke, `${f.canvasLabel} (chuẩn)`, 'correct', true);
+      });
     }
 
     // =========================================================================
-    // 10. BOOTSTRAP ON LOAD
+    // 9. EVALUATION, STEP-BY-STEP HINTS & STANDARD ANSWER
+    // =========================================================================
+    function resetFeedbackBox() {
+      const box = document.getElementById('feedback-content');
+      if (!box) return;
+      box.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-extrabold flex items-center justify-center shrink-0 mt-0.5">?</span>
+          <div class="leading-relaxed">
+            <p class="font-bold text-slate-800">Nhiệm vụ của em:</p>
+            <p class="text-slate-600 mt-0.5">
+              Hãy xác định các lực tác dụng lên vật đang khảo sát. Kéo thẻ vectơ lực từ <strong>Kho thẻ vectơ lực</strong> bên phải và thả vào đúng <strong>điểm neo</strong> (Trọng tâm G hoặc Mặt tiếp xúc), sau đó bấm <strong>Kiểm tra kết quả</strong>.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    function stepByStepHint() {
+      const sys = SYSTEM_LEVELS[appState.level];
+      const expected =
+        appState.inspectionMode === 'all'
+          ? sys.expectedForces
+          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
+      const placed = getVisiblePlacedVectors();
+
+      // Find the first missing or incorrectly placed expected force
+      const nextMissing = expected.find(
+        (exp) =>
+          !placed.some(
+            (p) =>
+              p.code === exp.code &&
+              p.targetObj === exp.targetObj &&
+              p.anchorId === exp.anchorId &&
+              p.dir === exp.dir
+          )
+      );
+
+      playTone('snap');
+      const box = document.getElementById('feedback-content');
+
+      if (!nextMissing) {
+        box.innerHTML = `
+          <div class="flex items-start gap-2 text-emerald-800">
+            <span class="font-extrabold">💡 Gợi ý:</span>
+            <span>Em đã đặt đủ các lực cần thiết cho phạm vi này! Hãy kiểm tra xem có thừa lực gây nhiễu nào không rồi bấm <strong>Kiểm tra kết quả</strong>.</span>
+          </div>
+        `;
+        return;
+      }
+
+      const anchor = appState.anchors.find((a) => a.id === nextMissing.anchorId);
+      box.innerHTML = `
+        <div class="flex items-start gap-2.5 text-amber-900">
+          <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-extrabold flex items-center justify-center shrink-0 mt-0.5">!</span>
+          <div class="leading-relaxed">
+            <p class="font-extrabold">Gợi ý bước tiếp theo:</p>
+            <p class="mt-0.5">
+              Hãy tìm thẻ ${nextMissing.htmlSymbol} (<em>${nextMissing.desc}</em>), kéo thả vào vị trí <strong>${
+                anchor ? anchor.label : nextMissing.anchorId
+              }</strong> và đảm bảo mũi tên hướng <strong>${
+                nextMissing.dir === 'up' ? 'thẳng đứng lên trên (↑)' : 'thẳng đứng xuống dưới (↓)'
+              }</strong>.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    function showStandardAnswer() {
+      appState.showStandardOverlay = !appState.showStandardOverlay;
+      playTone('snap');
+      resizeAndRender();
+
+      const sys = SYSTEM_LEVELS[appState.level];
+      const expected =
+        appState.inspectionMode === 'all'
+          ? sys.expectedForces
+          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
+
+      const box = document.getElementById('feedback-content');
+      box.innerHTML = `
+        <div class="space-y-1.5">
+          <p class="font-extrabold text-indigo-800">
+            📘 Đáp án chuẩn (${appState.inspectionMode === 'all' ? 'Toàn bộ hệ vật' : 'Vật đang xét'} — ${expected.length} lực):
+          </p>
+          <ul class="list-disc pl-5 space-y-1 text-slate-700">
+            ${expected.map((f) => `<li>${f.explanation}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    function evaluateStudentWork() {
+      const sys = SYSTEM_LEVELS[appState.level];
+      const expected =
+        appState.inspectionMode === 'all'
+          ? sys.expectedForces
+          : sys.expectedForces.filter((f) => f.targetObj === appState.activeObjId);
+      const placed = getVisiblePlacedVectors();
+
+      const correctItems = [];
+      const wrongItems = [];
+      const missingItems = [];
+
+      placed.forEach((p) => {
+        const exactMatch = expected.find(
+          (e) =>
+            e.code === p.code &&
+            e.targetObj === p.targetObj &&
+            e.anchorId === p.anchorId &&
+            e.dir === p.dir
+        );
+
+        if (exactMatch) {
+          p.evalState = 'correct';
+          correctItems.push(exactMatch.explanation);
+          return;
+        }
+
+        p.evalState = 'wrong';
+        const sameCode = expected.find((e) => e.code === p.code && e.targetObj === p.targetObj);
+        if (sameCode) {
+          if (sameCode.anchorId !== p.anchorId) {
+            const rightAnchor = appState.anchors.find((a) => a.id === sameCode.anchorId);
+            wrongItems.push(
+              `Lực ${p.htmlSymbol} đặt sai điểm neo (cần đặt tại <strong>${
+                rightAnchor ? rightAnchor.label : sameCode.anchorId
+              }</strong>).`
+            );
+          } else if (sameCode.dir !== p.dir) {
+            wrongItems.push(
+              `Lực ${p.htmlSymbol} sai chiều tác dụng (cần hướng <strong>${
+                sameCode.dir === 'up' ? 'lên trên ↑' : 'xuống dưới ↓'
+              }</strong>).`
+            );
+          }
+        } else {
+          const distractor = sys.distractorCards.find((d) => d.code === p.code);
+          if (distractor) {
+            wrongItems.push(`Thừa lực ${p.htmlSymbol}: ${distractor.wrongReason}`);
+          } else {
+            wrongItems.push(
+              `Lực ${p.htmlSymbol} không tác dụng trực tiếp lên vật đang xét (lưu ý chỉ vẽ các ngoại lực đặt lên chính vật đang khảo sát).`
+            );
+          }
+        }
+      });
+
+      expected.forEach((e) => {
+        const found = placed.some(
+          (p) =>
+            p.code === e.code &&
+            p.targetObj === e.targetObj &&
+            p.anchorId === e.anchorId &&
+            p.dir === e.dir
+        );
+        if (!found) {
+          missingItems.push(`${e.htmlSymbol} (${e.desc})`);
+        }
+      });
+
+      renderPlacedVectorsList();
+      resizeAndRender();
+
+      const feedbackBox = document.getElementById('feedback-box');
+      const feedbackContent = document.getElementById('feedback-content');
+
+      if (wrongItems.length === 0 && missingItems.length === 0 && correctItems.length === expected.length) {
+        playTone('success');
+        feedbackContent.innerHTML = `
+          <div class="rounded-xl bg-emerald-50 border border-emerald-300 p-2.5 text-emerald-900 space-y-1">
+            <p class="font-extrabold text-sm">🎉 Chính xác hoàn toàn! (${correctItems.length}/${expected.length} lực)</p>
+            <p class="text-xs leading-relaxed">
+              Em đã xác định đúng toàn bộ điểm đặt, phương và chiều của các lực tác dụng lên vật đang khảo sát.
+            </p>
+          </div>
+        `;
+      } else {
+        playTone('error');
+        feedbackBox.classList.remove('animate-shake');
+        void feedbackBox.offsetWidth;
+        feedbackBox.classList.add('animate-shake');
+
+        feedbackContent.innerHTML = `
+          <div class="space-y-1.5">
+            <p class="font-extrabold text-rose-700">
+              ⚠️ Chưa chính xác (Đúng ${correctItems.length}/${expected.length} lực) — Chi tiết kiểm tra:
+            </p>
+            ${
+              wrongItems.length > 0
+                ? `<ul class="list-disc pl-5 text-rose-700 space-y-0.5">${wrongItems
+                    .map((w) => `<li>${w}</li>`)
+                    .join('')}</ul>`
+                : ''
+            }
+            ${
+              missingItems.length > 0
+                ? `<p class="text-amber-800 font-semibold">• Còn thiếu lực: ${missingItems.join(', ')}</p>`
+                : ''
+            }
+          </div>
+        `;
+      }
+    }
+
+    // =========================================================================
+    // 10. INITIALIZATION ON WINDOW LOAD & RESIZE
     // =========================================================================
     window.addEventListener('resize', resizeAndRender);
-    window.addEventListener('DOMContentLoaded', () => {
+    window.onload = function () {
       setSystemLevel(2);
-    });
+    };
   </script>
 </body>
 </html>

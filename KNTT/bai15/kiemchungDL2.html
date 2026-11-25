@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thí nghiệm ảo: Minh họa Định luật II Newton - Vật lí 10 (KNTT)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Inter & JetBrains Mono cho đồng hồ điện tử -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- MathJax 3 để hiển thị công thức toán học sắc nét -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            user-select: none;
+        }
+        .font-mono-led {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Tùy chỉnh thanh cuộn mảnh cho panel trái */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Custom range slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #dbeafe;
+            border-radius: 999px;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col text-slate-800">
+
+    <!-- THANH TIÊU ĐỀ TRÊN CÙNG -->
+    <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-sm shrink-0 z-10">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                F=ma
+            </div>
+            <div>
+                <h1 class="text-sm sm:text-base font-bold text-slate-800 tracking-tight uppercase">
+                    THÍ NGHIỆM ẢO: MINH HỌA ĐỊNH LUẬT II NEWTON (VẬT LÍ 10 - KNTT)
+                </h1>
+                <p class="text-xs text-slate-500 hidden sm:block">
+                    Mô phỏng thiết bị máng trượt đệm khí Hình 15.2 & Thu thập số liệu Bảng 15.1
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <span id="statusBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Sẵn sàng đo
+            </span>
+        </div>
+    </header>
+
+    <!-- THÔNG BÁO TOAST (THAY THẾ ALERT) -->
+    <div id="toastContainer" class="fixed top-14 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- NỘI DUNG CHÍNH: 2 PANEL LOCKED-VIEWPORT -->
+    <main class="flex-1 flex flex-col lg:flex-row gap-3 p-3 overflow-hidden">
+        
+        <!-- PANEL TRÁI (36% chiều rộng trên desktop): ĐIỀU KHIỂN & KIẾN THỨC -->
+        <section class="w-full lg:w-[36%] h-full bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
+            
+            <!-- Tabs chuyển đổi -->
+            <div class="flex border-b border-slate-200 bg-slate-50/70 p-1 gap-1 shrink-0">
+                <button id="tabBtnControl" onclick="switchLeftTab('control')" class="flex-1 py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-white text-blue-600 shadow-sm border border-slate-200/80 flex items-center justify-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    Bảng Điều Khiển
+                </button>
+                <button id="tabBtnTheory" onclick="switchLeftTab('theory')" class="flex-1 py-2 px-3 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all flex items-center justify-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    Kiến thức & Tiến hành
+                </button>
+            </div>
+
+            <!-- NỘI DUNG TAB 1: BẢNG ĐIỀU KHIỂN -->
+            <div id="leftTabControl" class="flex-1 overflow-y-auto custom-scrollbar p-3.5 space-y-3.5">
+                
+                <!-- Nhóm chọn nhanh cấu hình chuẩn Bảng 15.1 -->
+                <div class="bg-blue-50/70 border border-blue-100 rounded-xl p-2.5">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-xs font-bold text-blue-800 uppercase tracking-wider">Cấu hình nhanh theo Bảng 15.1</span>
+                        <span class="text-[11px] text-blue-600 font-medium">s = 0,50 m</span>
+                    </div>
+                    <div class="grid grid-cols-5 gap-1.5">
+                        <button onclick="applyPreset(1.0, 0.30, 0.50)" class="preset-btn py-1.5 px-1 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 text-slate-700 text-[11px] font-semibold transition shadow-xs text-center" title="Lần đo 1: F=1N, M+m=0.3kg">
+                            <div>Lần 1</div>
+                            <div class="text-[10px] opacity-80">1N | 0.3kg</div>
+                        </button>
+                        <button onclick="applyPreset(1.0, 0.40, 0.50)" class="preset-btn py-1.5 px-1 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 text-slate-700 text-[11px] font-semibold transition shadow-xs text-center" title="Lần đo 2: F=1N, M+m=0.4kg">
+                            <div>Lần 2</div>
+                            <div class="text-[10px] opacity-80">1N | 0.4kg</div>
+                        </button>
+                        <button onclick="applyPreset(1.0, 0.50, 0.50)" class="preset-btn py-1.5 px-1 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 text-slate-700 text-[11px] font-semibold transition shadow-xs text-center" title="Lần đo 3: F=1N, M+m=0.5kg">
+                            <div>Lần 3</div>
+                            <div class="text-[10px] opacity-80">1N | 0.5kg</div>
+                        </button>
+                        <button onclick="applyPreset(2.0, 0.50, 0.50)" class="preset-btn py-1.5 px-1 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 text-slate-700 text-[11px] font-semibold transition shadow-xs text-center" title="Lần đo 4: F=2N, M+m=0.5kg">
+                            <div>Lần 4</div>
+                            <div class="text-[10px] opacity-80">2N | 0.5kg</div>
+                        </button>
+                        <button onclick="applyPreset(3.0, 0.50, 0.50)" class="preset-btn py-1.5 px-1 rounded-lg bg-white hover:bg-blue-600 hover:text-white border border-blue-200 text-slate-700 text-[11px] font-semibold transition shadow-xs text-center" title="Lần đo 5: F=3N, M+m=0.5kg">
+                            <div>Lần 5</div>
+                            <div class="text-[10px] opacity-80">3N | 0.5kg</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thông số 1: Lực kéo F -->
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/80 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                            Lực kéo $F$ (Quả nặng treo)
+                        </label>
+                        <span id="valF" class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-700 font-bold text-xs">1.0 N</span>
+                    </div>
+                    <input type="range" id="sliderF" min="0.5" max="4.0" step="0.5" value="1.0" oninput="updateParams()" class="w-full">
+                    <div class="flex justify-between items-center text-[11px] text-slate-500">
+                        <span id="descF">Tương ứng 2 quả nặng treo (mỗi quả 50g ≈ 0,5N)</span>
+                        <div class="flex gap-1">
+                            <button onclick="stepParam('F', -0.5)" class="w-6 h-6 rounded bg-white border border-slate-300 hover:bg-slate-100 font-bold">-</button>
+                            <button onclick="stepParam('F', 0.5)" class="w-6 h-6 rounded bg-white border border-slate-300 hover:bg-slate-100 font-bold">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông số 2: Tổng khối lượng hệ (M + m) -->
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/80 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                            Tổng khối lượng hệ $(M + m)$
+                        </label>
+                        <span id="valM" class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 font-bold text-xs">0.30 kg</span>
+                    </div>
+                    <input type="range" id="sliderM" min="0.25" max="0.80" step="0.05" value="0.30" oninput="updateParams()" class="w-full">
+                    <div class="flex justify-between items-center text-[11px] text-slate-500">
+                        <span id="descM">Xe M = 200g + 2 quả nặng 50g</span>
+                        <div class="flex gap-1">
+                            <button onclick="stepParam('M', -0.05)" class="w-6 h-6 rounded bg-white border border-slate-300 hover:bg-slate-100 font-bold">-</button>
+                            <button onclick="stepParam('M', 0.05)" class="w-6 h-6 rounded bg-white border border-slate-300 hover:bg-slate-100 font-bold">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông số 3: Khoảng cách 2 cổng quang s -->
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/80 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            Khoảng cách hai cổng quang $s$
+                        </label>
+                        <span id="valS" class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 font-bold text-xs">0.50 m</span>
+                    </div>
+                    <input type="range" id="sliderS" min="0.20" max="0.80" step="0.05" value="0.50" oninput="updateParams()" class="w-full">
+                    <div class="flex justify-between items-center text-[11px] text-slate-500">
+                        <span>Mặc định SGK: $s = 0,50\text{ m}$ ($50\text{ cm}$)</span>
+                        <div class="flex gap-1">
+                            <button onclick="stepParam('S', -0.05)" class="w-6 h-6 rounded bg-white border border-slate-300 hover:bg-slate-100 font-bold">-</button>
+                            <button onclick="stepParam('S', 0.05)" class="w-6 h-6 rounded bg-white border border-slate-300 hover:bg-slate-100 font-bold">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Công tắc Đệm khí & Sai số thực nghiệm -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-200/80 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs font-bold text-slate-700">Đệm khí (Số 9)</div>
+                            <div id="airTrackLabel" class="text-[10px] text-emerald-600 font-medium">Bật (Ma sát ≈ 0)</div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="toggleAirTrack" checked onchange="toggleAir()" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                        </label>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-200/80 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs font-bold text-slate-700">Sai số đo thực tế</div>
+                            <div id="noiseLabel" class="text-[10px] text-slate-500 font-medium">Ngẫu nhiên ±1.5%</div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="toggleNoise" checked onchange="toggleNoiseState()" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Khu vực hiển thị kết quả đo tức thời -->
+                <div class="bg-slate-900 text-white rounded-xl p-3 shadow-inner flex items-center justify-between">
+                    <div>
+                        <div class="text-[10px] uppercase tracking-wider text-slate-400">Thời gian qua 2 cổng ($t$)</div>
+                        <div id="readoutT" class="font-mono-led text-xl font-bold text-emerald-400">0.00 s</div>
+                    </div>
+                    <div class="h-8 w-px bg-slate-700"></div>
+                    <div class="text-right">
+                        <div class="text-[10px] uppercase tracking-wider text-slate-400">Gia tốc tính toán ($a = \frac{2s}{t^2}$)</div>
+                        <div id="readoutA" class="font-mono-led text-xl font-bold text-amber-400">-- m/s²</div>
+                    </div>
+                </div>
+
+                <!-- Các nút điều khiển thực hành -->
+                <div class="space-y-2 pt-1">
+                    <div class="grid grid-cols-3 gap-2">
+                        <button id="btnStart" onclick="startExperiment()" class="col-span-2 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold text-xs sm:text-sm shadow-sm transition flex items-center justify-center gap-1.5">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                            <span id="btnStartText">Thả xe đo</span>
+                        </button>
+                        <button onclick="resetExperiment()" class="py-2.5 px-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold text-xs sm:text-sm transition flex items-center justify-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            Đặt lại
+                        </button>
+                    </div>
+
+                    <button id="btnRecord" onclick="recordData()" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold text-xs sm:text-sm shadow-sm transition flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Ghi số liệu vào Bảng 15.1
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-2 pt-0.5">
+                        <button onclick="loadTextbookSample()" class="py-1.5 px-2.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-semibold text-xs transition">
+                            Nạp mẫu Bảng 15.1
+                        </button>
+                        <button onclick="clearTable()" class="py-1.5 px-2.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold text-xs transition">
+                            Xóa toàn bộ bảng
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NỘI DUNG TAB 2: KIẾN THỨC & TIẾN HÀNH (THEO SGK) -->
+            <div id="leftTabTheory" class="hidden flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4 text-xs sm:text-sm leading-relaxed text-slate-700">
+                
+                <!-- Cơ sở lý thuyết -->
+                <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-3.5">
+                    <h3 class="font-bold text-blue-900 text-sm mb-1.5 flex items-center gap-1.5">
+                        <span class="w-5 h-5 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center">I</span>
+                        Cơ sở lí thuyết & Công thức đo
+                    </h3>
+                    <p class="mb-2">
+                        Theo <strong>Định luật II Newton</strong>: Gia tốc của một vật cùng hướng với lực tác dụng lên vật. Độ lớn của gia tốc tỉ lệ thuận với độ lớn của lực và tỉ lệ nghịch với khối lượng của vật:
+                    </p>
+                    <div class="bg-white rounded-lg py-2 px-3 border border-blue-100 text-center font-semibold text-slate-900 my-2">
+                        $$\vec{a} = \frac{\vec{F}}{m_{\text{hệ}}} \quad \Rightarrow \quad a = \frac{F}{M + m}$$
+                    </div>
+                    <p>
+                        Khi thả xe trượt từ trạng thái đứng yên ($v_0 = 0$) đi qua hai cổng quang điện cách nhau một đoạn $s = 0,5\text{ m}$ trong thời gian $t$:
+                    </p>
+                    <div class="bg-white rounded-lg py-2 px-3 border border-blue-100 text-center font-semibold text-slate-900 mt-2">
+                        $$s = v_0 t + \frac{1}{2}at^2 \implies a = \frac{2s}{t^2} = \frac{1}{t^2}\ (\text{m/s}^2)$$
+                    </div>
+                </div>
+
+                <!-- Dụng cụ thí nghiệm Hình 15.2 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+                    <h3 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
+                        <span class="w-5 h-5 rounded-full bg-slate-700 text-white text-xs flex items-center justify-center">II</span>
+                        Dụng cụ thí nghiệm (Hình 15.2)
+                    </h3>
+                    <ul class="space-y-1.5 text-xs">
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(1)</span> <strong>Xe trượt:</strong> Khối lượng $M = 200\text{ g}$, gắn tấm chắn sáng dài $10\text{ cm}$ và khay đặt quả nặng.</li>
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(2)</span> <strong>Chốt giữ / Nam châm điện:</strong> Giữ xe đứng yên tại vị trí xuất phát ($v_0 = 0$).</li>
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(3)</span> <strong>Cổng quang điện 1:</strong> Kích hoạt bộ đếm thời gian khi xe bắt đầu chạy.</li>
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(4)</span> <strong>Cổng quang điện 2:</strong> Dừng bộ đếm thời gian khi xe đi qua quãng đường $s$.</li>
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(5)</span> <strong>Ròng rọc:</strong> Đổi phương dây kéo nhẹ, ma sát không đáng kể.</li>
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(6)</span> <strong>Các quả nặng treo:</strong> Mỗi quả $m = 50\text{ g}$, trọng lượng tạo ra lực kéo $F$.</li>
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(7)</span> <strong>Đồng hồ đo thời gian hiện số:</strong> Hiển thị thời gian $t$ chính xác đến $0,01\text{ s}$.</li>
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(8)</span> <strong>Cân điện tử:</strong> Kiểm tra khối lượng xe và các quả nặng.</li>
+                        <li><span class="inline-block w-5 font-bold text-blue-600">(9)</span> <strong>Máy thổi khí:</strong> Bơm không khí qua các lỗ nhỏ trên máng tạo đệm khí giảm tối đa ma sát.</li>
+                    </ul>
+                </div>
+
+                <!-- Các bước tiến hành theo SGK -->
+                <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5">
+                    <h3 class="font-bold text-amber-900 text-sm mb-2 flex items-center gap-1.5">
+                        <span class="w-5 h-5 rounded-full bg-amber-600 text-white text-xs flex items-center justify-center">III</span>
+                        Trình tự tiến hành thí nghiệm
+                    </h3>
+                    <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-700">
+                        <li>Bật máy thổi khí (9), đặt hai cổng quang (3) và (4) cách nhau $s = 0,5\text{ m}$.</li>
+                        <li><strong>Thí nghiệm 1 (Giữ $F = 1\text{ N}$ không đổi, thay đổi $M+m$):</strong> Lần lượt điều chỉnh tổng khối lượng hệ là $0,3\text{ kg}$; $0,4\text{ kg}$; $0,5\text{ kg}$. Thả xe, đo thời gian $t$ và ghi vào Bảng 15.1.</li>
+                        <li><strong>Thí nghiệm 2 (Giữ $M+m = 0,5\text{ kg}$ không đổi, tăng dần lực kéo $F$):</strong> Thay đổi lực kéo $F$ lần lượt là $1\text{ N}$, $2\text{ N}$ và $3\text{ N}$. Đo thời gian $t$ qua hai cổng quang.</li>
+                        <li>Tính gia tốc $a = \frac{2s}{t^2}$ cho từng lần đo và quan sát đồ thị $a(F)$ cùng $a(1/m_{\text{hệ}})$ ở góc dưới bên phải để rút ra kết luận.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANEL PHẢI (64% chiều rộng): MÔ PHỎNG HÌNH 15.2 (TRÊN) + BẢNG 15.1 & ĐỒ THỊ (DƯỚI) -->
+        <section class="w-full lg:w-[64%] h-full flex flex-col gap-3 overflow-hidden">
+            
+            <!-- PHẦN TRÊN: CANVAS MÔ PHỎNG THIẾT BỊ HÌNH 15.2 (52% chiều cao) -->
+            <div class="h-[52%] bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden relative">
+                <!-- Thanh công cụ nhỏ trên Canvas -->
+                <div class="px-3.5 py-1.5 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-slate-700">Hình 15.2. Sơ đồ bố trí thí nghiệm minh họa Định luật II Newton</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer">
+                            <input type="checkbox" id="toggleLabels" checked onchange="drawSimulation()" class="rounded text-blue-600 focus:ring-0">
+                            <span>Hiện chú thích (1)–(9)</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer">
+                            <input type="checkbox" id="toggleVectors" checked onchange="drawSimulation()" class="rounded text-blue-600 focus:ring-0">
+                            <span>Hiện vectơ lực $\vec{F}$</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Vùng chứa Canvas -->
+                <div id="simCanvasContainer" class="flex-1 w-full h-full relative bg-white overflow-hidden">
+                    <canvas id="simCanvas" class="block w-full h-full"></canvas>
+                </div>
+            </div>
+
+            <!-- PHẦN DƯỚI: BẢNG 15.1 & ĐỒ THỊ KIỂM CHỨNG (48% chiều cao) -->
+            <div class="h-[48%] grid grid-cols-1 md:grid-cols-12 gap-3 overflow-hidden">
+                
+                <!-- BẢNG 15.1. KẾT QUẢ THÍ NGHIỆM (7/12 cột) -->
+                <div class="md:col-span-7 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
+                    <div class="px-3.5 py-2 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between shrink-0">
+                        <h2 class="text-xs sm:text-sm font-bold text-slate-800">
+                            Bảng 15.1. Bảng ghi kết quả thí nghiệm
+                        </h2>
+                        <span id="recordCountBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                            0 lần đo
+                        </span>
+                    </div>
+
+                    <div class="flex-1 overflow-auto custom-scrollbar p-2 flex flex-col justify-between">
+                        <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                            <table class="w-full text-xs text-center border-collapse">
+                                <tbody id="dataTableBody" class="divide-y divide-slate-200">
+                                    <!-- Render tự động bằng JS theo định dạng hàng ngang giống SGK -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-1.5 flex items-center justify-between text-[11px] text-slate-500 px-1">
+                            <span>* Nhấn vào biểu tượng <span class="text-rose-500 font-bold">×</span> ở đầu cột để xóa lần đo đó.</span>
+                            <span>Công thức: $a = \frac{2s}{t^2}$</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ĐỒ THỊ KIỂM CHỨNG ĐỊNH LUẬT II NEWTON (5/12 cột) -->
+                <div class="md:col-span-5 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
+                    <div class="px-2.5 py-1.5 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between shrink-0 gap-1">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span class="text-xs font-bold text-slate-800 truncate">Đồ thị</span>
+                            <select id="graphFilterSelect" onchange="onGraphFilterChange()" class="hidden text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 rounded-md px-1.5 py-0.5 focus:outline-none cursor-pointer truncate max-w-[115px]" title="Chọn điều kiện giữ không đổi">
+                            </select>
+                        </div>
+                        <div class="flex bg-slate-200/80 p-0.5 rounded-lg text-[11px] font-semibold shrink-0">
+                            <button id="btnGraphAF" onclick="setGraphMode('aF')" class="px-2 py-0.5 rounded-md bg-white text-blue-600 shadow-xs transition">
+                                $a(F)$
+                            </button>
+                            <button id="btnGraphAM" onclick="setGraphMode('aM')" class="px-2 py-0.5 rounded-md text-slate-600 hover:text-slate-900 transition">
+                                $a(1/m)$
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="graphCanvasContainer" class="flex-1 w-full relative bg-white overflow-hidden">
+                        <canvas id="graphCanvas" class="block w-full h-full"></canvas>
+                    </div>
+
+                    <div id="graphConclusion" class="px-3 py-1.5 bg-emerald-50/80 border-t border-emerald-100 text-[11px] text-emerald-800 font-medium shrink-0 leading-snug">
+                        Ghi ít nhất 2 điểm cùng khối lượng để vẽ đường thẳng $a(F)$.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // =========================================================================
+        // 1. TRẠNG THÁI & THAM SỐ VẬT LÝ CỦA HỆ THỐNG
+        // =========================================================================
+        const state = {
+            // Thông số thí nghiệm
+            F: 1.0,             // Lực kéo F (N)
+            M_cart: 0.20,       // Khối lượng xe trượt M = 200g = 0.20 kg
+            totalMass: 0.30,    // Tổng khối lượng hệ (M + m) (kg)
+            s: 0.50,            // Khoảng cách giữa 2 cổng quang điện (m)
+            airTrackOn: true,   // Bật/Tắt máy thổi khí (9)
+            realisticNoise: true, // Bật/Tắt sai số ngẫu nhiên nhỏ (±1.5%)
+            
+            // Trạng thái chuyển động
+            status: 'idle',     // 'idle' | 'running' | 'finished'
+            simTime: 0,         // Thời gian thực tế từ lúc thả xe (s)
+            measuredTime: 0,    // Thời gian hiển thị trên đồng hồ đo (từ cổng 1 -> cổng 2) (s)
+            hasMeasured: false, // Đã đo xong một lượt hay chưa
+            
+            // Vị trí vật lý trên máng trượt (tính bằng mét từ đầu máng)
+            trackLength: 1.20,  // Chiều dài máng trượt 1.20m
+            gate1Pos: 0.32,     // Vị trí cổng quang 1 (m)
+            cartPos: 0.32,      // Vị trí mép trước tấm chắn sáng trên xe (m)
+            cartVel: 0,         // Vận tốc tức thời của xe (m/s)
+            actualAccel: 0,     // Gia tốc thực tế của chuyển động (m/s^2)
+            noiseFactor: 1.0,   // Hệ số sai số cho lần chạy hiện tại
+            
+            // Hiệu ứng luồng khí
+            airAnimOffset: 0,
+            
+            // Dữ liệu Bảng 15.1
+            records: [],
+            
+            // Chế độ đồ thị: 'aF' (a theo F) hoặc 'aM' (a theo 1/(M+m))
+            graphMode: 'aF',
+            selectedMassFilter: null,  // Giá trị M+m đang chọn khảo sát ở đồ thị a(F)
+            selectedForceFilter: null  // Giá trị F đang chọn khảo sát ở đồ thị a(1/m)
+        };
+
+        // DOM Elements
+        const simCanvas = document.getElementById('simCanvas');
+        const simCtx = simCanvas.getContext('2d');
+        const graphCanvas = document.getElementById('graphCanvas');
+        const graphCtx = graphCanvas.getContext('2d');
+
+        // =========================================================================
+        // 2. HÀM TIỆN ÍCH & THÔNG BÁO
+        // =========================================================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const colors = {
+                info: 'bg-slate-800 text-white border-slate-700',
+                success: 'bg-emerald-600 text-white border-emerald-500',
+                warning: 'bg-amber-600 text-white border-amber-500',
+                error: 'bg-rose-600 text-white border-rose-500'
+            };
+            toast.className = `${colors[type]} border px-3.5 py-2 rounded-xl shadow-lg text-xs font-medium flex items-center gap-2 transition-all duration-300 transform translate-x-0 opacity-100`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2600);
+        }
+
+        function switchLeftTab(tab) {
+            const btnControl = document.getElementById('tabBtnControl');
+            const btnTheory = document.getElementById('tabBtnTheory');
+            const panelControl = document.getElementById('leftTabControl');
+            const panelTheory = document.getElementById('leftTabTheory');
+
+            if (tab === 'control') {
+                btnControl.className = "flex-1 py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-white text-blue-600 shadow-sm border border-slate-200/80 flex items-center justify-center gap-1.5";
+                btnTheory.className = "flex-1 py-2 px-3 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all flex items-center justify-center gap-1.5";
+                panelControl.classList.remove('hidden');
+                panelTheory.classList.add('hidden');
+            } else {
+                btnTheory.className = "flex-1 py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-white text-blue-600 shadow-sm border border-slate-200/80 flex items-center justify-center gap-1.5";
+                btnControl.className = "flex-1 py-2 px-3 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-white/60 transition-all flex items-center justify-center gap-1.5";
+                panelTheory.classList.remove('hidden');
+                panelControl.classList.add('hidden');
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([panelTheory]).catch(() => {});
+                }
+            }
+        }
+
+        // =========================================================================
+        // 3. ĐIỀU KHIỂN THAM SỐ THÍ NGHIỆM
+        // =========================================================================
+        function updateParams() {
+            if (state.status === 'running') {
+                resetExperiment();
+            }
+            state.F = parseFloat(document.getElementById('sliderF').value);
+            state.totalMass = parseFloat(document.getElementById('sliderM').value);
+            state.s = parseFloat(document.getElementById('sliderS').value);
+
+            // Đảm bảo tổng khối lượng luôn lớn hơn khối lượng quả nặng treo nếu xét theo vật lý thực tế,
+            // hoặc giữ đúng mô hình SGK: M+m là tổng khối lượng toàn hệ (xe + quả nặng trên xe + quả nặng treo)
+            const hangingWeightsCount = Math.round(state.F / 0.5);
+            const extraMassGrams = Math.round((state.totalMass - state.M_cart) * 1000);
+            const extraWeightsCount = Math.max(0, Math.round(extraMassGrams / 50));
+
+            document.getElementById('valF').textContent = `${state.F.toFixed(1)} N`;
+            document.getElementById('descF').textContent = `Tương ứng ${hangingWeightsCount} quả nặng treo (mỗi quả 50g ≈ 0,5N)`;
+
+            document.getElementById('valM').textContent = `${state.totalMass.toFixed(2)} kg`;
+            document.getElementById('descM').textContent = `Xe M = 200g + ${extraWeightsCount} quả nặng 50g (${extraMassGrams}g)`;
+
+            document.getElementById('valS').textContent = `${state.s.toFixed(2)} m`;
+
+            resetExperiment(false);
+        }
+
+        function stepParam(param, delta) {
+            const slider = document.getElementById('slider' + param);
+            let val = parseFloat(slider.value) + delta;
+            val = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), val));
+            slider.value = val.toFixed(2);
+            updateParams();
+        }
+
+        function applyPreset(F, M, s) {
+            document.getElementById('sliderF').value = F;
+            document.getElementById('sliderM').value = M;
+            document.getElementById('sliderS').value = s;
+            updateParams();
+            showToast(`Đã chọn cấu hình: F = ${F}N, (M+m) = ${M}kg, s = ${s}m`, 'info');
+        }
+
+        function toggleAir() {
+            state.airTrackOn = document.getElementById('toggleAirTrack').checked;
+            const label = document.getElementById('airTrackLabel');
+            if (state.airTrackOn) {
+                label.textContent = "Bật (Ma sát ≈ 0)";
+                label.className = "text-[10px] text-emerald-600 font-medium";
+                showToast("Đã bật máy thổi khí: Đệm khí hoạt động, ma sát không đáng kể.", "success");
+            } else {
+                label.textContent = "Tắt (Ma sát lớn!)";
+                label.className = "text-[10px] text-rose-600 font-medium";
+                showToast("Đã tắt máy thổi khí: Máng trượt có ma sát trượt lớn!", "warning");
+            }
+            if (state.status === 'running') resetExperiment();
+            drawSimulation();
+        }
+
+        function toggleNoiseState() {
+            state.realisticNoise = document.getElementById('toggleNoise').checked;
+            const label = document.getElementById('noiseLabel');
+            label.textContent = state.realisticNoise ? "Ngẫu nhiên ±1.5%" : "Lý tưởng (0%)";
+        }
+
+        // =========================================================================
+        // 4. LOGIC VẬT LÝ & VÒNG LẶP MÔ PHỎNG
+        // =========================================================================
+        function computePhysicsAcceleration() {
+            // Lý thuyết: a = F / (M + m)
+            const a_ideal = state.F / state.totalMass;
+            
+            // Nếu tắt máy thổi khí, xuất hiện lực ma sát trượt F_ms = mu * (M_cart * g)
+            if (!state.airTrackOn) {
+                const mu = 0.42; // Hệ số ma sát khô giữa nhôm - nhôm khá lớn
+                const f_friction = mu * (state.totalMass * 9.8);
+                if (state.F <= f_friction) {
+                    return 0; // Xe đứng yên không trượt được
+                }
+                return (state.F - f_friction) / state.totalMass;
+            }
+
+            // Nếu bật sai số ngẫu nhiên thực nghiệm (±1.5%)
+            if (state.realisticNoise) {
+                return a_ideal * state.noiseFactor;
+            }
+            return a_ideal;
+        }
+
+        function startExperiment() {
+            if (state.status === 'running') return;
+            
+            if (state.status === 'finished') {
+                resetExperiment(false);
+            }
+
+            // Tạo hệ số sai số ngẫu nhiên nhẹ cho mỗi lần thả xe
+            state.noiseFactor = state.realisticNoise ? (1 + (Math.random() - 0.5) * 0.028) : 1.0;
+            state.actualAccel = computePhysicsAcceleration();
+
+            if (state.actualAccel <= 0.001) {
+                showToast("Lực kéo F nhỏ hơn lực ma sát nghỉ khi tắt đệm khí! Hãy bật đệm khí (9).", "error");
+                return;
+            }
+
+            state.status = 'running';
+            state.simTime = 0;
+            state.measuredTime = 0;
+            state.hasMeasured = false;
+            state.cartPos = state.gate1Pos; // Mép trước tấm chắn sáng chạm ngay cổng quang 1
+            state.cartVel = 0;
+
+            updateStatusUI('running');
+        }
+
+        function resetExperiment(notify = false) {
+            state.status = 'idle';
+            state.simTime = 0;
+            state.measuredTime = 0;
+            state.hasMeasured = false;
+            state.cartPos = state.gate1Pos;
+            state.cartVel = 0;
+
+            document.getElementById('readoutT').textContent = "0.00 s";
+            document.getElementById('readoutA').textContent = "-- m/s²";
+            document.getElementById('btnRecord').disabled = true;
+
+            updateStatusUI('idle');
+            drawSimulation();
+            if (notify) showToast("Đã đưa xe trượt về vị trí xuất phát tại Cổng quang 1.", "info");
+        }
+
+        function updateStatusUI(status) {
+            const badge = document.getElementById('statusBadge');
+            const btnStartText = document.getElementById('btnStartText');
+
+            if (status === 'idle') {
+                badge.className = "px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1.5";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span>Sẵn sàng đo`;
+                btnStartText.textContent = "Thả xe đo";
+            } else if (status === 'running') {
+                badge.className = "px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200 flex items-center gap-1.5";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>Đang đo thời gian...`;
+                btnStartText.textContent = "Đang chạy...";
+            } else if (status === 'finished') {
+                badge.className = "px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-200 flex items-center gap-1.5";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-600"></span>Hoàn thành lượt đo`;
+                btnStartText.textContent = "Đo lại";
+            }
+        }
+
+        // Vòng lặp animation chính
+        let lastTimestamp = null;
+        function animationLoop(timestamp) {
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.05); // Giới hạn dt tối đa 50ms
+            lastTimestamp = timestamp;
+
+            // Hiệu ứng luồng khí thổi khi bật máy (9)
+            if (state.airTrackOn) {
+                state.airAnimOffset = (state.airAnimOffset + dt * 60) % 24;
+            }
+
+            // Cập nhật chuyển động của xe trượt
+            if (state.status === 'running') {
+                state.simTime += dt;
+                const displacement = 0.5 * state.actualAccel * state.simTime * state.simTime;
+                state.cartPos = state.gate1Pos + displacement;
+                state.cartVel = state.actualAccel * state.simTime;
+
+                const gate2Pos = state.gate1Pos + state.s;
+
+                if (!state.hasMeasured) {
+                    if (state.cartPos >= gate2Pos) {
+                        // Xe vừa chạm cổng quang điện 2 -> Chốt thời gian t chính xác theo công thức t = sqrt(2s/a)
+                        state.hasMeasured = true;
+                        const exactTime = Math.sqrt((2 * state.s) / state.actualAccel);
+                        state.measuredTime = exactTime;
+
+                        // Tính gia tốc theo công thức SGK: a = 2s / t^2
+                        const tRounded = parseFloat(state.measuredTime.toFixed(2));
+                        const aCalculated = (2 * state.s) / (tRounded * tRounded);
+
+                        document.getElementById('readoutT').textContent = `${tRounded.toFixed(2)} s`;
+                        document.getElementById('readoutA').textContent = `${aCalculated.toFixed(2)} m/s²`;
+                        document.getElementById('btnRecord').disabled = false;
+                    } else {
+                        // Đồng hồ hiện số đang chạy theo thời gian thực
+                        state.measuredTime = state.simTime;
+                        document.getElementById('readoutT').textContent = `${state.measuredTime.toFixed(2)} s`;
+                    }
+                }
+
+                // Dừng xe khi đến gần cuối máng trượt (trước ròng rọc)
+                const maxPos = state.trackLength - 0.14;
+                if (state.cartPos >= maxPos) {
+                    state.cartPos = maxPos;
+                    state.status = 'finished';
+                    updateStatusUI('finished');
+                }
+            }
+
+            drawSimulation();
+            requestAnimationFrame(animationLoop);
+        }
+
+        // =========================================================================
+        // 5. VẼ MÔ PHỎNG THIẾT BỊ HÌNH 15.2 TRÊN HTML5 CANVAS
+        // =========================================================================
+        function resizeCanvases() {
+            const simContainer = document.getElementById('simCanvasContainer');
+            if (simContainer) {
+                const dpr = window.devicePixelRatio || 1;
+                simCanvas.width = simContainer.clientWidth * dpr;
+                simCanvas.height = simContainer.clientHeight * dpr;
+                simCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
+            const graphContainer = document.getElementById('graphCanvasContainer');
+            if (graphContainer) {
+                const dpr = window.devicePixelRatio || 1;
+                graphCanvas.width = graphContainer.clientWidth * dpr;
+                graphCanvas.height = graphContainer.clientHeight * dpr;
+                graphCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
+            drawSimulation();
+            drawGraph();
+        }
+
+        function drawCallout(ctx, x, y, number) {
+            const showLabels = document.getElementById('toggleLabels').checked;
+            if (!showLabels) return;
+
+            ctx.save();
+            // Vòng tròn trắng viền xanh giống chú thích SGK
+            ctx.beginPath();
+            ctx.arc(x, y, 10, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = '#334155';
+            ctx.stroke();
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 11px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(number.toString(), x, y + 0.5);
+            ctx.restore();
+        }
+
+        function drawSimulation() {
+            const w = simCanvas.width / (window.devicePixelRatio || 1);
+            const h = simCanvas.height / (window.devicePixelRatio || 1);
+            if (w <= 0 || h <= 0) return;
+
+            simCtx.clearRect(0, 0, w, h);
+
+            // Nền phòng thí nghiệm sáng, sạch sẽ
+            simCtx.fillStyle = '#ffffff';
+            simCtx.fillRect(0, 0, w, h);
+
+            // Đường mặt bàn thí nghiệm phía dưới
+            const tableY = h * 0.84;
+            simCtx.fillStyle = '#f1f5f9';
+            simCtx.fillRect(0, tableY, w, h - tableY);
+            simCtx.strokeStyle = '#cbd5e1';
+            simCtx.lineWidth = 1.5;
+            simCtx.beginPath();
+            simCtx.moveTo(0, tableY);
+            simCtx.lineTo(w, tableY);
+            simCtx.stroke();
+
+            // Tọa độ quy đổi cho máng trượt đệm khí
+            const blowerW = Math.min(78, w * 0.11);
+            const blowerH = Math.min(62, h * 0.22);
+            const blowerX = Math.max(16, w * 0.03);
+            const blowerY = tableY - blowerH;
+
+            const trackStartX = blowerX + blowerW + 22;
+            const trackEndX = w - Math.max(58, w * 0.08);
+            const trackW = trackEndX - trackStartX;
+            const trackY = tableY - 56;
+            const trackH = 22;
+
+            // Hàm chuyển đổi vị trí vật lý (mét: 0 -> 1.2m) sang tọa độ pixel X trên máng
+            const meterToPx = (m) => trackStartX + (m / state.trackLength) * trackW;
+
+            // --- (9) MÁY THỔI KHÍ BÊN TRÁI ---
+            simCtx.save();
+            // Thân máy thổi khí màu xám đen
+            simCtx.fillStyle = '#1e293b';
+            simCtx.beginPath();
+            simCtx.roundRect(blowerX, blowerY, blowerW, blowerH, 6);
+            simCtx.fill();
+
+            // Núm vặn công suất trên máy thổi khí
+            simCtx.beginPath();
+            simCtx.arc(blowerX + blowerW * 0.45, blowerY + blowerH * 0.55, 11, 0, Math.PI * 2);
+            simCtx.fillStyle = '#334155';
+            simCtx.fill();
+            simCtx.strokeStyle = '#94a3b8';
+            simCtx.lineWidth = 1.5;
+            simCtx.stroke();
+
+            // Đèn báo nguồn máy thổi khí
+            simCtx.beginPath();
+            simCtx.arc(blowerX + blowerW * 0.78, blowerY + blowerH * 0.28, 3.5, 0, Math.PI * 2);
+            simCtx.fillStyle = state.airTrackOn ? '#22c55e' : '#ef4444';
+            simCtx.fill();
+
+            // Ống dẫn khí nối từ máy (9) vào máng trượt
+            simCtx.fillStyle = '#475569';
+            simCtx.fillRect(blowerX + blowerW, trackY + 3, 22, 16);
+            // Khớp nối gân
+            simCtx.strokeStyle = '#1e293b';
+            simCtx.lineWidth = 1.5;
+            for (let gx = blowerX + blowerW + 4; gx < trackStartX; gx += 5) {
+                simCtx.beginPath();
+                simCtx.moveTo(gx, trackY + 3);
+                simCtx.lineTo(gx, trackY + 19);
+                simCtx.stroke();
+            }
+            simCtx.restore();
+            drawCallout(simCtx, blowerX + blowerW * 0.5, blowerY - 14, 9);
+
+            // --- CHÂN ĐẾ MÁNG TRƯỢT ---
+            simCtx.fillStyle = '#334155';
+            const leg1X = trackStartX + trackW * 0.16;
+            const leg2X = trackStartX + trackW * 0.84;
+            simCtx.fillRect(leg1X - 10, trackY + trackH, 20, tableY - (trackY + trackH));
+            simCtx.fillRect(leg2X - 10, trackY + trackH, 20, tableY - (trackY + trackH));
+            // Đế cao su
+            simCtx.fillStyle = '#0f172a';
+            simCtx.fillRect(leg1X - 18, tableY - 5, 36, 5);
+            simCtx.fillRect(leg2X - 18, tableY - 5, 36, 5);
+
+            // --- MÁNG TRƯỢT ĐỆM KHÍ HỢP KIM NHÔM ---
+            const trackGrad = simCtx.createLinearGradient(0, trackY, 0, trackY + trackH);
+            trackGrad.addColorStop(0, '#e2e8f0');
+            trackGrad.addColorStop(0.5, '#cbd5e1');
+            trackGrad.addColorStop(1, '#94a3b8');
+            simCtx.fillStyle = trackGrad;
+            simCtx.strokeStyle = '#64748b';
+            simCtx.lineWidth = 1;
+            simCtx.beginPath();
+            simCtx.roundRect(trackStartX, trackY, trackW, trackH, 2);
+            simCtx.fill();
+            simCtx.stroke();
+
+            // Vẽ vạch chia thước trên máng trượt (mỗi 5cm một vạch, 10cm vạch dài)
+            simCtx.strokeStyle = '#475569';
+            simCtx.fillStyle = '#475569';
+            simCtx.font = '8px Inter, sans-serif';
+            simCtx.textAlign = 'center';
+            for (let cm = 5; cm <= 115; cm += 5) {
+                const vx = meterToPx(cm / 100);
+                const isMajor = cm % 10 === 0;
+                simCtx.beginPath();
+                simCtx.moveTo(vx, trackY + trackH);
+                simCtx.lineTo(vx, trackY + trackH - (isMajor ? 7 : 4));
+                simCtx.stroke();
+            }
+
+            // Hiệu ứng luồng khí thổi lên từ các lỗ nhỏ trên mặt máng
+            if (state.airTrackOn) {
+                simCtx.save();
+                simCtx.strokeStyle = 'rgba(56, 189, 248, 0.65)';
+                simCtx.lineWidth = 1.5;
+                for (let hx = trackStartX + 16; hx < trackEndX - 16; hx += 24) {
+                    const phase = ((hx + state.airAnimOffset) % 24) / 24;
+                    const ay = trackY - phase * 10;
+                    simCtx.globalAlpha = 1 - phase;
+                    simCtx.beginPath();
+                    simCtx.moveTo(hx - 2, ay);
+                    simCtx.lineTo(hx, ay - 3);
+                    simCtx.lineTo(hx + 2, ay);
+                    simCtx.stroke();
+                }
+                simCtx.restore();
+            }
+
+            // --- (2) CHỐT GIỮ / NAM CHÂM ĐIỆN XUẤT PHÁT ---
+            const cartLengthMeters = 0.12;
+            const cartWidthPx = (cartLengthMeters / state.trackLength) * trackW;
+            const startCartBackX = meterToPx(state.gate1Pos) - cartWidthPx;
+
+            simCtx.fillStyle = '#475569';
+            simCtx.fillRect(startCartBackX - 24, trackY - 14, 24, 14);
+            // Trụ đứng điều chỉnh nam châm điện
+            simCtx.fillStyle = '#94a3b8';
+            simCtx.fillRect(startCartBackX - 16, trackY - 58, 4, 44);
+            // Đầu nam châm điện
+            simCtx.fillStyle = state.status === 'idle' ? '#ef4444' : '#64748b';
+            simCtx.fillRect(startCartBackX - 6, trackY - 12, 6, 10);
+            drawCallout(simCtx, startCartBackX - 14, trackY - 68, 2);
+
+            // --- (1) XE TRƯỢT & TẤM CHẮN SÁNG & QUẢ NẶNG GIA TẢI ---
+            const cartFrontX = meterToPx(state.cartPos);
+            const cartBackX = cartFrontX - cartWidthPx;
+            const cartY = trackY - 16 - (state.airTrackOn ? 2 : 0);
+            const cartH = 16;
+
+            // Thân xe trượt chữ U úp ngược
+            simCtx.fillStyle = '#1e293b';
+            simCtx.beginPath();
+            simCtx.roundRect(cartBackX, cartY, cartWidthPx, cartH, 3);
+            simCtx.fill();
+
+            // Các quả nặng đặt thêm trên xe (mỗi quả 50g = 0.05kg)
+            const extraWeightsCount = Math.max(0, Math.round((state.totalMass - state.M_cart) / 0.05));
+            const weightSlotW = Math.min(10, (cartWidthPx - 12) / Math.max(1, extraWeightsCount));
+            for (let i = 0; i < extraWeightsCount; i++) {
+                const wx = cartBackX + 6 + i * (weightSlotW + 1.5);
+                const wy = cartY - 7;
+                simCtx.fillStyle = '#f59e0b';
+                simCtx.strokeStyle = '#b45309';
+                simCtx.lineWidth = 1;
+                simCtx.fillRect(wx, wy, weightSlotW, 7);
+                simCtx.strokeRect(wx, wy, weightSlotW, 7);
+            }
+
+            // Tấm chắn sáng dài 10 cm gắn phía trên xe
+            const flagW = (0.10 / state.trackLength) * trackW;
+            const flagX = cartFrontX - flagW;
+            const flagY = cartY - 22;
+            simCtx.fillStyle = '#0f172a';
+            simCtx.fillRect(flagX, flagY, flagW, 15);
+            // Thanh đỡ tấm chắn sáng
+            simCtx.fillStyle = '#64748b';
+            simCtx.fillRect(flagX + flagW * 0.45, flagY + 15, 3, 7);
+
+            drawCallout(simCtx, cartBackX + cartWidthPx * 0.35, flagY - 12, 1);
+
+            // --- (3) & (4) HAI CỔNG QUANG ĐIỆN ---
+            const gate1X = meterToPx(state.gate1Pos);
+            const gate2X = meterToPx(state.gate1Pos + state.s);
+
+            const drawPhotogate = (gx, labelNum, isTriggered) => {
+                // Trụ đứng cổng quang
+                simCtx.fillStyle = '#64748b';
+                simCtx.fillRect(gx - 2.5, trackY - 68, 5, tableY - (trackY - 68));
+                // Chân đế trụ
+                simCtx.fillStyle = '#1e293b';
+                simCtx.fillRect(gx - 12, tableY - 8, 24, 8);
+                // Đầu cảm biến chữ U
+                simCtx.fillStyle = '#0f172a';
+                simCtx.beginPath();
+                simCtx.roundRect(gx - 7, flagY - 4, 14, 22, 3);
+                simCtx.fill();
+
+                // Tia hồng ngoại cảm biến
+                simCtx.beginPath();
+                simCtx.arc(gx, flagY + 7, 3, 0, Math.PI * 2);
+                simCtx.fillStyle = isTriggered ? '#22c55e' : '#ef4444';
+                simCtx.fill();
+
+                drawCallout(simCtx, gx + 14, trackY - 62, labelNum);
+            };
+
+            const g1Triggered = state.status === 'running' || state.status === 'finished';
+            const g2Triggered = state.hasMeasured;
+            drawPhotogate(gate1X, 3, g1Triggered);
+            drawPhotogate(gate2X, 4, g2Triggered);
+
+            // Mũi tên đánh dấu khoảng cách s giữa 2 cổng quang
+            const dimY = trackY - 46;
+            simCtx.save();
+            simCtx.strokeStyle = '#2563eb';
+            simCtx.fillStyle = '#2563eb';
+            simCtx.lineWidth = 1.2;
+            simCtx.setLineDash([3, 3]);
+            simCtx.beginPath();
+            simCtx.moveTo(gate1X, dimY);
+            simCtx.lineTo(gate2X, dimY);
+            simCtx.stroke();
+            simCtx.setLineDash([]);
+
+            // Đầu mũi tên 2 phía
+            simCtx.beginPath();
+            simCtx.moveTo(gate1X, dimY);
+            simCtx.lineTo(gate1X + 6, dimY - 3);
+            simCtx.lineTo(gate1X + 6, dimY + 3);
+            simCtx.fill();
+
+            simCtx.beginPath();
+            simCtx.moveTo(gate2X, dimY);
+            simCtx.lineTo(gate2X - 6, dimY - 3);
+            simCtx.lineTo(gate2X - 6, dimY + 3);
+            simCtx.fill();
+
+            // Nhãn s = 0.50 m
+            const midGateX = (gate1X + gate2X) / 2;
+            simCtx.fillStyle = '#eff6ff';
+            simCtx.fillRect(midGateX - 28, dimY - 9, 56, 16);
+            simCtx.fillStyle = '#1d4ed8';
+            simCtx.font = 'bold 10px Inter, sans-serif';
+            simCtx.textAlign = 'center';
+            simCtx.textBaseline = 'middle';
+            simCtx.fillText(`s = ${state.s.toFixed(2)} m`, midGateX, dimY - 1);
+            simCtx.restore();
+
+            // --- (7) ĐỒNG HỒ ĐO THỜI GIAN HIỆN SỐ ---
+            const timerW = 104;
+            const timerH = 44;
+            const timerX = Math.max(trackStartX + 40, (gate1X + gate2X) / 2 - timerW / 2);
+            const timerY = tableY - timerH - 2;
+
+            // Dây nối tín hiệu từ 2 cổng quang về đồng hồ (7)
+            simCtx.save();
+            simCtx.strokeStyle = '#f97316';
+            simCtx.lineWidth = 1.5;
+            simCtx.beginPath();
+            simCtx.moveTo(gate1X, tableY - 12);
+            simCtx.quadraticCurveTo(gate1X + 10, tableY + 2, timerX + 12, timerY + timerH - 6);
+            simCtx.stroke();
+
+            simCtx.strokeStyle = '#3b82f6';
+            simCtx.beginPath();
+            simCtx.moveTo(gate2X, tableY - 12);
+            simCtx.quadraticCurveTo(gate2X - 10, tableY + 2, timerX + timerW - 12, timerY + timerH - 6);
+            simCtx.stroke();
+            simCtx.restore();
+
+            // Hộp đồng hồ hiện số
+            simCtx.fillStyle = '#f8fafc';
+            simCtx.strokeStyle = '#475569';
+            simCtx.lineWidth = 1.5;
+            simCtx.beginPath();
+            simCtx.roundRect(timerX, timerY, timerW, timerH, 5);
+            simCtx.fill();
+            simCtx.stroke();
+
+            // Màn hình LED đen hiển thị thời gian t
+            simCtx.fillStyle = '#090d16';
+            simCtx.fillRect(timerX + 8, timerY + 6, timerW - 16, 22);
+            simCtx.fillStyle = '#22c55e';
+            simCtx.font = 'bold 14px "JetBrains Mono", monospace';
+            simCtx.textAlign = 'center';
+            simCtx.textBaseline = 'middle';
+            simCtx.fillText(`${state.measuredTime.toFixed(2)} s`, timerX + timerW / 2, timerY + 17);
+
+            // Chữ chú thích nhỏ trên đồng hồ
+            simCtx.fillStyle = '#475569';
+            simCtx.font = 'bold 8px Inter, sans-serif';
+            simCtx.fillText('ĐỒNG HỒ HIỆN SỐ', timerX + timerW / 2, timerY + 35);
+            drawCallout(simCtx, timerX + timerW / 2, timerY + timerH + 12, 7);
+
+            // --- (8) CÂN ĐIỆN TỬ BÊN DƯỚI MÁNG ---
+            const scaleX = Math.min(trackEndX - 65, Math.max(timerX + timerW + 18, trackStartX + trackW * 0.72));
+            const scaleY = tableY - 18;
+            simCtx.fillStyle = '#e2e8f0';
+            simCtx.strokeStyle = '#64748b';
+            simCtx.lineWidth = 1;
+            simCtx.beginPath();
+            simCtx.roundRect(scaleX, scaleY, 54, 18, 3);
+            simCtx.fill();
+            simCtx.stroke();
+            // Đĩa cân
+            simCtx.fillStyle = '#94a3b8';
+            simCtx.fillRect(scaleX + 4, scaleY - 3, 46, 3);
+            drawCallout(simCtx, scaleX + 27, tableY + 12, 8);
+
+            // --- (5) RÒNG RỌC & (6) QUẢ NẶNG TREO TẠO LỰC KÉO F ---
+            const pulleyX = trackEndX + 10;
+            const pulleyY = cartY + 4;
+            const pulleyR = 11;
+
+            // Giá đỡ ròng rọc
+            simCtx.fillStyle = '#334155';
+            simCtx.fillRect(trackEndX - 4, trackY - 8, 16, 14);
+            // Bánh xe ròng rọc
+            simCtx.beginPath();
+            simCtx.arc(pulleyX, pulleyY, pulleyR, 0, Math.PI * 2);
+            simCtx.fillStyle = '#475569';
+            simCtx.fill();
+            simCtx.strokeStyle = '#0f172a';
+            simCtx.lineWidth = 1.5;
+            simCtx.stroke();
+            // Trục ròng rọc
+            simCtx.beginPath();
+            simCtx.arc(pulleyX, pulleyY, 3, 0, Math.PI * 2);
+            simCtx.fillStyle = '#cbd5e1';
+            simCtx.fill();
+            drawCallout(simCtx, pulleyX, pulleyY - 22, 5);
+
+            // Sợi dây kéo mảnh không dãn vắt qua ròng rọc
+            const stringStartX = cartFrontX;
+            const stringY = pulleyY - pulleyR + 1;
+            const dropBase = 24;
+            const displacementPx = (state.cartPos - state.gate1Pos) / state.trackLength * trackW;
+            const weightTopY = Math.min(tableY - 28, pulleyY + dropBase + displacementPx * 0.45);
+            const weightHangX = pulleyX + pulleyR - 1;
+
+            simCtx.save();
+            simCtx.strokeStyle = '#334155';
+            simCtx.lineWidth = 1.3;
+            simCtx.beginPath();
+            // Đoạn nằm ngang
+            simCtx.moveTo(stringStartX, stringY);
+            simCtx.lineTo(pulleyX, stringY);
+            // Cung tròn qua ròng rọc
+            simCtx.arc(pulleyX, pulleyY, pulleyR - 1, -Math.PI / 2, 0);
+            // Đoạn thẳng đứng treo quả nặng
+            simCtx.lineTo(weightHangX, weightTopY);
+            simCtx.stroke();
+            simCtx.restore();
+
+            // Vẽ các quả nặng treo (6) tương ứng với lực kéo F (mỗi quả 50g ~ 0.5N)
+            const hangingCount = Math.round(state.F / 0.5);
+            const singleWeightH = 5;
+            const totalWeightH = hangingCount * singleWeightH;
+
+            for (let i = 0; i < hangingCount; i++) {
+                const wy = weightTopY + i * singleWeightH;
+                simCtx.fillStyle = i % 2 === 0 ? '#dc2626' : '#b91c1c';
+                simCtx.strokeStyle = '#7f1d1d';
+                simCtx.lineWidth = 1;
+                simCtx.beginPath();
+                simCtx.roundRect(weightHangX - 9, wy, 18, singleWeightH, 1.5);
+                simCtx.fill();
+                simCtx.stroke();
+            }
+            drawCallout(simCtx, weightHangX, weightTopY + totalWeightH + 14, 6);
+
+            // Vẽ vectơ lực kéo F màu đỏ (nếu bật)
+            if (document.getElementById('toggleVectors').checked) {
+                const vecLen = 28 + state.F * 12;
+                const vecStartX = cartFrontX + 4;
+                const vecY = cartY + 8;
+
+                simCtx.save();
+                simCtx.strokeStyle = '#e11d48';
+                simCtx.fillStyle = '#e11d48';
+                simCtx.lineWidth = 2.5;
+                simCtx.beginPath();
+                simCtx.moveTo(vecStartX, vecY);
+                simCtx.lineTo(vecStartX + vecLen, vecY);
+                simCtx.stroke();
+
+                // Mũi tên
+                simCtx.beginPath();
+                simCtx.moveTo(vecStartX + vecLen + 6, vecY);
+                simCtx.lineTo(vecStartX + vecLen - 2, vecY - 4);
+                simCtx.lineTo(vecStartX + vecLen - 2, vecY + 4);
+                simCtx.fill();
+
+                simCtx.font = 'bold 11px Inter, sans-serif';
+                simCtx.textAlign = 'left';
+                simCtx.fillText(`F = ${state.F.toFixed(1)} N`, vecStartX + 6, vecY - 8);
+                simCtx.restore();
+            }
+        }
+
+        // =========================================================================
+        // 6. QUẢN LÝ BẢNG 15.1 & ĐỒ THỊ KIỂM CHỨNG ĐỊNH LUẬT II NEWTON
+        // =========================================================================
+        function recordData() {
+            if (!state.hasMeasured) {
+                showToast("Hãy nhấn 'Thả xe đo' để xe chạy qua hai cổng quang trước khi ghi số liệu!", "warning");
+                return;
+            }
+
+            const tVal = parseFloat(state.measuredTime.toFixed(2));
+            const aVal = parseFloat(((2 * state.s) / (tVal * tVal)).toFixed(2));
+            const newRec = {
+                id: Date.now(),
+                F: parseFloat(state.F.toFixed(1)),
+                M: parseFloat(state.totalMass.toFixed(2)),
+                s: parseFloat(state.s.toFixed(2)),
+                t: tVal,
+                a: aVal
+            };
+
+            const prevRecords = [...state.records];
+            state.records.push(newRec);
+
+            // Tự động nhận diện đại lượng đang khảo sát để chuyển tab đồ thị & cập nhật bộ lọc thông minh
+            if (prevRecords.length >= 1) {
+                const sameFDifferentM = prevRecords.some(r => Math.abs(r.F - newRec.F) < 0.001 && Math.abs(r.M - newRec.M) >= 0.001);
+                const sameMDifferentF = prevRecords.some(r => Math.abs(r.M - newRec.M) < 0.001 && Math.abs(r.F - newRec.F) >= 0.001);
+
+                if (sameFDifferentM && !sameMDifferentF) {
+                    state.selectedForceFilter = newRec.F;
+                    setGraphMode('aM', true);
+                } else if (sameMDifferentF && !sameFDifferentM) {
+                    state.selectedMassFilter = newRec.M;
+                    setGraphMode('aF', true);
+                } else if (sameFDifferentM) {
+                    state.selectedForceFilter = newRec.F;
+                    setGraphMode('aM', true);
+                } else if (sameMDifferentF) {
+                    state.selectedMassFilter = newRec.M;
+                    setGraphMode('aF', true);
+                }
+            } else {
+                state.selectedMassFilter = newRec.M;
+                state.selectedForceFilter = newRec.F;
+            }
+
+            renderTable();
+            updateGraphFilterDropdown();
+            drawGraph();
+            showToast(`Đã ghi kết quả: F = ${state.F.toFixed(1)}N, M+m = ${state.totalMass.toFixed(2)}kg, a = ${aVal.toFixed(2)} m/s²`, "success");
+        }
+
+        function deleteRecord(id) {
+            state.records = state.records.filter(r => r.id !== id);
+            renderTable();
+            updateGraphFilterDropdown();
+            drawGraph();
+        }
+
+        function loadTextbookSample() {
+            // Số liệu chuẩn xác từ Bảng 15.1 SGK Vật lí 10 - KNTT
+            state.records = [
+                { id: 1, F: 1.0, M: 0.30, s: 0.50, t: 0.55, a: 3.31 },
+                { id: 2, F: 1.0, M: 0.40, s: 0.50, t: 0.64, a: 2.44 },
+                { id: 3, F: 1.0, M: 0.50, s: 0.50, t: 0.71, a: 1.99 },
+                { id: 4, F: 2.0, M: 0.50, s: 0.50, t: 0.50, a: 4.03 },
+                { id: 5, F: 3.0, M: 0.50, s: 0.50, t: 0.42, a: 5.67 }
+            ];
+            state.selectedMassFilter = 0.50;
+            state.selectedForceFilter = 1.0;
+            renderTable();
+            updateGraphFilterDropdown();
+            drawGraph();
+            showToast("Đã nạp bộ số liệu mẫu chuẩn từ Bảng 15.1 (SGK Vật lí 10).", "info");
+        }
+
+        function clearTable() {
+            state.records = [];
+            state.selectedMassFilter = null;
+            state.selectedForceFilter = null;
+            renderTable();
+            updateGraphFilterDropdown();
+            drawGraph();
+            showToast("Đã xóa toàn bộ dữ liệu trong Bảng 15.1.", "info");
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('dataTableBody');
+            const badge = document.getElementById('recordCountBadge');
+            badge.textContent = `${state.records.length} lần đo`;
+
+            if (state.records.length === 0) {
+                tbody.innerHTML = `
+                    <tr class="bg-slate-100 font-bold text-slate-700">
+                        <td class="py-2 px-3 text-left border-r border-slate-200 w-44">Lực kéo F (N)</td>
+                        <td rowspan="4" class="py-6 px-4 text-slate-400 font-normal italic">
+                            Chưa có dữ liệu. Hãy tiến hành thả xe đo và nhấn "Ghi số liệu vào Bảng 15.1" hoặc "Nạp mẫu Bảng 15.1".
+                        </td>
+                    </tr>
+                    <tr class="font-semibold text-slate-700">
+                        <td class="py-2 px-3 text-left border-r border-slate-200">Khối lượng (M+m) (kg)</td>
+                    </tr>
+                    <tr class="font-semibold text-slate-700">
+                        <td class="py-2 px-3 text-left border-r border-slate-200">Thời gian t (s)</td>
+                    </tr>
+                    <tr class="font-semibold text-slate-700">
+                        <td class="py-2 px-3 text-left border-r border-slate-200">Gia tốc a = 2s/t² (m/s²)</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            // Tạo 4 hàng ngang giống hệt cấu trúc Bảng 15.1 trong ảnh SGK
+            let rowF = `<tr class="bg-slate-100/90 font-bold text-slate-800"><td class="py-2 px-3 text-left border-r border-slate-200 whitespace-nowrap sticky left-0 bg-slate-100">Lực kéo F (N)</td>`;
+            let rowM = `<tr class="font-medium text-slate-700"><td class="py-2 px-3 text-left border-r border-slate-200 font-semibold whitespace-nowrap sticky left-0 bg-white">Khối lượng (M+m) (kg)</td>`;
+            let rowT = `<tr class="font-medium text-slate-700"><td class="py-2 px-3 text-left border-r border-slate-200 font-semibold whitespace-nowrap sticky left-0 bg-white">Thời gian t (s)</td>`;
+            let rowA = `<tr class="font-bold text-blue-700 bg-blue-50/30"><td class="py-2 px-3 text-left border-r border-slate-200 text-slate-800 whitespace-nowrap sticky left-0 bg-slate-50">Gia tốc a = 2s/t² (m/s²)</td>`;
+
+            state.records.forEach((rec) => {
+                rowF += `<td class="py-2 px-2.5 border-r border-slate-200 min-w-[64px] relative group">
+                            <span>${rec.F.toString().replace('.', ',')}</span>
+                            <button onclick="deleteRecord(${rec.id})" class="ml-1 text-rose-400 hover:text-rose-600 font-bold text-xs" title="Xóa cột này">×</button>
+                         </td>`;
+                rowM += `<td class="py-2 px-2.5 border-r border-slate-200">${rec.M.toFixed(2).replace('.', ',').replace(/0$/, '')}</td>`;
+                rowT += `<td class="py-2 px-2.5 border-r border-slate-200">${rec.t.toFixed(2).replace('.', ',')}</td>`;
+                rowA += `<td class="py-2 px-2.5 border-r border-slate-200">${rec.a.toFixed(2).replace('.', ',')}</td>`;
+            });
+
+            rowF += `</tr>`;
+            rowM += `</tr>`;
+            rowT += `</tr>`;
+            rowA += `</tr>`;
+
+            tbody.innerHTML = rowF + rowM + rowT + rowA;
+        }
+
+        function updateGraphFilterDropdown() {
+            const selectEl = document.getElementById('graphFilterSelect');
+            if (!selectEl) return;
+
+            if (state.records.length === 0) {
+                selectEl.classList.add('hidden');
+                selectEl.innerHTML = '';
+                return;
+            }
+
+            selectEl.classList.remove('hidden');
+
+            if (state.graphMode === 'aF') {
+                // Lấy danh sách các giá trị M+m duy nhất trong bảng, ưu tiên giá trị xuất hiện nhiều nhất
+                const counts = {};
+                state.records.forEach(r => counts[r.M] = (counts[r.M] || 0) + 1);
+                const uniqueMasses = Object.keys(counts).map(Number).sort((a, b) => a - b);
+
+                if (state.selectedMassFilter === null || !uniqueMasses.some(m => Math.abs(m - state.selectedMassFilter) < 0.001)) {
+                    let bestM = uniqueMasses[uniqueMasses.length - 1];
+                    let maxC = 0;
+                    uniqueMasses.forEach(m => {
+                        if (counts[m] > maxC) {
+                            maxC = counts[m];
+                            bestM = m;
+                        }
+                    });
+                    state.selectedMassFilter = bestM;
+                }
+
+                selectEl.innerHTML = uniqueMasses.map(m => {
+                    const selected = Math.abs(m - state.selectedMassFilter) < 0.001 ? 'selected' : '';
+                    return `<option value="${m}" ${selected}>M+m = ${m.toFixed(2)}kg (${counts[m]})</option>`;
+                }).join('');
+            } else {
+                // Lấy danh sách các giá trị F duy nhất trong bảng, ưu tiên giá trị xuất hiện nhiều nhất
+                const counts = {};
+                state.records.forEach(r => counts[r.F] = (counts[r.F] || 0) + 1);
+                const uniqueForces = Object.keys(counts).map(Number).sort((a, b) => a - b);
+
+                if (state.selectedForceFilter === null || !uniqueForces.some(f => Math.abs(f - state.selectedForceFilter) < 0.001)) {
+                    let bestF = uniqueForces[uniqueForces.length - 1];
+                    let maxC = 0;
+                    uniqueForces.forEach(f => {
+                        if (counts[f] > maxC) {
+                            maxC = counts[f];
+                            bestF = f;
+                        }
+                    });
+                    state.selectedForceFilter = bestF;
+                }
+
+                selectEl.innerHTML = uniqueForces.map(f => {
+                    const selected = Math.abs(f - state.selectedForceFilter) < 0.001 ? 'selected' : '';
+                    return `<option value="${f}" ${selected}>F = ${f.toFixed(1)}N (${counts[f]})</option>`;
+                }).join('');
+            }
+        }
+
+        function onGraphFilterChange() {
+            const selectEl = document.getElementById('graphFilterSelect');
+            const val = parseFloat(selectEl.value);
+            if (isNaN(val)) return;
+
+            if (state.graphMode === 'aF') {
+                state.selectedMassFilter = val;
+            } else {
+                state.selectedForceFilter = val;
+            }
+            drawGraph();
+        }
+
+        function setGraphMode(mode, skipRedraw = false) {
+            state.graphMode = mode;
+            const btnAF = document.getElementById('btnGraphAF');
+            const btnAM = document.getElementById('btnGraphAM');
+
+            if (mode === 'aF') {
+                btnAF.className = "px-2 py-0.5 rounded-md bg-white text-blue-600 shadow-xs transition";
+                btnAM.className = "px-2 py-0.5 rounded-md text-slate-600 hover:text-slate-900 transition";
+            } else {
+                btnAM.className = "px-2 py-0.5 rounded-md bg-white text-blue-600 shadow-xs transition";
+                btnAF.className = "px-2 py-0.5 rounded-md text-slate-600 hover:text-slate-900 transition";
+            }
+            updateGraphFilterDropdown();
+            if (!skipRedraw) drawGraph();
+        }
+
+        function drawGraph() {
+            const w = graphCanvas.width / (window.devicePixelRatio || 1);
+            const h = graphCanvas.height / (window.devicePixelRatio || 1);
+            if (w <= 0 || h <= 0) return;
+
+            graphCtx.clearRect(0, 0, w, h);
+            graphCtx.fillStyle = '#ffffff';
+            graphCtx.fillRect(0, 0, w, h);
+
+            const padL = 44;
+            const padR = 24;
+            const padT = 20;
+            const padB = 30;
+            const plotW = w - padL - padR;
+            const plotH = h - padT - padB;
+
+            updateGraphFilterDropdown();
+
+            // Lọc các điểm dữ liệu thỏa mãn điều kiện khảo sát đang chọn
+            let points = [];
+            let filterNote = "";
+
+            if (state.records.length > 0) {
+                if (state.graphMode === 'aF') {
+                    const targetM = state.selectedMassFilter;
+                    points = state.records
+                        .filter(r => Math.abs(r.M - targetM) < 0.001)
+                        .map(r => ({ x: r.F, y: r.a, label: `(${r.F.toFixed(1)}; ${r.a.toFixed(2)})` }));
+                    filterNote = `M+m = ${targetM.toFixed(2)} kg`;
+                } else {
+                    const targetF = state.selectedForceFilter;
+                    points = state.records
+                        .filter(r => Math.abs(r.F - targetF) < 0.001)
+                        .map(r => ({ x: 1 / r.M, y: r.a, label: `(${(1 / r.M).toFixed(2)}; ${r.a.toFixed(2)})` }));
+                    filterNote = `F = ${targetF.toFixed(1)} N`;
+                }
+            }
+
+            // Xác định thang chia trục X và Y linh hoạt
+            const maxX = state.graphMode === 'aF'
+                ? Math.max(3.5, ...points.map(p => p.x * 1.18))
+                : Math.max(3.6, ...points.map(p => p.x * 1.18));
+            const maxY = Math.max(4.0, ...points.map(p => p.y * 1.22));
+
+            const toPxX = (val) => padL + (val / maxX) * plotW;
+            const toPxY = (val) => padT + plotH - (val / maxY) * plotH;
+
+            // Vẽ lưới tọa độ
+            graphCtx.strokeStyle = '#f1f5f9';
+            graphCtx.lineWidth = 1;
+            for (let i = 1; i <= 5; i++) {
+                const gx = padL + (i / 5) * plotW;
+                graphCtx.beginPath();
+                graphCtx.moveTo(gx, padT);
+                graphCtx.lineTo(gx, padT + plotH);
+                graphCtx.stroke();
+
+                const gy = padT + (i / 5) * plotH;
+                graphCtx.beginPath();
+                graphCtx.moveTo(padL, gy);
+                graphCtx.lineTo(padL + plotW, gy);
+                graphCtx.stroke();
+            }
+
+            // Vẽ trục Ox và Oy
+            graphCtx.strokeStyle = '#475569';
+            graphCtx.lineWidth = 1.5;
+            graphCtx.beginPath();
+            graphCtx.moveTo(padL, padT);
+            graphCtx.lineTo(padL, padT + plotH);
+            graphCtx.lineTo(padL + plotW, padT + plotH);
+            graphCtx.stroke();
+
+            // Nhãn trục tọa độ
+            graphCtx.fillStyle = '#334155';
+            graphCtx.font = 'bold 10px Inter, sans-serif';
+            graphCtx.textAlign = 'center';
+            graphCtx.fillText('O', padL - 8, padT + plotH + 10);
+            graphCtx.fillText(state.graphMode === 'aF' ? 'F (N)' : '1/(M+m) (kg⁻¹)', padL + plotW / 2, h - 6);
+
+            graphCtx.save();
+            graphCtx.translate(12, padT + plotH / 2);
+            graphCtx.rotate(-Math.PI / 2);
+            graphCtx.fillText('a (m/s²)', 0, 0);
+            graphCtx.restore();
+
+            // Vạch số trên trục
+            graphCtx.fillStyle = '#64748b';
+            graphCtx.font = '9px Inter, sans-serif';
+            for (let i = 1; i <= 4; i++) {
+                const vx = (i / 4) * maxX;
+                graphCtx.fillText(vx.toFixed(1), toPxX(vx), padT + plotH + 12);
+
+                const vy = (i / 4) * maxY;
+                graphCtx.textAlign = 'right';
+                graphCtx.fillText(vy.toFixed(1), padL - 5, toPxY(vy) + 3);
+                graphCtx.textAlign = 'center';
+            }
+
+            // Nhãn điều kiện không đổi ở góc trên phải đồ thị
+            if (filterNote) {
+                graphCtx.fillStyle = '#eff6ff';
+                graphCtx.fillRect(padL + plotW - 92, padT + 2, 90, 16);
+                graphCtx.fillStyle = '#1d4ed8';
+                graphCtx.font = 'bold 9px Inter, sans-serif';
+                graphCtx.fillText(filterNote, padL + plotW - 47, padT + 13);
+            }
+
+            const conclusionEl = document.getElementById('graphConclusion');
+
+            if (points.length === 0) {
+                conclusionEl.innerHTML = state.graphMode === 'aF'
+                    ? "Chưa có dữ liệu để vẽ đồ thị <strong>a(F)</strong>."
+                    : "Chưa có dữ liệu để vẽ đồ thị <strong>a(1/m)</strong>.";
+                return;
+            }
+
+            // Kiểm tra xem có nhiều điểm phân biệt trên trục hoành hay không
+            const uniqueXCount = new Set(points.map(p => p.x.toFixed(3))).size;
+
+            // Vẽ đường hồi quy tuyến tính đi qua gốc tọa độ: y = k * x
+            if (uniqueXCount >= 2) {
+                let sumXY = 0, sumXX = 0;
+                points.forEach(p => {
+                    sumXY += p.x * p.y;
+                    sumXX += p.x * p.x;
+                });
+                const slope = sumXX > 0 ? sumXY / sumXX : 0;
+
+                graphCtx.save();
+                graphCtx.strokeStyle = '#2563eb';
+                graphCtx.lineWidth = 2;
+                graphCtx.beginPath();
+                graphCtx.moveTo(toPxX(0), toPxY(0));
+                const endX = Math.min(maxX, maxY / (slope || 1));
+                graphCtx.lineTo(toPxX(endX), toPxY(slope * endX));
+                graphCtx.stroke();
+                graphCtx.restore();
+
+                if (state.graphMode === 'aF') {
+                    conclusionEl.innerHTML = `Đồ thị là đường thẳng qua gốc O ⇒ <strong>a tỉ lệ thuận với F</strong> (hệ số góc ≈ ${slope.toFixed(2)} kg⁻¹).`;
+                } else {
+                    conclusionEl.innerHTML = `Đồ thị là đường thẳng qua gốc O ⇒ <strong>a tỉ lệ nghịch với (M+m)</strong> (hệ số góc ≈ ${slope.toFixed(2)} N).`;
+                }
+            } else {
+                // Nếu người dùng đang ở tab a(F) mà trong bảng lại có nhiều điểm khác khối lượng (cùng F)
+                const hasMultipleMassesForSameF = state.graphMode === 'aF' && state.records.length >= 2 &&
+                    new Set(state.records.map(r => r.M)).size >= 2;
+                const hasMultipleForcesForSameM = state.graphMode === 'aM' && state.records.length >= 2 &&
+                    new Set(state.records.map(r => r.F)).size >= 2;
+
+                if (hasMultipleMassesForSameF) {
+                    conclusionEl.innerHTML = `Bảng đang khảo sát thay đổi khối lượng (giữ F không đổi). <button onclick="setGraphMode('aM')" class="underline font-bold text-blue-700 hover:text-blue-900 ml-1">Xem đồ thị a(1/m) →</button>`;
+                } else if (hasMultipleForcesForSameM) {
+                    conclusionEl.innerHTML = `Bảng đang khảo sát thay đổi lực F (giữ M+m không đổi). <button onclick="setGraphMode('aF')" class="underline font-bold text-blue-700 hover:text-blue-900 ml-1">Xem đồ thị a(F) →</button>`;
+                } else {
+                    conclusionEl.innerHTML = `Cần thêm ít nhất 1 điểm có cùng <strong>${filterNote}</strong> nhưng khác ${state.graphMode === 'aF' ? 'lực kéo F' : 'khối lượng M+m'} để dựng đường thẳng qua gốc O.`;
+                }
+            }
+
+            // Vẽ các điểm thực nghiệm, đường gióng và nhãn tọa độ
+            // Sắp xếp theo x tăng dần để tránh chồng chéo nhãn
+            const sortedPoints = [...points].sort((a, b) => a.x - b.x);
+            sortedPoints.forEach((p, idx) => {
+                const px = toPxX(p.x);
+                const py = toPxY(p.y);
+
+                // Đường gióng nét đứt tới hai trục
+                graphCtx.save();
+                graphCtx.strokeStyle = '#cbd5e1';
+                graphCtx.setLineDash([2.5, 2.5]);
+                graphCtx.beginPath();
+                graphCtx.moveTo(px, padT + plotH);
+                graphCtx.lineTo(px, py);
+                graphCtx.lineTo(padL, py);
+                graphCtx.stroke();
+                graphCtx.restore();
+
+                // Điểm tròn đỏ
+                graphCtx.beginPath();
+                graphCtx.arc(px, py, 4.5, 0, Math.PI * 2);
+                graphCtx.fillStyle = '#e11d48';
+                graphCtx.fill();
+                graphCtx.strokeStyle = '#ffffff';
+                graphCtx.lineWidth = 1.5;
+                graphCtx.stroke();
+
+                // Nhãn tọa độ giá trị tại từng điểm
+                graphCtx.save();
+                graphCtx.fillStyle = '#1e293b';
+                graphCtx.font = '600 8.5px Inter, sans-serif';
+                const offsetY = (idx % 2 === 0) ? -8 : 13;
+                const labelX = Math.min(padL + plotW - 26, Math.max(padL + 26, px + 4));
+                const labelY = Math.min(padT + plotH - 5, Math.max(padT + 10, py + offsetY));
+                graphCtx.textAlign = 'center';
+                graphCtx.fillText(p.label, labelX, labelY);
+                graphCtx.restore();
+            });
+        }
+
+        // =========================================================================
+        // 7. KHỞI TẠO ỨNG DỤNG KHI TẢI TRANG
+        // =========================================================================
+        window.addEventListener('resize', resizeCanvases);
+        window.onload = function() {
+            updateParams();
+            renderTable();
+            resizeCanvases();
+            requestAnimationFrame(animationLoop);
+        };
+    </script>
+</body>
+</html>

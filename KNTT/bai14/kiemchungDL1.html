@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô phỏng Thí nghiệm Galilei & Quán tính - Vật lí 10</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- KaTeX (Không dùng polyfill.io) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            color: #1e293b;
+        }
+        /* Tùy chỉnh thanh cuộn cho bảng điều khiển trái */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Thanh trượt range hiện đại */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #0284c7;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            transition: transform 0.15s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        .katex { font-size: 1.02em; }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col md:flex-row p-2 md:p-3 gap-3 select-none bg-[#f4f7f9]">
+
+    <!-- PANEL TRÁI: BẢNG ĐIỀU KHIỂN 3 TAB -->
+    <aside class="w-full md:w-[390px] lg:w-[410px] h-[48vh] md:h-full bg-white rounded-xl shadow-sm border border-slate-200/80 flex flex-col shrink-0 overflow-hidden">
+        <!-- Header Ứng dụng -->
+        <div class="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-sky-600 to-blue-700 text-white shrink-0">
+            <div class="flex items-center gap-2.5">
+                <div class="p-1.5 bg-white/15 rounded-lg backdrop-blur-xs">
+                    <i data-lucide="atom" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm md:text-base leading-tight tracking-tight">THÍ NGHIỆM GALILEI & QUÁN TÍNH</h1>
+                    <p class="text-[11px] text-sky-100 font-medium">Vật lí 10 • Định luật I Newton</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thanh điều hướng 3 Tab -->
+        <div class="grid grid-cols-3 gap-1 p-1.5 bg-slate-100 border-b border-slate-200/70 shrink-0">
+            <button id="tab-btn-1" onclick="switchTab(1)" class="tab-btn py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center justify-center gap-1 bg-white text-sky-700 shadow-xs">
+                <i data-lucide="trending-down" class="w-4 h-4"></i>
+                <span>1. TN Galilei</span>
+            </button>
+            <button id="tab-btn-2" onclick="switchTab(2)" class="tab-btn py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 hover:bg-white/50">
+                <i data-lucide="gauge" class="w-4 h-4"></i>
+                <span>2. Vai trò $F_{ms}$</span>
+            </button>
+            <button id="tab-btn-3" onclick="switchTab(3)" class="tab-btn py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 hover:bg-white/50">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                <span>3. Quán tính</span>
+            </button>
+        </div>
+
+        <!-- Nội dung điều khiển cuộn được theo từng Tab -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
+
+            <!-- ================= NỘI DUNG TAB 1: MÔ TẢ THÍ NGHIỆM GALILEI ================= -->
+            <div id="panel-tab-1" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Chọn nhanh trường hợp (Hình 14.1)</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setGalileiPreset('a')" id="preset-a" class="preset-btn py-2 px-2.5 rounded-lg border-2 border-sky-600 bg-sky-50 text-sky-800 text-xs font-bold transition-all text-center">
+                            Hình a)<br><span class="font-normal text-[11px]">Máng 2 dốc</span>
+                        </button>
+                        <button onclick="setGalileiPreset('b')" id="preset-b" class="preset-btn py-2 px-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all text-center">
+                            Hình b)<br><span class="font-normal text-[11px]">Hạ thấp máng 2</span>
+                        </button>
+                        <button onclick="setGalileiPreset('c')" id="preset-c" class="preset-btn py-2 px-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all text-center">
+                            Hình c)<br><span class="font-normal text-[11px]">Máng 2 ngang</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thanh trượt góc nghiêng máng 2 -->
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/70 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-700">Góc nghiêng máng 2 ($\alpha_2$):</span>
+                        <span id="val-alpha2-t1" class="text-xs font-bold px-2 py-0.5 bg-sky-100 text-sky-800 rounded-md">30°</span>
+                    </div>
+                    <input type="range" id="slider-alpha2-t1" min="0" max="35" step="1" value="30" class="w-full" oninput="updateAlpha2T1(this.value)">
+                    <div class="flex justify-between text-[10px] text-slate-400 font-medium">
+                        <span>0° (Nằm ngang)</span>
+                        <span>15° (Thấp)</span>
+                        <span>35° (Dốc cao)</span>
+                    </div>
+                </div>
+
+                <!-- Nút hành động Tab 1 -->
+                <div class="flex gap-2">
+                    <button onclick="togglePlay()" id="btn-play-t1" class="flex-1 py-2.5 px-4 bg-sky-600 hover:bg-sky-700 active:scale-[0.99] text-white font-semibold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="play" class="w-4 h-4"></i>
+                        <span>Thả bi</span>
+                    </button>
+                    <button onclick="resetGalilei()" class="py-2.5 px-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5" title="Đặt lại vị trí ban đầu">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>Đặt lại</span>
+                    </button>
+                </div>
+
+                <!-- Hộp mô tả & Suy luận Galilei -->
+                <div class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-3.5 space-y-2">
+                    <div class="flex items-center gap-1.5 text-amber-800 font-bold text-xs">
+                        <i data-lucide="lightbulb" class="w-4 h-4 text-amber-600 shrink-0"></i>
+                        <span>Mô tả & Suy luận của Galilei</span>
+                    </div>
+                    <div id="desc-galilei-t1" class="text-xs text-slate-700 leading-relaxed space-y-1.5">
+                        <p><strong>Trường hợp a:</strong> Thả viên bi từ độ cao $h$ trên máng nghiêng 1. Viên bi lăn xuống đáy rồi lăn ngược lên máng 2 tới độ cao gần bằng độ cao $h$ ban đầu.</p>
+                        <p class="text-amber-900 font-medium bg-amber-100/70 p-2 rounded-lg">💡 Nếu loại bỏ hoàn toàn ma sát, viên bi sẽ lên tới đúng độ cao $h$ ban đầu.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= NỘI DUNG TAB 2: KIỂM CHỨNG LỰC MA SÁT ================= -->
+            <div id="panel-tab-2" class="hidden space-y-4">
+                <!-- Thanh trượt hệ số ma sát -->
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/70 space-y-2.5">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-700">Hệ số ma sát ($\mu$):</span>
+                        <span id="val-mu-t2" class="text-xs font-bold px-2 py-0.5 bg-rose-100 text-rose-800 rounded-md">0.00 (Lý tưởng)</span>
+                    </div>
+                    <input type="range" id="slider-mu-t2" min="0" max="0.15" step="0.01" value="0" class="w-full" oninput="updateMuT2(this.value)">
+                    <div class="grid grid-cols-4 gap-1 pt-1">
+                        <button onclick="setMuPreset(0)" class="text-[10px] py-1 px-1 rounded bg-white border border-slate-200 hover:border-sky-500 font-semibold text-slate-700">$\mu = 0$</button>
+                        <button onclick="setMuPreset(0.02)" class="text-[10px] py-1 px-1 rounded bg-white border border-slate-200 hover:border-sky-500 font-semibold text-slate-700">$\mu = 0.02$</button>
+                        <button onclick="setMuPreset(0.06)" class="text-[10px] py-1 px-1 rounded bg-white border border-slate-200 hover:border-sky-500 font-semibold text-slate-700">$\mu = 0.06$</button>
+                        <button onclick="setMuPreset(0.14)" class="text-[10px] py-1 px-1 rounded bg-white border border-slate-200 hover:border-sky-500 font-semibold text-slate-700">$\mu = 0.14$</button>
+                    </div>
+                </div>
+
+                <!-- Góc nghiêng máng 2 ở Tab 2 -->
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/70 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-700">Góc nghiêng máng 2 ($\alpha_2$):</span>
+                        <span id="val-alpha2-t2" class="text-xs font-bold px-2 py-0.5 bg-sky-100 text-sky-800 rounded-md">25°</span>
+                    </div>
+                    <input type="range" id="slider-alpha2-t2" min="0" max="35" step="5" value="25" class="w-full" oninput="updateAlpha2T2(this.value)">
+                    <div class="flex justify-between text-[10px] text-slate-400">
+                        <span>0° (Mặt ngang)</span>
+                        <span>25° (Máng nghiêng)</span>
+                    </div>
+                </div>
+
+                <!-- Công tắc hiển thị vector lực -->
+                <div class="flex items-center justify-between bg-white px-3 py-2.5 rounded-xl border border-slate-200">
+                    <span class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                        <i data-lucide="move-up-right" class="w-4 h-4 text-sky-600"></i>
+                        Hiển thị Vector ($\vec{P}, \vec{N}, \vec{F}_{ms}, \vec{v}$)
+                    </span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggle-vectors-t2" checked class="sr-only peer" onchange="drawCurrentTab()">
+                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-sky-600"></div>
+                    </label>
+                </div>
+
+                <!-- Nút hành động Tab 2 -->
+                <div class="flex gap-2">
+                    <button onclick="togglePlay()" id="btn-play-t2" class="flex-1 py-2.5 px-4 bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="play" class="w-4 h-4"></i>
+                        <span>Chạy kiểm chứng</span>
+                    </button>
+                    <button onclick="resetGalilei()" class="py-2.5 px-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>Đặt lại</span>
+                    </button>
+                </div>
+
+                <!-- Bảng giải thích & Kiểm chứng nhận xét Galilei -->
+                <div class="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3.5 space-y-2">
+                    <div class="flex items-center gap-1.5 text-emerald-900 font-bold text-xs">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                        <span>Kiểm chứng nhận xét của Galilei</span>
+                    </div>
+                    <div id="desc-friction-t2" class="text-xs text-slate-700 leading-relaxed space-y-1.5">
+                        <!-- Nội dung động cập nhật theo mu -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= NỘI DUNG TAB 3: MÔ PHỎNG QUÁN TÍNH ================= -->
+            <div id="panel-tab-3" class="hidden space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Chọn hiện tượng quán tính</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="selectInertiaScenario('bus')" id="sc-bus" class="sc-btn p-2.5 rounded-xl border-2 border-sky-600 bg-sky-50 text-sky-900 text-left transition-all">
+                            <div class="font-bold text-xs flex items-center gap-1.5"><span>🚌</span> Xe buýt</div>
+                            <div class="text-[10px] text-slate-600 mt-0.5">Phanh gấp / Tăng tốc</div>
+                        </button>
+                        <button onclick="selectInertiaScenario('tablecloth')" id="sc-tablecloth" class="sc-btn p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 text-left transition-all">
+                            <div class="font-bold text-xs flex items-center gap-1.5"><span>🍽️</span> Khăn trải bàn</div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">Giật nhanh / Giật chậm</div>
+                        </button>
+                        <button onclick="selectInertiaScenario('coin')" id="sc-coin" class="sc-btn p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 text-left transition-all">
+                            <div class="font-bold text-xs flex items-center gap-1.5"><span>🪙</span> Búng tấm bìa</div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">Đồng xu rơi vào cốc</div>
+                        </button>
+                        <button onclick="selectInertiaScenario('hammer')" id="sc-hammer" class="sc-btn p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 text-left transition-all">
+                            <div class="font-bold text-xs flex items-center gap-1.5"><span>🔨</span> Tra đầu búa</div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">Gõ cán xuống nền</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tùy chỉnh riêng theo từng tình huống quán tính -->
+                <div id="inertia-subcontrols" class="bg-slate-50 p-3 rounded-xl border border-slate-200/70 space-y-2">
+                    <!-- Nội dung động theo tình huống -->
+                </div>
+
+                <!-- Công tắc vector Tab 3 -->
+                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200">
+                    <span class="text-xs font-semibold text-slate-700">Hiển thị vector lực & vận tốc</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggle-vectors-t3" checked class="sr-only peer" onchange="drawCurrentTab()">
+                        <div class="w-9 h-5 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-sky-600"></div>
+                    </label>
+                </div>
+
+                <!-- Nút hành động Tab 3 -->
+                <div class="flex gap-2">
+                    <button onclick="triggerInertiaAction()" id="btn-action-t3" class="flex-1 py-2.5 px-4 bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4"></i>
+                        <span>Kích hoạt hiện tượng</span>
+                    </button>
+                    <button onclick="resetInertia()" class="py-2.5 px-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>Làm lại</span>
+                    </button>
+                </div>
+
+                <!-- Giải thích 3 bước bằng Định luật I Newton -->
+                <div class="bg-indigo-50/80 border border-indigo-200 rounded-xl p-3 space-y-2">
+                    <div class="flex items-center gap-1.5 text-indigo-900 font-bold text-xs">
+                        <i data-lucide="book-open" class="w-4 h-4 text-indigo-600 shrink-0"></i>
+                        <span>Giải thích theo Định luật I Newton</span>
+                    </div>
+                    <div id="inertia-explanation" class="text-xs text-slate-700 space-y-1.5 leading-relaxed">
+                        <!-- Nội dung 3 bước cập nhật động -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </aside>
+
+    <!-- PANEL PHẢI: KHU VỰC HIỂN THỊ MÔ PHỎNG TRỰC QUAN -->
+    <main class="flex-1 h-[52vh] md:h-full bg-white rounded-xl shadow-sm border border-slate-200/80 flex flex-col overflow-hidden relative">
+        <!-- Thanh trạng thái & thông số thời gian thực phía trên Canvas -->
+        <div id="canvas-topbar" class="px-4 py-2.5 border-b border-slate-100 bg-slate-50/70 flex flex-wrap items-center justify-between gap-2 shrink-0">
+            <div class="flex items-center gap-2">
+                <span id="status-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-800">
+                    <span class="w-2 h-2 rounded-full bg-sky-600 animate-pulse"></span>
+                    <span id="canvas-title">Thí nghiệm máng nghiêng của Galilei (Hình 14.1)</span>
+                </span>
+            </div>
+
+            <!-- Các chỉ số đo lường thời gian thực (cho Tab 1 & 2) -->
+            <div id="telemetry-bar" class="flex items-center gap-3 text-xs">
+                <div class="bg-white px-2.5 py-1 rounded-lg border border-slate-200/80 flex items-center gap-1.5">
+                    <span class="text-slate-500">Độ cao thả $h_0$:</span>
+                    <span id="stat-h0" class="font-bold text-slate-800">2.00 m</span>
+                </div>
+                <div class="bg-white px-2.5 py-1 rounded-lg border border-slate-200/80 flex items-center gap-1.5">
+                    <span class="text-slate-500">Độ cao hiện tại $y$:</span>
+                    <span id="stat-y" class="font-bold text-sky-700">2.00 m</span>
+                </div>
+                <div id="stat-hmax-box" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200/80 flex items-center gap-1.5">
+                    <span class="text-slate-500">Đạt cực đại $h_{max}$:</span>
+                    <span id="stat-hmax" class="font-bold text-emerald-600">--</span>
+                </div>
+                <div class="hidden sm:flex bg-white px-2.5 py-1 rounded-lg border border-slate-200/80 items-center gap-1.5">
+                    <span class="text-slate-500">Vận tốc $v$:</span>
+                    <span id="stat-v" class="font-bold text-amber-600">0.00 m/s</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Khung chứa Canvas 2D linh hoạt -->
+        <div id="canvas-container" class="flex-1 w-full h-full relative overflow-hidden bg-gradient-to-b from-slate-50/40 to-white">
+            <canvas id="simCanvas" class="block w-full h-full"></canvas>
+
+            <!-- Chú thích màu sắc vector nổi góc dưới phải -->
+            <div id="legend-box" class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-xs border border-slate-200/90 rounded-lg px-3 py-2 text-[11px] shadow-xs flex flex-wrap gap-3 pointer-events-none">
+                <div class="flex items-center gap-1.5"><span class="w-3 h-1 bg-red-500 rounded-full"></span><span class="font-medium text-slate-700">Trọng lực $\vec{P}$</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-1 bg-emerald-600 rounded-full"></span><span class="font-medium text-slate-700">Phản lực $\vec{N}$</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-1 bg-amber-500 rounded-full"></span><span class="font-medium text-slate-700">Ma sát $\vec{F}_{ms}$</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-1 bg-sky-600 rounded-full"></span><span class="font-medium text-slate-700">Vận tốc $\vec{v}$</span></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Khởi tạo icons và KaTeX sau khi tải DOM
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            renderMath();
+            initSimulation();
+        });
+
+        function renderMath() {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // ==================== TRẠNG THÁI CHUNG CỦA ỨNG DỤNG ====================
+        let currentTab = 1;
+        let animationFrameId = null;
+        let lastTimestamp = 0;
+
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvas-container');
+
+        // Trạng thái mô phỏng Máng nghiêng (Tab 1 & Tab 2)
+        const galileiState = {
+            playing: false,
+            alpha1Deg: 30,      // Góc máng 1 cố định 30 độ
+            alpha2Deg: 30,      // Góc máng 2 thay đổi (0 -> 35 độ)
+            h0: 2.0,            // Độ cao thả ban đầu (mét)
+            mu: 0.0,            // Hệ số ma sát (Tab 1 = 0, Tab 2 điều chỉnh được)
+            // Tọa độ dọc theo đường gấp khúc (s = 0 tại chân dốc)
+            // s < 0: trên máng 1; s = 0: tại đáy; s > 0: trên máng 2
+            s: 0,
+            s0: 0,
+            v: 0,
+            y: 2.0,
+            hMaxReached: null,
+            passedBottom: false,
+            stopped: false,
+            trail: []
+        };
+
+        // Trạng thái mô phỏng Quán tính (Tab 3)
+        const inertiaState = {
+            scenario: 'bus', // 'bus', 'tablecloth', 'coin', 'hammer'
+            active: false,
+            time: 0,
+            // Tham số riêng
+            busMode: 'brake', // 'brake' | 'accel'
+            busX: 0,
+            busV: 120,
+            personAngle: 0,
+            personAngularV: 0,
+            // Khăn trải bàn
+            pullSpeed: 'fast', // 'slow' | 'fast'
+            clothX: 0,
+            dishX: 0,
+            dishAngle: 0,
+            dishFallY: 0,
+            // Đồng xu & tấm bìa
+            cardX: 0,
+            coinX: 0,
+            coinY: 0,
+            coinVy: 0,
+            // Tra búa
+            hammerY: 0,
+            hammerVy: 0,
+            headOffset: 0, // độ tụt của đầu búa vào cán (0 -> 28px)
+            hitGround: false
+        };
+
+        // ==================== ĐIỀU HƯỚNG TAB ====================
+        function switchTab(tabIndex) {
+            currentTab = tabIndex;
+
+            // Cập nhật giao diện nút Tab
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`tab-btn-${i}`);
+                const panel = document.getElementById(`panel-tab-${i}`);
+                if (i === tabIndex) {
+                    btn.className = "tab-btn py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center justify-center gap-1 bg-white text-sky-700 shadow-xs";
+                    panel.classList.remove('hidden');
+                } else {
+                    btn.className = "tab-btn py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 hover:bg-white/50";
+                    panel.classList.add('hidden');
+                }
+            }
+
+            // Cấu hình lại trạng thái phù hợp từng tab
+            const telemetryBar = document.getElementById('telemetry-bar');
+            const canvasTitle = document.getElementById('canvas-title');
+            const legendBox = document.getElementById('legend-box');
+
+            if (tabIndex === 1) {
+                telemetryBar.classList.remove('hidden');
+                legendBox.classList.add('hidden');
+                canvasTitle.textContent = "Thí nghiệm máng nghiêng của Galilei (Hình 14.1)";
+                galileiState.mu = 0;
+                galileiState.alpha2Deg = parseInt(document.getElementById('slider-alpha2-t1').value);
+                resetGalilei();
+            } else if (tabIndex === 2) {
+                telemetryBar.classList.remove('hidden');
+                legendBox.classList.remove('hidden');
+                canvasTitle.textContent = "Kiểm chứng vai trò của lực ma sát (Fms)";
+                galileiState.mu = parseFloat(document.getElementById('slider-mu-t2').value);
+                galileiState.alpha2Deg = parseInt(document.getElementById('slider-alpha2-t2').value);
+                updateFrictionExplanation();
+                resetGalilei();
+            } else if (tabIndex === 3) {
+                telemetryBar.classList.add('hidden');
+                legendBox.classList.remove('hidden');
+                canvasTitle.textContent = "Mô phỏng một số hiện tượng quán tính";
+                selectInertiaScenario(inertiaState.scenario);
+            }
+
+            renderMath();
+        }
+
+        // ==================== LOGIC TAB 1: THÍ NGHIỆM GALILEI ====================
+        function setGalileiPreset(type) {
+            // Cập nhật style nút preset
+            ['a', 'b', 'c'].forEach(p => {
+                const btn = document.getElementById(`preset-${p}`);
+                if (p === type) {
+                    btn.className = "preset-btn py-2 px-2.5 rounded-lg border-2 border-sky-600 bg-sky-50 text-sky-800 text-xs font-bold transition-all text-center";
+                } else {
+                    btn.className = "preset-btn py-2 px-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all text-center";
+                }
+            });
+
+            let angle = 30;
+            if (type === 'a') angle = 30;
+            if (type === 'b') angle = 14;
+            if (type === 'c') angle = 0;
+
+            document.getElementById('slider-alpha2-t1').value = angle;
+            updateAlpha2T1(angle, false);
+            resetGalilei();
+            // Tự động thả bi để học sinh quan sát ngay
+            galileiState.playing = true;
+            updatePlayButtonUI();
+        }
+
+        function updateAlpha2T1(val, clearPresetHighlight = true) {
+            const angle = parseInt(val);
+            galileiState.alpha2Deg = angle;
+            document.getElementById('val-alpha2-t1').textContent = `${angle}°`;
+
+            if (clearPresetHighlight) {
+                ['a', 'b', 'c'].forEach(p => {
+                    document.getElementById(`preset-${p}`).className = "preset-btn py-2 px-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all text-center";
+                });
+            }
+
+            const descEl = document.getElementById('desc-galilei-t1');
+            if (angle >= 22) {
+                descEl.innerHTML = `
+                    <p><strong>Trường hợp a (Góc nghiêng lớn ${angle}°):</strong> Viên bi lăn xuống máng 1 rồi lăn ngược lên máng 2 tới độ cao gần bằng độ cao $h$ ban đầu.</p>
+                    <p class="text-amber-900 font-medium bg-amber-100/70 p-2 rounded-lg">💡 Khi không có ma sát, viên bi đạt lại đúng độ cao $h$ ban đầu trên một quãng đường ngắn.</p>
+                `;
+            } else if (angle > 0) {
+                descEl.innerHTML = `
+                    <p><strong>Trường hợp b (Hạ thấp độ nghiêng máng 2 còn ${angle}°):</strong> Để đạt được độ cao $h$ ban đầu, viên bi phải lăn trên một <strong>quãng đường dài hơn</strong> đáng kể so với trường hợp a.</p>
+                    <p class="text-amber-900 font-medium bg-amber-100/70 p-2 rounded-lg">💡 Góc nghiêng càng nhỏ, bi càng phải đi xa hơn để tìm lại độ cao $h$.</p>
+                `;
+            } else {
+                descEl.innerHTML = `
+                    <p><strong>Trường hợp c (Máng 2 nằm ngang $\alpha_2 = 0^\circ$):</strong> Viên bi không bao giờ đạt tới độ cao $h$ ban đầu!</p>
+                    <p class="text-sky-900 font-semibold bg-sky-100/80 p-2 rounded-lg border border-sky-200">✨ Suy luận của Galilei: Nếu không có ma sát cản trở, viên bi sẽ lăn <strong>thẳng đều mãi mãi</strong> với vận tốc không đổi.</p>
+                `;
+            }
+            renderMath();
+            resetGalilei();
+        }
+
+        // ==================== LOGIC TAB 2: KIỂM CHỨNG LỰC MA SÁT ====================
+        function setMuPreset(val) {
+            document.getElementById('slider-mu-t2').value = val;
+            updateMuT2(val);
+            resetGalilei();
+            galileiState.playing = true;
+            updatePlayButtonUI();
+        }
+
+        function updateMuT2(val) {
+            const mu = parseFloat(val);
+            galileiState.mu = mu;
+            let label = `${mu.toFixed(2)}`;
+            if (mu === 0) label += " (Lý tưởng)";
+            else if (mu <= 0.03) label += " (Rất nhỏ)";
+            else if (mu <= 0.08) label += " (Trung bình)";
+            else label += " (Ma sát lớn)";
+
+            document.getElementById('val-mu-t2').textContent = label;
+            updateFrictionExplanation();
+            resetGalilei();
+        }
+
+        function updateAlpha2T2(val) {
+            const angle = parseInt(val);
+            galileiState.alpha2Deg = angle;
+            document.getElementById('val-alpha2-t2').textContent = `${angle}°`;
+            updateFrictionExplanation();
+            resetGalilei();
+        }
+
+        function updateFrictionExplanation() {
+            const mu = galileiState.mu;
+            const angle = galileiState.alpha2Deg;
+            const box = document.getElementById('desc-friction-t2');
+
+            if (mu === 0) {
+                box.innerHTML = `
+                    <p><strong>Điều kiện lý tưởng ($\mu = 0 \Rightarrow F_{ms} = 0$):</strong></p>
+                    <p>• ${angle > 0 ? `Viên bi bảo toàn cơ năng nên lăn lên đạt <strong>đúng độ cao $h_{max} = h_0 = 2.00\\text{ m}$</strong>.` : `Trên mặt ngang, hợp lực tác dụng lên bi bằng không ($\\vec{P} + \\vec{N} = \\vec{0}$), bi chuyển động <strong>thẳng đều mãi mãi</strong>.`}</p>
+                    <p class="text-emerald-900 font-medium bg-emerald-100/80 p-2 rounded-lg">✔ Kiểm chứng đúng tiên đoán của Galilei và nội dung Định luật I Newton.</p>
+                `;
+            } else {
+                box.innerHTML = `
+                    <p><strong>Thực tế có lực ma sát ($\mu = ${mu.toFixed(2)} \Rightarrow F_{ms} = \mu N > 0$):</strong></p>
+                    <p>• Lực ma sát $\\vec{F}_{ms}$ luôn ngược chiều chuyển động, sinh công cản làm tiêu hao cơ năng của viên bi.</p>
+                    <p>• ${angle > 0 ? `Do đó viên bi <strong>không thể lên tới độ cao $h_0$ ban đầu</strong> ($h_{max} < h_0$). $\\mu$ càng lớn, $h_{max}$ càng thấp.` : `Trên mặt ngang, lực ma sát làm bi chuyển động chậm dần rồi <strong>dừng lại</strong> sau một quãng đường hữu hạn.`}</p>
+                    <p class="text-amber-900 font-medium bg-amber-100/80 p-2 rounded-lg">👉 Chính lực ma sát đã che lấp bản chất quán tính trong các quan sát thông thường!</p>
+                `;
+            }
+            renderMath();
+        }
+
+        // ==================== VẬT LÝ CHUNG CHO MÁNG NGHIÊNG (TAB 1 & 2) ====================
+        function resetGalilei() {
+            galileiState.playing = false;
+            const rad1 = (galileiState.alpha1Deg * Math.PI) / 180;
+            // Độ dài đoạn dốc 1 từ độ cao h0 xuống đáy s = 0
+            const sStart = -galileiState.h0 / Math.sin(rad1);
+            galileiState.s = sStart;
+            galileiState.s0 = sStart;
+            galileiState.v = 0;
+            galileiState.y = galileiState.h0;
+            galileiState.hMaxReached = null;
+            galileiState.passedBottom = false;
+            galileiState.stopped = false;
+            galileiState.trail = [];
+
+            updatePlayButtonUI();
+            updateTelemetryUI();
+        }
+
+        function togglePlay() {
+            if (galileiState.stopped) {
+                resetGalilei();
+            }
+            galileiState.playing = !galileiState.playing;
+            updatePlayButtonUI();
+        }
+
+        function updatePlayButtonUI() {
+            const btn1 = document.getElementById('btn-play-t1');
+            const btn2 = document.getElementById('btn-play-t2');
+            const html = galileiState.playing
+                ? `<i data-lucide="pause" class="w-4 h-4"></i><span>Tạm dừng</span>`
+                : `<i data-lucide="play" class="w-4 h-4"></i><span>${galileiState.stopped ? 'Thả lại' : 'Thả bi'}</span>`;
+            if (btn1) btn1.innerHTML = html;
+            if (btn2) btn2.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function stepGalileiPhysics(dt) {
+            if (!galileiState.playing || galileiState.stopped) return;
+
+            const g = 9.8;
+            const rad1 = (galileiState.alpha1Deg * Math.PI) / 180;
+            const rad2 = (galileiState.alpha2Deg * Math.PI) / 180;
+            const mu = galileiState.mu;
+
+            // Chia nhỏ bước thời gian (sub-stepping) để đảm bảo bảo toàn năng lượng chính xác khi mu = 0
+            const subSteps = 8;
+            const subDt = dt / subSteps;
+
+            for (let i = 0; i < subSteps; i++) {
+                if (galileiState.s < 0) {
+                    // Đang ở máng 1 (lăn xuống)
+                    const dir = galileiState.v >= 0 ? 1 : -1;
+                    const aGravity = g * Math.sin(rad1);
+                    const aFriction = mu * g * Math.cos(rad1);
+                    // Nếu ma sát quá lớn ngay từ đầu
+                    if (galileiState.v === 0 && aGravity <= aFriction) {
+                        galileiState.stopped = true;
+                        galileiState.playing = false;
+                        break;
+                    }
+                    const a = aGravity - dir * aFriction;
+                    galileiState.v += a * subDt;
+                    galileiState.s += galileiState.v * subDt;
+
+                    if (galileiState.s >= 0) {
+                        galileiState.s = 0;
+                        galileiState.passedBottom = true;
+                    }
+                } else {
+                    // Đang ở máng 2 (lăn lên dốc 2 hoặc lăn ngang)
+                    const aGravity = -g * Math.sin(rad2);
+                    const aFriction = mu * g * Math.cos(rad2);
+
+                    if (galileiState.v > 0) {
+                        const a = aGravity - aFriction;
+                        const nextV = galileiState.v + a * subDt;
+                        if (nextV <= 0) {
+                            // Đạt điểm cao nhất trên máng 2 hoặc dừng trên mặt ngang
+                            galileiState.v = 0;
+                            galileiState.y = galileiState.s * Math.sin(rad2);
+                            if (galileiState.hMaxReached === null) {
+                                galileiState.hMaxReached = galileiState.y;
+                            }
+                            if (rad2 === 0 || aGravity + aFriction >= 0) {
+                                // Dừng hẳn trên mặt ngang hoặc bị ma sát giữ lại trên dốc
+                                galileiState.stopped = true;
+                                galileiState.playing = false;
+                                updatePlayButtonUI();
+                                break;
+                            }
+                        } else {
+                            galileiState.v = nextV;
+                            galileiState.s += galileiState.v * subDt;
+                        }
+                    } else if (galileiState.v < 0) {
+                        // Lăn ngược trở lại xuống đáy máng 2
+                        const a = aGravity + aFriction;
+                        galileiState.v += a * subDt;
+                        galileiState.s += galileiState.v * subDt;
+                        if (galileiState.s <= 0) {
+                            galileiState.s = 0;
+                        }
+                    }
+                }
+            }
+
+            // Cập nhật độ cao y hiện tại
+            if (galileiState.s < 0) {
+                galileiState.y = Math.abs(galileiState.s) * Math.sin(rad1);
+            } else {
+                galileiState.y = galileiState.s * Math.sin(rad2);
+            }
+
+            // Nếu máng ngang và lăn quá xa màn hình -> tự động reset hoặc dừng mượt
+            if (galileiState.alpha2Deg === 0 && galileiState.s > 11.5) {
+                galileiState.stopped = true;
+                galileiState.playing = false;
+                updatePlayButtonUI();
+            }
+
+            // Lưu vệt chuyển động
+            if (Math.random() < 0.45) {
+                galileiState.trail.push({ s: galileiState.s, y: galileiState.y });
+                if (galileiState.trail.length > 35) galileiState.trail.shift();
+            }
+
+            updateTelemetryUI();
+        }
+
+        function updateTelemetryUI() {
+            document.getElementById('stat-h0').textContent = `${galileiState.h0.toFixed(2)} m`;
+            document.getElementById('stat-y').textContent = `${Math.max(0, galileiState.y).toFixed(2)} m`;
+            document.getElementById('stat-v').textContent = `${Math.abs(galileiState.v).toFixed(2)} m/s`;
+
+            const hMaxEl = document.getElementById('stat-hmax');
+            if (galileiState.alpha2Deg === 0 && galileiState.passedBottom) {
+                hMaxEl.textContent = "0.00 m (Ngang)";
+            } else if (galileiState.hMaxReached !== null) {
+                hMaxEl.textContent = `${galileiState.hMaxReached.toFixed(2)} m`;
+            } else {
+                hMaxEl.textContent = "--";
+            }
+        }
+
+        // ==================== LOGIC TAB 3: HIỆN TƯỢNG QUÁN TÍNH ====================
+        function selectInertiaScenario(sc) {
+            inertiaState.scenario = sc;
+
+            // Cập nhật active card
+            ['bus', 'tablecloth', 'coin', 'hammer'].forEach(id => {
+                const el = document.getElementById(`sc-${id}`);
+                if (id === sc) {
+                    el.className = "sc-btn p-2.5 rounded-xl border-2 border-sky-600 bg-sky-50 text-sky-900 text-left transition-all";
+                } else {
+                    el.className = "sc-btn p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 text-left transition-all";
+                }
+            });
+
+            const subControls = document.getElementById('inertia-subcontrols');
+            const expBox = document.getElementById('inertia-explanation');
+
+            if (sc === 'bus') {
+                subControls.innerHTML = `
+                    <span class="block text-xs font-semibold text-slate-700 mb-1.5">Chọn trạng thái chuyển động của xe:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="setBusMode('brake')" id="bus-brake" class="py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-sky-600 bg-white text-sky-800">🛑 Phanh gấp</button>
+                        <button onclick="setBusMode('accel')" id="bus-accel" class="py-1.5 px-2 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-600">🚀 Tăng tốc đột ngột</button>
+                    </div>
+                `;
+                updateBusExplanation();
+            } else if (sc === 'tablecloth') {
+                subControls.innerHTML = `
+                    <span class="block text-xs font-semibold text-slate-700 mb-1.5">Tốc độ giật khăn trải bàn:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="setPullSpeed('fast')" id="pull-fast" class="py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-sky-600 bg-white text-sky-800">⚡ Giật cực nhanh</button>
+                        <button onclick="setPullSpeed('slow')" id="pull-slow" class="py-1.5 px-2 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-600">🐢 Kéo từ từ (Chậm)</button>
+                    </div>
+                `;
+                updateTableclothExplanation();
+            } else if (sc === 'coin') {
+                subControls.innerHTML = `
+                    <p class="text-xs text-slate-600">Tác dụng một lực búng nhanh theo phương ngang vào tấm bìa cứng đặt trên miệng cốc.</p>
+                `;
+                expBox.innerHTML = `
+                    <p><strong>1. Ban đầu:</strong> Đồng xu và tấm bìa cùng đứng yên trên miệng cốc ($\sum \vec{F} = \vec{0}$).</p>
+                    <p><strong>2. Tác động:</strong> Búng nhanh tấm bìa bay ngang. Lực ma sát giữa bìa và xu rất nhỏ trong thời gian cực ngắn.</p>
+                    <p><strong>3. Quán tính:</strong> Đồng xu giữ nguyên trạng thái đứng yên theo phương ngang; khi mất điểm tựa, trọng lực $\vec{P}$ kéo xu rơi thẳng đứng vào cốc.</p>
+                `;
+            } else if (sc === 'hammer') {
+                subControls.innerHTML = `
+                    <p class="text-xs text-slate-600">Cầm cán búa đưa lên cao rồi gõ mạnh đuôi cán búa xuống nền cứng.</p>
+                `;
+                expBox.innerHTML = `
+                    <p><strong>1. Ban đầu:</strong> Cả đầu búa và cán búa cùng chuyển động đi xuống với vận tốc $\vec{v}$.</p>
+                    <p><strong>2. Tác động:</strong> Đuôi cán chạm nền cứng chịu phản lực lớn nên <strong>dừng lại đột ngột</strong>.</p>
+                    <p><strong>3. Quán tính:</strong> Đầu búa có khối lượng lớn (quán tính lớn) nên tiếp tục chuyển động đi xuống, cắm chặt sâu vào cán búa.</p>
+                `;
+            }
+
+            resetInertia();
+            renderMath();
+        }
+
+        function setBusMode(mode) {
+            inertiaState.busMode = mode;
+            document.getElementById('bus-brake').className = mode === 'brake'
+                ? "py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-sky-600 bg-white text-sky-800"
+                : "py-1.5 px-2 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-600";
+            document.getElementById('bus-accel').className = mode === 'accel'
+                ? "py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-sky-600 bg-white text-sky-800"
+                : "py-1.5 px-2 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-600";
+            updateBusExplanation();
+            resetInertia();
+        }
+
+        function updateBusExplanation() {
+            const expBox = document.getElementById('inertia-explanation');
+            if (inertiaState.busMode === 'brake') {
+                expBox.innerHTML = `
+                    <p><strong>1. Ban đầu:</strong> Xe buýt và hành khách cùng chuyển động thẳng đều về phía trước với vận tốc $\vec{v}$.</p>
+                    <p><strong>2. Tác động:</strong> Xe phanh gấp, bàn chân hành khách dừng lại theo sàn xe nhờ lực ma sát.</p>
+                    <p><strong>3. Quán tính:</strong> Phần thân trên của hành khách theo quán tính vẫn giữ vận tốc cũ nên bị <strong>ngả nhào về phía trước</strong>.</p>
+                `;
+            } else {
+                expBox.innerHTML = `
+                    <p><strong>1. Ban đầu:</strong> Xe buýt và hành khách đang đứng yên ($\vec{v} = \vec{0}$).</p>
+                    <p><strong>2. Tác động:</strong> Xe đột ngột tăng tốc lao về trước, kéo bàn chân hành khách chuyển động theo.</p>
+                    <p><strong>3. Quán tính:</strong> Phần thân trên chưa kịp thay đổi vận tốc, có xu hướng giữ trạng thái đứng yên nên bị <strong>ngả bật về phía sau</strong>.</p>
+                `;
+            }
+            renderMath();
+        }
+
+        function setPullSpeed(speed) {
+            inertiaState.pullSpeed = speed;
+            document.getElementById('pull-fast').className = speed === 'fast'
+                ? "py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-sky-600 bg-white text-sky-800"
+                : "py-1.5 px-2 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-600";
+            document.getElementById('pull-slow').className = speed === 'slow'
+                ? "py-1.5 px-2 rounded-lg text-xs font-bold border-2 border-sky-600 bg-white text-sky-800"
+                : "py-1.5 px-2 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-600";
+            updateTableclothExplanation();
+            resetInertia();
+        }
+
+        function updateTableclothExplanation() {
+            const expBox = document.getElementById('inertia-explanation');
+            if (inertiaState.pullSpeed === 'fast') {
+                expBox.innerHTML = `
+                    <p><strong>1. Ban đầu:</strong> Bộ ấm chén đứng yên trên mặt bàn ($\sum \vec{F} = \vec{0}$).</p>
+                    <p><strong>2. Tác động:</strong> Giật khăn cực nhanh theo phương ngang; thời gian lực ma sát tác dụng lên đáy chén cực ngắn.</p>
+                    <p><strong>3. Quán tính:</strong> Ấm chén không kịp thay đổi vận tốc, bảo toàn trạng thái đứng yên tại chỗ trên bàn.</p>
+                `;
+            } else {
+                expBox.innerHTML = `
+                    <p><strong>1. Ban đầu:</strong> Bộ ấm chén đứng yên trên khăn trải bàn.</p>
+                    <p><strong>2. Tác động:</strong> Kéo khăn từ từ; lực ma sát nghỉ/trượt tác dụng trong thời gian đủ dài làm ấm chén dịch chuyển theo khăn.</p>
+                    <p><strong>3. Kết quả:</strong> Khi tới mép bàn, ấm chén mất điểm tựa và rơi xuống dưới tác dụng của trọng lực $\vec{P}$.</p>
+                `;
+            }
+            renderMath();
+        }
+
+        function resetInertia() {
+            inertiaState.active = false;
+            inertiaState.time = 0;
+
+            inertiaState.busX = 0;
+            inertiaState.busV = inertiaState.busMode === 'brake' ? 140 : 0;
+            inertiaState.personAngle = 0;
+            inertiaState.personAngularV = 0;
+
+            inertiaState.clothX = 0;
+            inertiaState.dishX = 0;
+            inertiaState.dishAngle = 0;
+            inertiaState.dishFallY = 0;
+
+            inertiaState.cardX = 0;
+            inertiaState.coinX = 0;
+            inertiaState.coinY = 0;
+            inertiaState.coinVy = 0;
+
+            inertiaState.hammerY = -110;
+            inertiaState.hammerVy = 0;
+            inertiaState.headOffset = 0;
+            inertiaState.hitGround = false;
+        }
+
+        function triggerInertiaAction() {
+            resetInertia();
+            inertiaState.active = true;
+        }
+
+        function stepInertiaPhysics(dt) {
+            const sc = inertiaState.scenario;
+
+            if (sc === 'bus') {
+                if (!inertiaState.active) {
+                    if (inertiaState.busMode === 'brake') {
+                        inertiaState.busX = (inertiaState.busX + 110 * dt) % 400;
+                    }
+                    return;
+                }
+                inertiaState.time += dt;
+                if (inertiaState.busMode === 'brake') {
+                    // Xe phanh gấp trong 0.45s
+                    if (inertiaState.busV > 0) {
+                        inertiaState.busV = Math.max(0, inertiaState.busV - 340 * dt);
+                        inertiaState.busX += inertiaState.busV * dt;
+                        // Người ngả về trước (góc dương)
+                        inertiaState.personAngle = Math.min(0.48, inertiaState.personAngle + 1.8 * dt);
+                    } else {
+                        // Đàn hồi nhẹ về vị trí đứng thẳng
+                        inertiaState.personAngle *= Math.pow(0.08, dt);
+                    }
+                } else {
+                    // Xe tăng tốc đột ngột
+                    if (inertiaState.time < 1.4) {
+                        inertiaState.busV = Math.min(240, inertiaState.busV + 240 * dt);
+                        inertiaState.busX += inertiaState.busV * dt;
+                        if (inertiaState.time < 0.45) {
+                            inertiaState.personAngle = Math.max(-0.46, inertiaState.personAngle - 1.6 * dt);
+                        } else {
+                            inertiaState.personAngle *= Math.pow(0.12, dt);
+                        }
+                    }
+                }
+            } else if (sc === 'tablecloth') {
+                if (!inertiaState.active) return;
+                inertiaState.time += dt;
+                if (inertiaState.pullSpeed === 'fast') {
+                    inertiaState.clothX = Math.min(340, inertiaState.clothX + 950 * dt);
+                    // Ấm chén chỉ nhích cực nhẹ 3px rồi đứng yên
+                    if (inertiaState.clothX < 180) {
+                        inertiaState.dishX += 15 * dt;
+                    }
+                } else {
+                    inertiaState.clothX = Math.min(340, inertiaState.clothX + 130 * dt);
+                    if (inertiaState.dishX < 135) {
+                        inertiaState.dishX += 122 * dt;
+                    } else {
+                        // Rơi khỏi mép bàn
+                        inertiaState.dishX += 60 * dt;
+                        inertiaState.dishFallY = Math.min(145, inertiaState.dishFallY + 380 * dt);
+                        inertiaState.dishAngle = Math.min(1.1, inertiaState.dishAngle + 3.2 * dt);
+                    }
+                }
+            } else if (sc === 'coin') {
+                if (!inertiaState.active) return;
+                inertiaState.time += dt;
+                // Tấm bìa bay ngang cực nhanh
+                inertiaState.cardX = Math.min(360, inertiaState.cardX + 980 * dt);
+                // Khi tấm bìa rời khỏi đồng xu (cardX > 65)
+                if (inertiaState.cardX > 60) {
+                    inertiaState.coinVy += 750 * dt;
+                    inertiaState.coinY = Math.min(108, inertiaState.coinY + inertiaState.coinVy * dt);
+                }
+            } else if (sc === 'hammer') {
+                if (!inertiaState.active) return;
+                inertiaState.time += dt;
+                if (!inertiaState.hitGround) {
+                    inertiaState.hammerVy += 920 * dt;
+                    inertiaState.hammerY += inertiaState.hammerVy * dt;
+                    if (inertiaState.hammerY >= 0) {
+                        inertiaState.hammerY = 0;
+                        inertiaState.hitGround = true;
+                    }
+                } else {
+                    // Đầu búa tiếp tục lao xuống cắm chặt vào cán
+                    inertiaState.headOffset = Math.min(28, inertiaState.headOffset + 190 * dt);
+                }
+            }
+        }
+
+        // ==================== VẼ CANVAS 2D (60 FPS) ====================
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        function initSimulation() {
+            resizeCanvas();
+            resetGalilei();
+            updateFrictionExplanation();
+            lastTimestamp = performance.now();
+            requestAnimationFrame(loop);
+        }
+
+        function loop(timestamp) {
+            const dt = Math.min(0.05, (timestamp - lastTimestamp) / 1000);
+            lastTimestamp = timestamp;
+
+            if (currentTab === 1 || currentTab === 2) {
+                stepGalileiPhysics(dt);
+                drawGalileiScene();
+            } else {
+                stepInertiaPhysics(dt);
+                drawInertiaScene();
+            }
+
+            requestAnimationFrame(loop);
+        }
+
+        // Hàm tiện ích vẽ mũi tên vector sắc nét
+        function drawVector(x1, y1, dx, dy, color, label, labelOffset = { x: 8, y: -6 }) {
+            const len = Math.hypot(dx, dy);
+            if (len < 4) return;
+            const x2 = x1 + dx;
+            const y2 = y1 + dy;
+            const angle = Math.atan2(dy, dx);
+            const headLen = 9;
+
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+
+            // Thân mũi tên
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            // Đầu mũi tên
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headLen * Math.cos(angle - Math.PI / 6), y2 - headLen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headLen * Math.cos(angle + Math.PI / 6), y2 - headLen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+
+            // Nhãn vector
+            if (label) {
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.fillText(label, x2 + labelOffset.x, y2 + labelOffset.y);
+            }
+            ctx.restore();
+        }
+
+        // ==================== VẼ CẢNH MÁNG NGHIÊNG GALILEI (TAB 1 & 2) ====================
+        function drawGalileiScene() {
+            const rect = container.getBoundingClientRect();
+            const W = rect.width;
+            const H = rect.height;
+            ctx.clearRect(0, 0, W, H);
+
+            // Hệ quy chiếu tọa độ màn hình
+            const groundY = H * 0.78;
+            const vertexX = W * 0.36; // Đỉnh gấp khúc giữa máng 1 và máng 2
+            const scale = Math.min(W / 15.5, H / 4.2); // pixel trên mỗi mét
+
+            const rad1 = (galileiState.alpha1Deg * Math.PI) / 180;
+            const rad2 = (galileiState.alpha2Deg * Math.PI) / 180;
+
+            // Vẽ lưới tọa độ nhẹ nền sau
+            ctx.save();
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            for (let gx = 0; gx < W; gx += 40) {
+                ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, groundY); ctx.stroke();
+            }
+            for (let gy = groundY; gy > 0; gy -= 40) {
+                ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+            }
+            ctx.restore();
+
+            // Nền đất ngang
+            const groundGrad = ctx.createLinearGradient(0, groundY, 0, H);
+            groundGrad.addColorStop(0, '#e2e8f0');
+            groundGrad.addColorStop(1, '#f8fafc');
+            ctx.fillStyle = groundGrad;
+            ctx.fillRect(0, groundY, W, H - groundY);
+
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, groundY);
+            ctx.lineTo(W, groundY);
+            ctx.stroke();
+
+            // Tọa độ đầu mút máng 1 (bên trái)
+            const len1 = 2.65; // mét
+            const top1X = vertexX - len1 * Math.cos(rad1) * scale;
+            const top1Y = groundY - len1 * Math.sin(rad1) * scale;
+
+            // Tọa độ đầu mút máng 2 (bên phải)
+            const len2 = galileiState.alpha2Deg === 0 ? 12.0 : Math.min(9.5, 2.65 / Math.max(0.22, Math.sin(rad2)));
+            const top2X = Math.min(W - 24, vertexX + len2 * Math.cos(rad2) * scale);
+            const actualLen2 = (top2X - vertexX) / (Math.cos(rad2) * scale);
+            const top2Y = groundY - actualLen2 * Math.sin(rad2) * scale;
+
+            // Đường đứt nét đánh dấu mức độ cao h0 ban đầu (giống Hình 14.1)
+            const h0ScreenY = groundY - galileiState.h0 * scale;
+            ctx.save();
+            ctx.setLineDash([6, 6]);
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(top1X - 15, h0ScreenY);
+            ctx.lineTo(W - 25, h0ScreenY);
+            ctx.stroke();
+            ctx.restore();
+
+            // Mũi tên 2 chiều chỉ độ cao h0 ở bên trái
+            const dimX = top1X + 18;
+            ctx.save();
+            ctx.strokeStyle = '#334155';
+            ctx.fillStyle = '#334155';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(dimX, h0ScreenY + 3);
+            ctx.lineTo(dimX, groundY - 3);
+            ctx.stroke();
+            // Mũi tên trên dưới
+            ctx.beginPath(); ctx.moveTo(dimX, h0ScreenY); ctx.lineTo(dimX - 4, h0ScreenY + 7); ctx.lineTo(dimX + 4, h0ScreenY + 7); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(dimX, groundY); ctx.lineTo(dimX - 4, groundY - 7); ctx.lineTo(dimX + 4, groundY - 7); ctx.fill();
+            ctx.font = 'italic bold 14px Inter, sans-serif';
+            ctx.fillText('h', dimX - 16, (h0ScreenY + groundY) / 2 + 4);
+            ctx.restore();
+
+            // Vẽ 2 nhánh máng nghiêng (Màu xanh dương giống Hình 14.1 SGK)
+            ctx.save();
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(top1X, top1Y);
+            // Bo cong nhẹ tại đỉnh nối để chuyển tiếp mượt
+            ctx.lineTo(vertexX - 12, groundY - 12 * Math.tan(rad1) * 0.2);
+            ctx.quadraticCurveTo(vertexX, groundY + 1, vertexX + 12, groundY - 12 * Math.tan(rad2) * 0.2);
+            ctx.lineTo(top2X, top2Y);
+            ctx.stroke();
+
+            // Nhãn "1" và "2" cho hai máng
+            ctx.fillStyle = '#0369a1';
+            ctx.font = 'bold 14px Inter, sans-serif';
+            ctx.fillText('Máng 1', top1X - 10, top1Y - 14);
+            ctx.fillText('Máng 2', top2X - 38, top2Y - 14);
+            ctx.restore();
+
+            // Vẽ cung góc alpha 2
+            if (galileiState.alpha2Deg > 0) {
+                ctx.save();
+                ctx.strokeStyle = '#64748b';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(vertexX, groundY, 42, -rad2, 0);
+                ctx.stroke();
+                ctx.fillStyle = '#475569';
+                ctx.font = '600 12px Inter, sans-serif';
+                ctx.fillText(`α₂ = ${galileiState.alpha2Deg}°`, vertexX + 48, groundY - 8);
+                ctx.restore();
+            }
+
+            // Vẽ bóng mờ vị trí thả ban đầu (giống quả cầu mờ ở Hình 14.1)
+            const startBallX = vertexX + galileiState.s0 * Math.cos(rad1) * scale;
+            const startBallY = groundY + galileiState.s0 * Math.sin(rad1) * scale - 13;
+            ctx.save();
+            ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
+            ctx.strokeStyle = 'rgba(100, 116, 139, 0.5)';
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.arc(startBallX, startBallY, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+
+            // Vẽ vệt quỹ đạo mờ của viên bi
+            galileiState.trail.forEach((pt, idx) => {
+                let tx, ty;
+                if (pt.s < 0) {
+                    tx = vertexX + pt.s * Math.cos(rad1) * scale;
+                    ty = groundY + pt.s * Math.sin(rad1) * scale - 13;
+                } else {
+                    tx = vertexX + pt.s * Math.cos(rad2) * scale;
+                    ty = groundY - pt.s * Math.sin(rad2) * scale - 13;
+                }
+                ctx.fillStyle = `rgba(14, 165, 233, ${(idx / galileiState.trail.length) * 0.22})`;
+                ctx.beginPath();
+                ctx.arc(tx, ty, 5, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Tính tọa độ tâm viên bi hiện tại
+            const ballRadius = 12;
+            let ballX, ballY, currentSlopeAngle;
+            if (galileiState.s < 0) {
+                ballX = vertexX + galileiState.s * Math.cos(rad1) * scale;
+                ballY = groundY + galileiState.s * Math.sin(rad1) * scale - ballRadius - 2;
+                currentSlopeAngle = rad1; // dốc xuống phải
+            } else {
+                ballX = vertexX + galileiState.s * Math.cos(rad2) * scale;
+                ballY = groundY - galileiState.s * Math.sin(rad2) * scale - ballRadius - 2;
+                currentSlopeAngle = -rad2; // dốc lên phải
+            }
+
+            // Vẽ đường gióng độ cao cực đại h_max nếu đã đạt được
+            if (galileiState.hMaxReached !== null && galileiState.alpha2Deg > 0) {
+                const hMaxY = groundY - galileiState.hMaxReached * scale;
+                ctx.save();
+                ctx.setLineDash([4, 4]);
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(vertexX, hMaxY);
+                ctx.lineTo(ballX + 35, hMaxY);
+                ctx.stroke();
+                ctx.fillStyle = '#059669';
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.fillText(`h_max = ${galileiState.hMaxReached.toFixed(2)}m`, ballX + 16, hMaxY - 6);
+                ctx.restore();
+            }
+
+            // Vẽ viên bi kim loại 3D bóng bẩy
+            ctx.save();
+            const ballGrad = ctx.createRadialGradient(ballX - 4, ballY - 4, 2, ballX, ballY, ballRadius);
+            ballGrad.addColorStop(0, '#f8fafc');
+            ballGrad.addColorStop(0.35, '#475569');
+            ballGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = ballGrad;
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // Vẽ các vector lực & vận tốc nếu đang ở Tab 2 và bật công tắc
+            const showVectors = currentTab === 2 && document.getElementById('toggle-vectors-t2').checked;
+            if (showVectors) {
+                const P_len = 52;
+                // 1. Trọng lực P luôn hướng thẳng đứng xuống dưới
+                drawVector(ballX, ballY, 0, P_len, '#ef4444', 'P', { x: 6, y: 4 });
+
+                // 2. Phản lực N vuông góc mặt máng hướng lên
+                const N_len = P_len * Math.cos(currentSlopeAngle);
+                const nx = Math.sin(currentSlopeAngle);
+                const ny = -Math.cos(currentSlopeAngle);
+                drawVector(ballX, ballY, nx * N_len, ny * N_len, '#10b981', 'N', { x: 6, y: -4 });
+
+                // 3. Vector vận tốc v tiếp tuyến mặt máng
+                if (Math.abs(galileiState.v) > 0.08) {
+                    const dir = galileiState.v > 0 ? 1 : -1;
+                    const tx = Math.cos(currentSlopeAngle) * dir;
+                    const ty = Math.sin(currentSlopeAngle) * dir;
+                    const vLen = Math.min(75, Math.abs(galileiState.v) * 11);
+                    drawVector(ballX, ballY, tx * vLen, ty * vLen, '#0284c7', 'v', { x: 5, y: -8 });
+
+                    // 4. Lực ma sát Fms ngược chiều vận tốc
+                    if (galileiState.mu > 0) {
+                        const fmsLen = Math.max(18, galileiState.mu * 340);
+                        drawVector(ballX, ballY + 8, -tx * fmsLen, -ty * fmsLen, '#f59e0b', 'Fms', { x: -12, y: 14 });
+                    }
+                }
+            }
+        }
+
+        // ==================== VẼ CẢNH QUÁN TÍNH (TAB 3) ====================
+        function drawInertiaScene() {
+            const rect = container.getBoundingClientRect();
+            const W = rect.width;
+            const H = rect.height;
+            ctx.clearRect(0, 0, W, H);
+
+            const showVec = document.getElementById('toggle-vectors-t3').checked;
+            const sc = inertiaState.scenario;
+
+            if (sc === 'bus') drawBusScenario(W, H, showVec);
+            else if (sc === 'tablecloth') drawTableclothScenario(W, H, showVec);
+            else if (sc === 'coin') drawCoinScenario(W, H, showVec);
+            else if (sc === 'hammer') drawHammerScenario(W, H, showVec);
+        }
+
+        // 1. Vẽ tình huống Xe buýt
+        function drawBusScenario(W, H, showVec) {
+            const roadY = H * 0.78;
+            // Nền đường
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(0, roadY, W, H - roadY);
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(0, roadY); ctx.lineTo(W, roadY); ctx.stroke();
+
+            // Vạch kẻ đường trôi theo vận tốc xe để tạo cảm giác chuyển động
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([30, 30]);
+            ctx.lineDashOffset = inertiaState.busX;
+            ctx.beginPath();
+            ctx.moveTo(0, roadY + 24);
+            ctx.lineTo(W, roadY + 24);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Thân xe buýt ở giữa màn hình
+            const busW = Math.min(440, W * 0.78);
+            const busH = 185;
+            const busX = (W - busW) / 2;
+            const busY = roadY - busH - 22;
+
+            // Khung xe
+            ctx.save();
+            ctx.fillStyle = '#fef3c7';
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.roundRect(busX, busY, busW, busH, [24, 36, 10, 10]);
+            ctx.fill();
+            ctx.stroke();
+
+            // Cửa sổ kính lớn nhìn xuyên vào trong thấy hành khách
+            ctx.fillStyle = '#e0f2fe';
+            ctx.strokeStyle = '#7dd3fc';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(busX + 22, busY + 22, busW - 52, 105, 12);
+            ctx.fill();
+            ctx.stroke();
+
+            // Thanh tay vịn trên trần xe
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(busX + 40, busY + 34);
+            ctx.lineTo(busX + busW - 50, busY + 34);
+            ctx.stroke();
+
+            // Bánh xe
+            [busX + 75, busX + busW - 75].forEach(wx => {
+                ctx.fillStyle = '#1e293b';
+                ctx.beginPath(); ctx.arc(wx, roadY - 22, 24, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#cbd5e1';
+                ctx.beginPath(); ctx.arc(wx, roadY - 22, 10, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // Hành khách đứng bên trong xe (xoay quanh bàn chân)
+            const footX = busX + busW * 0.48;
+            const footY = busY + 126;
+
+            ctx.save();
+            ctx.translate(footX, footY);
+            ctx.rotate(inertiaState.personAngle);
+
+            // Chân & Thân người
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            // Hai chân
+            ctx.beginPath(); ctx.moveTo(-6, 0); ctx.lineTo(-4, -38); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(4, -38); ctx.stroke();
+            // Thân áo xanh
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 10;
+            ctx.beginPath(); ctx.moveTo(0, -38); ctx.lineTo(0, -76); ctx.stroke();
+            // Đầu người
+            ctx.fillStyle = '#fed7aa';
+            ctx.strokeStyle = '#9a3412';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(0, -90, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+            // Vector quán tính / vận tốc trên thân người
+            if (showVec) {
+                if (inertiaState.busMode === 'brake') {
+                    drawVector(0, -68, 65, 0, '#0284c7', 'v (quán tính)', { x: 6, y: -6 });
+                } else if (inertiaState.active) {
+                    drawVector(0, -68, -55, 0, '#ef4444', 'Ngả sau', { x: -45, y: -8 });
+                }
+            }
+            ctx.restore();
+
+            // Vector chuyển động của xe buýt
+            if (showVec) {
+                if (inertiaState.busMode === 'brake') {
+                    if (!inertiaState.active) {
+                        drawVector(busX + busW + 15, busY + busH / 2, 75, 0, '#0284c7', 'v xe', { x: 6, y: -6 });
+                    } else {
+                        drawVector(busX - 15, busY + busH / 2, -70, 0, '#ef4444', 'F hãm', { x: -42, y: -8 });
+                    }
+                } else if (inertiaState.active) {
+                    drawVector(busX + busW + 15, busY + busH / 2, 85, 0, '#10b981', 'F kéo xe', { x: 6, y: -6 });
+                }
+            }
+            ctx.restore();
+        }
+
+        // 2. Vẽ tình huống Giật khăn trải bàn
+        function drawTableclothScenario(W, H, showVec) {
+            const floorY = H * 0.82;
+            const tableW = Math.min(340, W * 0.65);
+            const tableH = 18;
+            const tableX = (W - tableW) / 2 - 30;
+            const tableY = H * 0.56;
+
+            // Mặt sàn
+            ctx.fillStyle = '#f1f5f9';
+            ctx.fillRect(0, floorY, W, H - floorY);
+
+            // Chân bàn & Mặt bàn gỗ
+            ctx.fillStyle = '#78350f';
+            ctx.fillRect(tableX + 24, tableY + tableH, 16, floorY - tableY - tableH);
+            ctx.fillRect(tableX + tableW - 40, tableY + tableH, 16, floorY - tableY - tableH);
+            ctx.fillStyle = '#b45309';
+            ctx.beginPath();
+            ctx.roundRect(tableX, tableY, tableW, tableH, 6);
+            ctx.fill();
+
+            // Khăn trải bàn màu trắng viền xanh
+            const clothStartX = tableX + 25 + inertiaState.clothX;
+            const clothLen = tableW - 10;
+            ctx.save();
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(clothStartX, tableY - 2);
+            ctx.lineTo(Math.min(tableX + tableW, clothStartX + clothLen), tableY - 2);
+            // Phần khăn rủ xuống mép bàn
+            const overhang = Math.max(0, (clothStartX + clothLen) - (tableX + tableW));
+            ctx.lineTo(tableX + tableW + overhang * 0.35, tableY + 45);
+            ctx.stroke();
+
+            // Bàn tay nắm mép khăn kéo sang phải
+            const handX = tableX + tableW + overhang * 0.35;
+            const handY = tableY + 45;
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath();
+            ctx.arc(handX + 8, handY, 11, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            if (showVec && inertiaState.active) {
+                const fLen = inertiaState.pullSpeed === 'fast' ? 95 : 42;
+                drawVector(handX + 18, handY, fLen, 0, '#ef4444', inertiaState.pullSpeed === 'fast' ? 'F kéo rất nhanh' : 'F kéo chậm', { x: 6, y: -6 });
+            }
+            ctx.restore();
+
+            // Bộ ấm chén đặt trên bàn
+            const dishBaseX = tableX + tableW * 0.52 + inertiaState.dishX;
+            const dishBaseY = tableY - 3 + inertiaState.dishFallY;
+
+            ctx.save();
+            ctx.translate(dishBaseX, dishBaseY);
+            ctx.rotate(inertiaState.dishAngle);
+
+            // Đĩa lót
+            ctx.fillStyle = '#e0f2fe';
+            ctx.strokeStyle = '#0369a1';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(0, -3, 34, 6, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Bình trà
+            ctx.fillStyle = '#38bdf8';
+            ctx.beginPath();
+            ctx.roundRect(-18, -38, 36, 32, 10);
+            ctx.fill();
+            ctx.stroke();
+            // Nắp bình
+            ctx.beginPath();
+            ctx.arc(0, -40, 8, Math.PI, 0);
+            ctx.fill();
+            ctx.stroke();
+
+            if (showVec) {
+                drawVector(0, -22, 0, 48, '#ef4444', 'P', { x: 6, y: 4 });
+                if (inertiaState.dishFallY === 0) {
+                    drawVector(0, -22, 0, -48, '#10b981', 'N', { x: 6, y: -4 });
+                }
+            }
+            ctx.restore();
+        }
+
+        // 3. Vẽ tình huống Búng tấm bìa dưới đồng xu
+        function drawCoinScenario(W, H, showVec) {
+            const tableY = H * 0.78;
+            const centerX = W * 0.45;
+
+            // Mặt bàn
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(0, tableY, W, H - tableY);
+
+            // Cốc thủy tinh
+            const cupW = 84;
+            const cupH = 115;
+            const cupX = centerX - cupW / 2;
+            const cupY = tableY - cupH;
+
+            // Nước bên trong cốc
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.25)';
+            ctx.fillRect(cupX + 4, cupY + 45, cupW - 8, cupH - 49);
+
+            // Thành cốc
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cupX, cupY);
+            ctx.lineTo(cupX + 6, tableY);
+            ctx.lineTo(cupX + cupW - 6, tableY);
+            ctx.lineTo(cupX + cupW, cupY);
+            ctx.stroke();
+
+            // Tấm bìa cứng đặt trên miệng cốc
+            const cardW = 130;
+            const cardH = 8;
+            const cardX = centerX - cardW / 2 + inertiaState.cardX;
+            const cardY = cupY - cardH;
+
+            ctx.fillStyle = '#fde047';
+            ctx.strokeStyle = '#ca8a04';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(cardX, cardY, cardW, cardH, 3);
+            ctx.fill();
+            ctx.stroke();
+
+            if (showVec && inertiaState.active) {
+                drawVector(cardX + cardW, cardY + 4, 80, 0, '#ef4444', 'F búng', { x: 6, y: -6 });
+            }
+
+            // Đồng xu đặt trên tấm bìa
+            const coinX = centerX + inertiaState.coinX;
+            const coinY = cardY - 8 + inertiaState.coinY;
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.strokeStyle = '#b45309';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(coinX - 20, coinY - 7, 40, 14, 5);
+            ctx.fill();
+            ctx.stroke();
+
+            if (showVec) {
+                drawVector(coinX, coinY, 0, 50, '#ef4444', 'P', { x: 6, y: 4 });
+                if (inertiaState.cardX <= 60) {
+                    drawVector(coinX, coinY, 0, -50, '#10b981', 'N', { x: 6, y: -4 });
+                } else {
+                    drawVector(coinX, coinY, 0, 62, '#0284c7', 'v rơi', { x: -38, y: 12 });
+                }
+            }
+        }
+
+        // 4. Vẽ tình huống Tra đầu búa vào cán
+        function drawHammerScenario(W, H, showVec) {
+            const groundY = H * 0.80;
+            const centerX = W * 0.5;
+
+            // Nền đá cứng
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(0, groundY, W, H - groundY);
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(W, groundY); ctx.stroke();
+            ctx.fillStyle = '#334155';
+            ctx.font = 'bold 12px Inter, sans-serif';
+            ctx.fillText('Nền cứng', centerX + 70, groundY + 22);
+
+            // Cán búa gỗ (chạm nền khi hammerY = 0)
+            const handleW = 24;
+            const handleH = 190;
+            const handleBottomY = groundY + inertiaState.hammerY;
+            const handleTopY = handleBottomY - handleH;
+
+            ctx.save();
+            ctx.fillStyle = '#d97706';
+            ctx.strokeStyle = '#78350f';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.roundRect(centerX - handleW / 2, handleTopY, handleW, handleH, 6);
+            ctx.fill();
+            ctx.stroke();
+
+            // Đầu búa bằng sắt nặng (tụt sâu thêm headOffset khi cán dừng đột ngột)
+            const headW = 104;
+            const headH = 38;
+            const headY = handleTopY + 14 + inertiaState.headOffset;
+
+            ctx.fillStyle = '#334155';
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.roundRect(centerX - headW / 2, headY, headW, headH, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            // Vòng gỗ nhô lên trên đầu búa khi đầu búa cắm sâu vào cán
+            if (inertiaState.headOffset > 2) {
+                ctx.fillStyle = '#b45309';
+                ctx.fillRect(centerX - handleW / 2 + 1, handleTopY + 1, handleW - 2, headY - handleTopY);
+            }
+
+            if (showVec) {
+                if (inertiaState.active && !inertiaState.hitGround) {
+                    drawVector(centerX + 62, headY + 19, 0, 65, '#0284c7', 'v đi xuống', { x: 8, y: 4 });
+                } else if (inertiaState.hitGround) {
+                    drawVector(centerX - 24, handleBottomY, 0, -65, '#10b981', 'N (cản cán)', { x: -85, y: -4 });
+                    drawVector(centerX + 62, headY + 19, 0, 55, '#ef4444', 'Quán tính đầu búa', { x: 8, y: 4 });
+                }
+            }
+            ctx.restore();
+        }
+    </script>
+</body>
+</html>
